@@ -18,7 +18,7 @@ if (AInfo['GENERAL.Assigned To'] != null) {
 //	areaInspector = AInfo['GENERAL.Assigned To EHS'];
 //	}	
 
-if (AInfo['GENERAL.Assigned To'] == null) && (matches(appTypeArray[2],'LHH')) { //appMatch('*/*/LHH/*')){
+if (AInfo['GENERAL.Assigned To'] == null && matches(appTypeArray[2],'LHH')) { //appMatch('*/*/LHH/*')){
 	areaInspector = lookup('Census - Lead EHS',AInfo['ParcelAttribute.CensusTract']);
 	}
 
