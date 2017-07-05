@@ -11,7 +11,7 @@ elementArray = new Array();
 editAppSpecific('GENERAL.Assigned To',areaInspector);
 assignCap(areaInspector);
 
-// 7.5.17 chaas: no custom fields in any of the GEENERAL custom field subgroups for Inspection Needed 
+// 7.5.17 chaas: no custom fields in any of the GENERAL custom field subgroups for Inspection Needed 
 if (AInfo['GENERAL.Inspection Needed'] == 'Yes') {
 	InspSwitch = true;
 	}
