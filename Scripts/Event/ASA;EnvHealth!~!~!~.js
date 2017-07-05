@@ -1,7 +1,7 @@
 //ASA;EnvHealth!~!~!~ 
 
 editAppSpecific('GENERAL.Census Tract',AInfo['ParcelAttribute.CensusTract']);
-if (matches(appTypeArray[1],'EHSM','HHECMSC','HOUSING')) && (!matches(appTypeArray[2],'LHH','BBE','CRT')) {
+if (matches(appTypeArray[1],'EHSM','HHECMSC','HOUSING') && (!matches(appTypeArray[2],'LHH','BBE','CRT'))) {
 	// 7.5.17 chaas: Bravnish created all lookup tables in MCPHD configuration
 	areaInspector = lookup('Census - Housing EHS',AInfo['ParcelAttribute.CensusTract']);
 	comment('Inspector to Assign: '+areaInspector);
