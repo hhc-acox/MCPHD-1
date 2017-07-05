@@ -56,7 +56,8 @@ if (matches(appTypeArray[2],'VEH','HSG','TRA') && AInfo['GENERAL.Initial Inspect
 
 
 //replaced branch(ES_GET_ADDRESS)
-ES_GET_ADDRESS();
+// 7.5.17 chaas: this function does not yet exist in MDPHD INCLUDES_CUSTOM, so commenting out to test lookup table in this script
+//ES_GET_ADDRESS();
 
 // 7.5.17 chaas: SEC subtype is not in MCPHD configuration
 if (matches(appTypeArray[2],'VEH','HSG','SEC','TRA')) {
