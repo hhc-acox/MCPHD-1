@@ -13,12 +13,12 @@ if (AInfo['GENERAL.Assigned To'] != null) {
 	areaInspector = AInfo['GENERAL.Assigned To'];
 	}
 
-// 7.5.17 chaas: added code to accomodate custom field diff for EHS subtype	
-if (AInfo['GENERAL.Assigned To EHS'] != null) {
-	areaInspector = AInfo['GENERAL.Assigned To EHS'];
-	}	
+// 7.5.17 chaas: added code to accomodate custom field diff for EHS subtype - Chris to re-check this...	&& (match(appTypeArray[],'EHMS'))
+//if (AInfo['GENERAL.Assigned To EHS'] != null) {
+//	areaInspector = AInfo['GENERAL.Assigned To EHS'];
+//	}	
 
-if (AInfo['GENERAL.Assigned To'] == null && appMatch('*/*/LHH/*')) {
+if (AInfo['GENERAL.Assigned To'] == null) && (matches(appTypeArray[2],'LHH')) { //appMatch('*/*/LHH/*')){
 	areaInspector = lookup('Census - Lead EHS',AInfo['ParcelAttribute.CensusTract']);
 	}
 
