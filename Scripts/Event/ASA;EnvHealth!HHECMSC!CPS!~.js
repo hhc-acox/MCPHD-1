@@ -14,7 +14,7 @@ inVio = false;
 NHaz = false;
 recallComp = false;
 RCL=0;
-// 7.5.17 chaas: lookup table missing in MCPHD configuration
+// 7.5.17 chaas: lookup table missing in MCPHD configuration and NOT FOUND in City of Indy configuration
 cptEHS=lookup('Census - CPT EHS', currentUserID);
 if (cptEHS=='N') {
 	// 7.5.17 chaas: User QWILSON not in MCPHD configuration
