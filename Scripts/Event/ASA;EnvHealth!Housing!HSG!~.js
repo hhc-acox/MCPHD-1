@@ -1,6 +1,6 @@
 // ASA;EnvHealth!Housing!HSG!~ 
 leadGrant = 'N';
-// 7.5.17 chaas: ALL lookup tables below are missing in MCPHD configuration
+// 7.5.17 chaas: Bravnish created the lookup tables below in MCPHD configuration
 leadGrant = lookup('HHC - Lead Grant User',currentUserID);
 comment('Lead Grant Flag = '+leadGrant);
 // 7.5.17 chaas: Custom field H_HSG.GENERAL.Lead is missing in MCPHD configuration
