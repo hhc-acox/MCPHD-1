@@ -2,7 +2,7 @@
 
 editAppSpecific('GENERAL.Census Tract',AInfo['ParcelAttribute.CensusTract']);
 if (matches(appTypeArray[1],'EHSM','HHECMSC','HOUSING')) && (!matches(appTypeArray[2],'LHH','BBE','CRT')) {
-	// 7.5.17 chaas: lookup table not in MCPHD configuration
+	// 7.5.17 chaas: Bravnish created all lookup tables in MCPHD configuration
 	areaInspector = lookup('Census - Housing EHS',AInfo['ParcelAttribute.CensusTract']);
 	comment('Inspector to Assign: '+areaInspector);
 	}
@@ -19,7 +19,6 @@ if (AInfo['GENERAL.Assigned To EHS'] != null) {
 	}	
 
 if (AInfo['GENERAL.Assigned To'] == null && appMatch('*/*/LHH/*')) {
-	// 7.5.17 chaas: lookup table not in MCPHD configuration
 	areaInspector = lookup('Census - Lead EHS',AInfo['ParcelAttribute.CensusTract']);
 	}
 
