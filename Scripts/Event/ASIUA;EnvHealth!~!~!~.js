@@ -5,7 +5,7 @@
 	//ES_GET_ADDRESS();
 //}
 
-if (matches(appTypeArray[1],'EHSM','HHECMSC','HOUSING') { //&& currentUserID == "RVOLLER") { //commented to test as CHAAS
+if (matches(appTypeArray[1],'EHSM','HHECMSC','HOUSING')) { //&& currentUserID == "RVOLLER") { //commented to test as CHAAS
 	//var newUserID = lookup("Census - Housing EHS",AInfo['ParcelAttribute.CensusTract']);
 	var newUserID = lookup("Census - Housing EHS",AInfo['GENERAL.Census Tract']);
 	if (checkInspectionResult("Initial Inspection", "Scheduled") == true) { inspNum=getScheduledInspId("Initial Inspection"); }
