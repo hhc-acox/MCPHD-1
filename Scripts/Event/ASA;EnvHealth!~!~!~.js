@@ -3,7 +3,10 @@
 editAppSpecific('GENERAL.Census Tract',AInfo['ParcelAttribute.CensusTract']);
 if (matches(appTypeArray[1],'EHSM','HHECMSC','HOUSING') && (!matches(appTypeArray[2],'LHH','BBE','CRT'))) {
 	// 7.5.17 chaas: Bravnish created all lookup tables in MCPHD configuration
-	areaInspector = lookup('Census - Housing EHS',AInfo['ParcelAttribute.CensusTract']);
+	//areaInspector = lookup('Census - Housing EHS',AInfo['ParcelAttribute.CensusTract']); 
+	//Appears that Parcel Attributes are not yet configured
+	//Manually entered value of 310103 for Census Tract which assigns it to CHAAS for testing purposes (first row of lookup table)
+	areaInspector = lookup('Census - Housing EHS',AInfo['GENERAL.Census Tract']); 
 	comment('Inspector to Assign: '+areaInspector);
 	}
 	
@@ -13,8 +16,8 @@ if (AInfo['GENERAL.Assigned To'] != null) {
 	areaInspector = AInfo['GENERAL.Assigned To'];
 	}
 
-// 7.5.17 chaas: added code to accomodate custom field diff for EHS subtype - Chris to re-check this...	&& (match(appTypeArray[],'EHMS'))
-//if (AInfo['GENERAL.Assigned To EHS'] != null) {
+// 7.5.17 chaas: added code to accomodate custom field diff for EHSM subtype - Chris to re-check this...
+//if (AInfo['GENERAL.Assigned To EHS'] != null && match(appTypeArray[1],'EHSM')) {
 //	areaInspector = AInfo['GENERAL.Assigned To EHS'];
 //	}	
 
