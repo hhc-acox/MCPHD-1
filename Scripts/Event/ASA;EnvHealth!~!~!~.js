@@ -7,7 +7,7 @@ if (matches(appTypeArray[1],'EHSM','HHECMSC','HOUSING') && (!matches(appTypeArra
 	//Appears that Parcel Attributes are not yet configured
 	//Manually entered value of 310103 for Census Tract which assigns it to CHAAS for testing purposes (first row of lookup table)
 	areaInspector = lookup('Census - Housing EHS',AInfo['GENERAL.Census Tract']); 
-	comment('Inspector to Assign: '+areaInspector);
+	logDebug('Inspector to Assign: '+areaInspector);
 	}
 	
 // 7.5.17 chaas: no custom fields in H_RAD.GENERAL custom field.subgroup for Census Tract OR Assigned To 
