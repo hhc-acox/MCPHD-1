@@ -1,4 +1,4 @@
-// ASA;EnvHealth!HHECMSC!BBE!~ 
+// ASA;ENVHEALTH!HHECMSC!BBE!~ 
 // 7.5.17 chaas: the user LLOBDELL below is not yet setup in MCPHD configuration
 areaInspector = 'LLOBDELL';
 var complInitInsp = false;
