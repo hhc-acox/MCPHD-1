@@ -1,4 +1,4 @@
-//ASA;EnvHealth!~!~!~ 
+//ASA;ENVHEALTH!~!~!~ 
 
 editAppSpecific('GENERAL.Census Tract',AInfo['ParcelAttribute.CensusTract']);
 if (matches(appTypeArray[1],'EHSM','HHECMSC','HOUSING') && (!matches(appTypeArray[2],'LHH','BBE','CRT'))) {
