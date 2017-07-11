@@ -7,14 +7,14 @@
 
 if (matches(appTypeArray[1],'EHSM','HHECMSC','HOUSING')) { //&& currentUserID == "RVOLLER") { //commented to test as CHAAS
 	//var newUserID = lookup("Census - Housing EHS",AInfo['ParcelAttribute.CensusTract']);
-	var newUserID = lookup("Census - Housing EHS",AInfo['GENERAL.Census Tract']);
+	var newUserID = lookup("Census - Housing EHS",AInfo['Census Tract']);
 	logDebug("New User ID is: "+newUserID);
 	if (checkInspectionResult("Initial Inspection", "Scheduled") == true) { inspNum=getScheduledInspId("Initial Inspection"); }
 	if (checkInspectionResult("Reinspection", "Scheduled") == true) { inspNum=getScheduledInspId("Reinspection"); }
-	editAppSpecific("GENERAL.Assigned To", newUserID);
+	editAppSpecific("Assigned To", newUserID);
 	assignCap(newUserID);
 	if (checkInspectionResult("Initial Inspection", "Scheduled")) { assignInspection(inspNum, newUserID); }
 	if (checkInspectionResult("Reinspection", "Scheduled")) { assignInspection(inspNum, newUserID); }
-	if (matches(AInfo['GENERAL.CensusTract'],null,"","undefined")) { editAppSpecific("GENERAL.Census Tract", AInfo['ParcelAttribute.CensusTract']); }
+	if (matches(AInfo['CensusTract'],null,"","undefined")) { editAppSpecific("Census Tract", AInfo['ParcelAttribute.CensusTract']); }
 
 }
