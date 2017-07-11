@@ -1,4 +1,4 @@
-// ASA;EnvHealth!Housing!INV!~
+// ASA;ENVHEALTH!HOUSING!INV!~
 // 7.5.17 chaas: NONE of the area Inspectors are setup as users in MCPHD configuration
 updateAppStatus('Open','Initial status'); // verified app status
 editAppSpecific('GENERAL.Initial Inspection Date',dateAdd(null,1,'Y'));
