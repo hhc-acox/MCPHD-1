@@ -1,4 +1,4 @@
-// ASA;EnvHealth!Housing!HSG!~ 
+// ASA;ENVHEALTH!HOUSING!HSG!~ 
 leadGrant = 'N';
 // 7.5.17 chaas: Bravnish created the lookup tables below in MCPHD configuration
 leadGrant = lookup('HHC - Lead Grant User',currentUserID);
