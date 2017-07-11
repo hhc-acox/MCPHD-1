@@ -1,4 +1,4 @@
-// ASA;EnvHealth!HHECMSC!LHH!~
+// ASA;ENVHEALTH!HHECMSC!LHH!~
 // 7.5.17 chaas: this script has no issues :)
 scheduleInspectDate('Initial Lead Inspection',AInfo['GENERAL.Initial Inspection Date'],areaInspector);
 theDate = AInfo['GENERAL.Initial Inspection Date'].substring(6,10) + '-' + AInfo['GENERAL.Initial Inspection Date'].substring(0,2) + '-' + AInfo['GENERAL.Initial Inspection Date'].substring(3,5);
