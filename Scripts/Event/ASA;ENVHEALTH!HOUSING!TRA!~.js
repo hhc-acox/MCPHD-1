@@ -1,4 +1,4 @@
-// ASA;EnvHealth!Housing!TRA!~ 
+// ASA;ENVHEALTH!HOUSING!TRA!~ 
 // 7.5.17 chaas: H_TRA.GENERAL.Mosquito Control is missing from MCPHD configuration
 if (AInfo['GENERAL.Mosquito Control'] == 'Yes') {
 	scheduleInspectDate('Initial Inspection',AInfo['GENERAL.Initial Inspection Date'],'LLOBDELL');
