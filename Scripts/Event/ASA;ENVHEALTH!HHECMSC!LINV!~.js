@@ -1,4 +1,4 @@
-// ASA;EnvHealth!HHECMSC!LINV!~
+// ASA;ENVHEALTH!HHECMSC!LINV!~
 // 7.5.17 chaas: H_LINV.Open is missing from this app status configuration in MCPHD
 // 7.5.17 chaas: NONE of the area Inspectors are setup as users in MCPHD configuration
 // 7.5.17 chaas: H_LINV.[INVESTIGATION TYPE,GENERAL].custom fields all verifed :)
