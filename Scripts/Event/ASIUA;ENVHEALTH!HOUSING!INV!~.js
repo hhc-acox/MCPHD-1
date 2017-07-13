@@ -5,12 +5,12 @@ if (capStatus == 'Pending Case Creation' && AInfo['REQUIRED CASES.VEH'] == 'CHEC
  {
 editAppSpecific('REQUIRED CASES.VEH Created',dateAdd(null,0));
 updateAppStatus('Finaled','Child Case Created');
-newChildID = createChild('HHC','VEH','NA','NA','');
+newChildID = createChild('ENVHEALTH','Housing','VEH','NA','');
 copyAppSpecific(newChildID);
 comment('New child app id = '+ newChildID);
 updateAppStatus('In Violation','Created from INV',newChildID);
-assignCap(AInfo['GENERAL.Assigned To'],newChildID);
-editAppSpecific('GENERAL.INV Case',capIDString,newChildID);
+assignCap(AInfo['Assigned To'],newChildID);
+editAppSpecific('INV Case',capIDString,newChildID);
 editAppName(capName,newChildID);
 
 //replaced branch(ES_GET_ADDRESS_FOR_CHILD)
@@ -19,8 +19,8 @@ validGIS = false;
 overrideMessage = '';
 copyParcelGisObjects();
 
-if (AInfo['INVESTIGATION TYPE.Online Complaint'] == 'CHECKED') {
-	editAppSpecific('GENERAL.Reason for Invest','Online Complaint',newChildID);
+if (AInfo['Online Complaint'] == 'CHECKED') {
+	editAppSpecific('Reason for Invest','Online Complaint',newChildID);
 	}
 
 }
@@ -32,29 +32,29 @@ if (capStatus == 'Pending Case Creation' && AInfo['REQUIRED CASES.HSG'] == 'CHEC
 //start replaced branch: ES_HSG_CREATE_CHILD_CASE
  {
 editAppSpecific('REQUIRED CASES.HSG Created',dateAdd(null,0),capId);
-var RFI = AInfo['GENERAL.Reason for Invest'];
+var RFI = AInfo['Reason for Invest'];
 updateAppStatus('Finaled','Child Case Created');
-newChildID = createChild('HHC','HSG','NA','NA','');
+newChildID = createChild('ENVHEALTH','Housing','HSG','NA','');
 copyAppSpecific(newChildID);
 comment('New child app id = '+ newChildID);
 updateAppStatus('In Violation','Created from INV',newChildID);
-assignCap(AInfo['GENERAL.Assigned To'],newChildID);
-editAppSpecific('GENERAL.INV Case',capIDString,newChildID);
-editAppSpecific('GENERAL.Emergency','N',newChildID);
-editAppSpecific('GENERAL.Ordinance Chapter','10',newChildID);
-editAppSpecific('GENERAL.Owner Occupied','N',newChildID);
-editAppSpecific('GENERAL.Interior Violations','N',newChildID);
-editAppSpecific('GENERAL.Healthy Homes Assessment Completed','N',newChildID);
-editAppSpecific('GENERAL.Lead','N',newChildID);
-editAppSpecific('GENERAL.Reason for Invest',RFI,newChildID);
+assignCap(AInfo['Assigned To'],newChildID);
+editAppSpecific('INV Case',capIDString,newChildID);
+editAppSpecific('Emergency','N',newChildID);
+editAppSpecific('Ordinance Chapter','10',newChildID);
+editAppSpecific('Owner Occupied','N',newChildID);
+editAppSpecific('Interior Violations','N',newChildID);
+editAppSpecific('Healthy Homes Assessment Completed','N',newChildID);
+editAppSpecific('Lead','N',newChildID);
+editAppSpecific('Reason for Invest',RFI,newChildID);
 
 //replaced branch(ES_GET_ADDRESS_FOR_CHILD)
 ES_GET_ADDRESS_FOR_CHILD();
 
 //replaced branch(ES_HHC_CONTACTS_PROCESS)
 ES_HHC_CONTACTS_PROCESS();
-if (AInfo['INVESTIGATION TYPE.Online Complaint'] == 'CHECKED') {
-	editAppSpecific('GENERAL.Reason for Invest','Online Complaint',newChildID);
+if (AInfo['Online Complaint'] == 'CHECKED') {
+	editAppSpecific('Reason for Invest','Online Complaint',newChildID);
 	}
 
 }
