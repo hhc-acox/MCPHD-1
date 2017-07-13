@@ -2,21 +2,21 @@
 
 Event scripts go here.   Filename convention is:
 
-	aaaa;b!c!d!e.js
+	AAAA;B!C!D!E.js
 
 where:
 
-	aaaa 	= Event Prefix (see EMSE_VARIABLE_BRANCH_PREFIX standard choice, examples are WTUA, CRCA, ASA)
-	b		= Module (e.g., Licenses)
-	c		= Application Type, or tilde (~) for wildcard
-	d		= Sub-type, or tilde (~) for wildcard
-	e		= Category, or tilde (~) for wildcard
+	AAAA 	= Event Prefix (see EMSE_VARIABLE_BRANCH_PREFIX standard choice, examples are WTUA, CRCA, ASA)
+	B		= Module (e.g., Licenses)
+	C		= Application Type, or tilde (~) for wildcard
+	D		= Sub-type, or tilde (~) for wildcard
+	E		= Category, or tilde (~) for wildcard
 	
 examples:
 
-	ASA;CaseManagement!Case!~!~
-	ASA;Licenses!Amendment!AE Barb Business!Close Business
-	ASIUA;CaseManagement!Consumer Complaint!~!~
-	RIUA;Licenses!~!~!~
+	ASA;CASEMANAGEMENT!CASE!~!~
+	ASA;LICENSES!AMENDMENT!AE BARB BUSINESS!CLOSE BUSINESS
+	ASIUA;CASEMANAGEMENT!CONSUMER COMPLAINT!~!~
+	RIUA;LICENSES!~!~!~
 	
 */
