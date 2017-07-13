@@ -1,11 +1,11 @@
 // WTUA;ENVHEALTH!HOUSING!HSG!~
 leadGrant = 'N';
 if (wfTask == 'Initial Processing' && matches(wfStatus,'Complete Notice of Violation') && AInfo['Reinspection Date (in 30 days if blank)'] != null) {
-	scheduleInspectDate('Reinspection',AInfo['Reinspection Date (in 30 days if blank)'],AInfo['GENERAL.Assigned To']);
+	scheduleInspectDate('Reinspection',AInfo['Reinspection Date (in 30 days if blank)'],AInfo['Assigned To']);
 	}
 
 if (wfTask == 'Initial Processing' && matches(wfStatus,'Complete Notice of Violation') && AInfo['Reinspection Date (in 30 days if blank)'] == null) {
-	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,29)),AInfo['GENERAL.Assigned To']); 
+	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,29)),AInfo['Assigned To']); 
 	editTaskSpecific('Initial Processing','Reinspection Date (in 30 days if blank)',nextWorkDay(dateAdd(null,29)));
 	}
 
@@ -48,12 +48,12 @@ if (wfTask == 'Reinspection' && matches(wfStatus,'Reinspection','Complete Reinsp
 	}
 
 if (wfTask == 'Reinspection' && matches(wfStatus,'Reinspection','Complete Reinspection Ltr','Complete Next Action Court Ltr','Complete Lead Reinspection Ltr','Complete Add Vio Reinspection Ltr') && AInfo['Schedule Reinspection On'] == null) {
-	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,29)),AInfo['GENERAL.Assigned To']);
+	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,29)),AInfo['Assigned To']);
 	editTaskSpecific('Reinspection','Schedule Reinspection On',nextWorkDay(dateAdd(null,29)));
 	}
 
 if (wfTask == 'Final Processing' && (wfStatus == 'Yearly Inspection') && AInfo['Schedule Yearly Inspection On'] != null && AInfo['Schedule Yearly Inspection On'] != '') {
-	scheduleInspectDate('Reinspection',AInfo['Schedule Yearly Inspection On'],AInfo['GENERAL.Assigned To']);
+	scheduleInspectDate('Reinspection',AInfo['Schedule Yearly Inspection On'],AInfo['Assigned To']);
 	}
 
 if (wfTask == 'Final Processing' && (wfStatus == 'Yearly Inspection') && (AInfo['Schedule Yearly Inspection On'] == null || AInfo['Schedule Yearly Inspection On'] == '')) {
@@ -62,32 +62,32 @@ if (wfTask == 'Final Processing' && (wfStatus == 'Yearly Inspection') && (AInfo[
 	}
 
 if (wfTask == 'Final Processing' && (wfStatus == 'Permanent Injunction') && AInfo['Schedule PI Inspection On'] != null && AInfo['Schedule PI Inspection On'] != '') {
-	scheduleInspectDate('Reinspection',AInfo['Schedule PI Inspection On'],AInfo['GENERAL.Assigned To']);
+	scheduleInspectDate('Reinspection',AInfo['Schedule PI Inspection On'],AInfo['Assigned To']);
 	}
 
 if (wfTask == 'Final Processing' && (wfStatus == 'Permanent Injunction') && (AInfo['Schedule PI Inspection On'] == null || AInfo['Schedule PI Inspection On'] == '')) {
-	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,179)),AInfo['GENERAL.Assigned To']);
+	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,179)),AInfo['Assigned To']);
 	editTaskSpecific('Final Processing','Schedule PI Inspection On',nextWorkDay(dateAdd(null,179)));
 	}
 
 if (wfTask == 'Recurring Inspection' && wfStatus == 'Reinspect' && AInfo['Schedule Recurring Inspection On'] != null && AInfo['Schedule Recurring Inspection On'] != '') {
-	scheduleInspectDate('Reinspection',AInfo['Schedule Recurring Inspection On'],AInfo['GENERAL.Assigned To']);
+	scheduleInspectDate('Reinspection',AInfo['Schedule Recurring Inspection On'],AInfo['Assigned To']);
 	}
 
 if (wfTask == 'Reinspection' && matches(wfStatus,'Complete Reinspection Ltr','Complete Next Action Court Ltr','Complete Lead Reinspection Ltr','Complete Add Vio Reinspection Ltr')) {
-	assignTask('Reinspection',AInfo['GENERAL.Assigned To']);
+	assignTask('Reinspection',AInfo['Assigned To']);
 	}
 
 if (wfTask == 'Final Processing' && matches(wfStatus,'Complete Lead Clear Fail Ltr','Complete Lead Final Clr Ltr')) {
-	assignTask('Final Processing',AInfo['GENERAL.Assigned To']);
+	assignTask('Final Processing',AInfo['Assigned To']);
 	}
 
 if (wfTask == 'Recurring Inspection' && matches(wfStatus,'Complete Lead No Hzd Found Ltr')) {
-	assignTask('Recurring Inspection',AInfo['GENERAL.Assigned To']);
+	assignTask('Recurring Inspection',AInfo['Assigned To']);
 	}
 
 if (wfTask == 'Reinspection' && matches(wfStatus,'Compliance - Dust Taken')) {
-	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,13)),AInfo['GENERAL.Assigned To']);
+	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,13)),AInfo['Assigned To']);
 	editTaskSpecific('Reinspection','Schedule Reinspection On',nextWorkDay(dateAdd(null,13)));
 	}
 
