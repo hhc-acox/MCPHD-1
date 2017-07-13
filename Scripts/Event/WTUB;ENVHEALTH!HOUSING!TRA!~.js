@@ -23,6 +23,6 @@ if (wfTask == 'Final Processing' && matches(wfStatus,'Finaled','Billing Letter R
 	cancel = true;
 	}
 
-if (wfTask == 'Initial Processing' && wfStatus == 'Emergency Notice of Violation' && AInfo['GENERAL.Emergency'] == 'No') {
-	editAppSpecific('GENERAL.Emergency', 'Yes');
+if (wfTask == 'Initial Processing' && wfStatus == 'Emergency Notice of Violation' && AInfo['Emergency'] == 'No') {
+	editAppSpecific('Emergency', 'Yes');
 	}
