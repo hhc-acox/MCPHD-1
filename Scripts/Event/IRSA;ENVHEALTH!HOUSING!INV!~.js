@@ -13,12 +13,12 @@ if (isTaskActive('Inspection') && matches(inspResult,'Pending Order')) {
 
 if (isTaskActive('Inspection') && matches(inspResult,'In Violation')) {
 	closeTask('Inspection','In Violation','Updated by Script');
-	editAppSpecific('GENERAL.Resulted in Violation','Yes');
+	editAppSpecific('Resulted in Violation','Yes');
 	}
 
 if (matches(inspType, 'Initial Inspection','Reinspection') && matches(inspResult,'In Violation')) {
 	inspIDate = inspObj.getInspectionDate().getMonth() + '/' + inspObj.getInspectionDate().getDayOfMonth() + '/' + inspObj.getInspectionDate().getYear();
-	editAppSpecific('GENERAL.Initial Inspection Date',inspIDate);
+	editAppSpecific('Initial Inspection Date',inspIDate);
 	}
 
 if (isTaskActive('Inspection') && matches(inspResult,'Tires Removed')) {
