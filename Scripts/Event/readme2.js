@@ -20,4 +20,4 @@ examples:
 	RIUA;LICENSES!~!~!~
 	
 */
-this should generate a code error at deployment;
+//without comment notation, this would generate a code error at deployment;
