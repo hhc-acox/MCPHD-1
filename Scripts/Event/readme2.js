@@ -20,4 +20,4 @@ examples:
 	RIUA;LICENSES!~!~!~
 	
 */
-THIS SHOULD GENERATE A CODE ERROR AT DEPLOYMENT
+this should generate a code error at deployment;
