@@ -4,7 +4,7 @@ try{
 		scheduleInspectDate("Reinspection",dateAdd(null,30));
 	}
 }catch(err){
-	logDebug("A JavaScript Error occurred: WTUA:EnvHealth/Housing/TRA/*: " + err.message);
+	logDebug("A JavaScript Error occurred: WTUA:EnvHealth/HHECMSC/LHH/*: " + err.message);
 	logDebug(err.stack)
 }
 //lwacht: 280918: #93: end
