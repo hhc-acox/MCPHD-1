@@ -66,7 +66,7 @@ else
 | Start: BATCH PARAMETERS
 |
 /------------------------------------------------------------------------------------------------------*/
-/* test parameters 
+/* test parameters
 aa.env.setValue("lookAheadDays", "-5");
 aa.env.setValue("daySpan", "5");
 aa.env.setValue("recordGroup", "EnvHealth");
@@ -76,6 +76,9 @@ aa.env.setValue("recordCategory", "Application");
 aa.env.setValue("AppStatusArray1", "Accepted,Additional Info Needed,In Review,Inspection Passed");
 aa.env.setValue("AppStatusArray2", "No Plan Review Required,Pending,Plan Review Required,Plans Approved");
 aa.env.setValue("AppStatusArray3", "Re Inspection Required,Received");
+//aa.env.setValue("AppStatusArray1", "");
+//aa.env.setValue("AppStatusArray2", "");
+//aa.env.setValue("AppStatusArray3", "");
 aa.env.setValue("task", "Issuance");
 aa.env.setValue("sendEmailNotifications","N");
 aa.env.setValue("emailTemplate","");
@@ -87,7 +90,7 @@ aa.env.setValue("setNonEmailPrefix", "");
 aa.env.setValue("closeWorkflow", "Y");
 aa.env.setValue("newTaskStatus", "Closed");
 aa.env.setValue("newAppStatus", "Closed");
-*/
+ */
  
 var lookAheadDays = getParam("lookAheadDays");
 var daySpan = getParam("daySpan");
@@ -95,8 +98,13 @@ var appGroup = getParam("recordGroup");
 var appTypeType = getParam("recordType");
 var appSubtype = getParam("recordSubType");
 var appCategory = getParam("recordCategory");
-var arrAppStatusConcat = getParam("AppStatusArray1")+","+getParam("AppStatusArray2")+","+getParam("AppStatusArray3");
-var arrAppStatus = arrAppStatusConcat.split(",");
+var chkStatArr = getParam("AppStatusArray1");
+if(chkStatArr.length<1){
+	var arrAppStatus = null;
+}else{
+	var arrAppStatusConcat = getParam("AppStatusArray1")+","+getParam("AppStatusArray2")+","+getParam("AppStatusArray3");
+	var arrAppStatus = arrAppStatusConcat.split(",");
+}
 var task = getParam("task");
 var sendEmailToContactTypes = getParam("sendEmailToContactTypes");
 var emailTemplate = getParam("emailTemplate");
