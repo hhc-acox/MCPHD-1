@@ -79,7 +79,7 @@ aa.env.setValue("AppStatusArray3", "Re Inspection Required,Received");
 //aa.env.setValue("AppStatusArray1", "");
 //aa.env.setValue("AppStatusArray2", "");
 //aa.env.setValue("AppStatusArray3", "");
-aa.env.setValue("task", "Issuance");
+aa.env.setValue("taskToCheck", "Issuance");
 aa.env.setValue("sendEmailNotifications","N");
 aa.env.setValue("emailTemplate","");
 aa.env.setValue("sendEmailToContactTypes", "");
@@ -105,7 +105,7 @@ if(chkStatArr.length<1){
 	var arrAppStatusConcat = getParam("AppStatusArray1")+","+getParam("AppStatusArray2")+","+getParam("AppStatusArray3");
 	var arrAppStatus = arrAppStatusConcat.split(",");
 }
-var task = getParam("task");
+var task = getParam("taskToCheck");
 var sendEmailToContactTypes = getParam("sendEmailToContactTypes");
 var emailTemplate = getParam("emailTemplate");
 var sendEmailNotifications = getParam("sendEmailNotifications");
