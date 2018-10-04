@@ -66,7 +66,7 @@ else
 | Start: BATCH PARAMETERS
 |
 /------------------------------------------------------------------------------------------------------*/
-/* test parameters */
+/* test parameters
 aa.env.setValue("lookAheadDays", "-5");
 aa.env.setValue("daySpan", "5");
 aa.env.setValue("recordGroup", "EnvHealth");
@@ -85,7 +85,8 @@ aa.env.setValue("setNonEmailPrefix", "");
 aa.env.setValue("closeWorkflow", "Y");
 aa.env.setValue("newTaskStatus", "Closed");
 aa.env.setValue("newAppStatus", "Closed");
-
+ */
+ 
 var lookAheadDays = getParam("lookAheadDays");
 var daySpan = getParam("daySpan");
 var appGroup = getParam("recordGroup");
