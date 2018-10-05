@@ -365,7 +365,7 @@ try{
 				var cFName = sendArray[i].capContact.firstName;
 				var cLName = sendArray[i].capContact.lastName;
 				//logDebug("Notification requested for " + sendArray[i] + " preferred channel: " + channel);
-				if (!respectNotifyPrefs || (channel.indexOf("EMAIL") >= 0 || channel.indexOf("E-MAIL") >= 0 || channel.indexOf("Email") >= 0)) {
+				if (!respectNotifyPrefs || sendArray[i].capContact.getPreferredChannel()==0 || (channel.indexOf("EMAIL") >= 0 || channel.indexOf("E-MAIL") >= 0 || channel.indexOf("Email") >= 0)) {
 					if (!email) {
 						logDebug("Email channel detected but contact has no email address--adding to notification set");
 						continue;
