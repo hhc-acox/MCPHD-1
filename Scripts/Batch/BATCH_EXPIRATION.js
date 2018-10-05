@@ -362,8 +362,8 @@ try{
 				//  create set  
 				var channel = ("" + lookup("CONTACT_PREFERRED_CHANNEL","" + sendArray[i].capContact.getPreferredChannel())).toUpperCase();
 				var email = sendArray[i].capContact.getEmail();
-				logDebug("cFName: " + cFName);
-				logDebug("cLName: " + cLName);
+				var cFName = sendArray[i].capContact.firstName;
+				var cLName = sendArray[i].capContact.lastName;
 				//logDebug("Notification requested for " + sendArray[i] + " preferred channel: " + channel);
 				if (!respectNotifyPrefs || (channel.indexOf("EMAIL") >= 0 || channel.indexOf("E-MAIL") >= 0 || channel.indexOf("Email") >= 0)) {
 					if (!email) {
