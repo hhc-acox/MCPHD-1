@@ -1,4 +1,4 @@
-//lwacht: 280918: #118: Case status - JUSTIS first, then changes to initial hearing once Cause # is received.
+//lwacht: 280918: #2: Keeping applicant informed
 try{
 	if(wfTask=="Application Intake" && wfStatus=="Accepted"){
 		emailNotifContact("TBD", false, "", "Responsible Party", true, "no_reply@accela.com");
@@ -12,4 +12,4 @@ try{
 	logDebug("A JavaScript Error occurred: WTUA:EnvHealth/WQ/Pool/Application: " + err.message);
 	logDebug(err.stack)
 }
-//lwacht: 280918: #118: end
+//lwacht: 280918: #2: end
