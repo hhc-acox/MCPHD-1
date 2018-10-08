@@ -1,4 +1,4 @@
-function emailNotifContact(notName, emailRpt, rptName, contactType, respectPriChannel) {
+function emailNotifContact(notName, emailRpt, rptName, contactType, respectPriChannel, sysFromEmail) {
 try{
 	// create a hashmap for report parameters
 	var rptParams = aa.util.newHashMap();
