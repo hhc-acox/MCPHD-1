@@ -51,7 +51,6 @@ try{
 		if(emailNotif){
 			var eParams = aa.util.newHashtable(); 
 			addParameter(eParams, "$$fileDateYYYYMMDD$$", fileDateYYYYMMDD);
-			capId = currCapId;	
 			var contPhone = priContact.capContact.phone1;
 			if(contPhone){
 				var fmtPhone = contPhone.substr(0,3) + "-" + contPhone.substr(3,3) +"-" + contPhone.substr(6,4);
