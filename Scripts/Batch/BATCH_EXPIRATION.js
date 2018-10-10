@@ -96,7 +96,7 @@ aa.env.setValue("assignTaskTo", "");
 aa.env.setValue("setParentWorkflowTaskAndStatus", "");
 aa.env.setValue("respectNotifyPrefs", "Y");
 
-aa.env.setValue("paramStdChoice", "EH_ANNUAL_FOOD_RENEW_NOTIF_CONFIG");
+aa.env.setValue("paramStdChoice", "EH_FOOD_RENEW_DELINQ_CONFIG");
  */
  
 var paramStdChoice = getJobParam("paramStdChoice")  // use this standard choice for parameters instead of batch jobs
@@ -410,12 +410,16 @@ try{
 		}
 		// schedule Inspection
 		if (inspSched.length > 0) {
-			scheduleInspection(inspSched, "1");
-			inspId = getScheduledInspId(inspSched);
-			if (inspId) {
-				autoAssignInspection(inspId);
+			//lwacht: this check is specific to EnvHealth and should be removed for other implementations
+			if(getAppSpecific("Non Profit")!="CHECKED" && appType.indexOf("School")<0){
+				//lwacht: end custom solution
+				scheduleInspection(inspSched, "1");
+				inspId = getScheduledInspId(inspSched);
+				if (inspId) {
+					autoAssignInspection(inspId);
+				}
+				logDebug("Scheduled " + inspSched + ", Inspection ID: " + inspId);
 			}
-			logDebug("Scheduled " + inspSched + ", Inspection ID: " + inspId);
 		}
 		if (createNotifySets && setPrefix != "") {
 			if(!setCreated) {
