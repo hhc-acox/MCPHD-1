@@ -2,6 +2,8 @@
 var currDateFix;
 var inspDate;
 var one_day=1000*60*60*24;
+//lwacht: 181011: resolving issues impacting the scripting i'm doing
+inspObj = aa.inspection.getInspection(capId,inspId).getOutput();  
 inspDate = inspObj.getInspectionDate().getMonth() + '/' + inspObj.getInspectionDate().getDayOfMonth() + '/' + inspObj.getInspectionDate().getYear();
 var currDate=new Date(dateAdd(null,0));
 var futureDate=new Date(dateAdd(null,365));
