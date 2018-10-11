@@ -1,9 +1,10 @@
 showDebug = true; 
 showMessage = true; 
 var riskLevel = AInfo["Risk"];
-//lwacht: 021018: resolving issues impacting the scripting i'm doing
-inspObj = aa.inspection.getInspection(capId,inspId).getOutput();  
-var inspDate =  inspObj.getInspectionDate().getMonth() + "/" + inspObj.getInspectionDate().getDayOfMonth() + "/" + inspObj.getInspectionDate().getYear();
+//lwacht: 181011: resolving issues impacting the scripting i'm doing
+//var inspDate =  inspObj.getInspectionDate().getMonth() + "/" + inspObj.getInspectionDate().getDayOfMonth() + "/" + inspObj.getInspectionDate().getYear();
+var inspDate = inspResultDate;
+//lwacht: 181011: end
 logDebug("Inspection Date= " + inspDate);
 
 if(inspType == "Pre-Operational Inspection" && inspResult == "Meets Standards"){
