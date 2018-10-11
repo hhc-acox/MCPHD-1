@@ -62,4 +62,4 @@ try{
 }catch(err){
 	logDebug("A JavaScript Error occurred: getGuidesheetASIValue: " + err.message);
 	logDebug(err.stack);
-}
+}}
