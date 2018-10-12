@@ -117,16 +117,12 @@ while(keys.hasMoreElements())
 /*------------------------------------------------------------------------------------------------------/
 | END Event Specific Variables
 /------------------------------------------------------------------------------------------------------*/
-for (x in GuidesheetModel){
-	if(typeof(GuidesheetModel[x])=="function"){
-		logDebug(x);
-	}
-}
-	capId = GuidesheetModel.getCapID();
-	cap = aa.cap.getCap(capId).getOutput();
-	appTypeResult = cap.getCapType();
-	appTypeString = appTypeResult.toString();
-	appTypeArray = appTypeString.split("/");
+
+capId = GuidesheetModel.getCapID();
+cap = aa.cap.getCap(capId).getOutput();
+appTypeResult = cap.getCapType();
+appTypeString = appTypeResult.toString();
+appTypeArray = appTypeString.split("/");
 
 if (preExecute.length) doStandardChoiceActions(preExecute,true,0); 	// run Pre-execution code
 logGlobals(AInfo);
@@ -148,26 +144,10 @@ if (doStdChoices) doStandardChoiceActions(controlString,true,0);
 //
 
 if (doScripts){
-	doScriptActions1();
+	doScriptActions();
 }
 
-function doScriptActions1() {
-	aa.print("Vote for Pedro: " + prefix) ;
-	aa.print("Vote for Pedro: " + appTypeArray) ;
-	include(prefix + ":" + "*/*/*/*");
-	if (typeof(appTypeArray) == "object") {
-			include(prefix + ":" + appTypeArray[0] + "/*/*/*");
-			include(prefix + ":" + appTypeArray[0] + "/" + appTypeArray[1] + "/*/*");
-			include(prefix + ":" + appTypeArray[0] + "/" + appTypeArray[1] + "/" + appTypeArray[2] + "/*");
-			include(prefix + ":" + appTypeArray[0] + "/*/" + appTypeArray[2] + "/*");
-			include(prefix + ":" + appTypeArray[0] + "/*/" + appTypeArray[2] + "/" + appTypeArray[3]);
-			include(prefix + ":" + appTypeArray[0] + "/*/*/" + appTypeArray[3]);
-			include(prefix + ":" + appTypeArray[0] + "/" + appTypeArray[1] + "/*/" + appTypeArray[3]);
-			include(prefix + ":" + appTypeArray[0] + "/" + appTypeArray[1] + "/" + appTypeArray[2] + "/" + appTypeArray[3]);
-			}
-	}
-	 
- 
+
 
 //
 // Check for invoicing of fees

@@ -2,7 +2,7 @@
 try{
 	//updates the guidesheet ID to nGuideSheetID if not currently populated
 	//optional capId
-	var r = aa.inspection.getInspections(capId);
+/*	var r = aa.inspection.getInspections(capId);
 	if (r.getSuccess()) {
 		var inspArray = r.getOutput();
 		for (i in inspArray) {
@@ -12,8 +12,9 @@ try{
 				if (gs) {
 					for(var i=0;i< gs.size();i++) {
 						var guideSheetObj = gs.get(i);
-						if (guideSheetObj && "VC_LARVICIDE"== guideSheetObj.getGuideType().toUpperCase()) {
-							var guidesheetItem = guideSheetObj.getItems();
+*/
+						if (GuidesheetModel && "VC_LARVICIDE"== GuidesheetModel.getGuideType().toUpperCase()) {
+							var guidesheetItem = GuidesheetModel.getItems();
 							for(var j=0;j< guidesheetItem.size();j++) {
 								var item = guidesheetItem.get(j);
 								var guideItemASITs = item.getItemASITableSubgroupList();
@@ -71,7 +72,7 @@ try{
 									}
 								}
 							}			
-						}
+						}/*
 					}
 				} else {
 					// if there are guidesheets
@@ -81,7 +82,7 @@ try{
 		}
 	} else {
 		logDebug("No inspections on the record");
-	}
+	}*/
 }catch(err){
 	logDebug("A JavaScript Error occurred: IRSA:EnvHealth/VC/LARVICIDESITE/NA: " + err.message);
 	logDebug(err.stack)
