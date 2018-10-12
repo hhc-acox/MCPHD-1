@@ -20,7 +20,6 @@
 /------------------------------------------------------------------------------------------------------*/
 var triggerEvent = aa.env.getValue("EventName");
 var controlString = null;
-var controlString = "GuidesheetUpdateAfter"; 				// Standard choice for control
 var documentOnly = false;						// Document Only -- displays hierarchy of std choice steps
 
 
@@ -139,7 +138,8 @@ if (doStdChoices) doStandardChoiceActions(controlString,true,0);
 //  Next, execute and scripts that are associated to the record type
 //
 
-if (doScripts) doScriptActions();
+//if (doScripts) doScriptActions();
+doScriptActions();
 
 //
 // Check for invoicing of fees
