@@ -6,13 +6,13 @@ try{
 			for(var j=0;j< guidesheetItem.size();j++) {
 				var item = guidesheetItem.get(j);
 				//1. Filter Guide Sheet items by Guide sheet item name && ASI group code
-				if(item && gItem == item.getGuideItemText() && "SITE INFORMATION" == item.getGuideItemASIGroupName()) {
+				if(item && "SITE INFORMATION" == item.getGuideItemText() && "VC_LVCCKLST" == item.getGuideItemASIGroupName()) {
 					var ASISubGroups = item.getItemASISubgroupList();
 					if(ASISubGroups) {
 						//2. Filter ASI sub group by ASI Sub Group name
 						for(var k=0;k< ASISubGroups.size();k++) {
 							var ASISubGroup = ASISubGroups.get(k);
-							if(ASISubGroup && ASISubGroup.getSubgroupCode() == "VC_LVCCKLST") {
+							if(ASISubGroup && ASISubGroup.getSubgroupCode() == "LARVICIDE") {
 								var ASIModels =  ASISubGroup.getAsiList();
 								if(ASIModels) {
 									//3. Filter ASI by ASI name
