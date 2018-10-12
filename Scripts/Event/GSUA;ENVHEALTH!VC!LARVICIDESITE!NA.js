@@ -1,4 +1,4 @@
-//lwacht: 181011: reschedule inspection if site is breeding
+//lwacht: 181012: calculate area on checklist custom table
 try{
 	//updates the guidesheet ID to nGuideSheetID if not currently populated
 	//optional capId
@@ -38,7 +38,7 @@ try{
 										for(row in tableArr){
 											thisRow = tableArr[row];
 											for(val in thisRow){
-												logDebug(val +" : " + thisRow[val]);
+												//logDebug(val +" : " + thisRow[val]);
 												if(val == "Length"){
 													var rLen = thisRow[val];
 												}
@@ -59,10 +59,18 @@ try{
 												var zeroBasedRowIndex = i.getRowIndex()-1;
 												if(column.getColumnName() == "Area (sq ft)"){
 													i.setAttributeValue(tableArr[zeroBasedRowIndex]["Area (sq ft)"]);
+													var updateResult = aa.guidesheet.updateGGuidesheet(guideSheetObj,guideSheetObj.getAuditID());
+													if (updateResult.getSuccess()) {
+														logDebug("Successfully updated " + guideSheetObj.getGuideType() + " on inspection " + inspId + ".");
+													} else {
+														logDebug("Could not update guidesheet ID: " + updateResult.getErrorMessage());
+													}
+												}
 											}
+										}
 									}
 								}
-							}							
+							}			
 						}
 					}
 				} else {
@@ -74,9 +82,8 @@ try{
 	} else {
 		logDebug("No inspections on the record");
 	}
-	logDebug("No checklist item found.");
 }catch(err){
 	logDebug("A JavaScript Error occurred: IRSA:EnvHealth/VC/LARVICIDESITE/NA: " + err.message);
 	logDebug(err.stack)
 }
-//lwacht: 181011: end
+//lwacht: 181012: end
