@@ -62,7 +62,7 @@ try{
 													i.setAttributeValue(tableArr[zeroBasedRowIndex]["Area (sq ft)"]);
 													var updateResult = aa.guidesheet.updateGGuidesheet(GuidesheetModel,GuidesheetModel.getAuditID());
 													if (updateResult.getSuccess()) {
-														logDebug("Successfully updated " + GuidesheetModel.getGuideType() + " on inspection " + inspId + ".");
+														logDebug("Successfully updated " + GuidesheetModel.getGuideType() + ".");
 													} else {
 														logDebug("Could not update guidesheet ID: " + updateResult.getErrorMessage());
 													}
