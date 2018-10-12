@@ -120,7 +120,7 @@ while(keys.hasMoreElements())
 
 if (preExecute.length) doStandardChoiceActions(preExecute,true,0); 	// run Pre-execution code
 
-logGlobals(AInfo);
+//logGlobals(AInfo);
 
 /*------------------------------------------------------------------------------------------------------/
 | <===========Main=Loop================>
