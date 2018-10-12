@@ -138,9 +138,26 @@ if (doStdChoices) doStandardChoiceActions(controlString,true,0);
 //
 
 if (doScripts){
-	doScriptActions();
-	aa.print("Vote for Pedro");
+	doScriptActions1();
 }
+
+function doScriptActions1() {
+	aa.print("Vote for Pedro: " + prefix) ;
+	aa.print("Vote for Pedro: " + appTypeArray) ;
+	include(prefix + ":" + "*/*/*/*");
+	if (typeof(appTypeArray) == "object") {
+			include(prefix + ":" + appTypeArray[0] + "/*/*/*");
+			include(prefix + ":" + appTypeArray[0] + "/" + appTypeArray[1] + "/*/*");
+			include(prefix + ":" + appTypeArray[0] + "/" + appTypeArray[1] + "/" + appTypeArray[2] + "/*");
+			include(prefix + ":" + appTypeArray[0] + "/*/" + appTypeArray[2] + "/*");
+			include(prefix + ":" + appTypeArray[0] + "/*/" + appTypeArray[2] + "/" + appTypeArray[3]);
+			include(prefix + ":" + appTypeArray[0] + "/*/*/" + appTypeArray[3]);
+			include(prefix + ":" + appTypeArray[0] + "/" + appTypeArray[1] + "/*/" + appTypeArray[3]);
+			include(prefix + ":" + appTypeArray[0] + "/" + appTypeArray[1] + "/" + appTypeArray[2] + "/" + appTypeArray[3]);
+			}
+	}
+	 
+ 
 
 //
 // Check for invoicing of fees
