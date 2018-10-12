@@ -122,6 +122,11 @@ for (x in GuidesheetModel){
 		logDebug(x);
 	}
 }
+	capId = GuidesheetModel.getCapID();
+	cap = aa.cap.getCap(capId).getOutput();
+	appTypeResult = cap.getCapType();
+	appTypeString = appTypeResult.toString();
+	appTypeArray = appTypeString.split("/");
 
 if (preExecute.length) doStandardChoiceActions(preExecute,true,0); 	// run Pre-execution code
 logGlobals(AInfo);
