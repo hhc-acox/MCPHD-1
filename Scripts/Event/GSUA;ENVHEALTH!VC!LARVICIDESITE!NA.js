@@ -68,7 +68,6 @@ try{
 				} else {
 					// if there are guidesheets
 					logDebug("No guidesheets for this inspection");
-					return false;
 				}
 			}
 		}
