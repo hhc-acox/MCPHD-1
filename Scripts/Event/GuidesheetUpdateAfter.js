@@ -119,8 +119,9 @@ while(keys.hasMoreElements())
 /------------------------------------------------------------------------------------------------------*/
 
 if (preExecute.length) doStandardChoiceActions(preExecute,true,0); 	// run Pre-execution code
-
-//logGlobals(AInfo);
+aa.print("Vote for Pedro");
+logGlobals(AInfo);
+aa.print("Vote for Pedro 2" );
 
 /*------------------------------------------------------------------------------------------------------/
 | <===========Main=Loop================>
@@ -138,8 +139,7 @@ if (doStdChoices) doStandardChoiceActions(controlString,true,0);
 //  Next, execute and scripts that are associated to the record type
 //
 
-//if (doScripts) doScriptActions();
-doScriptActions();
+if (doScripts) doScriptActions();
 
 //
 // Check for invoicing of fees
