@@ -60,9 +60,9 @@ try{
 												var zeroBasedRowIndex = i.getRowIndex()-1;
 												if(column.getColumnName() == "Area (sq ft)"){
 													i.setAttributeValue(tableArr[zeroBasedRowIndex]["Area (sq ft)"]);
-													var updateResult = aa.guidesheet.updateGGuidesheet(guideSheetObj,guideSheetObj.getAuditID());
+													var updateResult = aa.guidesheet.updateGGuidesheet(GuidesheetModel,GuidesheetModel.getAuditID());
 													if (updateResult.getSuccess()) {
-														logDebug("Successfully updated " + guideSheetObj.getGuideType() + " on inspection " + inspId + ".");
+														logDebug("Successfully updated " + GuidesheetModel.getGuideType() + " on inspection " + inspId + ".");
 													} else {
 														logDebug("Could not update guidesheet ID: " + updateResult.getErrorMessage());
 													}
