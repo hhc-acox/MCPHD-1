@@ -117,6 +117,11 @@ while(keys.hasMoreElements())
 /*------------------------------------------------------------------------------------------------------/
 | END Event Specific Variables
 /------------------------------------------------------------------------------------------------------*/
+for (x in GuidesheetModel){
+	if(typeof(GuidesheetModel[x])=="function"){
+		logDebug(x);
+	}
+}
 
 if (preExecute.length) doStandardChoiceActions(preExecute,true,0); 	// run Pre-execution code
 logGlobals(AInfo);
