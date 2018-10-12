@@ -1,8 +1,34 @@
 //lwacht: 181012: calculate area on checklist custom table
 try{
 	if (GuidesheetModel && "VC_LARVICIDE"== GuidesheetModel.getGuideType().toUpperCase()) {
-		var siteBreeding = getGuidesheetASIValue(inspId,"VC_Larvicide","SITE INFORMATION","VC_LVCCKLST","LARVICIDE","Is Site Breeding");
-		logDebug("siteBreeding: " + siteBreeding);
+		if (guideSheetObj && "VC_LARVICIDE" == guideSheetObj.getGuideType().toUpperCase()) {
+			var guidesheetItem = guideSheetObj.getItems();
+			for(var j=0;j< guidesheetItem.size();j++) {
+				var item = guidesheetItem.get(j);
+				//1. Filter Guide Sheet items by Guide sheet item name && ASI group code
+				if(item && gItem == item.getGuideItemText() && "SITE INFORMATION" == item.getGuideItemASIGroupName()) {
+					var ASISubGroups = item.getItemASISubgroupList();
+					if(ASISubGroups) {
+						//2. Filter ASI sub group by ASI Sub Group name
+						for(var k=0;k< ASISubGroups.size();k++) {
+							var ASISubGroup = ASISubGroups.get(k);
+							if(ASISubGroup && ASISubGroup.getSubgroupCode() == "VC_LVCCKLST") {
+								var ASIModels =  ASISubGroup.getAsiList();
+								if(ASIModels) {
+									//3. Filter ASI by ASI name
+									for( var m = 0; m< ASIModels.size();m++) {
+										var ASIModel = ASIModels.get(m);
+										if(ASIModel && ASIModel.getAsiName() == "Is Site Breeding") {
+											var siteBreeding =  ASIModel.getAttributeValue();
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}							
+		}
 		if(siteBreeding=="Yes"){
 			var guidesheetItem = GuidesheetModel.getItems();
 			for(var j=0;j< guidesheetItem.size();j++) {
@@ -70,7 +96,7 @@ try{
 		}
 	}
 }catch(err){
-	logDebug("A JavaScript Error occurred: IRSA:EnvHealth/VC/LARVICIDESITE/NA: " + err.message);
+	logDebug("A JavaScript Error occurred: GSUB:EnvHealth/VC/LARVICIDESITE/NA: " + err.message);
 	logDebug(err.stack)
 }
 //lwacht: 181012: end

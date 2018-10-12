@@ -61,7 +61,7 @@ try{
 		}			
 	}
 }catch(err){
-	logDebug("A JavaScript Error occurred: IRSA:EnvHealth/VC/LARVICIDESITE/NA: " + err.message);
+	logDebug("A JavaScript Error occurred: GSUA:EnvHealth/VC/LARVICIDESITE/NA: " + err.message);
 	logDebug(err.stack)
 }
 //lwacht: 181012: end
