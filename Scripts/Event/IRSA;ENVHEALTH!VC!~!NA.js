@@ -4,7 +4,7 @@ try{
 		if(inspResult!="Unable to Inspect"){
 			var siteBreeding = getGuidesheetASIValue(inspId,"VC_Larvicide","SITE INFORMATION","VC_LVCCKLST","LARVICIDE","Is Site Breeding");
 			logDebug("siteBreeding: " + siteBreeding);
-			if(siteBreeding=="Yes"){
+			if(siteBreeding=="Yes" && !getScheduledInspId("Recheck")){
 				scheduleInspectDate("Recheck",dateAdd(null,14));
 			}
 		}
