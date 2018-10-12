@@ -1,8 +1,8 @@
 //lwacht: 181012: calculate area on checklist custom table
 try{
 	if (GuidesheetModel && "VC_LARVICIDE"== GuidesheetModel.getGuideType().toUpperCase()) {
-		if (guideSheetObj && "VC_LARVICIDE" == guideSheetObj.getGuideType().toUpperCase()) {
-			var guidesheetItem = guideSheetObj.getItems();
+		if (GuidesheetModel && "VC_LARVICIDE" == GuidesheetModel.getGuideType().toUpperCase()) {
+			var guidesheetItem = GuidesheetModel.getItems();
 			for(var j=0;j< guidesheetItem.size();j++) {
 				var item = guidesheetItem.get(j);
 				//1. Filter Guide Sheet items by Guide sheet item name && ASI group code
