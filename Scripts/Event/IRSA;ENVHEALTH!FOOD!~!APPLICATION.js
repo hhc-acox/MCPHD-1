@@ -1,7 +1,7 @@
-//lwacht: 021018: #49: Auto Scheduling of Routine Inspection
+//lwacht: 181015: #49/#37: Auto Scheduling of Inspectiona
 try{
-	if(inspResult.indexOf("Violation")>-1 && inspType=="Routine" && parseInt(AInfo["Risk"])>0){
-		scheduleInspect(capId, inspType, parseInt(AInfo["Risk"]));
+	if(inspResult.indexOf("Violation")>-1 && matches(inspType=="Routine" && !getScheduledInspId("Rechecks") && parseInt(AInfo["Risk"])>0){
+		scheduleInspect(capId, "Rechecks", parseInt(AInfo["Risk"]));
 	}else{
 		if(matches(AInfo["Risk"], "",null,"undefined")){
 			showMessage = true; 
@@ -12,4 +12,4 @@ try{
 	logDebug("A JavaScript Error occurred: IRSA:EnvHealth/Food/*/Application: " + err.message);
 	logDebug(err.stack)
 }
-//lwacht: 021018: #49: end
+//lwacht: 181015: #49: end
