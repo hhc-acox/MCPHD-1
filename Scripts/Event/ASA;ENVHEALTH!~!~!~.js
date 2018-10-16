@@ -31,11 +31,11 @@ if (matches(appTypeArray[2],'BBE')) {
 	// 7.5.17 chaas: the user LLOBDELL below is not yet setup in MCPHD configuration
 	areaInspector = 'LLOBDELL';
 	}
+editAppSpecific('GENERAL.Assigned To',areaInspector);
 //lwacht: 151016: updating so it doesn't throw an error
-//editAppSpecific('GENERAL.Assigned To',areaInspector);
-if(areaInspector) editAppSpecific('GENERAL.Assigned To',areaInspector);
-//lwacht: 151016: ened
-assignCap(areaInspector);
+//assignCap(areaInspector);
+if(areaInspector) assignCap(areaInspector);
+//lwacht: 151016: end
 // 7.5.17 chaas: no custom fields in any of these three GENERAL custom field subgroups for Mosquito Control 
 if (matches(appTypeArray[2],'VEH','HSG','TRA') && AInfo['GENERAL.Initial Inspection Date'] != null && AInfo['GENERAL.Mosquito Control'] != 'Yes') {
 	scheduleInspectDate('Initial Inspection',AInfo['GENERAL.Initial Inspection Date'],areaInspector);
