@@ -5,7 +5,7 @@ try{
 			updateAppStatus("Permanent Injunction","Updated via WTUA:EnvHealth/Housing/*/*", parentCapId);
 			var currCap = capId;
 			capId = parentCapId;
-			if(!isScheduled("Reinspection"){
+			if(!isScheduled("Reinspection")){
 				scheduleInspect(parentCapId,"Reinspection",180);
 			}
 			capId= currCap;
