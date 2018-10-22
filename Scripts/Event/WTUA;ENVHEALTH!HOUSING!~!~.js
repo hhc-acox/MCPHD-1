@@ -30,7 +30,7 @@ try{
 
 //lwacht: 181022: #143: Fee Assessments
 try{
-	if(wfTask=="Reinspection" && wfStatus=="In Violation – Ticket Issued"){
+	if(wfTask=="Reinspection" && wfStatus.indexOf("Ticket Issued")>-1){
 		updateFee("H_T100", "H_TRA", "FINAL", 1, "Y", "Y");
 	}
 }catch(err){
