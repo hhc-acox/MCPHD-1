@@ -12,7 +12,6 @@ try{
 			updateAppStatus("Permanent Injunction","Updated via WTUA:EnvHealth/Housing/*/*", parCapId);
 			if(!checkInspectionResult("Reinspection","Scheduled")){
 				var inspUserId = getInspector("Initial Inspection");
-				logDebug("inspUserId: " + inspUserId);
 				if(inspUserId){
 					scheduleInspect(capId,"Reinspection",180,inspUserId);
 				}else{
