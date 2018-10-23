@@ -15,11 +15,23 @@ try{
 		var dtCourt = new Date(COURT[row]["Date"]);
 		var toDay = new Date();
 		if(dtCourt>dateAdd(toDay,1) && !checkInspectionResult("Reinspection","Scheduled")){
-			var inspUserId = getInspector("Initial Inspection");
-			if(inspUserId){
-				scheduleInspect(capId,"Reinspection",1,inspUserId);
+			var parCapId = false;
+			if(parentCapId){
+				parCapId = parentCapId;
 			}else{
-				scheduleInspect(capId,"Reinspection",1);
+				var parAltId = AInfo["Parent Case"];
+				parCapId = getApplication(parAltId);
+			}
+			if(parCapId){
+				var currCap = capId;
+				capId = parCapId;
+				var inspUserId = getInspector("Initial Inspection");
+				capId = currCap;
+				if(inspUserId){
+					scheduleInspect(parCapId,"Reinspection",1,inspUserId);
+				}else{
+					scheduleInspect(parCapId,"Reinspection",1);
+				}
 			}
 		}
 

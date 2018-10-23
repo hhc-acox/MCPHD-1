@@ -11,11 +11,14 @@ try{
 		if(parCapId){
 			updateAppStatus("Permanent Injunction","Updated via WTUA:EnvHealth/Housing/*/*", parCapId);
 			if(!checkInspectionResult("Reinspection","Scheduled")){
+				var currCap = capId;
+				capId = parCapId;
 				var inspUserId = getInspector("Initial Inspection");
+				capId = currCap;
 				if(inspUserId){
-					scheduleInspect(capId,"Reinspection",180,inspUserId);
+					scheduleInspect(parCapId,"Reinspection",180,inspUserId);
 				}else{
-					scheduleInspect(capId,"Reinspection",180);
+					scheduleInspect(parCapId,"Reinspection",180);
 				}
 			}
 		}else{
