@@ -1,6 +1,6 @@
 //lwacht: 181015: #49/#37: Auto Scheduling of Inspectiona
 try{
-	if(matches(inspType,"Routine", "Rechecks") && !getScheduledInspId("Rechecks") && parseInt(AInfo["Risk"])>0){
+	if(matches(inspType,"Routine", "Rechecks") && !checkInspectionResult("Rechecks","Scheduled") && parseInt(AInfo["Risk"])>0){
 		if(inspResult.indexOf("Violation")>-1){
 			scheduleInspect(capId, "Rechecks", parseInt(AInfo["Risk"]));
 		}else{
