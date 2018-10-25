@@ -6,15 +6,16 @@ try{
 	logDebug("arrCaps: " + arrCaps.length);
 	for(par in arrCaps){
 		var thisCapId = arrCaps[par];
-		logDebug("thisCapId: " + thisCapId);
 		var tCap = aa.cap.getCap(thisCapId)
 		if(tCap.getSuccess()){
 			var thisCap = tCap.getOutput();
 			var thisStatus = thisCap.getCapStatus();
+			logDebug("thisCapId: " + thisCapId.getCustomID());
+			logDebug("thisStatus: " + thisStatus);
 			if (thisStatus=="Permanent Injuction"){
 				cancel = true;
 				showMessage = true;
-				comment("This address has a permanent injunction (" + thisCapId + "), which must be closed before another record can be opened.");
+				comment("This address has a permanent injunction (" + thisCapId.getCustomID() + "), which must be closed before another record can be opened.");
 			}
 		}else{
 			logDebug("Error getting cap: " +tCap.getErrorMessage());
