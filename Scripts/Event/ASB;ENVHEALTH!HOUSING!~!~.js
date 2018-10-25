@@ -1,6 +1,5 @@
 //lwacht: 181025: #126: Duplicate record
 try{
-	cancel = true;
 	var arrCaps = capIdsGetByParcel(ParcelValidatedNumber);
 	var fndPermInj = false;
 	logDebug("arrCaps: " + arrCaps.length);
