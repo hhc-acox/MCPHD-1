@@ -1,7 +1,8 @@
 //lwacht: 181016: #43: Food Inspection Assignments
 try{
 	if(matches(appTypeArray[3],"Foodborne","Other")){
-		scheduleInspect(capId, "Complaint", 1);
+		var insDate = dateAdd(null, 1, "Y");
+		scheduleInspectDate("Complaint", 1,insDate);
 		var inspectId = getScheduledInspId("Complaint");
 		if(inspectId){
 			autoAssignInspection(inspectId);
