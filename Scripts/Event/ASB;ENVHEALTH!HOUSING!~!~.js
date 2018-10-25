@@ -9,7 +9,7 @@ try{
 		if(tCap.getSuccess()){
 			var thisCap = tCap.getOutput();
 			var thisStatus = thisCap.getCapStatus();
-			if (thisStatus=="Permanent Injunction" &&!isTaskStatus("Permanent Injunction","Dismissed") ){
+			if (thisStatus=="Permanent Injunction" &&!isTaskActive("Permanent Injunction") ){
 				cancel = true;
 				showMessage = true;
 				comment("This address has a permanent injunction (" + thisCapId.getCustomID() + "), which must be closed before another record can be opened.");
