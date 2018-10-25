@@ -10,7 +10,7 @@ try{
 		var tCap = aa.cap.getCap(thisCapId)
 		if(tCap.getSuccess()){
 			var thisCap = tCap.getOutput();
-			var thisStatus = cap.getCapStatus();
+			var thisStatus = thisCap.getCapStatus();
 			if (thisStatus=="Permanent Injuction"){
 				cancel = true;
 				showMessage = true;
