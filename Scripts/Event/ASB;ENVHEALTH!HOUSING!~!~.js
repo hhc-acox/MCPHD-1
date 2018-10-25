@@ -1,15 +1,12 @@
 //lwacht: 181025: #126: Duplicate record
 try{
-	var vPVN = aa.env.getValue("ParcelValidatedNumber");
-	var vPP = aa.env.getValue("ParcelParcel");
-	logDebug("ParcelParcel : " + ParcelParcel);
-	logDebug("ParcelValidatedNumber : " + ParcelValidatedNumber);
-	logDebug("vPVN : " + vPVN);
-	logDebug("vPP : " + vPP);
+	cancel = true;
 	var arrCaps = capIdsGetByParcel(ParcelValidatedNumber);
 	var fndPermInj = false;
+	logDebug("arrCaps: " + arrCaps.length);
 	for(par in arrCaps){
 		var thisCapId = arrCaps[par];
+		logDebug("thisCapId: " + thisCapId);
 		var thisCap = aa.cap.getCap(thisCapId).getOutput();
 		var thisStatus = cap.getCapStatus();
 		if (thisStatus=="Permanent Injuction"){
