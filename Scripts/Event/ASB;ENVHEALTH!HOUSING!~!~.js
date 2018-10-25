@@ -1,6 +1,11 @@
 //lwacht: 181025: #126: Duplicate record
 try{
+	var vPVN = aa.env.getValue("ParcelValidatedNumber");
+	var vPP = aa.env.getValue("ParcelParcel");
+	logDebug("ParcelParcel : " + ParcelParcel);
 	logDebug("ParcelValidatedNumber : " + ParcelValidatedNumber);
+	logDebug("vPVN : " + vPVN);
+	logDebug("vPP : " + vPP);
 	var arrCaps = capIdsGetByParcel(ParcelValidatedNumber);
 	var fndPermInj = false;
 	for(par in arrCaps){
