@@ -7,12 +7,17 @@ try{
 	for(par in arrCaps){
 		var thisCapId = arrCaps[par];
 		logDebug("thisCapId: " + thisCapId);
-		var thisCap = aa.cap.getCap(thisCapId).getOutput();
-		var thisStatus = cap.getCapStatus();
-		if (thisStatus=="Permanent Injuction"){
-			cancel = true;
-			showMessage = true;
-			comment("This address has a permanent injunction (" + thisCapId + "), which must be closed before another record can be opened.");
+		var tCap = aa.cap.getCap(thisCapId)
+		if(tCap.getSuccess()){
+			var thisCap = tCap.getOutput();
+			var thisStatus = cap.getCapStatus();
+			if (thisStatus=="Permanent Injuction"){
+				cancel = true;
+				showMessage = true;
+				comment("This address has a permanent injunction (" + thisCapId + "), which must be closed before another record can be opened.");
+			}
+		}else{
+			logDebug("Error getting cap: " +tCap.getErrorMessage());
 		}
 	}
 }catch(err){
