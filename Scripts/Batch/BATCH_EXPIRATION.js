@@ -490,7 +490,7 @@ try{
 		// execute custom expression
 		if (actionExpression.length > 0) {
 			logDebug("Executing action expression : " + actionExpression);
-			var result = eval(filterExpression);
+			var result = eval(actionExpression);
 		}
 		// create renewal record and add fees
 		if (createRenewalRecord) {
