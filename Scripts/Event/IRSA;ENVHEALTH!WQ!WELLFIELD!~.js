@@ -33,6 +33,8 @@ try{
 		if(matches(AInfo["Inspection Cycle"], "","undefined",null)){
 			showMessage=true;
 			comment("Inspection Cycle custom field is blank--no recheck was scheduled.");
+		}
+	}
 }catch(err){
 	logDebug("A JavaScript Error occurred: IRSA:EnvHealth/WQ/Wellfield/*: " + err.message);
 	logDebug(err.stack)
