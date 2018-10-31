@@ -27,6 +27,7 @@ try{
 				var sDate = dateAddMonths(null,6);
 				var schDate = nextWorkDay(sDate);
 				break;
+		}
 		scheduleInspectDate("Recheck", schDate);
 	}else{
 		if(matches(AInfo["Inspection Cycle"], "","undefined",null)){
