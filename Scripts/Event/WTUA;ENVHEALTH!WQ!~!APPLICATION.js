@@ -12,17 +12,17 @@ try{
 		if(wfTask=="Plan Review" && wfStatus=="Plans Approved"){
 			if(matches(appTypeArray[2],"BodyArt","CC")){
 				if(appTypeArray[2]=="BodyArt"){
-					if(sysDate.getMonth()>2 && sysDate.getMonth()<8){
+					if(sysDate.getMonth()>2 && sysDate.getMonth()<9){
 						updateFee("BDA0003", "WQ_BDA", "FINAL", 1, "Y");
 					}else{
-						updateFee("BDA0001", "WQ_BDA", "FINAL", 1, "Y");
+						updateFee("BDA0002", "WQ_BDA", "FINAL", 1, "Y");
 					}
 				}
 				if(appTypeArray[2]=="CC"){
-					if(sysDate.getMonth()>2 && sysDate.getMonth()<8){
+					if(sysDate.getMonth()>2 && sysDate.getMonth()<9){
 						updateFee("WQC0003", "WQ_CC", "FINAL", 1, "Y");
 					}else{
-						updateFee("WQC0001", "WQ_CC", "FINAL", 1, "Y");
+						updateFee("WQC0002", "WQ_CC", "FINAL", 1, "Y");
 					}
 				}
 			}
