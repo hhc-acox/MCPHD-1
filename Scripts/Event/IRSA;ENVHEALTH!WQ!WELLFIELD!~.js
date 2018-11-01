@@ -28,7 +28,12 @@ try{
 				var schDate = nextWorkDay(sDate);
 				break;
 		}
-		scheduleInspectDate("Recheck", schDate);
+		var inspUserId = getInspector("Initial Inspection");
+		if(inspUserId){
+			scheduleInspectDate("Recheck",schDate,inspUserId);
+		}else{
+			scheduleInspectDate("Recheck",schDate);
+		}
 	}else{
 		if(matches(AInfo["Inspection Cycle"], "","undefined",null)){
 			showMessage=true;
