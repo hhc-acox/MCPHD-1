@@ -28,7 +28,7 @@ try{
 				var schDate = nextWorkDay(sDate);
 				break;
 		}
-		var inspUserId = getInspector("Initial Inspection");
+		var inspUserId = getInspector("Initial");
 		if(inspUserId){
 			scheduleInspectDate("Recheck",schDate,inspUserId);
 		}else{
