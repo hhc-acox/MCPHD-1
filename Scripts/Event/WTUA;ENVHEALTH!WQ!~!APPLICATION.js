@@ -10,7 +10,7 @@ try{
 			}
 		}
 	}else{
-lwacht: 181107: end */
+lwacht: 181107: end  */
 		if(wfTask=="Plan Review" && wfStatus=="Plans Approved"){
 			if(matches(appTypeArray[2],"BodyArt","CC")){
 				if(appTypeArray[2]=="BodyArt"){
