@@ -69,7 +69,7 @@ else
 | Start: BATCH PARAMETERS
 |
 /------------------------------------------------------------------------------------------------------*/
-aa.env.setValue("ModuleName", "ALL");
+aa.env.setValue("ModuleName", "EnvHealth");
 
 /* test parameters 
 aa.env.setValue("lookAheadDays", "0");
@@ -177,52 +177,51 @@ try {
 		loadAppSpecific(AInfo);
 		for (job in arrJobs){
 			thisJob = arrJobs[job];
-			logDebug("here: " + thisJob["Active"]);
 			if(thisJob["Active"]=="Yes"){
-				fromDate = thisJob["fromDate"]; // Hardcoded dates.   Use for testing only
-				toDate = thisJob["toDate"]; // ""
-				lookAheadDays = thisJob["Look Ahead Days"];
-				daySpan = thisJob["Day Span"];
-				expStatus = thisJob["Expiration Status"]; //   test for this expiration status
-				newExpStatus = thisJob["New Expiration Status"]; //   update to this expiration status
-				newAppStatus = thisJob["New Application Status"]; //   update the CAP to this status
-				setPrefix = thisJob["Set Prefix"];
-				gracePeriodDays = thisJob["Grace Period Days"]; //	bump up expiration date by this many days
-				inspSched = thisJob["Inspection to Schedule"]; //   Schedule Inspection
+				fromDate = ""+thisJob["fromDate"]; // Hardcoded dates.   Use for testing only
+				toDate = ""+thisJob["toDate"]; // ""
+				lookAheadDays = ""+thisJob["Look Ahead Days"];
+				daySpan = ""+thisJob["Day Span"];
+				expStatus = ""+thisJob["Expiration Status"]; //   test for this expiration status
+				newExpStatus = ""+thisJob["New Expiration Status"]; //   update to this expiration status
+				newAppStatus = ""+thisJob["New Application Status"]; //   update the CAP to this status
+				setPrefix = ""+thisJob["Set Prefix"];
+				gracePeriodDays = ""+thisJob["Grace Period Days"]; //	bump up expiration date by this many days
+				inspSched = ""+thisJob["Inspection to Schedule"]; //   Schedule Inspection
 				skipAppStatusArray = ""+thisJob["Skip Application Statuses"]; //   Skip records with one of these application statuses
 				skipAppStatusArray = skipAppStatusArray.split(","); //   Skip records with one of these application statuses
-				emailAddress = thisJob["Send Batch Logs To"]; // email to send report
-				sendEmailToContactTypes = thisJob["Contacts Receiving Notice"]; // ALL,PRIMARY, or comma separated values
-				emailTemplate = thisJob["Email Template"]; // email Template
-				taskToAssign = thisJob["Task to Assign"]; 
-				assignTaskTo = thisJob["Assign Task To"]; 
+				emailAddress = ""+thisJob["Send Batch Logs To"]; // email to send report
+				sendEmailToContactTypes = ""+thisJob["Contacts Receiving Notice"]; // ALL,PRIMARY, or comma separated values
+				emailTemplate = ""+thisJob["Email Template"]; // email Template
+				taskToAssign = ""+thisJob["Task to Assign"]; 
+				assignTaskTo = ""+thisJob["Assign Task To"]; 
 				deactivateLicense = ""+thisJob["Deactivate License"]; // deactivate the LP
 				deactivateLicense = deactivateLicense.substring(0, 1).toUpperCase().equals("Yes"); // deactivate the LP
 				lockParentLicense = ""+thisJob["Parent License Condition"]; // add this lock on the parent license
 				lockParentLicense = lockParentLicense.substring(0, 1).toUpperCase().equals("Yes"); // add this lock on the parent license
 				createRenewalRecord = ""+thisJob["Create Renewal Record"]; // create a temporary record
 				createRenewalRecord = createRenewalRecord.substring(0, 1).toUpperCase().equals("Yes"); // create a temporary record
-				feeSched = thisJob["Fee Schedule"]; //
-				feeList = thisJob["List of Fees"]; // comma delimted list of fees to add to renewal record
-				feePeriod = thisJob["Fee Period"]; // fee period to use {LICENSE}
-				parentFeeSched = thisJob["Parent Fee Schedule"]; //
-				parentFeeList = thisJob["Parent Fee List"]; // comma delimted list of fees to add to renewal record
-				parentFeePeriod = thisJob["Parent Fee Period"]; // fee period to use {LICENSE}
+				feeSched = ""+thisJob["Fee Schedule"]; //
+				feeList = ""+thisJob["List of Fees"]; // comma delimted list of fees to add to renewal record
+				feePeriod = ""+thisJob["Fee Period"]; // fee period to use {LICENSE}
+				parentFeeSched = ""+thisJob["Parent Fee Schedule"]; //
+				parentFeeList = ""+thisJob["Parent Fee List"]; // comma delimted list of fees to add to renewal record
+				parentFeePeriod = ""+thisJob["Parent Fee Period"]; // fee period to use {LICENSE}
 				respectNotifyPrefs = ""+thisJob["Respect Notify Preferences"]; // respect contact notification preferences
 				respectNotifyPrefs = respectNotifyPrefs.substring(0, 1).toUpperCase().equals("Y"); // respect contact notification preferences
 				createNotifySets = ""+thisJob["Create A Set"] ; // different sets based on notification preferences
 				createNotifySets = createNotifySets.substring(0, 1).toUpperCase().equals("Y") ; // different sets based on notification preferences
-				setType = thisJob["Set Type"]; // Sets will be created with this type
-				setStatus = thisJob["Set Status"]; // Sets will be created with this initial status
+				setType = ""+thisJob["Set Type"]; // Sets will be created with this type
+				setStatus = ""+thisJob["Set Status"]; // Sets will be created with this initial status
 				setParentWorkflowTaskAndStatus = ""+thisJob["Set Parent Task/Status"]; // update workflow task/status, comma separated.
 				setParentWorkflowTaskAndStatus = setParentWorkflowTaskAndStatus.split(","); // update workflow task/status, comma separated.
-				filterExpression = thisJob["Filter Expression"]; // JavaScript used to filter records.   
-				actionExpression = thisJob["Addtl Action to Perform"]; // JavaScript used to perform custom action, for example:   addStdCondition(...)
+				filterExpression = ""+thisJob["Filter Expression"]; // JavaScript used to filter records.   
+				actionExpression = ""+thisJob["Addtl Action to Perform"]; // JavaScript used to perform custom action, for example:   addStdCondition(...)
 				sendEmailNotifications = ""+thisJob["Send Email Notifications"];
 				sendEmailNotifications = sendEmailNotifications.substring(0, 1).toUpperCase().equals("Yes");
 				sysFromEmail = AInfo["Agency From Email"];
-				rptName = thisJob["Report Name"];
-				appType = thisJob["Record Type"];
+				rptName = ""+thisJob["Report Name"];
+				appType = ""+thisJob["Record Type"];
 				startDate = new Date();
 				fromDate = dateAdd(null, parseInt(lookAheadDays))
 				toDate = dateAdd(null, parseInt(lookAheadDays) + parseInt(daySpan))
@@ -381,6 +380,7 @@ try{
 			logDebug( "deactivated linked License");
 		}
 		// update expiration status
+		logDebug("newExpStatus: " + newExpStatus.length );
 		if (newExpStatus.length > 0) {
 			b1Exp.setExpStatus(newExpStatus);
 			aa.expiration.editB1Expiration(b1Exp.getB1Expiration());
