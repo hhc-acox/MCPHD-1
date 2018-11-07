@@ -244,95 +244,106 @@ function sendNotificationSEP(emailFrom,emailTo,emailCC,templateName,params,repor
 function sepUpdateFees(arrFees) {
 try{
 	for(row in arrFees){
-		var appMatch = true;
-		var recdType = arrFees[row]["Record Type"];
-		var recdTypeArr = "" + recdType;
-		var arrAppType = recdTypeArr.split("/");
-		if (arrAppType.length != 4){
-			logDebug("The record type is incorrectly formatted: " + ats);
-			return false;
-		}else{
-			for (xx in arrAppType){
-				if (!arrAppType[xx].equals(appTypeArray[xx]) && !arrAppType[xx].equals("*")){
-					appMatch = false;
+		var taskName = ""+arrFees[row]["Task Name"];
+		var taskStatus = ""+arrFees[row]["Task Status"];
+		if(!matches(taskName,"",null,"undefined" || wfTask==taskName) && wfStatus==taskStatus){
+			var appMatch = true;
+			var recdType = arrFees[row]["Record Type"];
+			var recdTypeArr = "" + recdType;
+			var arrAppType = recdTypeArr.split("/");
+			if (arrAppType.length != 4){
+				logDebug("The record type is incorrectly formatted: " + ats);
+				return false;
+			}else{
+				for (xx in arrAppType){
+					if (!arrAppType[xx].equals(appTypeArray[xx]) && !arrAppType[xx].equals("*")){
+						appMatch = false;
+					}
 				}
 			}
-		}
-		if (appMatch){
-			var addtlQuery = arrFees[row]["Additional Query"];
-			var chkFilter = ""+addtlQuery;
-			if (chkFilter.length==0 ||eval(chkFilter) ) {
-				var cFld = ""+arrFees[row]["Custom Field Name"];
-				var custFld = cFld.trim();
-				var cVal = ""+arrFees[row]["Custom Field Value"];
-				var custVal = cVal.trim();
-				if(matches(custVal, "", null,"undefined") || custVal==AInfo[custFld]){
-					var fcode = arrFees[row]["Fee Code"];
-					var fsched = arrFees[row]["Fee Schedule"];
-					var fperiod = arrFees[row]["Fee Period"];
-					var feeQty = arrFees[row]["Fee Quantity"];
-					if(isNaN(feeQty)){
-						var fqty = parseFloat(AInfo[feeQty]);
-					}else{
-						var fqty = parseFloat(feeQty);
-					}
-					var finvoice = arrFees[row]["Fee Code"];
-					var pDuplicate = arrFees[row]["Duplicate Fee"];
-					// If optional argument is blank, use default logic (i.e. allow duplicate fee if invoiced fee is found)
-					if (matches(pDuplicate,null< "Yes") || pDuplicate.length == 0){
-						pDuplicate = "Y";
-					}else{
-						pDuplicate = "N";
-					}
-					var invFeeFound = false;
-					var adjustedQty = fqty;
-					var feeSeq = null;
-					feeUpdated = false;
-					getFeeResult = aa.finance.getFeeItemByFeeCode(capId, fcode, fperiod);
-					if (getFeeResult.getSuccess()) {
-						var feeList = getFeeResult.getOutput();
-						for (feeNum in feeList) {
-							if (feeList[feeNum].getFeeitemStatus().equals("INVOICED")) {
-								if (pDuplicate == "Y") {
-									logDebug("Invoiced fee " + fcode + " found, subtracting invoiced amount from update qty.");
-									adjustedQty = adjustedQty - feeList[feeNum].getFeeUnit();
-									invFeeFound = true;
-								} else {
-									invFeeFound = true;
-									logDebug("Invoiced fee " + fcode + " found.  Not updating this fee. Not assessing new fee " + fcode);
-								}
-							}
-							if (feeList[feeNum].getFeeitemStatus().equals("NEW")) {
-								adjustedQty = adjustedQty - feeList[feeNum].getFeeUnit();
-							}
+			if (appMatch){
+				var addtlQuery = arrFees[row]["Additional Query"];
+				var chkFilter = ""+addtlQuery;
+				if (chkFilter.length==0 ||eval(chkFilter) ) {
+					var cFld = ""+arrFees[row]["Custom Field Name"];
+					var custFld = cFld.trim();
+					var cVal = ""+arrFees[row]["Custom Field Value"];
+					var custVal = cVal.trim();
+					if(custVal==AInfo[custFld]){
+						logDebug("here");
+						var fcode = arrFees[row]["Fee Code"];
+						var fsched = arrFees[row]["Fee Schedule"];
+						var fperiod = arrFees[row]["Fee Period"];
+						var feeQty = arrFees[row]["Fee Quantity"];
+						if(isNaN(feeQty)){
+							var fqty = parseFloat(AInfo[feeQty]);
+						}else{
+							var fqty = parseFloat(feeQty);
 						}
-						for (feeNum in feeList)
-							if (feeList[feeNum].getFeeitemStatus().equals("NEW") && !feeUpdated){
-								var feeSeq = feeList[feeNum].getFeeSeqNbr();
-								var editResult = aa.finance.editFeeItemUnit(capId, adjustedQty + feeList[feeNum].getFeeUnit(), feeSeq);
-								feeUpdated = true;
-								if (editResult.getSuccess()) {
-									logDebug("Updated Qty on Existing Fee Item: " + fcode + " to Qty: " + fqty);
-									if (finvoice == "Y") {
-										feeSeqList.push(feeSeq);
-										paymentPeriodList.push(fperiod);
+						var finvoice = arrFees[row]["Fee Code"];
+						var pDuplicate = arrFees[row]["Duplicate Fee"];
+						// If optional argument is blank, use default logic (i.e. allow duplicate fee if invoiced fee is found)
+						if (pDuplicate == null || pDuplicate.length == 0){
+							pDuplicate = "Y";
+						}else{
+							pDuplicate = pDuplicate.toUpperCase();
+						}
+						var invFeeFound = false;
+						var adjustedQty = fqty;
+						var feeSeq = null;
+						feeUpdated = false;
+						getFeeResult = aa.finance.getFeeItemByFeeCode(capId, fcode, fperiod);
+						if (getFeeResult.getSuccess()) {
+							if (pFeeSeq == null){
+								var feeList = getFeeResult.getOutput();
+							}else{
+								var feeList = new Array();
+								feeList[0] = getFeeResult.getOutput();
+							}
+							for (feeNum in feeList) {
+								if (feeList[feeNum].getFeeitemStatus().equals("INVOICED")) {
+									if (pDuplicate == "Y") {
+										logDebug("Invoiced fee " + fcode + " found, subtracting invoiced amount from update qty.");
+										adjustedQty = adjustedQty - feeList[feeNum].getFeeUnit();
+										invFeeFound = true;
+									} else {
+										invFeeFound = true;
+										logDebug("Invoiced fee " + fcode + " found.  Not updating this fee. Not assessing new fee " + fcode);
 									}
-								} else {
-									logDebug("ERROR: updating qty on fee item (" + fcode + "): " + editResult.getErrorMessage());
-									break
+								}
+								if (feeList[feeNum].getFeeitemStatus().equals("NEW")) {
+									adjustedQty = adjustedQty - feeList[feeNum].getFeeUnit();
 								}
 							}
-					} else {
-						logDebug("ERROR: getting fee items (" + fcode + "): " + getFeeResult.getErrorMessage())
+							for (feeNum in feeList)
+								if (feeList[feeNum].getFeeitemStatus().equals("NEW") && !feeUpdated) // update this fee item
+								{
+									var feeSeq = feeList[feeNum].getFeeSeqNbr();
+									var editResult = aa.finance.editFeeItemUnit(capId, adjustedQty + feeList[feeNum].getFeeUnit(), feeSeq);
+									feeUpdated = true;
+									if (editResult.getSuccess()) {
+										logDebug("Updated Qty on Existing Fee Item: " + fcode + " to Qty: " + fqty);
+										if (finvoice == "Y") {
+											feeSeqList.push(feeSeq);
+											paymentPeriodList.push(fperiod);
+										}
+									} else {
+										logDebug("**ERROR: updating qty on fee item (" + fcode + "): " + editResult.getErrorMessage());
+										break
+									}
+								}
+						} else {
+							logDebug("**ERROR: getting fee items (" + fcode + "): " + getFeeResult.getErrorMessage())
+						}
+						// Add fee if no fee has been updated OR invoiced fee already exists and duplicates are allowed
+						if (!feeUpdated && adjustedQty != 0 && (!invFeeFound || invFeeFound && pDuplicate == "Y")){
+							feeSeq = addFee(fcode, fsched, fperiod, adjustedQty, finvoice);
+						}else{
+							feeSeq = null;
+						}
+						updateFeeItemInvoiceFlag(feeSeq, finvoice);
+						return feeSeq;
 					}
-					// Add fee if no fee has been updated OR invoiced fee already exists and duplicates are allowed
-					if (!feeUpdated && adjustedQty != 0 && (!invFeeFound || invFeeFound && pDuplicate == "Y")){
-						feeSeq = addFee(fcode, fsched, fperiod, adjustedQty, finvoice);
-					}else{
-						feeSeq = null;
-					}
-					updateFeeItemInvoiceFlag(feeSeq, finvoice);
-					return feeSeq;
 				}
 			}
 		}
@@ -341,6 +352,5 @@ try{
 	logDebug("An error occurred in sepUpdateFee: " + err.message);
 	logDebug(err.stack);
 }}
-
 
 
