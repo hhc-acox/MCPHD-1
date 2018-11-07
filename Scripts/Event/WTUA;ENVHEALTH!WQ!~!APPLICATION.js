@@ -1,5 +1,6 @@
 //lwacht: 181029: #166b: adding prorated fees
 try{
+/*lwacht: 181107: replacing with SWADDLE solution
 	if(wfTask=="Application Intake" && wfStatus.indexOf("Accepted")>-1){
 		if(appTypeArray[2]=="BodyArt"){
 			updateFee("BDA0001", "WQ_BDA", "FINAL", 1, "Y");
@@ -9,6 +10,7 @@ try{
 			}
 		}
 	}else{
+lwacht: 181107: end */
 		if(wfTask=="Plan Review" && wfStatus=="Plans Approved"){
 			if(matches(appTypeArray[2],"BodyArt","CC")){
 				if(appTypeArray[2]=="BodyArt"){
@@ -40,7 +42,7 @@ try{
 		}
 	}
 }catch(err){
-	logDebug("A JavaScript Error occurred: WTUA:EnvHealth/WQ/*/Application: Fees: " + err.message);
+	logDebug("A JavaScript Error occurred: WTUA:EnvHealth/WQ/* /Application: Fees: " + err.message);
 	logDebug(err.stack)
 }
 //lwacht: 181029: #166b: end
