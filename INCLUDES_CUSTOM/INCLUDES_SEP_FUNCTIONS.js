@@ -264,8 +264,9 @@ try{
 			if (appMatch){
 				var addtlQuery = ""+arrFees[row]["Additional Query"];
 				var chkFilter = ""+addtlQuery;
+				logDebug("chkFilter : " + chkFilter);
 				if (chkFilter.length==0 ||eval(chkFilter) ) {
-					var cFld = ""+arrFees[row]["Custom Field Name"];
+					var cFld = ""+arrFees[row]["Custom Field"];
 					var custFld = cFld.trim();
 					var cVal = ""+arrFees[row]["Custom Field Value"];
 					var custVal = cVal.trim();
@@ -283,7 +284,7 @@ try{
 						var pDuplicate = ""+arrFees[row]["Duplicate Fee"];
 						// If optional argument is blank, use default logic (i.e. allow duplicate fee if invoiced fee is found)
 						if (pDuplicate == null || pDuplicate.length == 0){
-							pDuplicate = "Y";
+							pDuplicate = "Yes";
 						}else{
 							pDuplicate = pDuplicate.toUpperCase();
 						}
@@ -296,7 +297,7 @@ try{
 							var feeList = getFeeResult.getOutput();
 							for (feeNum in feeList) {
 								if (feeList[feeNum].getFeeitemStatus().equals("INVOICED")) {
-									if (pDuplicate == "Y") {
+									if (pDuplicate == "Yes") {
 										logDebug("Invoiced fee " + fcode + " found, subtracting invoiced amount from update qty.");
 										adjustedQty = adjustedQty - feeList[feeNum].getFeeUnit();
 										invFeeFound = true;
@@ -317,7 +318,7 @@ try{
 									feeUpdated = true;
 									if (editResult.getSuccess()) {
 										logDebug("Updated Qty on Existing Fee Item: " + fcode + " to Qty: " + fqty);
-										if (finvoice == "Y") {
+										if (finvoice == "Yes") {
 											feeSeqList.push(feeSeq);
 											paymentPeriodList.push(fperiod);
 										}
@@ -330,7 +331,7 @@ try{
 							logDebug("**ERROR: getting fee items (" + fcode + "): " + getFeeResult.getErrorMessage())
 						}
 						// Add fee if no fee has been updated OR invoiced fee already exists and duplicates are allowed
-						if (!feeUpdated && adjustedQty != 0 && (!invFeeFound || invFeeFound && pDuplicate == "Y")){
+						if (!feeUpdated && adjustedQty != 0 && (!invFeeFound || invFeeFound && pDuplicate == "Yes")){
 							feeSeq = addFee(fcode, fsched, fperiod, adjustedQty, finvoice);
 						}else{
 							feeSeq = null;
@@ -346,4 +347,3 @@ try{
 	logDebug("An error occurred in sepUpdateFee: " + err.message);
 	logDebug(err.stack);
 }}
-
