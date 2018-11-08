@@ -270,7 +270,6 @@ try{
 					var cVal = ""+arrFees[row]["Custom Field Value"];
 					var custVal = cVal.trim();
 					if(matches(custFld,"",null,"undefined") || custVal==AInfo[custFld]){
-						logDebug("here");
 						var fcode = ""+arrFees[row]["Fee Code"];
 						var fsched = ""+arrFees[row]["Fee Schedule"];
 						var fperiod = ""+arrFees[row]["Fee Period"];
