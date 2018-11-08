@@ -70,6 +70,7 @@ else
 |
 /------------------------------------------------------------------------------------------------------*/
 //aa.env.setValue("ModuleName", "EnvHealth");
+//aa.env.setValue("BatchJobID", "ALL");
 
 /* test parameters 
 aa.env.setValue("lookAheadDays", "0");
@@ -173,11 +174,14 @@ try {
 	var emailAddress = "";
 	arrJobs = findRecsToProcess();
 	if(arrJobs){
+		var batchId = getJobParam("BatchJobID"); 
 		var AInfo =[];
 		loadAppSpecific(AInfo);
 		for (job in arrJobs){
 			thisJob = arrJobs[job];
-			if(thisJob["Active"]=="Yes"){
+			var isActive = ""+thisJob["Active"];
+			var thisBatchId = ""+thisJob["Batch ID"];
+			if(isActive=="Yes" && (matches(batchId,"","undefined",null,thisBatchId))){
 				fromDate = ""+thisJob["fromDate"]; // Hardcoded dates.   Use for testing only
 				toDate = ""+thisJob["toDate"]; // ""
 				lookAheadDays = ""+thisJob["Look Ahead Days"];
