@@ -69,7 +69,7 @@ else
 | Start: BATCH PARAMETERS
 |
 /------------------------------------------------------------------------------------------------------*/
-aa.env.setValue("ModuleName", "EnvHealth");
+//aa.env.setValue("ModuleName", "EnvHealth");
 
 /* test parameters 
 aa.env.setValue("lookAheadDays", "0");
