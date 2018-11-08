@@ -1,3 +1,4 @@
+/*lwacht: 181107: replacing with SWADDLE solution
 //lwacht: 181029: #166b: adding prorated fees
 try{
 	if(wfTask=="Application Intake" && wfStatus.indexOf("Accepted")>-1){
@@ -80,6 +81,7 @@ try{
 							case ">40|N": 
 								updateFee("FS0003", "FS_GENERAL", "FINAL", 1, "Y");
 								break;
+
 							case "1-9|Y": 
 								updateFee("FS0037", "FS_GENERAL", "FINAL", 1, "Y");
 								break;
@@ -96,11 +98,11 @@ try{
 		}
 	}
 }catch(err){
-	logDebug("A JavaScript Error occurred: WTUA:EnvHealth/Food/*/Application: Fees: " + err.message);
+	logDebug("A JavaScript Error occurred: WTUA:EnvHealth/Food/* /Application: Fees: " + err.message);
 	logDebug(err.stack);
 }
-
 //lwacht: 181029: #166b: end
+lwacht: 181107: end  */
 
 //lwacht: 181029: adding try/catch logic, in case there's an error
 try{
