@@ -248,7 +248,7 @@ try{
 		var taskStatus = ""+arrFees[row]["Task Status"];
 		if(!matches(taskName,"",null,"undefined" || wfTask==taskName) && wfStatus==taskStatus){
 			var appMatch = true;
-			var recdType = arrFees[row]["Record Type"];
+			var recdType = ""+arrFees[row]["Record Type"];
 			var recdTypeArr = "" + recdType;
 			var arrAppType = recdTypeArr.split("/");
 			if (arrAppType.length != 4){
@@ -262,26 +262,26 @@ try{
 				}
 			}
 			if (appMatch){
-				var addtlQuery = arrFees[row]["Additional Query"];
+				var addtlQuery = ""+arrFees[row]["Additional Query"];
 				var chkFilter = ""+addtlQuery;
 				if (chkFilter.length==0 ||eval(chkFilter) ) {
 					var cFld = ""+arrFees[row]["Custom Field Name"];
 					var custFld = cFld.trim();
 					var cVal = ""+arrFees[row]["Custom Field Value"];
 					var custVal = cVal.trim();
-					if(custVal==AInfo[custFld]){
+					if(matches(custFld,"",null,"undefined") || custVal==AInfo[custFld]){
 						logDebug("here");
-						var fcode = arrFees[row]["Fee Code"];
-						var fsched = arrFees[row]["Fee Schedule"];
-						var fperiod = arrFees[row]["Fee Period"];
-						var feeQty = arrFees[row]["Fee Quantity"];
+						var fcode = ""+arrFees[row]["Fee Code"];
+						var fsched = ""+arrFees[row]["Fee Schedule"];
+						var fperiod = ""+arrFees[row]["Fee Period"];
+						var feeQty = ""+arrFees[row]["Fee Quantity"];
 						if(isNaN(feeQty)){
 							var fqty = parseFloat(AInfo[feeQty]);
 						}else{
 							var fqty = parseFloat(feeQty);
 						}
-						var finvoice = arrFees[row]["Fee Code"];
-						var pDuplicate = arrFees[row]["Duplicate Fee"];
+						var finvoice = ""+arrFees[row]["Fee Code"];
+						var pDuplicate = ""+arrFees[row]["Duplicate Fee"];
 						// If optional argument is blank, use default logic (i.e. allow duplicate fee if invoiced fee is found)
 						if (pDuplicate == null || pDuplicate.length == 0){
 							pDuplicate = "Y";
@@ -294,12 +294,7 @@ try{
 						feeUpdated = false;
 						getFeeResult = aa.finance.getFeeItemByFeeCode(capId, fcode, fperiod);
 						if (getFeeResult.getSuccess()) {
-							if (pFeeSeq == null){
-								var feeList = getFeeResult.getOutput();
-							}else{
-								var feeList = new Array();
-								feeList[0] = getFeeResult.getOutput();
-							}
+							var feeList = getFeeResult.getOutput();
 							for (feeNum in feeList) {
 								if (feeList[feeNum].getFeeitemStatus().equals("INVOICED")) {
 									if (pDuplicate == "Y") {
@@ -352,5 +347,4 @@ try{
 	logDebug("An error occurred in sepUpdateFee: " + err.message);
 	logDebug(err.stack);
 }}
-
 
