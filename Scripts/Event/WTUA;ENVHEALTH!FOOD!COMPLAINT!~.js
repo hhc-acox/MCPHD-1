@@ -1,4 +1,4 @@
-//lwacht: 270918: #29: Auto schedule the Food Complaint Inspections for next business day after complaint is received
+//lwacht: 270918: #132: Auto Schedule Initial Inspection
 try{
 	if(wfTask=="Complaint Intake" && wfStatus.indexOf("Accepted")>-1){
 		scheduleInspectDate("Complaint",dateAdd(null,1,"Y"));
@@ -7,4 +7,4 @@ try{
 	logDebug("A JavaScript Error occurred: WTUA:EnvHealth/Food/Complaint/*: " + err.message);
 	logDebug(err.stack)
 }
-//lwacht: 270918: #29: end
+//lwacht: 270918: #132: end
