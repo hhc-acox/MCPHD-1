@@ -29,7 +29,7 @@ try{
 			uploadedDocs = new Array();
 			for (var i in submittedDocList ){
 				if(vEventName.indexOf("Before")>-1){
-					var doc = submittedDocList.get(counter);
+					var doc = submittedDocList.get(i);
 					uploadedDocs[doc.getDocGroup() +"-"+ doc.getDocCategory()] = true;
 				}else{
 					//logDebug("submittedDocList[i].getDocGroup() : " + submittedDocList[i].getDocGroup());
