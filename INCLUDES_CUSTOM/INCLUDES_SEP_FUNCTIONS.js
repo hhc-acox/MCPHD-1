@@ -62,8 +62,6 @@ try{
 								aTypeLevel[2] = aa.env.getValue("ApplicationTypeLevel3");
 								aTypeLevel[3] = aa.env.getValue("ApplicationTypeLevel4");
 								for (xx in arrAppType){
-									logDebug("arrAppType[xx]: " + arrAppType[xx]);
-									logDebug("aTypeLevel[xx]: " + aTypeLevel[xx]);
 									if (!arrAppType[xx].equals(aTypeLevel[xx]) && !arrAppType[xx].equals("*")){
 										appMatch = false;
 									}
@@ -77,7 +75,7 @@ try{
 						}
 						if (appMatch){
 							var wkFlMatch = false;
-							if(matches(wfTask,"",null,"undefined")){
+							if(vEventName.indexOf("Workflow")<0){
 								wkFlMatch = true;
 							}else{
 								var tName = ""+sepReqdDocs[row]["Task Name"];
