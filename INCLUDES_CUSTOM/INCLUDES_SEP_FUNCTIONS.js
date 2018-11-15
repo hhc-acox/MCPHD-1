@@ -12,7 +12,20 @@ try{
 			if(publicUser){
 				var submittedDocList = aa.document.getDocumentListByEntity(capId,"TMP_CAP").getOutput().toArray();
 			}else{
-				var submittedDocList = aa.document.getDocumentListByEntity(capId,"CAP").getOutput().toArray();
+				cancel = true;
+				var vEventName = aa.env.getValue("EventName");
+				if(vEventName.indexOf("Before")>-1){
+					var submittedDocList = aa.env.getValue("DocumentModelList");
+					if(submittedDocList){
+						logDebug("doc length:" + submittedDocList.size());
+						for (var counter = 0; counter < submittedDocList.size(); counter++) {
+							var doc = submittedDocList.get(counter);
+							logDebug("category: " + doc.getDocCategory()) ;
+						}
+					}
+				}else{
+					var submittedDocList = aa.document.getDocumentListByEntity(capId,"CAP").getOutput().toArray();
+				}
 			}
 			uploadedDocs = new Array();
 			for (var i in submittedDocList ){
@@ -22,7 +35,6 @@ try{
 			}
 			for(sep in sepScriptConfigArr){
 				var cfgCapId = sepScriptConfigArr[sep].getCapID();
-				var vEventName = aa.env.getValue("EventName");
 				if(vEventName.indexOf("Workflow")>-1){
 					var sepReqdDocs = loadASITable("REQD DOCUMENTS - WORKFLOW",cfgCapId);
 				}else{
