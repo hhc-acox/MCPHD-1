@@ -12,7 +12,6 @@ try{
 			if(publicUser){
 				var submittedDocList = aa.document.getDocumentListByEntity(capId,"TMP_CAP").getOutput().toArray();
 			}else{
-				cancel = true;
 				var vEventName = aa.env.getValue("EventName");
 				if(vEventName.indexOf("Before")>-1){
 					var submittedDocList = aa.env.getValue("DocumentModelList");
@@ -27,11 +26,14 @@ try{
 				}
 			}
 			uploadedDocs = new Array();
-			for (var i in submittedDocList ){
-				if(vEventName.indexOf("Before")>-1){
-					var doc = submittedDocList.get(i);
+			if(vEventName.indexOf("Before")>-1){
+				for (var counter = 0; counter < submittedDocList.size(); counter++) {
+					var doc = submittedDocList.get(counter);
+					logDebug("category: " + doc.getDocCategory()) ;
 					uploadedDocs[doc.getDocGroup() +"-"+ doc.getDocCategory()] = true;
-				}else{
+				}
+			}else{
+				for (var i in submittedDocList ){
 					//logDebug("submittedDocList[i].getDocGroup() : " + submittedDocList[i].getDocGroup());
 					//logDebug("submittedDocList[i].getDocCategory() : " + submittedDocList[i].getDocCategory());
 					uploadedDocs[submittedDocList[i].getDocGroup() +"-"+ submittedDocList[i].getDocCategory()] = true;
@@ -53,7 +55,21 @@ try{
 						if (arrAppType.length != 4){
 							logDebug("The record type is incorrectly formatted: " + ats);
 						}else{
-							for (xx in arrAppType){
+							if(vEventName.indexOf("Before")>-1){
+								var aTypeLevel=[];
+								aTypeLevel[0] = aa.env.getValue("ApplicationTypeLevel1");
+								aTypeLevel[1] = aa.env.getValue("ApplicationTypeLevel2");
+								aTypeLevel[2] = aa.env.getValue("ApplicationTypeLevel3");
+								aTypeLevel[3] = aa.env.getValue("ApplicationTypeLevel4");
+								for (xx in arrAppType){
+									logDebug("arrAppType[xx]: " + arrAppType[xx]);
+									logDebug("aTypeLevel[xx]: " + aTypeLevel[xx]);
+									if (!arrAppType[xx].equals(aTypeLevel[xx]) && !arrAppType[xx].equals("*")){
+										appMatch = false;
+									}
+								}
+							}
+								for (xx in arrAppType){
 								if (!arrAppType[xx].equals(appTypeArray[xx]) && !arrAppType[xx].equals("*")){
 									appMatch = false;
 								}
