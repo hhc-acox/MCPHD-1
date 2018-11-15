@@ -66,10 +66,11 @@ try{
 										appMatch = false;
 									}
 								}
-							}
+							}else{
 								for (xx in arrAppType){
-								if (!arrAppType[xx].equals(appTypeArray[xx]) && !arrAppType[xx].equals("*")){
-									appMatch = false;
+									if (!arrAppType[xx].equals(appTypeArray[xx]) && !arrAppType[xx].equals("*")){
+										appMatch = false;
+									}
 								}
 							}
 						}
@@ -96,7 +97,7 @@ try{
 								var docGroup = dGroup.trim();
 								var dType = ""+sepReqdDocs[row]["Document Type"];
 								var docType = dType.trim();
-								if(custVal==AInfo[custFld]){
+								if(matches(custFld,"",null,"undefined") || custVal==AInfo[custFld]){
 									var chkFilter = ""+addtlQuery;
 									if (chkFilter.length==0 || eval(chkFilter) ) {
 										//doc is required, see if it's been uploaded
