@@ -17,7 +17,6 @@ try{
 				if(vEventName.indexOf("Before")>-1){
 					var submittedDocList = aa.env.getValue("DocumentModelList");
 					if(submittedDocList){
-						logDebug("doc length:" + submittedDocList.size());
 						for (var counter = 0; counter < submittedDocList.size(); counter++) {
 							var doc = submittedDocList.get(counter);
 							logDebug("category: " + doc.getDocCategory()) ;
@@ -29,9 +28,14 @@ try{
 			}
 			uploadedDocs = new Array();
 			for (var i in submittedDocList ){
-				//logDebug("submittedDocList[i].getDocGroup() : " + submittedDocList[i].getDocGroup());
-				//logDebug("submittedDocList[i].getDocCategory() : " + submittedDocList[i].getDocCategory());
-				uploadedDocs[submittedDocList[i].getDocGroup() +"-"+ submittedDocList[i].getDocCategory()] = true;
+				if(vEventName.indexOf("Before")>-1){
+					var doc = submittedDocList.get(counter);
+					uploadedDocs[doc.getDocGroup() +"-"+ doc.getDocCategory()] = true;
+				}else{
+					//logDebug("submittedDocList[i].getDocGroup() : " + submittedDocList[i].getDocGroup());
+					//logDebug("submittedDocList[i].getDocCategory() : " + submittedDocList[i].getDocCategory());
+					uploadedDocs[submittedDocList[i].getDocGroup() +"-"+ submittedDocList[i].getDocCategory()] = true;
+				}
 			}
 			for(sep in sepScriptConfigArr){
 				var cfgCapId = sepScriptConfigArr[sep].getCapID();
