@@ -15,7 +15,7 @@ try{
 				var vEventName = aa.env.getValue("EventName");
 				if(vEventName.indexOf("Before")>-1){
 					var submittedDocList = aa.env.getValue("DocumentModelList");
-					if(submittedDocList){
+					if(submittedDocList.length()>0){
 						for (var counter = 0; counter < submittedDocList.size(); counter++) {
 							var doc = submittedDocList.get(counter);
 							logDebug("category: " + doc.getDocCategory()) ;
@@ -27,10 +27,12 @@ try{
 			}
 			uploadedDocs = new Array();
 			if(vEventName.indexOf("Before")>-1){
-				for (var counter = 0; counter < submittedDocList.size(); counter++) {
-					var doc = submittedDocList.get(counter);
-					logDebug("category: " + doc.getDocCategory()) ;
-					uploadedDocs[doc.getDocGroup() +"-"+ doc.getDocCategory()] = true;
+				if(submittedDocList.length()>0){
+					for (var counter = 0; counter < submittedDocList.size(); counter++) {
+						var doc = submittedDocList.get(counter);
+						//logDebug("category: " + doc.getDocCategory()) ;
+						uploadedDocs[doc.getDocGroup() +"-"+ doc.getDocCategory()] = true;
+					}
 				}
 			}else{
 				for (var i in submittedDocList ){
