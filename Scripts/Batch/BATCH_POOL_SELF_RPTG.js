@@ -66,7 +66,7 @@ else
 | Start: BATCH PARAMETERS
 |
 /------------------------------------------------------------------------------------------------------*/
-/* test parameters 
+/* test parameters  */
 aa.env.setValue("lookAheadDays", "-5");
 aa.env.setValue("daySpan", "5");
 aa.env.setValue("recordGroup", "EnvHealth");
@@ -84,9 +84,8 @@ aa.env.setValue("sysFromEmail", "no_reply@accela.com");
 aa.env.setValue("emailAddress", "lwacht@septechconsulting.com");
 aa.env.setValue("reportName", "");
 aa.env.setValue("setNonEmailPrefix", "");
-aa.env.setValue("newTaskStatus", "Closed");
-aa.env.setValue("newAppStatus", "Closed");
- */
+aa.env.setValue("newAppStatus", "Closed - Failed Results");
+
 var lookAheadDays = getParam("lookAheadDays");
 var daySpan = getParam("daySpan");
 var appGroup = getParam("recordGroup");
@@ -105,7 +104,6 @@ var sysFromEmail = getParam("sysFromEmail");
 var emailAddress = getParam("emailAddress");			// email to send report
 var rptName = getParam("reportName");
 var setNonEmailPrefix = getParam("setNonEmailPrefix");
-var newTaskStatus = getParam("newTaskStatus");
 var newAppStatus = getParam("newAppStatus");
 
 if(appTypeType=="*") appTypeType="";
@@ -270,7 +268,7 @@ try{
 			//pool fails, close pool, notify contacts
 			if(cntFailedTwoWeeks>1 || cntFailedSixWeeks>2){
 				logDebug(altId + " has a failing grade and will be closed.");
-				updateAppStatus("Closed - Failed Results", "Closed via pool interface batch job.");
+				updateAppStatus(newAppStatus, "Closed via pool interface batch job.");
 				if (sendEmailNotifications == "Y" && sendEmailToContactTypes.length > 0 && emailTemplate.length > 0) {
 					var conTypeArray = sendEmailToContactTypes.split(",");
 					var sendAllContacts = conTypeArray.indexOf("ALL") >= 0 || conTypeArray.indexOf("All") >= 0 || conTypeArray.indexOf("all") >= 0;
@@ -304,7 +302,27 @@ try{
 						}
 					}
 					// process each qualified contact
-					logDebug("sendArray: " + sendArray.length);
+					//logDebug("sendArray: " + sendArray.length);
+					currentUserID = "ADMIN";
+					//runReportAttach(capId,rptName, "altId", capId.getCustomID()); 
+					var eParams = aa.util.newHashtable(); 
+					//add email template notifications params here
+					addParameter(eParams, "$$fileDateYYYYMMDD$$", fileDateYYYYMMDD);
+					addParameter(eParams, "$$altID$$", capId.getCustomID());
+					addParameter(eParams, "$$capID$$", capId.getCustomID());
+					addParameter(eParams, "$$capType$$", appTypeString);
+					addParameter(eParams, "$$contactFirstName$$", cFName);
+					addParameter(eParams, "$$contactFirstName$$", cLName);
+					var rFiles = [];
+					if(!matches(rptName, null, "", "undefined")){
+						var rFile;
+						var rptParams = aa.util.newHashMap();
+						//add report params here
+						rFile = generateReport(capId,rptName,"Licenses",rptParams);
+						if (rFile) {
+							rFiles.push(rFile);
+						}
+					}
 					for (var i in sendArray) {
 						//  create set  
 						var channel = ("" + lookup("CONTACT_PREFERRED_CHANNEL","" + sendArray[i].capContact.getPreferredChannel())).toUpperCase();
@@ -317,26 +335,6 @@ try{
 								logDebug("Email channel detected but contact has no email address--adding to notification set");
 								continue;
 							}else {
-								currentUserID = "ADMIN";
-								//runReportAttach(capId,rptName, "altId", capId.getCustomID()); 
-								var eParams = aa.util.newHashtable(); 
-								//add email template notifications params here
-								addParameter(eParams, "$$fileDateYYYYMMDD$$", fileDateYYYYMMDD);
-								addParameter(eParams, "$$altID$$", capId.getCustomID());
-								addParameter(eParams, "$$capID$$", capId.getCustomID());
-								addParameter(eParams, "$$capType$$", appTypeString);
-								addParameter(eParams, "$$contactFirstName$$", cFName);
-								addParameter(eParams, "$$contactFirstName$$", cLName);
-								var rFiles = [];
-								if(!matches(rptName, null, "", "undefined")){
-									var rFile;
-									var rptParams = aa.util.newHashMap();
-									//add report params here
-									rFile = generateReport(capId,rptName,"Licenses",rptParams);
-									if (rFile) {
-										rFiles.push(rFile);
-									}
-								}
 								sendNotification(sysFromEmail,email,"",emailTemplate,eParams, rFiles,capId);
 								logDebug(altId + ": Sent Email template " + emailTemplate + " to " + conTypeArray[thisType] + " : " + email);
 							}
@@ -344,10 +342,24 @@ try{
 							logDebug("Preferred channel is ignored, adding to notification set.");
 						}
 					}
+					var inspUser = aa.person.getUser(thisInspec.getInspector().getFirstName(),thisInspec.getInspector().getMiddleName(),thisInspec.getInspector().getLastName());
+					if(inspUser.getSuccess()){
+						var inspUserObj = inspUser.getOutput();
+						var inspEmail = inspUserObj.getEmail();
+						sendNotification(sysFromEmail,inspEmail,"",emailTemplate,eParams, rFiles,capId);
+						logDebug(altId + ": Sent Email template " + emailTemplate + " to Inspector " + inspUserObj.getLastName() + " : " + inspEmail);
+					}
 				}
 			}else{
 				logDebug(altId + " has a passing grade.");
 			}
+		}
+		var inspUserId = getInspector(inspPool);
+		var inspDate = dateAdd(null, 7);
+		if(inspUserId){
+			scheduleInspectDate(inspPool,inspDate,inspUserId);
+		}else{
+			scheduleInspectDate(inspPool,inspDate);
 		}
 		scheduleInspect(capId,inspPool,7);
 	}
