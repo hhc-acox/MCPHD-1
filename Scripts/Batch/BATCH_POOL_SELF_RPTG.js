@@ -66,7 +66,7 @@ else
 | Start: BATCH PARAMETERS
 |
 /------------------------------------------------------------------------------------------------------*/
-/* test parameters  */
+/* test parameters 
 aa.env.setValue("lookAheadDays", "-5");
 aa.env.setValue("daySpan", "5");
 aa.env.setValue("recordGroup", "EnvHealth");
@@ -74,6 +74,7 @@ aa.env.setValue("recordType", "WQ");
 aa.env.setValue("recordSubType", "Pool");
 aa.env.setValue("recordCategory", "License");
 aa.env.setValue("InspectionToCheck", "Pool Test Results");
+aa.env.setValue("CheckListToCheck", "OUTSIDE LAB POOL SAMPLES");
 aa.env.setValue("AppStatusArray", "Active,About to Expire");
 aa.env.setValue("taskToCheck", "Issuance");
 aa.env.setValue("sendEmailNotifications","Y");
@@ -85,7 +86,7 @@ aa.env.setValue("emailAddress", "lwacht@septechconsulting.com");
 aa.env.setValue("reportName", "");
 aa.env.setValue("setNonEmailPrefix", "");
 aa.env.setValue("newAppStatus", "Closed - Failed Results");
-
+ */
 var lookAheadDays = getParam("lookAheadDays");
 var daySpan = getParam("daySpan");
 var appGroup = getParam("recordGroup");
@@ -93,6 +94,7 @@ var appTypeType = getParam("recordType");
 var appSubtype = getParam("recordSubType");
 var appCategory = getParam("recordCategory");
 var inspPool = getParam("InspectionToCheck");
+var chklistPool = getParam("CheckListToCheck");
 var arrAppStatus = getParam("AppStatusArray").split(",");
 
 var task = getParam("taskToCheck");
@@ -213,12 +215,22 @@ try{
 		appTypeArray = appTypeString.split("/");
 		var capStatus = cap.getCapStatus();
 		var inspId = getScheduledInspId(inspPool);
-		if(inspId){
+		var arrInspIds = getInspIdsByStatus(inspPool,"Scheduled");
+		if(arrInspIds.length>0){
 			 var tblResults = [];
-			 tblResults = getGuidesheetASITable(inspId,inspPool,"OUTSIDE LAB POOL SAMPLES");
+			 tblResults = getGuidesheetASITable(inspId,inspPool,chklistPool);
 			 var resFailed = false;
 			 if(!tblResults){
-				 resFailed = true;
+				var lastWeek = dateAdd(null,-8);
+				lastWeek = new Date(lastWeek);
+				lastWeek = lastWeek.getTime();
+				var thisInspec = arrInspIds[ins];
+				var inspResultDate = convertDate(thisInspec.getScheduledDate());
+				//labs/operators have two weeks to get in results
+				if(inspResultDate<lastWeek){
+					resFailed = true;
+					logDebug("Inspection has been open for two weeks with no results. Failing inspection");
+				}
 			 }else{
 				 if(tblResults.length<1){
 					 resFailed=true;
@@ -245,18 +257,18 @@ try{
 		 //figure out how to get all failed results for past two weeks and past six weeks
 		var arrInspIds = getInspIdsByStatus(inspPool,"Failed");
 		if(arrInspIds.length>0){
-			var sixWeeksPast = dateAdd(null,-(7*6));
+			var sixWeeksPast = dateAdd(null,-(7*6)-1);
 			sixWeeksPast = new Date(sixWeeksPast);
 			sixWeeksPast = sixWeeksPast.getTime();
-			var lastWeek = dateAdd(null,-7);
-			lastWeek = new Date(lastWeek);
-			lastWeek = lastWeek.getTime();
+			var twoWeeksPast = dateAdd(null,-13);
+			twoWeeksPast = new Date(twoWeeksPast);
+			twoWeeksPast = twoWeeksPast.getTime();
 			var cntFailedTwoWeeks = 0;
 			var cntFailedSixWeeks = 0;
 			for (ins in arrInspIds){
 				var thisInspec = arrInspIds[ins];
-				var inspResultDate = convertDate(thisInspec.getInspectionStatusDate());
-				if(inspResultDate > lastWeek){
+				var inspResultDate = convertDate(thisInspec.getScheduledDate());
+				if(inspResultDate > twoWeeksPast){
 					cntFailedTwoWeeks++;
 					cntFailedSixWeeks++;
 				}else{
@@ -401,7 +413,7 @@ try{
 		return false;
 	}
 }catch (err){
-	logDebug("ERROR: " + err.message + " In getScheduledInspId.");
+	logDebug("ERROR: " + err.message + " In getInspIdsByStatus.");
 	logDebug("Stack: " + err.stack);
 }}
 
