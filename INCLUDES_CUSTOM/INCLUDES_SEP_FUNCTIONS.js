@@ -5,7 +5,10 @@ try{
 	if(sepScriptConfig.getSuccess()){
 		var sepScriptConfigArr = sepScriptConfig.getOutput();
 		if(sepScriptConfigArr.length<1){
-			var sepScriptConfigArr = aa.cap.getCapIDsByAppSpecificInfoField("Module Name", "ALL");
+			var sepScriptConfig = aa.cap.getCapIDsByAppSpecificInfoField("Module Name", "ALL");
+			if(sepScriptConfig.getSuccess()){
+				var sepScriptConfigArr = sepScriptConfig.getOutput();
+			}
 		}
 		if(sepScriptConfigArr.length>0){
 			var retArray = [];
@@ -274,15 +277,15 @@ function sendNotificationSEP(emailFrom,emailTo,emailCC,templateName,params,repor
 	}
 }
 
-function sepUpdateFees(arrFees) {
+function sepUpdateFees(sepRules) {
 try{
-	for(row in arrFees){
-		if(arrFees[row]["Active"]=="Yes"){
-			var taskName = ""+arrFees[row]["Task Name"];
-			var taskStatus = ""+arrFees[row]["Task Status"];
+	for(row in sepRules){
+		if(sepRules[row]["Active"]=="Yes"){
+			var taskName = ""+sepRules[row]["Task Name"];
+			var taskStatus = ""+sepRules[row]["Task Status"];
 			if(!matches(taskName,"",null,"undefined" || wfTask==taskName) && wfStatus==taskStatus){
 				var appMatch = true;
-				var recdType = ""+arrFees[row]["Record Type"];
+				var recdType = ""+sepRules[row]["Record Type"];
 				var recdTypeArr = "" + recdType;
 				var arrAppType = recdTypeArr.split("/");
 				if (arrAppType.length != 4){
@@ -296,25 +299,25 @@ try{
 					}
 				}
 				if (appMatch){
-					var addtlQuery = ""+arrFees[row]["Additional Query"];
+					var addtlQuery = ""+sepRules[row]["Additional Query"];
 					var chkFilter = ""+addtlQuery;
 					if (chkFilter.length==0 ||eval(chkFilter) ) {
-						var cFld = ""+arrFees[row]["Custom Field"];
+						var cFld = ""+sepRules[row]["Custom Field"];
 						var custFld = cFld.trim();
-						var cVal = ""+arrFees[row]["Custom Field Value"];
+						var cVal = ""+sepRules[row]["Custom Field Value"];
 						var custVal = cVal.trim();
 						if(matches(custFld,"",null,"undefined") || custVal==AInfo[custFld]){
-							var fcode = ""+arrFees[row]["Fee Code"];
-							var fsched = ""+arrFees[row]["Fee Schedule"];
-							var fperiod = ""+arrFees[row]["Fee Period"];
-							var feeQty = ""+arrFees[row]["Fee Quantity"];
+							var fcode = ""+sepRules[row]["Fee Code"];
+							var fsched = ""+sepRules[row]["Fee Schedule"];
+							var fperiod = ""+sepRules[row]["Fee Period"];
+							var feeQty = ""+sepRules[row]["Fee Quantity"];
 							if(isNaN(feeQty)){
 								var fqty = parseFloat(AInfo[feeQty]);
 							}else{
 								var fqty = parseFloat(feeQty);
 							}
-							var finvoice = ""+arrFees[row]["Fee Code"];
-							var pDuplicate = ""+arrFees[row]["Duplicate Fee"];
+							var finvoice = ""+sepRules[row]["Fee Code"];
+							var pDuplicate = ""+sepRules[row]["Duplicate Fee"];
 							// If optional argument is blank, use default logic (i.e. allow duplicate fee if invoiced fee is found)
 							if (pDuplicate == null || pDuplicate.length == 0){
 								pDuplicate = "Yes";
@@ -380,4 +383,185 @@ try{
 }catch (err){
 	logDebug("An error occurred in sepUpdateFee: " + err.message);
 	logDebug(err.stack);
+}}
+
+function stopWorkflow(){
+//stop workflow progress based on parameters
+try{
+	//see if any records are set up--module can be specific or "ALL", look for both
+	var sepScriptConfig = aa.cap.getCapIDsByAppSpecificInfoField("Module Name", appTypeArray[0]);
+	if(sepScriptConfig.getSuccess()){
+		var sepScriptConfigArr = sepScriptConfig.getOutput();
+		if(sepScriptConfigArr.length<1){
+			var sepScriptConfig = aa.cap.getCapIDsByAppSpecificInfoField("Module Name", "ALL");
+			if(sepScriptConfig.getSuccess()){
+				var sepScriptConfigArr = sepScriptConfig.getOutput();
+			}
+		}
+		if(sepScriptConfigArr.length>0){
+			for(sep in sepScriptConfigArr){
+				var cfgCapId = sepScriptConfigArr[sep].getCapID();
+				var sepRules = loadASITable("PREVENT WORKFLOW UPDATE",cfgCapId);
+				if(sepRules.length>0){
+					for(row in sepRules){
+						if(sepRules[row]["Active"]=="Yes"){
+							var taskName = ""+sepRules[row]["Task Name"];
+							var taskStatus = ""+sepRules[row]["Task Status"];
+							if(!matches(taskName,"",null,"undefined" || wfTask==taskName) && wfStatus==taskStatus){
+								var appMatch = true;
+								var recdType = ""+sepRules[row]["Record Type"];
+								var recdTypeArr = "" + recdType;
+								var arrAppType = recdTypeArr.split("/");
+								if (arrAppType.length != 4){
+									logDebug("The record type is incorrectly formatted: " + ats);
+									return false;
+								}else{
+									for (xx in arrAppType){
+										if (!arrAppType[xx].equals(appTypeArray[xx]) && !arrAppType[xx].equals("*")){
+											appMatch = false;
+										}
+									}
+								}
+								if (appMatch){
+									var addtlQuery = ""+sepRules[row]["Additional Query"];
+									var chkFilter = ""+addtlQuery;
+									if (chkFilter.length==0 ||eval(chkFilter) ) {
+										switch("" + sepRules[row]["Event"]){
+										case "Fees Due": 
+											var strFee = ""+ sepRules[row]["Required Elements List"];
+											var feeBal = 0;
+											var feesDue = [];
+											if(strFee.length>0){
+												var arrFee = strFee.split("|");
+												for (fee in arrFee){
+													feeBal += feeBalance(arrFee[fee]);
+													if(feeBalance(arrFee[fee])>0){
+														feesDue.push(arrFee[fee]);
+													}
+												}
+											}else{
+												feeBal = feeBalance();
+											}
+											if(feeBal>0){
+												cancel=true;
+												showMessage=true;
+												comment( "'"+ taskName + "' cannot be set to '" + taskStatus + "' when there is an outstanding balance ($" + feeBal.toFixed(2) + ") of these fees: " );
+												if(feesDue.length==0){
+													comment("--All Fees--");
+												}else{
+													for( x in feesDue){
+														comment(feesDue[x]);
+													}
+												}
+											}
+											break;
+										case "Inspections Scheduled":
+											var inspScheduled = false;
+											var strInsp = ""+sepRules[row]["Required Elements List"];
+											var inspDue = [];
+											if(strInsp.length>0){
+												var arrInsp = strInsp.split("|");
+												for (ins in arrInsp){
+													if(checkInspectionResult(arrInsp[ins], "Scheduled") || checkInspectionResult(arrInsp[ins], "Pending")){
+														inspScheduled = true;
+														inspDue.push(arrInsp[ins]);
+													}
+												}
+											}else{
+												if(isScheduled(false)){
+													inspScheduled = true;
+												}
+											}
+											if(inspScheduled){
+												cancel=true;
+												showMessage=true;
+												comment( "'"+ taskName + "' cannot be set to '" + taskStatus + "' when these inspections are scheduled or pending: " );
+												if(inspDue.length==0){
+													comment("--All Inspections--");
+												}else{
+													for( x in inspDue){
+														comment(inspDue[x]);
+													}
+												}
+											}
+											break;
+										case "Documents Required":
+											var submittedDocList = aa.document.getDocumentListByEntity(capId,"CAP").getOutput().toArray();
+											uploadedDocs = new Array();
+											for (var i in submittedDocList ){
+												uploadedDocs[submittedDocList[i].getDocGroup() +"-"+ submittedDocList[i].getDocCategory()] = true;
+											}
+											var strDoc =  ""+ sepRules[row]["Required Elements List"];
+											var arrDoc = strDoc.split("|");
+											var retArray = [];
+											for (doc in arrDoc){
+												if(arrDoc[doc].indexOf(",")<0){
+													logDebug("Document List is incorrectly formatted: " + strDoc);
+													return false;
+												}
+												var thisDoc = arrDoc[doc].split(",");
+												var docGroup = thisDoc[0];
+												var docType = thisDoc[1];
+												if(uploadedDocs[docGroup +"-"+ docType] == undefined) {	
+													var thisArray = [];
+													thisArray["docGroup"]=docGroup;
+													thisArray["docType"]=docType;
+													retArray.push(thisArray);
+												}
+											}
+											if(retArray.length>0){
+												cancel=true;
+												showMessage=true;
+												comment("'"+ taskName + "' cannot be set to '" + taskStatus + "' when these documents are required: ");
+												for( x in retArray){
+													comment(retArray[x]["docGroup"] + " - " + retArray[x]["docType"]);
+												}
+											}
+											break;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}catch(err){
+	logDebug("A JavaScript Error occurred: stopWorkflow: " + err.message);
+	logDebug(err.stack)
+}}
+
+function feeBalance(feestr){
+try{
+	// Searches payment fee items and returns the unpaid balance of a fee item
+	// Sums fee items if more than one exists.  
+	var amtFee = 0;
+	var amtPaid = 0;
+	var feeResult=aa.fee.getFeeItems(capId);
+	if (feeResult.getSuccess()){ 
+		var feeObjArr = feeResult.getOutput(); 
+	}else{ 
+		logDebug( "**ERROR: getting fee items: " + capContResult.getErrorMessage()); 
+		return false 
+	}
+	for (ff in feeObjArr){
+		if ((!feestr || feestr.equals(feeObjArr[ff].getFeeCod()))){
+			amtFee+=feeObjArr[ff].getFee();
+			var pfResult = aa.finance.getPaymentFeeItems(capId, null);
+			if (pfResult.getSuccess()){
+				var pfObj = pfResult.getOutput();
+				for (ij in pfObj){
+					if (feeObjArr[ff].getFeeSeqNbr() == pfObj[ij].getFeeSeqNbr()){
+						amtPaid+=pfObj[ij].getFeeAllocation();
+					}
+				}
+			}
+		}
+	}
+	return amtFee - amtPaid;
+}catch(err){
+	logDebug("A JavaScript Error occurred: feeBalance " + err.message);
+	logDebug(err.stack)
 }}
