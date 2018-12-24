@@ -385,7 +385,7 @@ try{
 	logDebug(err.stack);
 }}
 
-function stopWorkflow(){
+function sepStopWorkflow(){
 //stop workflow progress based on parameters
 try{
 	//see if any records are set up--module can be specific or "ALL", look for both
@@ -434,13 +434,13 @@ try{
 											if(strFee.length>0){
 												var arrFee = strFee.split("|");
 												for (fee in arrFee){
-													feeBal += feeBalance(arrFee[fee]);
-													if(feeBalance(arrFee[fee])>0){
+													feeBal += sepFeeBalance(arrFee[fee]);
+													if(sepFeeBalance(arrFee[fee])>0){
 														feesDue.push(arrFee[fee]);
 													}
 												}
 											}else{
-												feeBal = feeBalance();
+												feeBal = sepFeeBalance();
 											}
 											if(feeBal>0){
 												cancel=true;
@@ -529,11 +529,11 @@ try{
 		}
 	}
 }catch(err){
-	logDebug("A JavaScript Error occurred: stopWorkflow: " + err.message);
+	logDebug("A JavaScript Error occurred: sepStopWorkflow: " + err.message);
 	logDebug(err.stack)
 }}
 
-function feeBalance(feestr){
+function sepFeeBalance(feestr){
 try{
 	// Searches payment fee items and returns the unpaid balance of a fee item
 	// Sums fee items if more than one exists.  
@@ -562,6 +562,6 @@ try{
 	}
 	return amtFee - amtPaid;
 }catch(err){
-	logDebug("A JavaScript Error occurred: feeBalance " + err.message);
+	logDebug("A JavaScript Error occurred: sepFeeBalance: " + err.message);
 	logDebug(err.stack)
 }}
