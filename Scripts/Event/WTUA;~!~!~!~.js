@@ -12,7 +12,9 @@ try{
 				var cfgCapId = sepScriptConfigArr[sep].getCapID();
 				var sepNotifList = loadASITable("NOTIFICATIONS - WORKFLOW",cfgCapId);
 				for(row in sepNotifList){
-					sepEmailNotifContact(sepNotifList[row]["Record Type"], sepNotifList[row]["Contact Type"], sepNotifList[row]["Respect Preferred Channel"], sepNotifList[row]["Notification Name"], sepNotifList[row]["Report Name"], sepNotifList[row]["Task Name"], sepNotifList[row]["Task Status"], getAppSpecific("Agency From Email",cfgCapId), sepNotifList[row]["Additional Query"]);
+					if(sepNotifList[row]["Active"]=="Yes"){
+						sepEmailNotifContact(sepNotifList[row]["Record Type"], sepNotifList[row]["Contact Type"], sepNotifList[row]["Respect Preferred Channel"], sepNotifList[row]["Notification Name"], sepNotifList[row]["Report Name"], sepNotifList[row]["Task Name"], sepNotifList[row]["Task Status"], getAppSpecific("Agency From Email",cfgCapId), sepNotifList[row]["Additional Query"]);
+					}
 				}
 			}
 		}
@@ -42,5 +44,13 @@ try{
 	}
 }catch(err){
 	logDebug("A JavaScript Error occurred: WTUA:*/*/*/*: Assess Fees: " + err.message);
+	logDebug(err.stack)
+}
+
+//issue license
+try{
+	sepIssueLicenseWorkflow();
+}catch(err){
+	logDebug("A JavaScript Error occurred: WTUA:*/*/*/*: Issue license: " + err.message);
 	logDebug(err.stack)
 }
