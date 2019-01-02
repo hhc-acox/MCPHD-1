@@ -150,103 +150,25 @@ try{
 		if (appMatch){
 			var chkFilter = ""+addtlQuery;
 			if (chkFilter.length==0 ||eval(chkFilter) ) {
-				var emailNotif = false;
 				var cntType = ""+contactType;
-				var priContact = getContactObj(capId,cntType);
-				if(priContact){
-					var priChannel =  lookup("CONTACT_PREFERRED_CHANNEL",""+ priContact.capContact.getPreferredChannel());
-					if(!matches(priChannel, "",null,"undefined", false)){
-						if(!respectPriChannel || priChannel.indexOf("Email") > -1 || priChannel.indexOf("E-mail") > -1){
-							emailNotif = true;
-						}else{
-							if(respectPriChannel && priChannel.indexOf("Postal") > -1){
-								var addrString = "";
-								var contAddr = priContact.addresses;
-								for(ad in contAddr){
-									var thisAddr = contAddr[ad];
-									for (a in thisAddr){
-										if(!matches(thisAddr[a], "undefined", "", null)){
-											if(!matches(thisAddr[a].addressType, "undefined", "", null)){
-												addrString += thisAddr[a].addressLine1 + br + thisAddr[a].city + ", " + thisAddr[a].state +  " " + thisAddr[a].zip + br;
-											}
-										}
-									}
-								}
-								if(addrString==""){
-									addrString = "No addresses found.";
-								}
-								if(!matches(rptName, null, "", "undefined")){
-									showMessage=true;
-									comment("<font color='blue'>The " + contactType + " contact, " + priContact.capContact.getFirstName() + " " + priContact.capContact.getLastName() + ", has requested all correspondence be mailed.  Please mail the report " + rptName + " to : " + br + addrString + "</font>");
-								}else{
-									showMessage=true;
-									comment("<font color='blue'>The " + contactType + " contact, " + priContact.capContact.getFirstName() + " " + priContact.capContact.getLastName() + ", has requested all correspondence be mailed.  Please mail the notification " + notName + " to : " + br + addrString + "</font>");
-								}
-							}
-						}
-					}else{
-						logDebug("No primary channel found.  Defaulting to emailing the notification.");
-						emailNotif = true;
-					}
-					if(emailNotif){
-						var emailRpt = false;
-						var eParams = aa.util.newHashtable(); 
-						addParameter(eParams, "$$fileDateYYYYMMDD$$", fileDateYYYYMMDD);
-						var contPhone = priContact.capContact.phone1;
-						if(contPhone){
-							var fmtPhone = contPhone.substr(0,3) + "-" + contPhone.substr(3,3) +"-" + contPhone.substr(6,4);
-						}else{
-							var fmtPhone = "";
-						}
-						addParameter(eParams, "$$altID$$", capId.getCustomID());
-						addParameter(eParams, "$$contactPhone1$$", fmtPhone);
-						addParameter(eParams, "$$contactFirstName$$", priContact.capContact.firstName);
-						addParameter(eParams, "$$contactLastName$$", priContact.capContact.lastName);
-						addParameter(eParams, "$$contactEmail$$", priContact.capContact.email);
-						addParameter(eParams, "$$status$$", capStatus);
-						var priEmail = ""+priContact.capContact.getEmail();
-						//var capId4Email = aa.cap.createCapIDScriptModel(capId.getID1(), capId.getID2(), capId.getID3());
-						var rFiles = [];
-						var rptName = ""+rName;
-						if(!matches(rptName, null, "", "undefined")){
-							var report = aa.reportManager.getReportInfoModelByName(rName);
-							if(report.getSuccess() && report!=null ){
-								report = report.getOutput();
-								report.setModule(appTypeArray[0]);
-								report.setCapId(capId.getID1() + "-" + capId.getID2() + "-" + capId.getID3());
-								var rParams = aa.util.newHashMap(); 
-								rParams.put("altId",capId.getCustomID());
-								report.setReportParameters(rParams);
-								report.getEDMSEntityIdModel().setAltId(capId.getCustomID());
-								var permit = aa.reportManager.hasPermission(rName,currentUserID);
-								if (permit.getOutput().booleanValue()) {
-									var reportResult = aa.reportManager.getReportResult(report);
-									if(reportResult) {
-										reportOutput = reportResult.getOutput();
-										var reportFile=aa.reportManager.storeReportToDisk(reportOutput);
-										reportFile=reportFile.getOutput();
-										rFiles.push(reportFile);
-										emailRpt = true;
-									}else {
-										logDebug("System failed get report: " + reportResult.getErrorType() + ":" +reportResult.getErrorMessage());
-									}
-								} else {
-									logDebug("You have no permission.");
-								}	
-							}else{
-								logDebug("An error occurred retrieving the report: "+ report.getErrorMessage());
-							}
-						}
-						if(emailRpt){
-							sendNotificationSEP(sysFromEmail,priEmail,"",""+notName,eParams, rFiles,capId);
-						}else{
-							rFiles = [];
-							sendNotificationSEP(sysFromEmail,priEmail,"",""+notName,eParams, rFiles);
-						}
+				if(cntType.indexOf(",")>-1){
+					var arrType = cntType.split(",");
+					for(con in arrType){
+						var priContact = getContactObj(capId,arrType[con]);
+						sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
 					}
 				}else{
-					logDebug("An error occurred retrieving the contactObj for " + contactType + ": " + priContact);
-				}
+					if(cntType.toUpperCase()=="ALL"){
+						var arrType = getContactObjs(capId);
+						for(con in arrType){
+							var priContact = getContactObj(capId,arrType[con]);
+							sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
+						}
+					}else{
+						var priContact = getContactObj(capId,cntType);
+						sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
+					}						
+				}						
 			}
 		}
 	}
@@ -255,28 +177,127 @@ try{
 	logDebug(err.stack);
 }}
 
-function sendNotificationSEP(emailFrom,emailTo,emailCC,templateName,params,reportFile)
-{
+function sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail){
+try{
+	if(priContact){
+		var priChannel =  lookup("CONTACT_PREFERRED_CHANNEL",""+ priContact.capContact.getPreferredChannel());
+		if(!matches(priChannel, "",null,"undefined", false)){
+			if(!respectPriChannel || priChannel.indexOf("Email") > -1 || priChannel.indexOf("E-mail") > -1){
+				sepSendNotification(sysFromEmail,priContact,notName,rName);
+			}else{
+				if(respectPriChannel && priChannel.indexOf("Postal") > -1){
+					var addrString = "";
+					var contAddr = priContact.addresses;
+					for(ad in contAddr){
+						var thisAddr = contAddr[ad];
+						for (a in thisAddr){
+							if(!matches(thisAddr[a], "undefined", "", null)){
+								if(!matches(thisAddr[a].addressType, "undefined", "", null)){
+									addrString += thisAddr[a].addressLine1 + br + thisAddr[a].city + ", " + thisAddr[a].state +  " " + thisAddr[a].zip + br;
+								}
+							}
+						}
+					}
+					if(addrString==""){
+						addrString = "No addresses found.";
+					}
+					if(!matches(rptName, null, "", "undefined")){
+						showMessage=true;
+						comment("<font color='blue'>The " + contactType + " contact, " + priContact.capContact.getFirstName() + " " + priContact.capContact.getLastName() + ", has requested all correspondence be mailed.  Please mail the report " + rptName + " to : " + br + addrString + "</font>");
+					}else{
+						showMessage=true;
+						comment("<font color='blue'>The " + contactType + " contact, " + priContact.capContact.getFirstName() + " " + priContact.capContact.getLastName() + ", has requested all correspondence be mailed.  Please mail the notification " + notName + " to : " + br + addrString + "</font>");
+					}
+				}
+			}
+		}else{
+			logDebug("No primary channel found.  Defaulting to emailing the notification.");
+			sepSendNotification(sysFromEmail,priContact,notName,rName);
+		}
+	}else{
+		logDebug("An error occurred retrieving the contactObj for " + contactType + ": " + priContact);
+	}
+}catch(err){
+	logDebug("An error occurred in sepProcessContactsForNotif: " + err.message);
+	logDebug(err.stack);
+}}
+
+function sepSendNotification(emailFrom,priContact,notName,rName){
+try{
 	var itemCap = capId;
 	if (arguments.length == 7) itemCap = arguments[6]; // use cap ID specified in args
 	var id1 = itemCap.ID1;
  	var id2 = itemCap.ID2;
  	var id3 = itemCap.ID3;
 	var capIDScriptModel = aa.cap.createCapIDScriptModel(id1, id2, id3);
+	var emailRpt = false;
+	var eParams = aa.util.newHashtable(); 
+	addParameter(eParams, "$$fileDateYYYYMMDD$$", fileDateYYYYMMDD);
+	var contPhone = priContact.capContact.phone1;
+	if(contPhone){
+		var fmtPhone = contPhone.substr(0,3) + "-" + contPhone.substr(3,3) +"-" + contPhone.substr(6,4);
+	}else{
+		var fmtPhone = "";
+	}
+	addParameter(eParams, "$$altID$$", capId.getCustomID());
+	addParameter(eParams, "$$contactPhone1$$", fmtPhone);
+	addParameter(eParams, "$$contactFirstName$$", priContact.capContact.firstName);
+	addParameter(eParams, "$$contactLastName$$", priContact.capContact.lastName);
+	addParameter(eParams, "$$contactEmail$$", priContact.capContact.email);
+	addParameter(eParams, "$$status$$", capStatus);
+	addParameter(eParams, "$$capType$$", cap.getCapType().getAlias());
+	var priEmail = ""+priContact.capContact.getEmail();
+	//var capId4Email = aa.cap.createCapIDScriptModel(capId.getID1(), capId.getID2(), capId.getID3());
+	var rFiles = [];
+	var rptName = ""+rName;
+	if(!matches(rptName, null, "", "undefined")){
+		var report = aa.reportManager.getReportInfoModelByName(rName);
+		if(report.getSuccess() && report!=null ){
+			report = report.getOutput();
+			report.setModule(appTypeArray[0]);
+			report.setCapId(capId.getID1() + "-" + capId.getID2() + "-" + capId.getID3());
+			var rParams = aa.util.newHashMap(); 
+			rParams.put("altId",capId.getCustomID());
+			report.setReportParameters(rParams);
+			report.getEDMSEntityIdModel().setAltId(capId.getCustomID());
+			var permit = aa.reportManager.hasPermission(rName,currentUserID);
+			if (permit.getOutput().booleanValue()) {
+				var reportResult = aa.reportManager.getReportResult(report);
+				if(reportResult) {
+					reportOutput = reportResult.getOutput();
+					var reportFile=aa.reportManager.storeReportToDisk(reportOutput);
+					reportFile=reportFile.getOutput();
+					rFiles.push(reportFile);
+					emailRpt = true;
+				}else {
+					logDebug("System failed get report: " + reportResult.getErrorType() + ":" +reportResult.getErrorMessage());
+				}
+			} else {
+				logDebug("You have no permission.");
+			}	
+		}else{
+			logDebug("An error occurred retrieving the report: "+ report.getErrorMessage());
+		}
+	}
+	if(!emailRpt){
+		logDebug("here");
+		rFiles = [];
+	}
 	var result = null;
-	result = aa.document.sendEmailAndSaveAsDocument(emailFrom, emailTo, emailCC, templateName, params, capIDScriptModel, reportFile);
-	if(result.getSuccess())
-	{
+	logDebug("rName: " +rName);
+	logDebug("priEmail: " +priEmail);
+	result = aa.document.sendEmailAndSaveAsDocument(emailFrom, priEmail, null, notName, eParams, capIDScriptModel, rFiles);
+	if(result.getSuccess()){
 		logDebug("Sent email successfully!");
 		return true;
-	}
-	else
-	{
-		logDebug("Failed to send mail. - " + result.getErrorType());
+	}else{
+		logDebug("Failed to send mail - " + result.getErrorMessage());
 		return false;
 	}
-}
-
+}catch(err){
+	logDebug("An error occurred in sepSendNotification: " + err.message);
+	logDebug(err.stack);
+}}
 function sepUpdateFees(sepRules) {
 try{
 	for(row in sepRules){
@@ -563,5 +584,165 @@ try{
 	return amtFee - amtPaid;
 }catch(err){
 	logDebug("A JavaScript Error occurred: sepFeeBalance: " + err.message);
+	logDebug(err.stack)
+}}
+
+function sepIssueLicenseWorkflow(){
+try{
+	//see if any records are set up--module can be specific or "ALL", look for both
+	var sepScriptConfig = aa.cap.getCapIDsByAppSpecificInfoField("Module Name", appTypeArray[0]);
+	if(sepScriptConfig.getSuccess()){
+		var sepScriptConfigArr = sepScriptConfig.getOutput();
+		if(sepScriptConfigArr.length<1){
+			var sepScriptConfig = aa.cap.getCapIDsByAppSpecificInfoField("Module Name", "ALL");
+			if(sepScriptConfig.getSuccess()){
+				var sepScriptConfigArr = sepScriptConfig.getOutput();
+			}
+		}
+		if(sepScriptConfigArr.length>0){
+			for(sep in sepScriptConfigArr){
+				var cfgCapId = sepScriptConfigArr[sep].getCapID();
+				var sepRules = loadASITable("LICENSE ISSUANCE - ON WORKFLOW",cfgCapId);
+				if(sepRules.length>0){
+					for(row in sepRules){
+						if(sepRules[row]["Active"]=="Yes"){
+							var taskName = ""+sepRules[row]["Task Name"];
+							var taskStatus = ""+sepRules[row]["Task Status"];
+							if(!matches(taskName,"",null,"undefined" || wfTask==taskName) && wfStatus==taskStatus){
+								var appMatch = true;
+								var recdType = ""+sepRules[row]["Record Type"];
+								var recdTypeArr = "" + recdType;
+								var arrAppType = recdTypeArr.split("/");
+								if (arrAppType.length != 4){
+									logDebug("The record type is incorrectly formatted: " + ats);
+									return false;
+								}else{
+									for (xx in arrAppType){
+										if (!arrAppType[xx].equals(appTypeArray[xx]) && !arrAppType[xx].equals("*")){
+											appMatch = false;
+										}
+									}
+								}
+								if (appMatch){
+									var addtlQuery = ""+sepRules[row]["Additional Query"];
+									var chkFilter = ""+addtlQuery;
+									if (chkFilter.length==0 ||eval(chkFilter) ) {
+									logDebug("eval(chkFilter): " + eval(chkFilter));
+										if(!matches(sepRules[row]["Parent Record Type"], "",null,"undefined")){
+											var arrParRec = ""+sepRules[row]["Parent Record Type"];
+											var arrParRec = arrParRec.split("/");
+											if(arrParRec.length!=4){
+												logDebug("Parent ID not correctly formatted: " + sepRules[row]["Parent Record Type"]);
+												return false;
+											}else{
+												var parCapId = createParent(arrParRec[0], arrParRec[1], arrParRec[2], arrParRec[3],capName); 
+											}
+											if(parCapId){
+												var newLPType = ""+sepRules[row]["Create LP Type"];
+												if(!matches(newLPType, "",null,"undefined")){
+													var newLPContact = getContactObj(capId,"Applicant");
+													if(newLPContact){
+														var lpCreated = newLPContact.createRefLicProf(null,newLPType,null,null);
+													}
+												}
+												if(!matches(""+sepRules[row]["Expiration - Year(s)"],"",null,"undefined")){
+													var expDateYear = sysDate.getYear()+parseInt(sepRules[row]["Expiration - Year(s)"]);
+													var expDate = dateFormatted(sysDate.getMonth(), sysDate.getDayOfMonth(), expDateYear, "MM/DD/YYYY");
+													expDate = dateAdd(expDate,1);
+												}else{
+													if(!matches(""+sepRules[row]["Expiration - Months(s)"],"",null,"undefined")){
+														var expDate =  dateAddMonths(sysDate,sepRules[row]["Expiration - Months(s)"]);
+													}else{
+														if(!matches(""+sepRules[row]["Expiration - MM/DD"],"",null,"undefined")){
+															var expDate =  dateAddMonths(sysDate,sepRules[row]["Expiration - Months(s)"]);
+														}else{
+															logDebug("No expiration date listed. Defaulting to one year.");
+															var expDateYear = sysDate.getYear()+1;
+															var expDate = dateFormatted(sysDate.getMonth(), sysDate.getDayOfMonth(), expDateYear, "MM/DD/YYYY");
+														}
+													}
+												}
+												if(matches(""+sepRules[row]["New App Status"],"",null,"undefined")){
+													var newAppStatus = "Active";
+												}else{
+													var newAppStatus = ""+sepRules[row]["New App Status"];
+												}
+												var currCapId = capId;
+												capId = parCapId;
+												licEditExpInfo(newAppStatus, expDate);
+												updateAppStatus(newAppStatus, "Updated via sepIssueLicenseWorkflow.");
+												capId = currCapId;
+												if(""+sepRules[row]["Copy Custom Fields/Lists"]=="Yes"){
+													copyAppSpecific(parCapId);
+													copyASITables(capId, parCapId);
+												}
+												if(!matches(""+sepRules[row]["Copy Contacts"],"",null,"undefined")){
+													var strContacts = ""+sepRules[row]["Copy Contacts"];
+													if(strContacts.toUpperCase()=="ALL"){
+														copyContacts(capId, parCapId);
+													}else{
+														if(strContacts.indexOf("|")>-1){
+															var arrContacts = strContacts.split("|");
+														}else{
+															var arrContacts =[];
+															arrContacts.push(strContacts);
+														}
+														for(c in arrContacts){
+															copyContactsByType(capId, parCapId, arrContacts[c]);
+														}
+													}
+												}
+												if(""+sepRules[row]["Copy Examination"]=="Yes"){
+													aa.examination.copyExaminationList(capId, parCapId);
+												}
+												if(""+sepRules[row]["Copy Education"]=="Yes"){
+													aa.education.copyEducationList(capId, parCapId);
+												}
+												if(""+sepRules[row]["Copy Continuing Education"]=="Yes"){
+													aa.continuingEducation.copyContEducationList(capId, parCapId);
+												}
+												var notName = "" + sepRules[row]["Notification Name"];
+												if(!matches(notName, "","undefined",null)){
+													var cntType = ""+sepRules[row]["Contacts Receiving Notice"];
+													if(cntType.indexOf(",")>-1){
+														var arrType = cntType.split(",");
+														for(con in arrType){
+															var priContact = getContactObj(capId,arrType[con]);
+															sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
+														}
+													}else{
+														if(cntType.toUpperCase()=="ALL"){
+															var arrType = getContactObjs(capId);
+															for(con in arrType){
+																var priContact = getContactObj(capId,arrType[con]);
+																sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
+															}
+														}else{
+															var priContact = getContactObj(capId,cntType);
+															sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
+														}						
+													}						
+												}else{
+													logDebug("No notification name. No email sent.");
+												}
+											}
+										}
+									}else{
+										logDebug("sepIssueLicenseWorkflow: Check filter resolved to false.");
+									}
+								}else{
+									logDebug("sepIssueLicenseWorkflow: No app match.");
+								}
+							}else{
+								logDebug("sepIssueLicenseWorkflow: no task/status match.");
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}catch(err){
+	logDebug("A JavaScript Error occurred: sepIssueLicenseWorkflow:  " + err.message);
 	logDebug(err.stack)
 }}
