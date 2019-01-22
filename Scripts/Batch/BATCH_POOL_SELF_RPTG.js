@@ -356,6 +356,8 @@ try{
 					addParameter(eParams, "$$altID$$", capId.getCustomID());
 					addParameter(eParams, "$$capID$$", capId.getCustomID());
 					addParameter(eParams, "$$capType$$", appTypeString);
+					addParameter(eParams, "$$inspectionType$$", inspSched);
+					addParameter(eParams, "$$inspectionDate$$", inspDate);
 					var rFiles = [];
 					if(!matches(rptName, null, "", "undefined")){
 						var rFile;
@@ -391,8 +393,6 @@ try{
 					if(inspUser.getSuccess()){
 						var inspUserObj = inspUser.getOutput();
 						var inspEmail = inspUserObj.getEmail();
-						addParameter(eParams, "$$inspectionType$$", inspSched);
-						addParameter(eParams, "$$inspectionDate$$", inspDate);
 						sendNotification(sysFromEmail,inspEmail,"",emailTemplate,eParams, rFiles,capId);
 						logDebug(altId + ": Sent Email template " + emailTemplate + " to Inspector " + inspUserObj.getLastName() + " : " + inspEmail);
 					}else{
