@@ -66,34 +66,37 @@ else
 | Start: BATCH PARAMETERS
 |
 /------------------------------------------------------------------------------------------------------*/
-/* test parameters 
-aa.env.setValue("lookAheadDays", "-5");
-aa.env.setValue("daySpan", "5");
+/* test parameters
+//aa.env.setValue("lookAheadDays", "-5");
+//aa.env.setValue("daySpan", "5");
 aa.env.setValue("recordGroup", "EnvHealth");
 aa.env.setValue("recordType", "WQ");
 aa.env.setValue("recordSubType", "Pool");
 aa.env.setValue("recordCategory", "License");
 aa.env.setValue("InspectionToCheck", "Pool Test Results");
 aa.env.setValue("CheckListToCheck", "OUTSIDE LAB POOL SAMPLES");
+aa.env.setValue("InspectionToSchedule", "Routine Inspection");
 aa.env.setValue("AppStatusArray", "Active,About to Expire");
 aa.env.setValue("taskToCheck", "Issuance");
 aa.env.setValue("sendEmailNotifications","Y");
 aa.env.setValue("respectNotifyPrefs","Y");
-aa.env.setValue("emailTemplate","EXPIRED LICENSE");
+aa.env.setValue("emailTemplate","FAILED_POOL_INSPECTION_SCHEDULED");
 aa.env.setValue("sendEmailToContactTypes", "Responsible Party");
 aa.env.setValue("sysFromEmail", "no_reply@accela.com");
 aa.env.setValue("emailAddress", "lwacht@septechconsulting.com");
 aa.env.setValue("reportName", "");
 aa.env.setValue("setNonEmailPrefix", "");
-aa.env.setValue("newAppStatus", "Closed - Failed Results");
- */
-var lookAheadDays = getParam("lookAheadDays");
-var daySpan = getParam("daySpan");
+//aa.env.setValue("newAppStatus", "Closed - Failed Results");
+  */
+  
+//var lookAheadDays = getParam("lookAheadDays");
+//var daySpan = getParam("daySpan");
 var appGroup = getParam("recordGroup");
 var appTypeType = getParam("recordType");
 var appSubtype = getParam("recordSubType");
 var appCategory = getParam("recordCategory");
 var inspPool = getParam("InspectionToCheck");
+var inspSched = getParam("InspectionToSchedule");
 var chklistPool = getParam("CheckListToCheck");
 var arrAppStatus = getParam("AppStatusArray").split(",");
 
@@ -106,7 +109,7 @@ var sysFromEmail = getParam("sysFromEmail");
 var emailAddress = getParam("emailAddress");			// email to send report
 var rptName = getParam("reportName");
 var setNonEmailPrefix = getParam("setNonEmailPrefix");
-var newAppStatus = getParam("newAppStatus");
+//var newAppStatus = getParam("newAppStatus");
 
 if(appTypeType=="*") appTypeType="";
 if(appSubtype=="*")  appSubtype="";
@@ -126,6 +129,7 @@ var useAppSpecificGroupName = false;
 var startTime = startDate.getTime();			// Start timer
 var currentUserID = "ADMIN";
 var systemUserObj = aa.person.getUser("ADMIN").getOutput();
+/*
 var fromDate = dateAdd(null,parseInt(lookAheadDays));
 var toDate = dateAdd(null,parseInt(lookAheadDays)+parseInt(daySpan));
 fromJSDate = new Date(fromDate);
@@ -133,7 +137,7 @@ toJSDate = new Date(toDate);
 var dFromDate = aa.date.parseDate(fromDate);
 var dToDate = aa.date.parseDate(toDate);
 logDebug("fromDate: " + fromDate + "  toDate: " + toDate);
-
+*/
 /*------------------------------------------------------------------------------------------------------/
 | <===========Main=Loop================>
 |
@@ -215,25 +219,16 @@ try{
 		appTypeArray = appTypeString.split("/");
 		var capStatus = cap.getCapStatus();
 		var inspId = getScheduledInspId(inspPool);
+		//process this week's inspections.  update the status as failed if the results are in the failing range
 		var arrInspIds = getInspIdsByStatus(inspPool,"Scheduled");
 		if(arrInspIds.length>0){
 			 var tblResults = [];
 			 tblResults = getGuidesheetASITable(inspId,inspPool,chklistPool);
-			 var resFailed = false;
-			 if(!tblResults){
-				var lastWeek = dateAdd(null,-8);
-				lastWeek = new Date(lastWeek);
-				lastWeek = lastWeek.getTime();
-				var thisInspec = arrInspIds[ins];
-				var inspResultDate = convertDate(thisInspec.getScheduledDate());
-				//labs/operators have two weeks to get in results
-				if(inspResultDate<lastWeek){
-					resFailed = true;
-					logDebug("Inspection has been open for two weeks with no results. Failing inspection");
-				}
-			 }else{
+			//don't pass or fail if there are no results
+			var resFailed = false;
+			 if(tblResults){
 				 if(tblResults.length<1){
-					 resFailed=true;
+					  resFailed = "no action";
 				 }else{
 					 for(row in tblResults){
 						 var thisRow = tblResults[row];
@@ -248,23 +243,29 @@ try{
 					 }
 				 }
 			 }
-			 if(resFailed){
-				resultInspection(inspPool, "Failed", sysDate, "Failed by pool self-reporting interface");
-			 }else{				
-				resultInspection(inspPool, "Passed", sysDate, "Passed by pool self-reporting interface");
+			 if(resFailed=="no action"){
+				 logDebug("No lab results submitted--not updating inspection status");
+			 }else{
+				 if(resFailed){
+					resultInspection(inspPool, "Failed", sysDate, "Failed by pool self-reporting interface");
+				 }else{				
+					resultInspection(inspPool, "Passed", sysDate, "Passed by pool self-reporting interface");
+				 }
 			 }
 		}
-		 //figure out how to get all failed results for past two weeks and past six weeks
+		 //get all failed results for past two weeks and past six weeks
+		var cntFailedTwoWeeks = 0;
+		var cntFailedSixWeeks = 0;
+		var processFailed = false;
 		var arrInspIds = getInspIdsByStatus(inspPool,"Failed");
 		if(arrInspIds.length>0){
+			processFailed= true;
 			var sixWeeksPast = dateAdd(null,-(7*6)-1);
 			sixWeeksPast = new Date(sixWeeksPast);
 			sixWeeksPast = sixWeeksPast.getTime();
 			var twoWeeksPast = dateAdd(null,-13);
 			twoWeeksPast = new Date(twoWeeksPast);
 			twoWeeksPast = twoWeeksPast.getTime();
-			var cntFailedTwoWeeks = 0;
-			var cntFailedSixWeeks = 0;
 			for (ins in arrInspIds){
 				var thisInspec = arrInspIds[ins];
 				var inspResultDate = convertDate(thisInspec.getScheduledDate());
@@ -277,10 +278,42 @@ try{
 					}
 				}
 			}
-			//pool fails, close pool, notify contacts
+		}
+		//now check for scheduled inspections more than two weeks old, count as failed
+		//since they have not been updated
+		var arrInspIds = getInspIdsByStatus(inspPool,"Scheduled");
+		if(arrInspIds.length>0){
+			logDebug("here");
+			processFailed = true;
+			var sixWeeksPast = dateAdd(null,-(7*6)-1);
+			sixWeeksPast = new Date(sixWeeksPast);
+			sixWeeksPast = sixWeeksPast.getTime();
+			for (ins in arrInspIds){
+				var thisInspec = arrInspIds[ins];
+				var inspResultDate = convertDate(thisInspec.getScheduledDate());
+				if(inspResultDate > sixWeeksPast){
+					cntFailedSixWeeks++;
+				}
+			}
+		}
+		if(processFailed){
+			//if pool fails, schedule inspection, notify contacts
 			if(cntFailedTwoWeeks>1 || cntFailedSixWeeks>2){
-				logDebug(altId + " has a failing grade and will be closed.");
-				updateAppStatus(newAppStatus, "Closed via pool interface batch job.");
+				logDebug(altId + " has a failing grade and will be assigned an inspection.");
+				//previously, pool was going to be closed, so leaving this in case another app status is wanted
+				//updateAppStatus(newAppStatus, "Closed via pool interface batch job.");
+				var arrChildren =getChildren("EnvHealth/WQ/Pool/Application", capId);
+				//there should only be one, so assuming that's the case
+				var currCap = capId;
+				capId = arrChildren[0];
+				var inspUserId = getInspector("Initial");
+				capId=currCap;
+				var inspDate = dateAdd(null, 7);
+				if(inspUserId){
+					scheduleInspectDate(inspSched,inspDate,inspUserId);
+				}else{
+					scheduleInspectDate(inspSched,inspDate);
+				}
 				if (sendEmailNotifications == "Y" && sendEmailToContactTypes.length > 0 && emailTemplate.length > 0) {
 					var conTypeArray = sendEmailToContactTypes.split(",");
 					var sendAllContacts = conTypeArray.indexOf("ALL") >= 0 || conTypeArray.indexOf("All") >= 0 || conTypeArray.indexOf("all") >= 0;
@@ -323,8 +356,6 @@ try{
 					addParameter(eParams, "$$altID$$", capId.getCustomID());
 					addParameter(eParams, "$$capID$$", capId.getCustomID());
 					addParameter(eParams, "$$capType$$", appTypeString);
-					addParameter(eParams, "$$contactFirstName$$", cFName);
-					addParameter(eParams, "$$contactFirstName$$", cLName);
 					var rFiles = [];
 					if(!matches(rptName, null, "", "undefined")){
 						var rFile;
@@ -341,6 +372,8 @@ try{
 						var email = sendArray[i].capContact.getEmail();
 						var cFName = sendArray[i].capContact.firstName;
 						var cLName = sendArray[i].capContact.lastName;
+						addParameter(eParams, "$$contactFirstName$$", cFName);
+						addParameter(eParams, "$$contactFirstName$$", cLName);
 						//logDebug("Notification requested for " + sendArray[i] + " preferred channel: " + channel);
 						if (!respectNotifyPrefs || sendArray[i].capContact.getPreferredChannel()==0 || (channel.indexOf("EMAIL") >= 0 || channel.indexOf("E-MAIL") >= 0 || channel.indexOf("Email") >= 0)) {
 							if (!email) {
@@ -354,26 +387,25 @@ try{
 							logDebug("Preferred channel is ignored, adding to notification set.");
 						}
 					}
-					var inspUser = aa.person.getUser(thisInspec.getInspector().getFirstName(),thisInspec.getInspector().getMiddleName(),thisInspec.getInspector().getLastName());
+					var inspUser = aa.person.getUser(inspUserId); 
 					if(inspUser.getSuccess()){
 						var inspUserObj = inspUser.getOutput();
 						var inspEmail = inspUserObj.getEmail();
+						addParameter(eParams, "$$inspectionType$$", inspSched);
+						addParameter(eParams, "$$inspectionDate$$", inspDate);
 						sendNotification(sysFromEmail,inspEmail,"",emailTemplate,eParams, rFiles,capId);
 						logDebug(altId + ": Sent Email template " + emailTemplate + " to Inspector " + inspUserObj.getLastName() + " : " + inspEmail);
+					}else{
+						logDebug("Failed to get inspector email: " + inspUser.getErrorMessage());
 					}
 				}
 			}else{
 				logDebug(altId + " has a passing grade.");
 			}
 		}
-		var inspUserId = getInspector(inspPool);
+		//schedule the inspection for recording the lab results
 		var inspDate = dateAdd(null, 7);
-		if(inspUserId){
-			scheduleInspectDate(inspPool,inspDate,inspUserId);
-		}else{
-			scheduleInspectDate(inspPool,inspDate);
-		}
-		scheduleInspect(capId,inspPool,7);
+		scheduleInspectDate(inspPool,inspDate);
 	}
 	capCount++;
 	logDebug("Total CAPS qualified : " + myCaps.length);
