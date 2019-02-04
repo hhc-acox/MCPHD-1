@@ -1,4 +1,13 @@
 
+//copy the gis object onto the record so that all gis-related functions work
+try{
+	copyParcelGisObjects() 
+}catch (err){
+	logDebug("A JavaScript Error occurred: ASA:*/*/*/*: Copy GIS Object: " + err.message);
+	logDebug(err.stack)
+}
+	
+
 //assess fees
 try{
 	//see if any records are set up--module can be specific or "ALL", look for both
