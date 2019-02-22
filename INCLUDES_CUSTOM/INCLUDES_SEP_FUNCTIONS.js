@@ -18,10 +18,12 @@ try{
 				var vEventName = aa.env.getValue("EventName");
 				if(vEventName.indexOf("Before")>-1){
 					var submittedDocList = aa.env.getValue("DocumentModelList");
-					if(submittedDocList.length()>0){
-						for (var counter = 0; counter < submittedDocList.size(); counter++) {
-							var doc = submittedDocList.get(counter);
-							logDebug("category: " + doc.getDocCategory()) ;
+					if(!matches(submittedDocList,"",null,"undefined")){
+						if(submittedDocList.length>0){
+							for (var counter = 0; counter < submittedDocList.size(); counter++) {
+								var doc = submittedDocList.get(counter);
+								logDebug("category: " + doc.getDocCategory()) ;
+							}
 						}
 					}
 				}else{
@@ -30,7 +32,7 @@ try{
 			}
 			uploadedDocs = new Array();
 			if(vEventName.indexOf("Before")>-1){
-				if(submittedDocList.length()>0){
+				if(submittedDocList.length>0){
 					for (var counter = 0; counter < submittedDocList.size(); counter++) {
 						var doc = submittedDocList.get(counter);
 						//logDebug("category: " + doc.getDocCategory()) ;
@@ -129,9 +131,11 @@ try{
 }catch(err){
 	logDebug("An error occurred in sepGetReqdDocs: " + err.message);
 	logDebug(err.stack);
+	//cancel=true;
 }}
 
-function sepEmailNotifContact(recdType, contactType, respectPriChannel, notName, rName, taskName, taskStatus, sysFromEmail, addtlQuery) {
+
+function sepEmailNotifContactWkfl(recdType, contactType, respectPriChannel, notName, rName, taskName, taskStatus, sysFromEmail, addtlQuery) {
 try{
 	if((matches(taskName,null,"","undefined") || wfTask==""+taskName) && wfStatus == ""+taskStatus){
 		var appMatch = true;
@@ -155,21 +159,67 @@ try{
 					var arrType = cntType.split(",");
 					for(con in arrType){
 						var priContact = getContactObj(capId,arrType[con]);
-						sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
+						sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail,respectPriChannel);
 					}
 				}else{
 					if(cntType.toUpperCase()=="ALL"){
 						var arrType = getContactObjs(capId);
 						for(con in arrType){
-							var priContact = getContactObj(capId,arrType[con]);
-							sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
+							var thisCnt = arrType[con];
+							var priContact = getContactObj(capId,thisCnt.type);
+							sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail,respectPriChannel);
 						}
 					}else{
 						var priContact = getContactObj(capId,cntType);
-						sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
+						sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail,respectPriChannel);
 					}						
 				}						
 			}
+		}
+	}
+}catch(err){
+	logDebug("An error occurred in sepEmailNotifContactWkfl: " + err.message);
+	logDebug(err.stack);
+}}
+
+function sepEmailNotifContact(recdType, contactType, respectPriChannel, notName, rName, sysFromEmail, addtlQuery) {
+try{
+	var appMatch = true;
+	var recdTypeArr = "" + recdType
+	var arrAppType = recdTypeArr.split("/");
+	if (arrAppType.length != 4){
+		logDebug("The record type is incorrectly formatted: " + ats);
+		return false;
+	}else{
+		for (xx in arrAppType){
+			if (!arrAppType[xx].equals(appTypeArray[xx]) && !arrAppType[xx].equals("*")){
+				appMatch = false;
+			}
+		}
+	}
+	if (appMatch){
+		var chkFilter = ""+addtlQuery;
+		if (chkFilter.length==0 ||eval(chkFilter) ) {
+			var cntType = ""+contactType;
+			if(cntType.indexOf(",")>-1){
+				var arrType = cntType.split(",");
+				for(con in arrType){
+					var priContact = getContactObj(capId,arrType[con]);
+					sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
+				}
+			}else{
+				if(cntType.toUpperCase()=="ALL"){
+					var arrType = getContactObjs(capId);
+					for(con in arrType){
+						var thisCnt = arrType[con];
+						var priContact = getContactObj(capId,thisCnt.type);
+						sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail,respectPriChannel);
+					}
+				}else{
+					var priContact = getContactObj(capId,cntType);
+					sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
+				}						
+			}						
 		}
 	}
 }catch(err){
@@ -177,7 +227,7 @@ try{
 	logDebug(err.stack);
 }}
 
-function sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail){
+function sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail,respectPriChannel){
 try{
 	if(priContact){
 		var priChannel =  lookup("CONTACT_PREFERRED_CHANNEL",""+ priContact.capContact.getPreferredChannel());
@@ -280,12 +330,9 @@ try{
 		}
 	}
 	if(!emailRpt){
-		logDebug("here");
 		rFiles = [];
 	}
 	var result = null;
-	logDebug("rName: " +rName);
-	logDebug("priEmail: " +priEmail);
 	result = aa.document.sendEmailAndSaveAsDocument(emailFrom, priEmail, null, notName, eParams, capIDScriptModel, rFiles);
 	if(result.getSuccess()){
 		logDebug("Sent email successfully!");
@@ -302,9 +349,20 @@ function sepUpdateFees(sepRules) {
 try{
 	for(row in sepRules){
 		if(sepRules[row]["Active"]=="Yes"){
-			var taskName = ""+sepRules[row]["Task Name"];
-			var taskStatus = ""+sepRules[row]["Task Status"];
-			if(!matches(taskName,"",null,"undefined" || wfTask==taskName) && wfStatus==taskStatus){
+			var taskMatch = false;
+			//this runs from ASA and WTUA--only check task/status if from WTUA
+			var vEventName = aa.env.getValue("EventName");
+			if(vEventName.indexOf("Workflow")>-1){
+				var taskName = ""+sepRules[row]["Task Name"];
+				var taskStatus = ""+sepRules[row]["Task Status"];
+				if(!matches(taskName,"",null,"undefined" || wfTask==taskName) && wfStatus==taskStatus){
+					taskMatch=true;
+				}
+			}else{
+				//not run from WTUA so ignore task/status
+				taskMatch = true;
+			}
+			if(taskMatch){
 				var appMatch = true;
 				var recdType = ""+sepRules[row]["Record Type"];
 				var recdTypeArr = "" + recdType;
@@ -650,11 +708,11 @@ try{
 													var expDate = dateFormatted(sysDate.getMonth(), sysDate.getDayOfMonth(), expDateYear, "MM/DD/YYYY");
 													expDate = dateAdd(expDate,1);
 												}else{
-													if(!matches(""+sepRules[row]["Expiration - Months(s)"],"",null,"undefined")){
-														var expDate =  dateAddMonths(sysDate,sepRules[row]["Expiration - Months(s)"]);
+													if(!matches(""+sepRules[row]["Expiration - Month(s)"],"",null,"undefined")){
+														var expDate =  dateAddMonths(sysDate,sepRules[row]["Expiration - Month(s)"]);
 													}else{
 														if(!matches(""+sepRules[row]["Expiration - MM/DD"],"",null,"undefined")){
-															var expDate =  dateAddMonths(sysDate,sepRules[row]["Expiration - Months(s)"]);
+															var expDate =  dateAddMonths(sysDate,sepRules[row]["Expiration - Month(s)"]);
 														}else{
 															logDebug("No expiration date listed. Defaulting to one year.");
 															var expDateYear = sysDate.getYear()+1;
@@ -708,18 +766,19 @@ try{
 														var arrType = cntType.split(",");
 														for(con in arrType){
 															var priContact = getContactObj(capId,arrType[con]);
-															sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
+															sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail,respectPriChannel);
 														}
 													}else{
 														if(cntType.toUpperCase()=="ALL"){
 															var arrType = getContactObjs(capId);
 															for(con in arrType){
-																var priContact = getContactObj(capId,arrType[con]);
-																sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
+																var thisCnt = arrType[con];
+																var priContact = getContactObj(capId,thisCnt.type);
+																sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail,respectPriChannel);
 															}
 														}else{
 															var priContact = getContactObj(capId,cntType);
-															sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
+															sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail,respectPriChannel);
 														}						
 													}						
 												}else{
@@ -728,13 +787,13 @@ try{
 											}
 										}
 									}else{
-										logDebug("sepIssueLicenseWorkflow: Check filter resolved to false.");
+										logDebug("sepIssueLicenseWorkflow: Check filter resolved to false: " + chkFilter);
 									}
 								}else{
-									logDebug("sepIssueLicenseWorkflow: No app match.");
+									logDebug("sepIssueLicenseWorkflow: No app match: " + recdTypeArr);
 								}
 							}else{
-								logDebug("sepIssueLicenseWorkflow: no task/status match.");
+								logDebug("sepIssueLicenseWorkflow: no task/status match: " + taskName + "/" + taskStatus);
 							}
 						}
 					}
