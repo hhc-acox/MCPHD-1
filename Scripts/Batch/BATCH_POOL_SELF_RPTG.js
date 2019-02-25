@@ -86,6 +86,7 @@ aa.env.setValue("sysFromEmail", "no_reply@accela.com");
 aa.env.setValue("emailAddress", "lwacht@septechconsulting.com");
 aa.env.setValue("reportName", "");
 aa.env.setValue("setNonEmailPrefix", "");
+aa.env.setValue("inspectorUserId", "LWACHT");
 //aa.env.setValue("newAppStatus", "Closed - Failed Results");
   */
   
@@ -99,7 +100,6 @@ var inspPool = getParam("InspectionToCheck");
 var inspSched = getParam("InspectionToSchedule");
 var chklistPool = getParam("CheckListToCheck");
 var arrAppStatus = getParam("AppStatusArray").split(",");
-
 var task = getParam("taskToCheck");
 var sendEmailToContactTypes = getParam("sendEmailToContactTypes");
 var emailTemplate = getParam("emailTemplate");
@@ -109,6 +109,7 @@ var sysFromEmail = getParam("sysFromEmail");
 var emailAddress = getParam("emailAddress");			// email to send report
 var rptName = getParam("reportName");
 var setNonEmailPrefix = getParam("setNonEmailPrefix");
+var inspUserId = getParam("inspectorUserId");
 //var newAppStatus = getParam("newAppStatus");
 
 if(appTypeType=="*") appTypeType="";
@@ -162,8 +163,6 @@ if (showDebug) {
 
 function mainProcess() {
 try{
-	var capFilterBalance = 0;
-	var capFilterDateRange = 0;
 	var capCount = 0;
 	setCreated = false
 	var taskItemScriptModel = aa.workflow.getTaskItemScriptModel().getOutput();
@@ -209,7 +208,9 @@ try{
 			logDebug("Could not get record capId: " + altId);
 			continue;
 		}
+		logDebug("------------------------" );
 		logDebug("Processing record " + altId);
+		logDebug("------------------------" );
 		cap = aa.cap.getCap(capId).getOutput();
 		fileDateObj = cap.getFileDate();
 		fileDate = "" + fileDateObj.getMonth() + "/" + fileDateObj.getDayOfMonth() + "/" + fileDateObj.getYear();
@@ -218,46 +219,62 @@ try{
 		appTypeString = appTypeResult.toString();	
 		appTypeArray = appTypeString.split("/");
 		var capStatus = cap.getCapStatus();
-		var inspId = getScheduledInspId(inspPool);
-		//process this week's inspections.  update the status as failed if the results are in the failing range
+		//if the custom field "Pool status" does not match the app status, then update it
+		var poolStatus = getAppSpecific("Pool Status");
+		if(poolStatus=="Open" && capStatus=="Closed"){
+			var lastStatus = getMostRecentAppStatus("Closed");
+			updateAppStatus(lastStatus, "Updated via pool interface batch job.");
+			capStatus = lastStatus;
+		}else{
+			if(capStatus!="Closed"){
+				updateAppStatus("Closed", "Updated via pool interface batch job.");
+				capStatus = "Closed";
+			}
+		}
+		//var inspId = getScheduledInspId(inspPool);
+		//process any inspections with a scheduled status.  update the status as failed if the results are in the failing range
 		var arrInspIds = getInspIdsByStatus(inspPool,"Scheduled");
 		if(arrInspIds.length>0){
-			 var tblResults = [];
-			 tblResults = getGuidesheetASITable(inspId,inspPool,chklistPool);
-			//don't pass or fail if there are no results
-			var resFailed = false;
-			 if(tblResults){
-				 if(tblResults.length<1){
-					  resFailed = "no action";
+			for (ii in arrInspIds){
+				var tblResults = [];
+				var thisInspec = arrInspIds[ii];
+				var inspId = thisInspec.getIdNumber();
+				tblResults = getGuidesheetASITable(inspId,inspPool,chklistPool);
+				//don't pass or fail if there are no results
+				var resFailed = false;
+				if(tblResults){
+					if(tblResults.length<1){
+						resFailed = "no action";
+					}else{
+						for(row in tblResults){
+							var thisRow = tblResults[row];
+							//check for failed results
+							//logDebug("results: " + typeof(""+thisRow["Valid Results"]));
+							//logDebug("results: " + thisRow["E. Coli Results"]);
+							//logDebug("results: " + thisRow["Coliform Results"]);
+							//logDebug("results: " + thisRow["HPC"]);
+							if(""+thisRow["Valid Results"]=="No" || ""+thisRow["E. Coli Results"]=="Present" || ""+thisRow["Coliform Results"]=="Present" || ""+thisRow["HPC"]!="< 200"){
+								 resFailed=true;
+							}
+						}
+					}
+				}
+				 if(resFailed=="no action"){
+					 logDebug("No lab results submitted--not updating inspection status");
 				 }else{
-					 for(row in tblResults){
-						 var thisRow = tblResults[row];
-						 //check for failed results
-						 //logDebug("results: " + typeof(""+thisRow["Valid Results"]));
-						 //logDebug("results: " + thisRow["E. Coli Results"]);
-						 //logDebug("results: " + thisRow["Coliform Results"]);
-						 //logDebug("results: " + thisRow["HPC"]);
-						 if(""+thisRow["Valid Results"]=="No" || ""+thisRow["E. Coli Results"]=="Present" || ""+thisRow["Coliform Results"]=="Present" || ""+thisRow["HPC"]!="< 200"){
-							 resFailed=true;
-						 }
-					 }
-				 }
-			 }
-			 if(resFailed=="no action"){
-				 logDebug("No lab results submitted--not updating inspection status");
-			 }else{
-				 if(resFailed){
-					resultInspection(inspPool, "Failed", sysDate, "Failed by pool self-reporting interface");
-				 }else{				
-					resultInspection(inspPool, "Passed", sysDate, "Passed by pool self-reporting interface");
-				 }
-			 }
+					if(resFailed){
+						resultInspection(inspPool, "Unsatisfactory", sysDate, "Updated by pool self-reporting interface");
+					}else{				
+						resultInspection(inspPool, "Satisfactory", sysDate, "Updated by pool self-reporting interface");
+					}
+				}
+			}
 		}
 		 //get all failed results for past two weeks and past six weeks
 		var cntFailedTwoWeeks = 0;
 		var cntFailedSixWeeks = 0;
 		var processFailed = false;
-		var arrInspIds = getInspIdsByStatus(inspPool,"Failed");
+		var arrInspIds = getInspIdsByStatus(inspPool,"Unsatisfactory");
 		if(arrInspIds.length>0){
 			processFailed= true;
 			var sixWeeksPast = dateAdd(null,-(7*6)-1);
@@ -279,35 +296,32 @@ try{
 				}
 			}
 		}
-		//now check for scheduled inspections more than two weeks old, count as failed
-		//since they have not been updated
+		//now check for scheduled inspections more than two weeks old, count as failed if the pool was 
+		//not closed, since they have not been updated
 		var arrInspIds = getInspIdsByStatus(inspPool,"Scheduled");
 		if(arrInspIds.length>0){
-			logDebug("here");
 			processFailed = true;
 			var sixWeeksPast = dateAdd(null,-(7*6)-1);
 			sixWeeksPast = new Date(sixWeeksPast);
 			sixWeeksPast = sixWeeksPast.getTime();
+			var twoWeeksPast = dateAdd(null,-13);
+			twoWeeksPast = new Date(twoWeeksPast);
+			twoWeeksPast = twoWeeksPast.getTime();
 			for (ins in arrInspIds){
 				var thisInspec = arrInspIds[ins];
+				var recdStatus = getStatusByDate(thisInspec.getScheduledDate());
 				var inspResultDate = convertDate(thisInspec.getScheduledDate());
-				if(inspResultDate > sixWeeksPast){
+				if(recdStatus!="Closed" && inspResultDate < twoWeeksPast && inspResultDate > sixWeeksPast){
 					cntFailedSixWeeks++;
 				}
 			}
 		}
-		if(processFailed){
+		if(processFailed && capStatus!="Closed" ){
 			//if pool fails, schedule inspection, notify contacts
 			if(cntFailedTwoWeeks>1 || cntFailedSixWeeks>2){
 				logDebug(altId + " has a failing grade and will be assigned an inspection.");
-				//previously, pool was going to be closed, so leaving this in case another app status is wanted
-				//updateAppStatus(newAppStatus, "Closed via pool interface batch job.");
 				var arrChildren =getChildren("EnvHealth/WQ/Pool/Application", capId);
 				//there should only be one, so assuming that's the case
-				var currCap = capId;
-				capId = arrChildren[0];
-				var inspUserId = getInspector("Initial");
-				capId=currCap;
 				var inspDate = dateAdd(null, 7);
 				if(inspUserId){
 					scheduleInspectDate(inspSched,inspDate,inspUserId);
@@ -403,14 +417,15 @@ try{
 				logDebug(altId + " has a passing grade.");
 			}
 		}
-		//schedule the inspection for recording the lab results
-		var inspDate = dateAdd(null, 7);
-		scheduleInspectDate(inspPool,inspDate);
+		//schedule the inspection for recording the lab results on friday
+		var toDay = new Date();
+		if(toDay.getDay()==5){
+			var inspDate = dateAdd(null, 7);
+			scheduleInspectDate(inspPool,inspDate);
+		}
 	}
 	capCount++;
 	logDebug("Total CAPS qualified : " + myCaps.length);
-	logDebug("Ignored due to balance due: " + capFilterBalance);
-	logDebug("Ignored due to date range: " + capFilterDateRange);
 	logDebug("Total CAPS processed: " + capCount);
 }catch (err){
 	logDebug("ERROR: " + err.message + " In " + batchJobName);
@@ -435,7 +450,14 @@ try{
 		var inspList = inspResultObj.getOutput();
 		for (xx in inspList){
 			if (String(insp2Check).equals(inspList[xx].getInspectionType()) && inspList[xx].getInspectionStatus().toUpperCase().equals(inspStatus.toUpperCase())){
-				retArray.push(inspList[xx]);
+				//only return the last eight weeks because that's all we really care about and we don't want
+				//this running for ever.
+				var eightWeeksPast = dateAdd(null,-(7*8)-1);
+				eightWeeksPast = new Date(eightWeeksPast);
+				var inspResultDate = convertDate(inspList[xx].getScheduledDate());
+				if(inspResultDate.getTime() > eightWeeksPast.getTime()){
+					retArray.push(inspList[xx]);
+				}
 			}
 		}
 	}
@@ -557,3 +579,77 @@ try{
 	logDebug("Stack: " + err.stack);
 }}
 
+
+
+function getStatusByDate(dateToCheck) { 
+try{
+	statusResult = aa.cap.getStatusHistoryByCap(capId, "APPLICATION", null);
+	if (statusResult.getSuccess()) {
+		statusArr = statusResult.getOutput();
+		if (statusArr && statusArr.length > 0) {
+			statusArr.sort(compareStatusDate);
+			var prevStatus = false;
+			for (var xx=0; xx<statusArr.length; xx++) {
+				var thisStatus = statusArr[xx];
+				for(zz in thisStatus){
+					if(typeof(thisStatus[zz])!="function"){
+						//logDebug(zz + ": " + thisStatus[zz]);
+					}
+				}
+				if(xx==0){
+					if(thisStatus.getStatusDate().getEpochMilliseconds() < dateToCheck.getEpochMilliseconds() ){
+						var thisStatusStatus = "" + thisStatus.status;
+						return thisStatusStatus;
+					}
+				}else{
+					if(thisStatus.getStatusDate().getEpochMilliseconds() < dateToCheck.getEpochMilliseconds() && dateToCheck.getEpochMilliseconds() > prevStatus.getStatusDate().getEpochMilliseconds()){
+						var thisStatusStatus = "" + prevStatus.status;
+						return thisStatusStatus;
+					}
+				}
+				prevStatus = statusArr[xx==0?0:xx-1];
+			}
+		}
+	}else {
+		logDebug("Error getting application status history " + statusResult.getErrorMessage());
+	}
+}catch (err){
+	logDebug("ERROR: getStatusByDate: " + err.message + " In " + batchJobName);
+	logDebug("Stack: " + err.stack);
+}}
+
+function compareStatusDate(a,b) {
+try{
+    return (a.getStatusDate().getEpochMilliseconds() > b.getStatusDate().getEpochMilliseconds()); 
+}catch (err){
+	logDebug("ERROR: getMostRecentAppStatus: " + err.message + " In " + batchJobName);
+	logDebug("Stack: " + err.stack);
+}}
+
+function getMostRecentAppStatus() { // optional statuses to exclude
+try{
+	var ignoreArray = new Array();
+	if (arguments.length > 0) {
+		for (var i=0; i<arguments.length;i++) 
+			ignoreArray.push(arguments[i]);
+	}
+	statusResult = aa.cap.getStatusHistoryByCap(capId, "APPLICATION", null);
+	if (statusResult.getSuccess()) {
+		statusArr = statusResult.getOutput();
+		if (statusArr && statusArr.length > 0) {
+			statusArr.sort(compareStatusDate);
+			for (xx in statusArr) {
+				var thisStatus = statusArr[xx];
+				var thisStatusStatus = "" + thisStatus.getStatus();
+				if (!exists(thisStatusStatus, ignoreArray))
+					return thisStatusStatus;
+			}
+		}
+	}
+	else {
+		logDebug("Error getting application status history " + statusResult.getErrorMessage());
+	}
+}catch (err){
+	logDebug("ERROR: getMostRecentAppStatus: " + err.message + " In " + batchJobName);
+	logDebug("Stack: " + err.stack);
+}}
