@@ -66,7 +66,7 @@ else
 | Start: BATCH PARAMETERS
 |
 /------------------------------------------------------------------------------------------------------*/
-/* test parameters
+/* test parameters 
 //aa.env.setValue("lookAheadDays", "-5");
 //aa.env.setValue("daySpan", "5");
 aa.env.setValue("recordGroup", "EnvHealth");
@@ -76,7 +76,7 @@ aa.env.setValue("recordCategory", "License");
 aa.env.setValue("InspectionToCheck", "Pool Test Results");
 aa.env.setValue("CheckListToCheck", "OUTSIDE LAB POOL SAMPLES");
 aa.env.setValue("InspectionToSchedule", "Routine Inspection");
-aa.env.setValue("AppStatusArray", "Active,About to Expire");
+aa.env.setValue("AppStatusArray", "Active,About to Expire,Closed");
 aa.env.setValue("taskToCheck", "Issuance");
 aa.env.setValue("sendEmailNotifications","Y");
 aa.env.setValue("respectNotifyPrefs","Y");
@@ -88,7 +88,7 @@ aa.env.setValue("reportName", "");
 aa.env.setValue("setNonEmailPrefix", "");
 aa.env.setValue("inspectorUserId", "LWACHT");
 //aa.env.setValue("newAppStatus", "Closed - Failed Results");
-  */
+ */
   
 //var lookAheadDays = getParam("lookAheadDays");
 //var daySpan = getParam("daySpan");
@@ -193,8 +193,18 @@ try{
 		logDebug("Error: Getting records, reason is: " + capResult.getErrorMessage()) ;
 		return false;
 	}
+	//need this for updating the app status
+	var lastFriday = dateAdd(null,-8);
+	lastFriday = new Date(lastFriday);
+	for (var dt = 0; dt < 8; dt++) {
+		if(lastFriday.getDay()!=5){
+			dateAdd(lastFriday,1);
+		}else{
+			logDebug("lastFriday: " + lastFriday);
+			dt=8;
+		}
+	}
 	logDebug("Found " + myCaps.length + " records to process");
-		
 	for (myCapsXX in myCaps) {
 		if (elapsed() > maxSeconds) { // only continue if time hasn't expired
 			logDebug("WARNING: A script timeout has caused partial completion of this process.  Please re-run.  " + elapsed() + " seconds elapsed, " + maxSeconds + " allowed.") ;
@@ -219,18 +229,6 @@ try{
 		appTypeString = appTypeResult.toString();	
 		appTypeArray = appTypeString.split("/");
 		var capStatus = cap.getCapStatus();
-		//if the custom field "Pool status" does not match the app status, then update it
-		var poolStatus = getAppSpecific("Pool Status");
-		if(poolStatus=="Open" && capStatus=="Closed"){
-			var lastStatus = getMostRecentAppStatus("Closed");
-			updateAppStatus(lastStatus, "Updated via pool interface batch job.");
-			capStatus = lastStatus;
-		}else{
-			if(capStatus!="Closed"){
-				updateAppStatus("Closed", "Updated via pool interface batch job.");
-				capStatus = "Closed";
-			}
-		}
 		//var inspId = getScheduledInspId(inspPool);
 		//process any inspections with a scheduled status.  update the status as failed if the results are in the failing range
 		var arrInspIds = getInspIdsByStatus(inspPool,"Scheduled");
@@ -239,6 +237,7 @@ try{
 				var tblResults = [];
 				var thisInspec = arrInspIds[ii];
 				var inspId = thisInspec.getIdNumber();
+				var inspResultDate = convertDate(thisInspec.getScheduledDate());
 				tblResults = getGuidesheetASITable(inspId,inspPool,chklistPool);
 				//don't pass or fail if there are no results
 				var resFailed = false;
@@ -247,6 +246,7 @@ try{
 						resFailed = "no action";
 					}else{
 						for(row in tblResults){
+							var tNbr = row;
 							var thisRow = tblResults[row];
 							//check for failed results
 							//logDebug("results: " + typeof(""+thisRow["Valid Results"]));
@@ -255,6 +255,21 @@ try{
 							//logDebug("results: " + thisRow["HPC"]);
 							if(""+thisRow["Valid Results"]=="No" || ""+thisRow["E. Coli Results"]=="Present" || ""+thisRow["Coliform Results"]=="Present" || ""+thisRow["HPC"]!="< 200"){
 								 resFailed=true;
+							}
+							//if the field "Pool status" does not match the app status, then update it
+							//only use first row for this and only the inspection for this week
+							if(row<1 && inspResultDate>lastFriday.getTime()){
+								var poolStatus = thisRow["Pool Status"];
+								if(poolStatus=="Open" && capStatus=="Closed"){
+									var lastStatus = getMostRecentAppStatus("Closed");
+									updateAppStatus(lastStatus, "Updated via pool interface batch job.");
+									capStatus = lastStatus;
+								}else{
+									if(capStatus!="Closed"){
+										updateAppStatus("Closed", "Updated via pool interface batch job.");
+										capStatus = "Closed";
+									}
+								}
 							}
 						}
 					}
@@ -320,8 +335,6 @@ try{
 			//if pool fails, schedule inspection, notify contacts
 			if(cntFailedTwoWeeks>1 || cntFailedSixWeeks>2){
 				logDebug(altId + " has a failing grade and will be assigned an inspection.");
-				var arrChildren =getChildren("EnvHealth/WQ/Pool/Application", capId);
-				//there should only be one, so assuming that's the case
 				var inspDate = dateAdd(null, 7);
 				if(inspUserId){
 					scheduleInspectDate(inspSched,inspDate,inspUserId);
@@ -423,8 +436,8 @@ try{
 			var inspDate = dateAdd(null, 7);
 			scheduleInspectDate(inspPool,inspDate);
 		}
+		capCount++;
 	}
-	capCount++;
 	logDebug("Total CAPS qualified : " + myCaps.length);
 	logDebug("Total CAPS processed: " + capCount);
 }catch (err){
