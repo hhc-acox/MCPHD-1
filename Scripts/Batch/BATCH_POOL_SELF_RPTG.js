@@ -75,6 +75,7 @@ aa.env.setValue("recordSubType", "Pool");
 aa.env.setValue("recordCategory", "License");
 aa.env.setValue("InspectionToCheck", "Pool Test Results");
 aa.env.setValue("CheckListToCheck", "OUTSIDE LAB POOL SAMPLES");
+aa.env.setValue("StatusChecklist", "POOL STATUS");
 aa.env.setValue("InspectionToSchedule", "Routine Inspection");
 aa.env.setValue("AppStatusArray", "Active,About to Expire,Closed");
 aa.env.setValue("taskToCheck", "Issuance");
@@ -99,6 +100,7 @@ var appCategory = getParam("recordCategory");
 var inspPool = getParam("InspectionToCheck");
 var inspSched = getParam("InspectionToSchedule");
 var chklistPool = getParam("CheckListToCheck");
+var statusChecklist = getParam("StatusChecklist");
 var arrAppStatus = getParam("AppStatusArray").split(",");
 var task = getParam("taskToCheck");
 var sendEmailToContactTypes = getParam("sendEmailToContactTypes");
@@ -218,9 +220,8 @@ try{
 			logDebug("Could not get record capId: " + altId);
 			continue;
 		}
-		logDebug("------------------------" );
-		logDebug("Processing record " + altId);
-		logDebug("------------------------" );
+		logDebug("------------------------------------------------" );
+		logDebug("-----Processing record " + altId);
 		cap = aa.cap.getCap(capId).getOutput();
 		fileDateObj = cap.getFileDate();
 		fileDate = "" + fileDateObj.getMonth() + "/" + fileDateObj.getDayOfMonth() + "/" + fileDateObj.getYear();
@@ -256,21 +257,6 @@ try{
 							if(""+thisRow["Valid Results"]=="No" || ""+thisRow["E. Coli Results"]=="Present" || ""+thisRow["Coliform Results"]=="Present" || ""+thisRow["HPC"]!="< 200"){
 								 resFailed=true;
 							}
-							//if the field "Pool status" does not match the app status, then update it
-							//only use first row for this and only the inspection for this week
-							if(row<1 && inspResultDate>lastFriday.getTime()){
-								var poolStatus = thisRow["Pool Status"];
-								if(poolStatus=="Open" && capStatus=="Closed"){
-									var lastStatus = getMostRecentAppStatus("Closed");
-									updateAppStatus(lastStatus, "Updated via pool interface batch job.");
-									capStatus = lastStatus;
-								}else{
-									if(capStatus!="Closed"){
-										updateAppStatus("Closed", "Updated via pool interface batch job.");
-										capStatus = "Closed";
-									}
-								}
-							}
 						}
 					}
 				}
@@ -281,6 +267,24 @@ try{
 						resultInspection(inspPool, "Unsatisfactory", sysDate, "Updated by pool self-reporting interface");
 					}else{				
 						resultInspection(inspPool, "Satisfactory", sysDate, "Updated by pool self-reporting interface");
+					}
+				}
+				//if the field "Pool status" does not match the app status, then update it
+				//only use first row for this and only the inspection for this week
+				tblResults = getGuidesheetASITable(inspId,inspPool,statusChecklist);
+				if(tblResults.length<1){
+					if(inspResultDate>lastFriday.getTime()){
+						var poolStatus = row[0]["Pool Status"];
+						if(poolStatus=="Open" && capStatus=="Closed"){
+							var lastStatus = getMostRecentAppStatus("Closed");
+							updateAppStatus(lastStatus, "Updated via pool interface batch job.");
+							capStatus = lastStatus;
+						}else{
+							if(poolStatus=="Closed" && capStatus!="Closed"){
+								updateAppStatus("Closed", "Updated via pool interface batch job.");
+								capStatus = "Closed";
+							}
+						}
 					}
 				}
 			}
