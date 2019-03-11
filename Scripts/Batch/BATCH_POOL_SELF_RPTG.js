@@ -241,7 +241,7 @@ try{
 				var inspResultDate = convertDate(thisInspec.getScheduledDate());
 				tblResults = getGuidesheetASITable(inspId,inspPool,chklistPool);
 				//don't pass or fail if there are no results
-				var resFailed = false;
+				var resFailed = "false";
 				if(tblResults){
 					if(tblResults.length<1){
 						resFailed = "no action";
@@ -255,24 +255,25 @@ try{
 							//logDebug("results: " + thisRow["Coliform Results"]);
 							//logDebug("results: " + thisRow["HPC"]);
 							if(""+thisRow["Valid Results"]=="No" || ""+thisRow["E. Coli Results"]=="Present" || ""+thisRow["Coliform Results"]=="Present" || ""+thisRow["HPC"]!="< 200"){
-								 resFailed=true;
+								 resFailed="true";
 							}
 						}
 					}
 				}
-				 if(resFailed=="no action"){
-					 logDebug("No lab results submitted--not updating inspection status");
-				 }else{
-					if(resFailed){
-						resultInspection(inspPool, "Unsatisfactory", sysDate, "Updated by pool self-reporting interface");
-					}else{				
+				//for some reason, when resFailed is set to false (not 'false'), resFailed=='no action' resolves to true, so doing this instead
+				if(resFailed=="true"){
+					resultInspection(inspPool, "Unsatisfactory", sysDate, "Updated by pool self-reporting interface");
+				}else{				
+					if(resFailed=="no action"){
+						 logDebug("No lab results submitted--not updating inspection status");
+					}else{
 						resultInspection(inspPool, "Satisfactory", sysDate, "Updated by pool self-reporting interface");
 					}
 				}
 				//if the field "Pool status" does not match the app status, then update it
 				//only use first row for this and only the inspection for this week
 				tblResults = getGuidesheetASITable(inspId,inspPool,statusChecklist);
-				if(tblResults.length<1){
+				if(tblResults.length>0){
 					if(inspResultDate>lastFriday.getTime()){
 						var poolStatus = row[0]["Pool Status"];
 						if(poolStatus=="Open" && capStatus=="Closed"){
