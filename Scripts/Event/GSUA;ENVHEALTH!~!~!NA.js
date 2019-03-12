@@ -1,9 +1,9 @@
 //lwacht: 190117
 
 try{
-	if (guideSheetObj && "LAB SAMPLES" == guideSheetObj.getGuideType().toUpperCase()) {
+	if (GuidesheetModel && "LAB SAMPLES" == GuidesheetModel.getGuideType().toUpperCase()) {
 		var dataJsonArray = [];
-		var guidesheetItem = guideSheetObj.getItems();
+		var guidesheetItem = GuidesheetModel.getItems();
 		for(var j=0;j< guidesheetItem.size();j++) {
 			var item = guidesheetItem.get(j);
 			logDebug("item.getGuideItemStatus(): " + item.getGuideItemStatus());
@@ -47,7 +47,7 @@ try{
 						"InspectorName": inspName,
 						"SampleType": ""+tableArr[row]["Sample Type"],
 						"InspectionID": ""+inspId,
-						"ChecklistID": ""+guideSheetObj.guidesheetSeqNbr,
+						"ChecklistID": ""+GuidesheetModel.guidesheetSeqNbr,
 						"ChecklistItemID": ""+item.guideItemSeqNbr,
 						"RecordID": ""+capIDString
 					};
