@@ -137,4 +137,4 @@ try{
 	logDebug("A JavaScript Error occurred: GSUA:EnvHealth/VC/LARVICIDESITE/NA: update area field: " + err.message);
 	logDebug(err.stack)
 }
-//lwacht: 181012: end
+lwacht: 181012: end */
