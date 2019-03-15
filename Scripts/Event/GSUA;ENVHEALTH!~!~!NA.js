@@ -20,6 +20,13 @@ try{
 			logDebug("**WARNING: no address for comparison:");
 		} 
 		var fullAddress = [ao.getHouseNumberStart(),ao.getStreetDirection(),ao.getStreetName(),ao.getStreetSuffix(),,ao.getCity(),,ao.getState(),ao.getZip()].filter(Boolean).join(" ");
+		var currUser = aa.person.getUser(currentUserID).getOutput();
+		if (currUser.getSuccess()){
+			var thisUser = currUser.getOutput();
+			var inspName = thisUser.getFirstName() + " " + thisUser.getLastName();
+		}else{
+			var inspName = "N/A";
+		}
 		var dataJsonArray = [];
 		var guidesheetItem = GuidesheetModel.getItems();
 		for(var j=0;j< guidesheetItem.size();j++) {
