@@ -68,7 +68,7 @@ try{
 						"InspectorName": inspName,
 						"SampleType": ""+tableArr[row]["Sample Type"],
 						"InspectionID": ""+inspId,
-						"ChecklistID": ""+guideSheetObj.guidesheetSeqNbr,
+						"ChecklistID": ""+GuidesheetModel.guidesheetSeqNbr,
 						"ChecklistItemID": ""+item.guideItemSeqNbr,
 						"RecordID": ""+capIDString
 					};
@@ -87,9 +87,9 @@ try{
 				var theResp = postResp.getOutput();
 				if(theResp["resultCode"]=="200"){
 					item.setGuideItemStatus("In Lab");
-					var updateResult = aa.guidesheet.updateGGuidesheet(guideSheetObj,guideSheetObj.getAuditID());
+					var updateResult = aa.guidesheet.updateGGuidesheet(GuidesheetModel,GuidesheetModel.getAuditID());
 					if (updateResult.getSuccess()) {
-						logDebug("Successfully updated " + guideSheetObj.getGuideType() + ".");
+						logDebug("Successfully updated " + GuidesheetModel.getGuideType() + ".");
 					} else {
 						logDebug("Could not update guidesheet ID: " + updateResult.getErrorMessage());
 					}
