@@ -21,7 +21,7 @@ try{
 		} 
 		var fullAddress = [ao.getHouseNumberStart(),ao.getStreetDirection(),ao.getStreetName(),ao.getStreetSuffix(),,ao.getCity(),,ao.getState(),ao.getZip()].filter(Boolean).join(" ");
 		var currUser = aa.person.getUser(currentUserID).getOutput();
-		if (currUser.getSuccess()){
+		if (currUser.getSuccess()){ 
 			var thisUser = currUser.getOutput();
 			var inspName = thisUser.getFirstName() + " " + thisUser.getLastName();
 		}else{
