@@ -72,7 +72,7 @@ try{
 						"FieldNotes": ""+tableArr[row]["Field Notes"],
 						"InspectorName": inspName,
 						"SampleType": ""+tableArr[row]["Sample Type"],
-						"InspectionID": ""+inspId,
+						"InspectionID": ""+GuidesheetModel.activityNumber,
 						"ChecklistID": ""+GuidesheetModel.guidesheetSeqNbr,
 						"ChecklistItemID": ""+item.guideItemSeqNbr,
 						"RecordID": ""+capIDString
