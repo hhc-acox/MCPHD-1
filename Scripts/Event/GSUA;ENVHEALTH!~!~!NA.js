@@ -2,11 +2,11 @@
 
 try{
 	if (GuidesheetModel && "LAB SAMPLES" == GuidesheetModel.getGuideType().toUpperCase()) {
-		for(xx in GuidesheetModel){ 
-			if(typeof(GuidesheetModel[xx])!="function"){
-				logDebug(xx+": " + GuidesheetModel[xx]);
-			}
-		}
+		//for(xx in GuidesheetModel){ 
+		//	if(typeof(GuidesheetModel[xx])!="function"){
+		//		logDebug(xx+": " + GuidesheetModel[xx]);
+		//	}
+		//}
 		var thisCapId = GuidesheetModel.capID;
 		var addResult = aa.address.getAddressByCapId(thisCapId);
 		if (addResult.getSuccess()){
