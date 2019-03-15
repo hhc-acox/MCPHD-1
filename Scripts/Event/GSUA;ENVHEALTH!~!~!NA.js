@@ -90,7 +90,7 @@ try{
 				//urlLIMS is stored in INCLUDES_CUSTOM_FUNCTIONS
 				var postResp = httpClientPut(urlLIMS, nDataJson, 'application/json', 'utf-8');
 				var theResp = postResp.getOutput();
-				if(theResp["resultCode"]!="200"){
+				if(theResp["resultCode"]=="200"){
 					item.setGuideItemStatus("In Lab");
 					var updateResult = aa.guidesheet.updateGGuidesheet(GuidesheetModel,GuidesheetModel.getAuditID());
 					if (updateResult.getSuccess()) {
