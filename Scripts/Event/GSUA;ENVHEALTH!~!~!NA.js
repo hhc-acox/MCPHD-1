@@ -2,6 +2,11 @@
 
 try{
 	if (GuidesheetModel && "LAB SAMPLES" == GuidesheetModel.getGuideType().toUpperCase()) {
+		for(xx in GuidesheetModel){
+			if(typeof(GuidesheetModel[xx])!="function"){
+				logDebug(xx+": " + GuidesheetModel[xx]);
+			}
+		}
 		var dataJsonArray = [];
 		var guidesheetItem = GuidesheetModel.getItems();
 		for(var j=0;j< guidesheetItem.size();j++) {
@@ -37,17 +42,21 @@ try{
 				//return tableArr;
 				for(row in tableArr){
 					var thisRow = tableArr[row];
+					var limsReason = lookup("Sample_Reasons",""+tableArr[row]["Reason"]);
+					if(matches(limsReason,null,false,"undefined")){
+						limsReason="TOT";
+					}
 					var jsonResult = {
 						"SampleID": ""+tableArr[row]["Sample ID"],
 						//"SampleID": "345987",
 						"SampleAddress": fullAddress,
-						"Reason": ""+tableArr[row]["Reason"],
-						"SampleLocation": [""+tableArr[row]["Sample Location"],tableArr[row]["Sample Other"]].filter(Boolean).join(": "),
+						"Reason": limsReason,
+						"SampleLocation": [""+tableArr[row]["Sample Location"],tableArr[row]["Other Sample Location"]].filter(Boolean).join(": "),
 						"FieldNotes": ""+tableArr[row]["Field Notes"],
 						"InspectorName": inspName,
 						"SampleType": ""+tableArr[row]["Sample Type"],
 						"InspectionID": ""+inspId,
-						"ChecklistID": ""+GuidesheetModel.guidesheetSeqNbr,
+						"ChecklistID": ""+guideSheetObj.guidesheetSeqNbr,
 						"ChecklistItemID": ""+item.guideItemSeqNbr,
 						"RecordID": ""+capIDString
 					};
