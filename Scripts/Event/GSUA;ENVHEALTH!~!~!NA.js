@@ -2,19 +2,31 @@
 
 try{
 	if (GuidesheetModel && "LAB SAMPLES" == GuidesheetModel.getGuideType().toUpperCase()) {
-		for(xx in GuidesheetModel){
-			if(typeof(GuidesheetModel[xx])!="function"){
-				logDebug(xx+": " + GuidesheetModel[xx]);
-			}
+		//for(xx in GuidesheetModel){
+		//	if(typeof(GuidesheetModel[xx])!="function"){
+		//		logDebug(xx+": " + GuidesheetModel[xx]);
+		//	}
+		//}
+		var thisCapId = GuidesheetModel.capID;
+		var addResult = aa.address.getAddressByCapId(thisCapId);
+		if (addResult.getSuccess()){
+			var aoArray = addResult.getOutput();
+		}else{ 
+			logDebug("**ERROR: getting address by cap ID: " + addResult.getErrorMessage());
 		}
+		if (aoArray.length){ 
+			var ao = aoArray[0]; 
+		}else{
+			logDebug("**WARNING: no address for comparison:");
+		} 
+		var fullAddress = [ao.getHouseNumberStart(),ao.getStreetDirection(),ao.getStreetName(),ao.getStreetSuffix(),,ao.getCity(),,ao.getState(),ao.getZip()].filter(Boolean).join(" ");
 		var dataJsonArray = [];
 		var guidesheetItem = GuidesheetModel.getItems();
 		for(var j=0;j< guidesheetItem.size();j++) {
 			var item = guidesheetItem.get(j);
-			logDebug("item.getGuideItemStatus(): " + item.getGuideItemStatus());
+			//logDebug("item.getGuideItemStatus(): " + item.getGuideItemStatus());
 			var chkStatus = ""+item.getGuideItemStatus();
 			if(chkStatus=="Send to LIMS"){
-				logDebug("here");
 			//if(item.getGuideItemStatus()==item.getGuideItemStatus()){
 				var guideItemASITs = item.getItemASITableSubgroupList();
 				if (guideItemASITs!=null){
@@ -72,6 +84,19 @@ try{
 				logDebug("myJSON: " + nDataJson)							
 				//urlLIMS is stored in INCLUDES_CUSTOM_FUNCTIONS
 				var postResp = httpClientPut(urlLIMS, nDataJson, 'application/json', 'utf-8');
+				var theResp = postResp.getOutput();
+				if(theResp["resultCode"]=="200"){
+					item.setGuideItemStatus("In Lab");
+					var updateResult = aa.guidesheet.updateGGuidesheet(guideSheetObj,guideSheetObj.getAuditID());
+					if (updateResult.getSuccess()) {
+						logDebug("Successfully updated " + guideSheetObj.getGuideType() + ".");
+					} else {
+						logDebug("Could not update guidesheet ID: " + updateResult.getErrorMessage());
+					}
+				}else{
+					showMessage=true;
+					comment("Error sending data to LIMS. Please correct: " + theResp["result"]);
+				}
 			}
 		}
 	}
