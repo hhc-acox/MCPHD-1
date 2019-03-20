@@ -437,9 +437,18 @@ try{
 		}
 		//schedule the inspection for recording the lab results on friday
 		var toDay = new Date();
-		if(toDay.getDay()==5){
+		if(toDay.getDay()!=5){
 			var inspDate = dateAdd(null, 7);
 			scheduleInspectDate(inspPool,inspDate);
+			var arrInsps = getInspIdsByStatus(inspPool,"Scheduled");
+			for(ii in arrInsps){
+				var inspResultDate = convertDate(arrInsps[ii].getScheduledDate());
+				logDebug("inspResultDate: " + inspResultDate);
+				if(inspResultDate.getTime() > toDay.getTime()){
+					logDebug("here");
+					updatePoolSTatus();
+				}
+			}
 		}
 		capCount++;
 	}
@@ -514,14 +523,16 @@ try{
 									for(var j = 0; j < guideItemASITs.size(); j++){
 										var guideItemASIT = guideItemASITs.get(j);
 										if(guideItemASIT && asitName == guideItemASIT.getTableName()){
+											if(uideItemASIT.getTableName()=statusChecklist){
+												oldColumnList = guideItemASIT.getColumnList();
+											}
 											var tableArr = new Array();
 											var columnList = guideItemASIT.getColumnList();
 											for (var k = 0; k < columnList.size() ; k++ ){
 												var column = columnList.get(k);
 												var values = column.getValueMap().values();
 												var iteValues = values.iterator();
-												while(iteValues.hasNext())
-												{
+												while(iteValues.hasNext()){
 													var i = iteValues.next();
 													var zeroBasedRowIndex = i.getRowIndex()-1;
 													if (tableArr[zeroBasedRowIndex] == null) tableArr[zeroBasedRowIndex] = new Array();
@@ -552,52 +563,6 @@ try{
 	logDebug("A JavaScript Error occurred: getGuidesheetASIValue: " + err.message);
 	logDebug(err.stack);
 }}
-
-function createExpirationSet( prefix ){
-// Create Set
-try{
-	if (prefix != ""){
-		var yy = startDate.getFullYear().toString().substr(2,2);
-		var mm = (startDate.getMonth() +1 ).toString(); //getMonth() returns (0 - 11)
-		if (mm.length<2)
-			mm = "0"+mm;
-		var dd = startDate.getDate().toString();
-		if (dd.length<2)
-			dd = "0"+dd;
-		var hh = startDate.getHours().toString();
-		if (hh.length<2)
-			hh = "0"+hh;
-		var mi = startDate.getMinutes().toString();
-		if (mi.length<2)
-			mi = "0"+mi;
-		//var setName = prefix.substr(0,5) + yy + mm + dd;
-		var setName = prefix + "_" + yy + mm + dd;
-		setDescription = prefix + " : " + mm + dd + yy;
-		setResult = aa.set.getSetByPK(setName);
-		setExist = false;
-		setExist = setResult.getSuccess();
-		if (!setExist) {
-			//var setCreateResult= aa.set.createSet(setName,setDescription);
-			//var s = new capSet(setName,prefix,"License Notifications", "Notification records processed by Batch Job " + batchJobName + " Job ID " + batchJobID);
-			var setCreateResult= aa.set.createSet(setName,prefix,"License Notifications","Created via batch script " + batchJobName);
-			if( setCreateResult.getSuccess() ){
-				logDebug("New Set ID "+setName+" created for CAPs processed by this batch job.<br>");
-				return setName;
-			}else{
-				logDebug("ERROR: Unable to create new Set ID "+setName+" for CAPs processed by this batch job.");
-				return false;
-			}
-		}else{
-			logDebug("Set " + setName + " already exists and will be used for this batch run<br>");
-			return setName;
-		}
-	}
-}catch (err){
-	logDebug("ERROR: createExpirationSet: " + err.message + " In " + batchJobName);
-	logDebug("Stack: " + err.stack);
-}}
-
-
 
 function getStatusByDate(dateToCheck) { 
 try{
@@ -671,3 +636,75 @@ try{
 	logDebug("ERROR: getMostRecentAppStatus: " + err.message + " In " + batchJobName);
 	logDebug("Stack: " + err.stack);
 }}
+
+function updatePoolSTatus(){
+try{
+	var r = aa.inspection.getInspections(capId);
+	if (r.getSuccess()) {
+		var inspArray = r.getOutput();
+		for (i in inspArray) {
+			if (inspArray[i].getIdNumber() == "23910806") {
+				var inspModel = inspArray[i].getInspection();
+				var gs = inspModel.getGuideSheets();
+				if (gs) {
+					for(var i=0;i< gs.size();i++) {
+						var guideSheetObj = gs.get(i);
+						if (guideSheetObj && "VC_LARVICIDE"== guideSheetObj.getGuideType().toUpperCase()) {
+							var guidesheetItem = guideSheetObj.getItems();
+							for(var j=0;j< guidesheetItem.size();j++) {
+								var item = guidesheetItem.get(j);
+								var guideItemASITs = item.getItemASITableSubgroupList();
+								if (guideItemASITs!=null){
+									for(var k = 0; k < guideItemASITs.size(); k++){
+										var guideItemASIT = guideItemASITs.get(k);
+										for(xx in guideItemASITs){
+											if(typeof(guideItemASITs[xx])=='function'){
+												//logDebug(xx);
+											}
+										}
+										if(guideItemASIT && statusChecklist == guideItemASIT.getTableName()){
+											guideItemASIT.setColumnList(closedColumnList);
+											var updateResult = aa.guidesheet.updateGGuidesheet(guideSheetObj,guideSheetObj.getAuditID());
+											if (updateResult.getSuccess()) {
+												logDebug("Successfully updated " + guideSheetObj.getGuideType() + ".");
+											} else {
+												logDebug("Could not update guidesheet ID: " + updateResult.getErrorMessage());
+											}
+										}
+										var tableArr = new Array();
+										var columnList = guideItemASIT.getColumnList();
+										for (var k = 0; k < columnList.size() ; k++ ){
+											var column = columnList.get(k);
+											var values = column.getValueMap().values();
+											var iteValues = values.iterator();
+											while(iteValues.hasNext()){
+												var i = iteValues.next();
+												var zeroBasedRowIndex = i.getRowIndex()-1;
+												if(column.getColumnName() == "Pool Status"){
+													if(capStatus=="Closed"){
+														i.setAttributeValue("Closed");
+													}else{
+														i.setAttributeValue("Open");
+													}
+													var updateResult = aa.guidesheet.updateGGuidesheet(GuidesheetModel,GuidesheetModel.getAuditID());
+													if (updateResult.getSuccess()) {
+														logDebug("Successfully updated " + GuidesheetModel.getGuideType() + ".");
+													} else {
+														logDebug("Could not update guidesheet ID: " + updateResult.getErrorMessage());
+													}
+												}
+											}
+										}
+									}
+								}
+							}			
+						}
+					}
+				}
+			}
+		}
+	}
+}catch(err){
+	logDebug("A JavaScript Error occurred: updatePoolSTatus: " + err.message);
+	logDebug(err.stack)
+}}	
