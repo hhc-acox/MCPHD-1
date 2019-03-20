@@ -59,9 +59,10 @@ try{
 				//return tableArr;
 				for(row in tableArr){
 					var thisRow = tableArr[row];
-					var limsReason = lookup("Sample_Reasons",""+tableArr[row]["Reason"]);
+					//var limsReason = lookup("Sample_Reasons",""+tableArr[row]["Reason"]);
+					var limsReason = ""+tableArr[row]["Reason"];
 					if(matches(limsReason,null,false,"undefined")){
-						limsReason="TOT";
+						limsReason="Other";
 					}
 					var jsonResult = {
 						"SampleID": ""+tableArr[row]["Sample ID"],

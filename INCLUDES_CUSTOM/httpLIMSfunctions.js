@@ -11,8 +11,8 @@ try{
     var putMethod = new httpClientClass.methods.PutMethod(url);
 
     httpClient.getParams().setParameter(httpMethodParamsClass.RETRY_HANDLER, new httpClientClass.DefaultHttpMethodRetryHandler());
-    httpClient.getParams().setParameter("username", "chemware");
-    httpClient.getParams().setParameter("password", "sixforks2019");
+    //httpClient.getParams().setParameter("username", "chemware");
+    //httpClient.getParams().setParameter("password", "sixforks2019");
     putMethod.addRequestHeader("token", "sljk3086u20jajhi7a92io346a54a4u3iu5"); 
     putMethod.addRequestHeader("Content-Type", contentType);
     putMethod.addRequestHeader("Content-Length", jsonString.length);

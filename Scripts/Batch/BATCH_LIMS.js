@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------------------------------/
-| Program: BATCH_UPDATE_APPLIC_STATUS
+| Program: BATCH_LIMS_PROCESS
 | Client:  MCPHD
 |
 | Version 1.0 - Base Version. 
@@ -66,7 +66,7 @@ else
 | Start: BATCH PARAMETERS
 |
 /------------------------------------------------------------------------------------------------------*/
-/* test parameters 
+/* test parameters  */
 //aa.env.setValue("lookAheadDays", "-5");
 //aa.env.setValue("daySpan", "5");
 aa.env.setValue("recordGroup", "EnvHealth");
@@ -79,17 +79,17 @@ aa.env.setValue("InspectionToCheck", "Initial");
 //aa.env.setValue("InspectionToSchedule", "Routine Inspection");
 aa.env.setValue("AppStatusArray", "Active,About to Expire,Closed");
 aa.env.setValue("taskToCheck", "Issuance");
-aa.env.setValue("sendEmailNotifications","Y");
-aa.env.setValue("respectNotifyPrefs","Y");
-aa.env.setValue("emailTemplate","FAILED_POOL_INSPECTION_SCHEDULED");
-aa.env.setValue("sendEmailToContactTypes", "Responsible Party");
+//aa.env.setValue("sendEmailNotifications","Y");
+//aa.env.setValue("respectNotifyPrefs","Y");
+//aa.env.setValue("emailTemplate","FAILED_POOL_INSPECTION_SCHEDULED");
+//aa.env.setValue("sendEmailToContactTypes", "Responsible Party");
 aa.env.setValue("sysFromEmail", "no_reply@accela.com");
 aa.env.setValue("emailAddress", "lwacht@septechconsulting.com");
-aa.env.setValue("reportName", "");
-aa.env.setValue("setNonEmailPrefix", "");
-aa.env.setValue("inspectorUserId", "LWACHT");
+//aa.env.setValue("reportName", "");
+//aa.env.setValue("setNonEmailPrefix", "");
+//aa.env.setValue("inspectorUserId", "LWACHT");
 //aa.env.setValue("newAppStatus", "Closed - Failed Results");
- */
+
   
 //var lookAheadDays = getParam("lookAheadDays");
 //var daySpan = getParam("daySpan");
@@ -105,13 +105,13 @@ var arrAppStatus = getParam("AppStatusArray").split(",");
 var task = getParam("taskToCheck");
 var sendEmailToContactTypes = getParam("sendEmailToContactTypes");
 var emailTemplate = getParam("emailTemplate");
-var sendEmailNotifications = getParam("sendEmailNotifications");
-var respectNotifyPrefs = getParam("respectNotifyPrefs");
+//var sendEmailNotifications = getParam("sendEmailNotifications");
+//var respectNotifyPrefs = getParam("respectNotifyPrefs");
 var sysFromEmail = getParam("sysFromEmail");
 var emailAddress = getParam("emailAddress");			// email to send report
-var rptName = getParam("reportName");
-var setNonEmailPrefix = getParam("setNonEmailPrefix");
-var inspUserId = getParam("inspectorUserId");
+//var rptName = getParam("reportName");
+//var setNonEmailPrefix = getParam("setNonEmailPrefix");
+//var inspUserId = getParam("inspectorUserId");
 //var newAppStatus = getParam("newAppStatus");
 
 if(appTypeType=="*") appTypeType="";
@@ -298,9 +298,10 @@ try{
 										//return tableArr;
 										for(row in tableArr){
 											var thisRow = tableArr[row];
-											var limsReason = lookup("Sample_Reasons",""+tableArr[row]["Reason"]);
+											//var limsReason = lookup("Sample_Reasons",""+tableArr[row]["Reason"]);
+											var limsReason = ""+tableArr[row]["Reason"];
 											if(matches(limsReason,null,false,"undefined")){
-												limsReason="TOT";
+												limsReason="Other";
 											}
 											var jsonResult = {
 												"SampleID": ""+tableArr[row]["Sample ID"],
