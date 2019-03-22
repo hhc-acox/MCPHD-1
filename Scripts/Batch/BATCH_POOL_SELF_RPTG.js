@@ -66,7 +66,7 @@ else
 | Start: BATCH PARAMETERS
 |
 /------------------------------------------------------------------------------------------------------*/
-/* test parameters 
+/* test parameters  */
 //aa.env.setValue("lookAheadDays", "-5");
 //aa.env.setValue("daySpan", "5");
 aa.env.setValue("recordGroup", "EnvHealth");
@@ -89,7 +89,7 @@ aa.env.setValue("reportName", "");
 aa.env.setValue("setNonEmailPrefix", "");
 aa.env.setValue("inspectorUserId", "LWACHT");
 //aa.env.setValue("newAppStatus", "Closed - Failed Results");
- */
+
   
 //var lookAheadDays = getParam("lookAheadDays");
 //var daySpan = getParam("daySpan");
@@ -229,7 +229,7 @@ try{
 		appTypeResult = cap.getCapType();	
 		appTypeString = appTypeResult.toString();	
 		appTypeArray = appTypeString.split("/");
-		var capStatus = cap.getCapStatus();
+		capStatus = cap.getCapStatus();
 		//var inspId = getScheduledInspId(inspPool);
 		//process any inspections with a scheduled status.  update the status as failed if the results are in the failing range
 		var arrInspIds = getInspIdsByStatus(inspPool,"Scheduled");
@@ -437,16 +437,24 @@ try{
 		}
 		//schedule the inspection for recording the lab results on friday
 		var toDay = new Date();
-		if(toDay.getDay()!=5){
-			var inspDate = dateAdd(null, 7);
-			scheduleInspectDate(inspPool,inspDate);
+		if(toDay.getDay()!=6){
+			var insFound=false;
 			var arrInsps = getInspIdsByStatus(inspPool,"Scheduled");
 			for(ii in arrInsps){
 				var inspResultDate = convertDate(arrInsps[ii].getScheduledDate());
-				logDebug("inspResultDate: " + inspResultDate);
 				if(inspResultDate.getTime() > toDay.getTime()){
-					logDebug("here");
-					updatePoolSTatus();
+					insFound =true;
+				}
+			}
+			if(!insFound){
+				var inspDate = dateAdd(null, 7);
+				scheduleInspectDate(inspPool,inspDate);
+				var arrInsps = getInspIdsByStatus(inspPool,"Scheduled");
+				for(ii in arrInsps){
+					var inspResultDate = convertDate(arrInsps[ii].getScheduledDate());
+					if(inspResultDate.getTime() > toDay.getTime()){
+						updatePoolStatus();
+					}
 				}
 			}
 		}
@@ -637,74 +645,72 @@ try{
 	logDebug("Stack: " + err.stack);
 }}
 
-function updatePoolSTatus(){
+function updatePoolStatus(){
 try{
 	var r = aa.inspection.getInspections(capId);
 	if (r.getSuccess()) {
 		var inspArray = r.getOutput();
 		for (i in inspArray) {
-			if (inspArray[i].getIdNumber() == "23910806") {
-				var inspModel = inspArray[i].getInspection();
-				var gs = inspModel.getGuideSheets();
-				if (gs) {
-					for(var i=0;i< gs.size();i++) {
-						var guideSheetObj = gs.get(i);
-						if (guideSheetObj && "VC_LARVICIDE"== guideSheetObj.getGuideType().toUpperCase()) {
-							var guidesheetItem = guideSheetObj.getItems();
-							for(var j=0;j< guidesheetItem.size();j++) {
-								var item = guidesheetItem.get(j);
-								var guideItemASITs = item.getItemASITableSubgroupList();
-								if (guideItemASITs!=null){
-									for(var k = 0; k < guideItemASITs.size(); k++){
-										var guideItemASIT = guideItemASITs.get(k);
-										for(xx in guideItemASITs){
-											if(typeof(guideItemASITs[xx])=='function'){
-												//logDebug(xx);
-											}
+			var inspModel = inspArray[i].getInspection();
+			var gs = inspModel.getGuideSheets();
+			if (gs) {
+				for(var i=0;i< gs.size();i++) {
+					var guideSheetObj = gs.get(i);
+					if (guideSheetObj && "POOL TEST RESULTS"== guideSheetObj.getGuideType().toUpperCase()) {
+						var guidesheetItem = guideSheetObj.getItems();
+						for(var j=0;j< guidesheetItem.size();j++) {
+							var item = guidesheetItem.get(j);
+							var guideItemASITs = item.getItemASITableSubgroupList();
+							if (guideItemASITs!=null){
+								for(var k = 0; k < guideItemASITs.size(); k++){
+									var guideItemASIT = guideItemASITs.get(k);
+									for(xx in guideItemASITs){
+										if(typeof(guideItemASITs[xx])=='function'){
+											//logDebug(xx);
 										}
-										if(guideItemASIT && statusChecklist == guideItemASIT.getTableName()){
-											guideItemASIT.setColumnList(closedColumnList);
-											var updateResult = aa.guidesheet.updateGGuidesheet(guideSheetObj,guideSheetObj.getAuditID());
-											if (updateResult.getSuccess()) {
-												logDebug("Successfully updated " + guideSheetObj.getGuideType() + ".");
-											} else {
-												logDebug("Could not update guidesheet ID: " + updateResult.getErrorMessage());
-											}
+									}
+									if(guideItemASIT && statusChecklist == guideItemASIT.getTableName()){
+										guideItemASIT.setColumnList(closedColumnList);
+										var updateResult = aa.guidesheet.updateGGuidesheet(guideSheetObj,guideSheetObj.getAuditID());
+										if (updateResult.getSuccess()) {
+											logDebug("Successfully updated " + guideSheetObj.getGuideType() + ".");
+										} else {
+											logDebug("Could not update guidesheet ID: " + updateResult.getErrorMessage());
 										}
-										var tableArr = new Array();
-										var columnList = guideItemASIT.getColumnList();
-										for (var k = 0; k < columnList.size() ; k++ ){
-											var column = columnList.get(k);
-											var values = column.getValueMap().values();
-											var iteValues = values.iterator();
-											while(iteValues.hasNext()){
-												var i = iteValues.next();
-												var zeroBasedRowIndex = i.getRowIndex()-1;
-												if(column.getColumnName() == "Pool Status"){
-													if(capStatus=="Closed"){
-														i.setAttributeValue("Closed");
-													}else{
-														i.setAttributeValue("Open");
-													}
-													var updateResult = aa.guidesheet.updateGGuidesheet(GuidesheetModel,GuidesheetModel.getAuditID());
-													if (updateResult.getSuccess()) {
-														logDebug("Successfully updated " + GuidesheetModel.getGuideType() + ".");
-													} else {
-														logDebug("Could not update guidesheet ID: " + updateResult.getErrorMessage());
-													}
+									}
+									var tableArr = new Array();
+									var columnList = guideItemASIT.getColumnList();
+									for (var k = 0; k < columnList.size() ; k++ ){
+										var column = columnList.get(k);
+										var values = column.getValueMap().values();
+										var iteValues = values.iterator();
+										while(iteValues.hasNext()){
+											var i = iteValues.next();
+											var zeroBasedRowIndex = i.getRowIndex()-1;
+											if(column.getColumnName() == "Pool Status"){
+												if(capStatus=="Closed"){
+													i.setAttributeValue("Closed");
+												}else{
+													i.setAttributeValue("Open");
+												}
+												var updateResult = aa.guidesheet.updateGGuidesheet(guideSheetObj,guideSheetObj.getAuditID());
+												if (updateResult.getSuccess()) {
+													logDebug("Successfully updated " + guideSheetObj.getGuideType() + ".");
+												} else {
+													logDebug("Could not update guidesheet ID: " + updateResult.getErrorMessage());
 												}
 											}
 										}
 									}
 								}
-							}			
-						}
+							}
+						}			
 					}
 				}
 			}
 		}
 	}
 }catch(err){
-	logDebug("A JavaScript Error occurred: updatePoolSTatus: " + err.message);
+	logDebug("A JavaScript Error occurred: updatePoolStatus: " + err.message);
 	logDebug(err.stack)
 }}	
