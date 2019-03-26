@@ -66,7 +66,7 @@ else
 | Start: BATCH PARAMETERS
 |
 /------------------------------------------------------------------------------------------------------*/
-/* test parameters  */
+/* test parameters 
 //aa.env.setValue("lookAheadDays", "-5");
 //aa.env.setValue("daySpan", "5");
 aa.env.setValue("recordGroup", "EnvHealth");
@@ -89,7 +89,7 @@ aa.env.setValue("reportName", "");
 aa.env.setValue("setNonEmailPrefix", "");
 aa.env.setValue("inspectorUserId", "LWACHT");
 //aa.env.setValue("newAppStatus", "Closed - Failed Results");
-
+ */
   
 //var lookAheadDays = getParam("lookAheadDays");
 //var daySpan = getParam("daySpan");
