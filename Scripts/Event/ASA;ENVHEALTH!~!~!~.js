@@ -74,3 +74,12 @@ if (matches(appTypeArray[2],'VEH','HSG','SEC','TRA')) {
 if (areaInspector == null || areaInspector == 'undefined') {
 	overrideMessage = 'The EHS Inspector could not be determined. Please go to Case Info-->Case, click the yellow Summary button, validate the address and click Save. This will fix the problem.<BR><BR>';
 	}
+
+//copy the gis object onto the record so that all gis-related functions work
+// try{
+//	copyParcelGisObjects(); 
+//}catch (err){
+//	logDebug("A JavaScript Error occurred: ASA:*/*/*/*: Copy GIS Object: " + err.message);
+//	logDebug(err.stack)
+//} 
+	copyParcelGisObjects(); 	
