@@ -1,11 +1,11 @@
 //copy the gis object onto the record so that all gis-related functions work
-//try{
-//	copyParcelGisObjects() 
+// try{
+//	copyParcelGisObjects(); 
 //}catch (err){
 //	logDebug("A JavaScript Error occurred: ASA:*/*/*/*: Copy GIS Object: " + err.message);
 //	logDebug(err.stack)
-//}
-	
+//} 
+//	copyParcelGisObjects(); 
 
 //assess fees
 try{
