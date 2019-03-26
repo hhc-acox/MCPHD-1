@@ -8,6 +8,7 @@ try{
 			if (guideItemASITs!=null){
 				for(var j = 0; j < guideItemASITs.size(); j++){
 					var guideItemASIT = guideItemASITs.get(j);
+					logDebug("guideItemASIT.getTableName().toUpperCase(): " + guideItemASIT.getTableName().toUpperCase());
 					if(guideItemASIT && "POOL STATUS" == guideItemASIT.getTableName().toUpperCase()){
 						var tableArr = new Array();
 						var columnList = guideItemASIT.getColumnList();
