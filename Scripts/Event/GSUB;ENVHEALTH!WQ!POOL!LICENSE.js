@@ -6,12 +6,17 @@ try{
 			var item = guidesheetItem.get(j);
 			var guideItemASITs = item.getItemASITableSubgroupList();
 			if (guideItemASITs!=null){
-				for(var j = 0; j < guideItemASITs.size(); j++){
-					var guideItemASIT = guideItemASITs.get(j);
+				for(var jj = 0; jj < guideItemASITs.size(); jj++){
+					var guideItemASIT = guideItemASITs.get(jj);
 					if(guideItemASIT && "POOL STATUS" == guideItemASIT.getTableName().toUpperCase()){
 						var tableArr = new Array();
 						var columnList = guideItemASIT.getColumnList();
 						logDebug("columnList.length: " + columnList);
+						for (xx in columnList){
+							if(typeof(columnList[xx])=="function"){
+								logDebug(xx+": "+columnList[xx]);
+							}
+						}
 						if(!columnList || columnList.length<1){
 							cancel=true;
 							showMessage=true;
