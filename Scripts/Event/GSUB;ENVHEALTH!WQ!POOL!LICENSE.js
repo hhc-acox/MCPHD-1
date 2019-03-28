@@ -16,8 +16,8 @@ try{
 								var values = column.getValueMap().values();
 								var iteValues = values.iterator();
 								for(xx in iteValues){
-									if(typeof(iteValues[xx])!="function"){
-										logDebug(xx +  ": " + iteValues[xx]);
+									if(typeof(iteValues[xx])=="function"){
+										logDebug(xx );
 									}
 								}
 								while(iteValues.hasNext()){
