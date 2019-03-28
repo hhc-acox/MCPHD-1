@@ -3,13 +3,11 @@ leadGrant = 'N'; showMessage = true;
 if (wfTask == 'Initial Processing' && matches(wfStatus,'Complete Notice of Violation','Complete Emergency') && AInfo['Reinspection Date'] != null) {
 	scheduleInspectDate('Reinspection',AInfo['Reinspection Date'],AInfo['GENERAL.Assigned To']);
 	}
-comment("The new date1 is " + AInfo['Reinspection Date']);
 	
 if (wfTask == 'Initial Processing' && matches(wfStatus,'Complete Notice of Violation','Complete Emergency') && AInfo['Reinspection Date'] == null) {
 	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,29)),AInfo['GENERAL.Assigned To']);
 	editTaskSpecific('Initial Processing','Reinspection Date',nextWorkDay(dateAdd(null,29)));
 	}
-comment("The new date2 is " + AInfo['Reinspection Date']);
 
 if (wfTask == 'Initial Processing' && wfStatus == 'Complete Lead No Hzd Found Ltr') {
 	activateTask('Final Processing');
@@ -64,17 +62,9 @@ if (wfTask == 'Education Provided' && matches(wfStatus,'Complete Lead No Hzd Fou
 	}
 
 if (wfTask == 'Reinspection' && wfStatus == 'Court Case') {
-
-ES_HHC_ODYSSEY_PROCESS();
-	crtConAry=nextNameArr;
+comment(" appTypeArray[0] - "+ appTypeArray[0]+"appTypeArray[1] - "+appTypeArray[1]+" appTypeArray[2] - "+appTypeArray[2]+" appTypeArray[3] - "+appTypeArray[3]);
+	HHC_CREATE_COURT();
 	}
-
-if (wfTask == 'Reinspection' && wfStatus == 'Court Case') {
-	concnt = y;
-	
-ES_CREATE_CRT_CASES();
-	}
-
 if (wfTask == 'Reinspection'  && matches(wfStatus,'Court Case')) {
 	activateTask('Final Processing');
 	}
