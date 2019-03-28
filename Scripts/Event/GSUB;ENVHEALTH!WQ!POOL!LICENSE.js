@@ -20,6 +20,8 @@ try{
 						}
 						var arrCol = columnList.toArray();
 						logDebug("arrCol: " + arrCol.length);
+						for(x in arrCol);
+						logDebug(arrCol[x] + ": " + x);
 						if(!columnList || columnList.length<1 || columnList.length=="undefined"){
 							cancel=true;
 							showMessage=true;
