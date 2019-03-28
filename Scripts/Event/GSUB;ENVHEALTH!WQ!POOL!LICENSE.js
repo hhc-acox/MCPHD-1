@@ -11,10 +11,10 @@ try{
 					if(guideItemASIT && "POOL STATUS" == guideItemASIT.getTableName().toUpperCase()){
 						var tableArr = new Array();
 						var columnList = guideItemASIT.getColumnList();
-						logDebug("columnList.length: " + columnList.size());
+						logDebug("columnList.length: " + columnList.length());
 						for (xx in columnList){
-							if(typeof(columnList[xx])!="function"){
-								logDebug(xx+": "+columnList[xx]);
+							if(typeof(columnList[xx])=="function"){
+								logDebug(xx);
 							}
 						}
 						if(!columnList || columnList.length<1){
