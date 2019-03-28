@@ -11,17 +11,18 @@ try{
 					if(guideItemASIT && "POOL STATUS" == guideItemASIT.getTableName().toUpperCase()){
 						var tableArr = new Array();
 						var columnList = guideItemASIT.getColumnList();
-						logDebug("columnList.length: " + columnList.isEmpty());
-						logDebug("columnList.length: " + columnList.size());
-						for (xx in columnList){
-							if(typeof(columnList[xx])=="function"){
-								logDebug(xx);
+							for (var k = 0; k < columnList.size() ; k++ ){
+								var column = columnList.get(k);
+								var values = column.getValueMap().values();
+								var iteValues = values.iterator();
+								logDebug("iteValues: " + iteValues);
+								while(iteValues.hasNext()){
+									var i = iteValues.next();
+									var zeroBasedRowIndex = i.getRowIndex()-1;
+									if (tableArr[zeroBasedRowIndex] == null) tableArr[zeroBasedRowIndex] = new Array();
+									tableArr[zeroBasedRowIndex][column.getColumnName()] = i.getAttributeValue();
+								}
 							}
-						}
-						var arrCol = columnList.toArray();
-						logDebug("arrCol: " + arrCol.length);
-						for(x in arrCol);
-						logDebug(arrCol[x] + ": " + x);
 						if(!columnList || columnList.length<1 || columnList.length=="undefined"){
 							cancel=true;
 							showMessage=true;
