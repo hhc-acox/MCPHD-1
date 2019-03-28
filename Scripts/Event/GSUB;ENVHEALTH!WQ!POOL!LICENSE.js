@@ -11,8 +11,8 @@ try{
 					if(guideItemASIT && "POOL STATUS" == guideItemASIT.getTableName().toUpperCase()){
 						var tableArr = new Array();
 						var columnList = guideItemASIT.getColumnList();
-						logDebug("columnList.length: " + columnList.length);
-						if(columnList.length<1){
+						logDebug("columnList.length: " + columnList);
+						if(!columnList || columnList.length<1){
 							cancel=true;
 							showMessage=true;
 							comment("At least one row needs to be populated in the Pool Status table.");
