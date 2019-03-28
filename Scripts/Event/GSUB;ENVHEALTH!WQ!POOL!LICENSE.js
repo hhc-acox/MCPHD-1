@@ -11,13 +11,13 @@ try{
 					if(guideItemASIT && "POOL STATUS" == guideItemASIT.getTableName().toUpperCase()){
 						var tableArr = new Array();
 						var columnList = guideItemASIT.getColumnList();
-						logDebug("columnList.length: " + columnList.length());
+						logDebug("columnList.length: " + columnList.length);
 						for (xx in columnList){
 							if(typeof(columnList[xx])=="function"){
 								logDebug(xx);
 							}
 						}
-						if(!columnList || columnList.length<1){
+						if(!columnList || columnList.length<1 || columnList.length=="undefined"){
 							cancel=true;
 							showMessage=true;
 							comment("At least one row needs to be populated in the Pool Status table.");
