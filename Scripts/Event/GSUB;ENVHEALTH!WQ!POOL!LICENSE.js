@@ -15,7 +15,11 @@ try{
 								var column = columnList.get(k);
 								var values = column.getValueMap().values();
 								var iteValues = values.iterator();
-								logDebug("iteValues: " + iteValues);
+								for(xx in iteValues){
+									if(typeof(iteValues[xx])!="function"){
+										logDebug(xx +  ": " + iteValues[xx]);
+									}
+								}
 								while(iteValues.hasNext()){
 									var i = iteValues.next();
 									var zeroBasedRowIndex = i.getRowIndex()-1;
