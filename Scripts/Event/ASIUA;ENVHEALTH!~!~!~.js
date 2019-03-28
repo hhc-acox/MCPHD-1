@@ -1,11 +1,11 @@
 // ASIUA;ENVHEALTH!~!~!~ 
-
+// SCRIPT DISABLED - ONLY TO BE USED FOR ADMIN PURPOSES
 //if (capName == '') {
 	//replaced branch(ES_GET_ADDRESS)
 	//ES_GET_ADDRESS();
 //
 //}
-
+/* 
 if (matches(appTypeArray[1],'EHSM','HHECMSC','HOUSING')) { //&& currentUserID == "RVOLLER") { //commented to test as CHAAS
 	//var newUserID = lookup("Census - Housing EHS",AInfo['ParcelAttribute.CensusTract']);
 	logDebug("appTypeArray1 is: " +appTypeArray[1]);
@@ -20,4 +20,4 @@ if (matches(appTypeArray[1],'EHSM','HHECMSC','HOUSING')) { //&& currentUserID ==
 	if (checkInspectionResult("Reinspection", "Scheduled")) { assignInspection(inspNum, newUserID); }
 	if (matches(AInfo['CensusTract'],null,"","undefined")) { editAppSpecific("Census Tract", AInfo['ParcelAttribute.CensusTract']); }
 
-}
+} */
