@@ -66,7 +66,7 @@ else
 | Start: BATCH PARAMETERS
 |
 /------------------------------------------------------------------------------------------------------*/
-/* test parameters 
+/* test parameters  
 //aa.env.setValue("lookAheadDays", "-5");
 //aa.env.setValue("daySpan", "5");
 aa.env.setValue("recordGroup", "EnvHealth");
@@ -234,12 +234,13 @@ try{
 		//process any inspections with a scheduled status.  update the status as failed if the results are in the failing range
 		var arrInspIds = getInspIdsByStatus(inspPool,"Scheduled");
 		if(arrInspIds.length>0){
+			oldColumnList = false;
 			for (ii in arrInspIds){
 				var tblResults = [];
 				var thisInspec = arrInspIds[ii];
 				var inspId = thisInspec.getIdNumber();
 				var inspResultDate = convertDate(thisInspec.getScheduledDate());
-				tblResults = getGuidesheetASITable(inspId,inspPool,chklistPool);
+				tblResults = getGuidesheetASITableBatch(inspId,inspPool,chklistPool);
 				//don't pass or fail if there are no results
 				var resFailed = "false";
 				if(tblResults){
@@ -272,7 +273,7 @@ try{
 				}
 				//if the field "Pool status" does not match the app status, then update it
 				//only use first row for this and only the inspection for this week
-				tblResults = getGuidesheetASITable(inspId,inspPool,statusChecklist);
+				tblResults = getGuidesheetASITableBatch(inspId,inspPool,statusChecklist);
 				if(tblResults.length>0){
 					if(inspResultDate>lastFriday.getTime()){
 						var poolStatus = row[0]["Pool Status"];
@@ -447,13 +448,26 @@ try{
 				}
 			}
 			if(!insFound){
+				//get the pool status from last week's inspection
+				var inspFound = false;
+				var oneWeekPast = dateAdd(null,-7);
+				oneWeekPast = new Date(oneWeekPast);
+				oneWeekPast = oneWeekPast.getTime();
+				var arrInsps = getInspIdsByDate(inspPool,7);
+				for (ins in arrInsps){
+					inspFound = true;
+					logDebug("found inspection");
+					getGuidesheetASITableBatch(arrInsps[ins].getIdNumber(),inspPool,statusChecklist);
+				}
 				var inspDate = dateAdd(null, 7);
 				scheduleInspectDate(inspPool,inspDate);
 				var arrInsps = getInspIdsByStatus(inspPool,"Scheduled");
 				for(ii in arrInsps){
 					var inspResultDate = convertDate(arrInsps[ii].getScheduledDate());
 					if(inspResultDate.getTime() > toDay.getTime()){
-						updatePoolStatus();
+						//addGuideSheet(capId,arrInsps[ii].getIdNumber(),inspPool);
+						logDebug("updating pool status");
+						updatePoolStatus(arrInsps[ii]);
 					}
 				}
 			}
@@ -506,7 +520,36 @@ try{
 	logDebug("Stack: " + err.stack);
 }}
 
-function getGuidesheetASITable(inspId,gName,asitName) {
+function getInspIdsByDate(insp2Check,inspDaysSince){
+try{
+	var retArray = [];
+	var inspResultObj = aa.inspection.getInspections(capId);
+	if (inspResultObj.getSuccess()){
+		var inspList = inspResultObj.getOutput();
+		for (xx in inspList){
+			if (String(insp2Check).equals(inspList[xx].getInspectionType()) && matches(inspList[xx].getInspectionStatus().toUpperCase(), "SCHEDULED", "SATISFACTORY", "UNSATISFACTORY")){
+				var dtToCheck = dateAdd(null,inspDaysSince*-1);
+				dtToCheck = new Date(dtToCheck);
+				var inspResultDate = convertDate(inspList[xx].getScheduledDate());
+				if(inspResultDate.getTime() > dtToCheck.getTime()){
+					retArray.push(inspList[xx]);
+				}
+			}
+		}
+	}
+	if(retArray.length>0){
+		return retArray;
+	}else{
+		return false;
+	}
+}catch (err){
+	logDebug("ERROR: " + err.message + " In getInspIdsByStatus.");
+	logDebug("Stack: " + err.stack);
+}}
+
+
+
+function getGuidesheetASITableBatch(inspId,gName,asitName) {
 try{
 	//updates the guidesheet ID to nGuideSheetID if not currently populated
 	//optional capId
@@ -531,12 +574,13 @@ try{
 									for(var j = 0; j < guideItemASITs.size(); j++){
 										var guideItemASIT = guideItemASITs.get(j);
 										if(guideItemASIT && asitName == guideItemASIT.getTableName()){
-											if(uideItemASIT.getTableName()=statusChecklist){
+											if(guideItemASIT.getTableName()==statusChecklist){
 												oldColumnList = guideItemASIT.getColumnList();
+												logDebug("Found oldColumnList");
 											}
 											var tableArr = new Array();
 											var columnList = guideItemASIT.getColumnList();
-											for (var k = 0; k < columnList.size() ; k++ ){
+											for (var k = 0; k < columnList.size(); k++ ){
 												var column = columnList.get(k);
 												var values = column.getValueMap().values();
 												var iteValues = values.iterator();
@@ -645,66 +689,82 @@ try{
 	logDebug("Stack: " + err.stack);
 }}
 
-function updatePoolStatus(){
+function updatePoolStatus(thisInsp){
 try{
 	var r = aa.inspection.getInspections(capId);
 	if (r.getSuccess()) {
 		var inspArray = r.getOutput();
 		for (i in inspArray) {
-			var inspModel = inspArray[i].getInspection();
-			var gs = inspModel.getGuideSheets();
-			if (gs) {
-				for(var i=0;i< gs.size();i++) {
-					var guideSheetObj = gs.get(i);
-					if (guideSheetObj && "POOL TEST RESULTS"== guideSheetObj.getGuideType().toUpperCase()) {
-						var guidesheetItem = guideSheetObj.getItems();
-						for(var j=0;j< guidesheetItem.size();j++) {
-							var item = guidesheetItem.get(j);
-							var guideItemASITs = item.getItemASITableSubgroupList();
-							if (guideItemASITs!=null){
-								for(var k = 0; k < guideItemASITs.size(); k++){
-									var guideItemASIT = guideItemASITs.get(k);
-									for(xx in guideItemASITs){
-										if(typeof(guideItemASITs[xx])=='function'){
-											//logDebug(xx);
-										}
-									}
-									if(guideItemASIT && statusChecklist == guideItemASIT.getTableName()){
-										guideItemASIT.setColumnList(closedColumnList);
-										var updateResult = aa.guidesheet.updateGGuidesheet(guideSheetObj,guideSheetObj.getAuditID());
-										if (updateResult.getSuccess()) {
-											logDebug("Successfully updated " + guideSheetObj.getGuideType() + ".");
-										} else {
-											logDebug("Could not update guidesheet ID: " + updateResult.getErrorMessage());
-										}
-									}
-									var tableArr = new Array();
-									var columnList = guideItemASIT.getColumnList();
-									for (var k = 0; k < columnList.size() ; k++ ){
-										var column = columnList.get(k);
-										var values = column.getValueMap().values();
-										var iteValues = values.iterator();
-										while(iteValues.hasNext()){
-											var i = iteValues.next();
-											var zeroBasedRowIndex = i.getRowIndex()-1;
-											if(column.getColumnName() == "Pool Status"){
-												if(capStatus=="Closed"){
-													i.setAttributeValue("Closed");
-												}else{
-													i.setAttributeValue("Open");
+			if (inspArray[i].getIdNumber() == thisInsp.getIdNumber()) {
+				var inspModel = inspArray[i].getInspection();
+				//var inspModel = thisInsp.getInspection();
+				var gs = inspModel.getGuideSheets();
+				if (gs) {
+					for(var i=0;i< gs.size();i++) {
+						vguideSheetObj = gs.get(i);
+						if (vguideSheetObj && "POOL TEST RESULTS"== vguideSheetObj.getGuideType().toUpperCase()) {
+							var guidesheetItem = vguideSheetObj.getItems();
+							for(var j=0;j< guidesheetItem.size();j++) {
+								var item = guidesheetItem.get(j);
+								var guideItemASITs = item.getItemASITableSubgroupList();
+								if (guideItemASITs!=null){
+									for(var j = 0; j < guideItemASITs.size(); j++){
+										var guideItemASIT = guideItemASITs.get(j);
+										//for(xx in oldColumnList){
+										//	if(typeof(oldColumnList[xx])=='function'){
+										//		logDebug(xx);
+										//	}
+										//}
+										if(guideItemASIT && statusChecklist == guideItemASIT.getTableName() && oldColumnList){
+											guideItemASIT.setColumnList(oldColumnList);
+											for (var k = 0; k < oldColumnList.size(); k++ ){
+												var column = oldColumnList.get(k);
+												var values = column.getValueMap().values();
+												var iteValues = values.iterator();
+												while(iteValues.hasNext()){
+													var i = iteValues.next();
+													var zeroBasedRowIndex = i.getRowIndex()-1;
+													logDebug(column.getColumnName()+ ": " + i.getAttributeValue());
 												}
-												var updateResult = aa.guidesheet.updateGGuidesheet(guideSheetObj,guideSheetObj.getAuditID());
-												if (updateResult.getSuccess()) {
-													logDebug("Successfully updated " + guideSheetObj.getGuideType() + ".");
-												} else {
-													logDebug("Could not update guidesheet ID: " + updateResult.getErrorMessage());
-												}
+											}
+											var updateResult = aa.guidesheet.updateGGuidesheet(vguideSheetObj,vguideSheetObj.getAuditID());
+											if (updateResult.getSuccess()) {
+												logDebug("Successfully updated checklist: " + vguideSheetObj.getGuideType() + ".");
+											} else {
+												logDebug("Could not update guidesheet ID: " + updateResult.getErrorMessage());
 											}
 										}
 									}
 								}
+							}			
+						}
+					}
+				}
+				var inspModel = thisInsp.getInspection();
+				var gs = inspModel.getGuideSheets();
+				for(var i=0;i< gs.size();i++) {
+					var columnList = guideItemASIT.getColumnList();
+					for (var k = 0; k < columnList.size() ; k++ ){
+						var column = columnList.get(k);
+						var values = column.getValueMap().values();
+						var iteValues = values.iterator();
+						while(iteValues.hasNext()){
+							var i = iteValues.next();
+							var zeroBasedRowIndex = i.getRowIndex()-1;
+							if(column.getColumnName() == statusChecklist){
+								if(capStatus=="Closed"){
+									i.setAttributeValue("Closed");
+								}else{
+									i.setAttributeValue("Open");
+								}
+								var updateResult = aa.guidesheet.updateGGuidesheet(guideSheetObj,guideSheetObj.getAuditID());
+								if (updateResult.getSuccess()) {
+									logDebug("Successfully updated checklist " + guideSheetObj.getGuideType() + ".");
+								} else {
+									logDebug("Could not update guidesheet ID: " + updateResult.getErrorMessage());
+								}
 							}
-						}			
+						}
 					}
 				}
 			}
@@ -714,3 +774,5 @@ try{
 	logDebug("A JavaScript Error occurred: updatePoolStatus: " + err.message);
 	logDebug(err.stack)
 }}	
+
+
