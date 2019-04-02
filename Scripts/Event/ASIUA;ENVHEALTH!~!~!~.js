@@ -21,3 +21,36 @@ if (matches(appTypeArray[1],'EHSM','HHECMSC','HOUSING')) { //&& currentUserID ==
 	if (matches(AInfo['CensusTract'],null,"","undefined")) { editAppSpecific("Census Tract", AInfo['ParcelAttribute.CensusTract']); }
 
 } */
+//This code verifies that the Census Tract, Assigned To and Previous Assigned To are populated if blank for qualifying case types.
+
+if (matches(appTypeArray[1],'EHSM','HHECMSC','HOUSING') && (!matches(appTypeArray[2],'CRT'))) {
+	var areaInspector = '';
+
+//Always set the Census Tract on the ASI General Screen
+	var censusTract = '';
+		censusTract = AInfo['ParcelAttribute.CensusTract'];
+		editAppSpecific('Census Tract',censusTract);
+
+//Housing EHS
+			if (matches(appTypeArray[1],'EHSM','HHECMSC','HOUSING') && (!matches(appTypeArray[2],'LHH','BBE','CRT')) && AInfo['Assigned To'] == null) {
+				areaInspector = lookup('Census - Housing EHS',censusTract); 
+				editAppSpecific('Assigned To',areaInspector);
+				editAppSpecific('Previous Assigned To',areaInspector);
+				logDebug('Inspector to Assign: '+areaInspector);
+					}
+
+//Healthy Homes EHS
+				comment('the LHH area: '+censusTract);	
+			if (matches(appTypeArray[2],'LHH') && AInfo['Assigned To'] == null) {
+				areaInspector = lookup('Census - Lead EHS',censusTract);
+				editAppSpecific('Assigned To',areaInspector);
+				editAppSpecific('Previous Assigned To',areaInspector);
+					}
+				comment('the LHH area Inspector: '+areaInspector);
+//BedBugs EHS
+			if (matches(appTypeArray[2],'BBE') && AInfo['Assigned To'] == null) {
+				areaInspector = 'LLOBDELL';
+				editAppSpecific('Assigned To',areaInspector);
+				editAppSpecific('Previous Assigned To',areaInspector);
+					}
+					}
