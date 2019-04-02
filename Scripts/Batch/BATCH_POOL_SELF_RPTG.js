@@ -230,6 +230,7 @@ try{
 		appTypeString = appTypeResult.toString();	
 		appTypeArray = appTypeString.split("/");
 		capStatus = cap.getCapStatus();
+		oldCapStatus = cap.getCapStatus();
 		//var inspId = getScheduledInspId(inspPool);
 		//process any inspections with a scheduled status.  update the status as failed if the results are in the failing range
 		var arrInspIds = getInspIdsByStatus(inspPool,"Scheduled");
@@ -240,7 +241,7 @@ try{
 				var thisInspec = arrInspIds[ii];
 				var inspId = thisInspec.getIdNumber();
 				var inspResultDate = convertDate(thisInspec.getScheduledDate());
-				tblResults = getGuidesheetASITableBatch(inspId,inspPool,chklistPool);
+				var tblResults = getGuidesheetASITableBatch(inspId,inspPool,chklistPool);
 				//don't pass or fail if there are no results
 				var resFailed = "false";
 				if(tblResults){
@@ -273,10 +274,10 @@ try{
 				}
 				//if the field "Pool status" does not match the app status, then update it
 				//only use first row for this and only the inspection for this week
-				tblResults = getGuidesheetASITableBatch(inspId,inspPool,statusChecklist);
+				var tblResults = getGuidesheetASITableBatch(inspId,inspPool,statusChecklist);
 				if(tblResults.length>0){
 					if(inspResultDate>lastFriday.getTime()){
-						var poolStatus = row[0]["Pool Status"];
+						var poolStatus = tblResults[0]["Pool Status"];
 						if(poolStatus=="Open" && capStatus=="Closed"){
 							var lastStatus = getMostRecentAppStatus("Closed");
 							updateAppStatus(lastStatus, "Updated via pool interface batch job.");
@@ -337,15 +338,22 @@ try{
 				}
 			}
 		}
-		if(processFailed && capStatus!="Closed" ){
+		if(processFailed && oldCapStatus!="Closed" ){
 			//if pool fails, schedule inspection, notify contacts
 			if(cntFailedTwoWeeks>1 || cntFailedSixWeeks>2){
 				logDebug(altId + " has a failing grade and will be assigned an inspection.");
 				var inspDate = dateAdd(null, 7);
-				if(inspUserId){
-					scheduleInspectDate(inspSched,inspDate,inspUserId);
-				}else{
-					scheduleInspectDate(inspSched,inspDate);
+				//if(inspUserId){
+				//	scheduleInspectDate(inspSched,inspDate,inspUserId);
+				//}else{
+				//	scheduleInspectDate(inspSched,inspDate);
+				//}
+				scheduleInspectDate(inspSched,inspDate);
+				var asgnInspId = getScheduledInspId(inspSched);
+				if (asgnInspId) {
+					//logDebug("asgnInspId: " + asgnInspId);
+					autoAssignInspection(asgnInspId);
+					var inspUserId =  getInspector(inspSched);
 				}
 				if (sendEmailNotifications == "Y" && sendEmailToContactTypes.length > 0 && emailTemplate.length > 0) {
 					var conTypeArray = sendEmailToContactTypes.split(",");
@@ -456,7 +464,7 @@ try{
 				var arrInsps = getInspIdsByDate(inspPool,7);
 				for (ins in arrInsps){
 					inspFound = true;
-					logDebug("found inspection");
+					//logDebug("found inspection");
 					getGuidesheetASITableBatch(arrInsps[ins].getIdNumber(),inspPool,statusChecklist);
 				}
 				var inspDate = dateAdd(null, 7);
@@ -576,7 +584,7 @@ try{
 										if(guideItemASIT && asitName == guideItemASIT.getTableName()){
 											if(guideItemASIT.getTableName()==statusChecklist){
 												oldColumnList = guideItemASIT.getColumnList();
-												logDebug("Found oldColumnList");
+												//logDebug("Found oldColumnList");
 											}
 											var tableArr = new Array();
 											var columnList = guideItemASIT.getColumnList();
