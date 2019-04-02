@@ -1,5 +1,5 @@
 leadGrant = 'N'; showMessage = true;
-
+comment('Reinspection Date is '+AInfo['Reinspection Date'])
 if (wfTask == 'Initial Processing' && matches(wfStatus,'Complete Notice of Violation','Complete Emergency') && AInfo['Reinspection Date'] != null) {
 	scheduleInspectDate('Reinspection',AInfo['Reinspection Date'],AInfo['GENERAL.Assigned To']);
 	}
