@@ -2,80 +2,85 @@
 //lwacht: 151016: updating so it doesn't throw an error
 var areaInspector = '';
 //lwacht: 151016: end
+//Always set the Census Tract on the ASI General Screen
+var censusTract = '';
+censusTract = AInfo['ParcelAttribute.CensusTract'];
+editAppSpecific('Census Tract',censusTract);
 
+//Getting and Setting the EHS - to the Assigned To field and the Cap.
 
-editAppSpecific('GENERAL.Census Tract',AInfo['ParcelAttribute.CensusTract']);
+//The rest of the departments will have to be added to this section if they use the Census Tract method to assign Work.
+//Also, new Census Tract tables need to be created for additional departments.
+//Manually Entered EHS during case creation.  Method used if department has not been setup.
+if (AInfo['Assigned To'] != null) {
+	areaInspector = AInfo['Assigned To'];
+	}
+//Housing EHS
 if (matches(appTypeArray[1],'EHSM','HHECMSC','HOUSING') && (!matches(appTypeArray[2],'LHH','BBE','CRT'))) {
-	// 7.5.17 chaas: Bravnish created all lookup tables in MCPHD configuration
-	//areaInspector = lookup('Census - Housing EHS',AInfo['ParcelAttribute.CensusTract']); 
-	//Appears that Parcel Attributes are not yet configured
-	//Manually entered value of 310103 for Census Tract which assigns it to CHAAS for testing purposes (first row of lookup table)
-	areaInspector = lookup('Census - Housing EHS',AInfo['GENERAL.Census Tract']); 
+	areaInspector = lookup('Census - Housing EHS',censusTract); 
+	editAppSpecific('Assigned To',areaInspector);
 	logDebug('Inspector to Assign: '+areaInspector);
 	}
-	
-// 7.5.17 chaas: no custom fields in H_RAD.GENERAL custom field.subgroup for Census Tract OR Assigned To 
 
-if (AInfo['GENERAL.Assigned To'] != null) {
-	areaInspector = AInfo['GENERAL.Assigned To'];
+//Healthy Homes EHS
+	comment('the LHH area: '+censusTract);	
+if (matches(appTypeArray[2],'LHH')) {
+	areaInspector = lookup('Census - Lead EHS',censusTract);
+	editAppSpecific('Assigned To',areaInspector);
 	}
-
-// 7.5.17 chaas: added code to accomodate custom field diff for EHSM subtype - Chris to re-check this...
-//if (AInfo['GENERAL.Assigned To EHS'] != null && match(appTypeArray[1],'EHSM')) {
-//	areaInspector = AInfo['GENERAL.Assigned To EHS'];
-//	}	
-
-//if (AInfo['GENERAL.Assigned To'] == null && matches(appTypeArray[2],'LHH')) { //appMatch('*/*/LHH/*')){
-//	areaInspector = lookup('Census - Lead EHS',AInfo['ParcelAttribute.CensusTract']);
-//	}
-
+comment('the LHH area Inspector: '+areaInspector);
+//BedBugs EHS
 if (matches(appTypeArray[2],'BBE')) {
 	// 7.5.17 chaas: the user LLOBDELL below is not yet setup in MCPHD configuration
 	areaInspector = 'LLOBDELL';
 	}
-editAppSpecific('GENERAL.Assigned To',areaInspector);
+editAppSpecific('Assigned To',areaInspector);
 //lwacht: 151016: updating so it doesn't throw an error
 //assignCap(areaInspector);
 if(areaInspector) assignCap(areaInspector);
 //lwacht: 151016: end
 
-// 7.5.17 chaas: no custom fields in any of these three GENERAL custom field subgroups for Mosquito Control 
-if (matches(appTypeArray[2],'VEH','HSG','TRA') && AInfo['GENERAL.Initial Inspection Date'] != null) {
-	scheduleInspectDate('Initial Inspection',AInfo['GENERAL.Initial Inspection Date'],areaInspector);
-	}
-	
-// 7.5.17 chaas: SEC subtype is not in MCPHD configuration
-if (matches(appTypeArray[2],'SEC') && AInfo['GENERAL.Initial Inspection Date'] != null) {
-	scheduleInspectDate('SEC Action',AInfo['GENERAL.Initial Inspection Date'],areaInspector);
-	}
-	
-// 7.5.17 chaas: SEC subtype is not in MCPHD configuration
-if (matches(appTypeArray[2],'VEH','HSG','SEC','TRA')) {
-	theDate = AInfo['GENERAL.Initial Inspection Date'].substring(6,10) + '-' + AInfo['GENERAL.Initial Inspection Date'].substring(0,2) + '-' + AInfo['GENERAL.Initial Inspection Date'].substring(3,5);
+//Inspection Scheduling  - based on Inspection Type.  Resulted with the assumption that violations exist for Housing case types.
+// 7.5.17 chaas: no custom fields in any of these three GENERAL custom field subgroups for Mosquito Control
+//Get the Initial Inspection Date and reformat it for resulting the Initial Inspection
+if (matches(appTypeArray[2],'VEH','HSG','SEC','TRA','LHH')) {
+	theDate = AInfo['Initial Inspection Date'].substring(6,10) + '-' + AInfo['Initial Inspection Date'].substring(0,2) + '-' + AInfo['Initial Inspection Date'].substring(3,5);
 	comment('The new date is ' + theDate);
 	}
-	
-// 7.5.17 chaas: SEC subtype is not in MCPHD configuration
-if (matches(appTypeArray[2],'SEC') && AInfo['GENERAL.Initial Inspection Date'] != null) {
-	resultInspection('SEC Action','In Violation',theDate,'Resulted by Script');
+//Housing Initial Inspection scheduling
+if (matches(appTypeArray[2],'VEH','HSG','TRA') && AInfo['Initial Inspection Date'] != null) {
+	scheduleInspectDate('Initial Inspection',AInfo['Initial Inspection Date'],areaInspector);
 	}
-
-if (matches(appTypeArray[2],'VEH','HSG','TRA') && AInfo['GENERAL.Initial Inspection Date'] != null) {
+// 7.5.17 chaas: SEC subtype is not in MCPHD configuration
+if (matches(appTypeArray[2],'SEC') && AInfo['Initial Inspection Date'] != null) {
+	scheduleInspectDate('SEC Action',AInfo['Initial Inspection Date'],areaInspector);
+	}
+//Healthy Homes Initial Inspection scheduling
+if (matches(appTypeArray[2],'LHH') && AInfo['Initial Inspection Date'] != null) {
+	scheduleInspectDate('Initial Lead Inspection',AInfo['Initial Inspection Date'],areaInspector);
+	}
+//Housing - result the Initial Inspection
+if (matches(appTypeArray[2],'VEH','HSG','TRA') && AInfo['Initial Inspection Date'] != null) {
 	resultInspection('Initial Inspection','In Violation',theDate,'Resulted by Script');
 	}
-
-
-//replaced branch(ES_GET_ADDRESS)
-// 7.5.17 chaas: this function does not yet exist in MDPHD INCLUDES_CUSTOM, so commenting out to test lookup table in this script
-//ES_GET_ADDRESS();
+// 7.5.17 chaas: SEC subtype is not in MCPHD configuration
+if (matches(appTypeArray[2],'SEC') && AInfo['Initial Inspection Date'] != null) {
+	resultInspection('SEC Action','In Violation',theDate,'Resulted by Script');
+	}
+//Healthy Homes - result the Initial Inspection
+if (matches(appTypeArray[2],'LHH') && AInfo['Initial Inspection Date'] != null) {
+	resultInspection('Initial Lead Inspection','In Violation',theDate,'Resulted by Script');
+	}
+//Set the address to the Application Name field on the record
+HHC_GET_ADDRESS();
 
 // 7.5.17 chaas: SEC subtype is not in MCPHD configuration
-if (matches(appTypeArray[2],'VEH','HSG','SEC','TRA')) {
+if (matches(appTypeArray[2],'VEH','HSG','SEC','TRA','LHH')) {
 	updateAppStatus('In Violation','Initial status');
 	}
-
+	
 if (areaInspector == null || areaInspector == 'undefined') {
-	overrideMessage = 'The EHS Inspector could not be determined. Please go to Case Info-->Case, click the yellow Summary button, validate the address and click Save. This will fix the problem.<BR><BR>';
+	overrideMessage = 'The EHS Inspector could not be determined. Speak to a System Administrator to resolve the problem.<BR><BR>';
 	}
 
 //copy the gis object onto the record so that all gis-related functions work
