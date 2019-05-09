@@ -104,11 +104,11 @@ try{
 						}
 					}else{
 						showMessage=true;
-						comment("Error sending data to LIMS. This may be due to a timeout from LIMS.");
+						comment("Error sending data to LIMS. Please correct: " + theResp["result"]);
 					}						
 				}else{
 					showMessage=true;
-					comment("Error sending data to LIMS. Please correct: " + theResp["result"]);
+					comment("Error sending data to LIMS. This may be due to a timeout from LIMS.");
 				}
 			}
 		}
