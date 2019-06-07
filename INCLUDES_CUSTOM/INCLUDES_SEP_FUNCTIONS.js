@@ -240,7 +240,6 @@ try{
 	}
 	if (appMatch){
 		var chkFilter = ""+addtlQuery;
-			logDebug("here: " +addtlQuery);
 		if (chkFilter.length==0 ||eval(chkFilter) ) {
 			var cFld = ""+asiField;
 			var custFld = cFld.trim();
@@ -436,7 +435,6 @@ try{
 									var fqty = parseFloat([feeQty]);
 								}else{
 									var fqty = eval(feeQty);
-									logDebug("fqty: " + fqty);
 									if(isNaN(fqty)){
 										logDebug("Fee Quantity does not resolve to a number. Setting fee quantity to 1.");
 										fqty = 1;
@@ -456,7 +454,7 @@ try{
 								pDuplicate = pDuplicate.toUpperCase();
 							}
 							var invFeeFound = false;
-							var adjustedQty = fqty;
+							var adjustedQty = parseFloat(fqty);
 							var feeSeq = null;
 							feeUpdated = false;
 							getFeeResult = aa.finance.getFeeItemByFeeCode(capId, fcode, fperiod);
@@ -548,15 +546,80 @@ try{
 						var fperiod = ""+sepRules[row]["Fee Period"];
 						var feeQty = ""+sepRules[row]["Fee Quantity"];
 						if(isNaN(feeQty)){
-							var fqty = parseFloat(AInfo[feeQty]);
+							if(feeQty.indexOf("AInfo")<0 && feeQty.indexOf("estValue")<0  ){
+								var fqty = parseFloat([feeQty]);
+							}else{
+								var fqty = eval(feeQty);
+								logDebug("fqty: " + fqty);
+								if(isNaN(fqty)){
+									logDebug("Fee Quantity does not resolve to a number. Setting fee quantity to 1.");
+									fqty = 1;
+								}
+							}
 						}else{
 							var fqty = parseFloat(feeQty);
 						}
 						var finvoice = ""+sepRules[row]["Auto Invoice"];
 						if(finvoice=="Yes") finvoice = "Y";
 						var pDuplicate = ""+sepRules[row]["Duplicate Fee"];
-						if(pDuplicate=="Yes") pDuplicate = "Y";
-						updateFee(fcode,fsched,fperiod,parseFloat(feeQty),finvoice,pDuplicate);
+							var pDuplicate = ""+sepRules[row]["Duplicate Fee"];
+							if(pDuplicate=="Yes") pDuplicate = "Y";
+							// If optional argument is blank, use default logic (i.e. allow duplicate fee if invoiced fee is found)
+							if (pDuplicate == null || pDuplicate.length == 0){
+								pDuplicate = "Y";
+							}else{
+								pDuplicate = pDuplicate.toUpperCase();
+							}
+							var invFeeFound = false;
+							var adjustedQty = parseFloat(fqty);
+							var feeSeq = null;
+							feeUpdated = false;
+							getFeeResult = aa.finance.getFeeItemByFeeCode(capId, fcode, fperiod);
+							if (getFeeResult.getSuccess()) {
+								var feeList = getFeeResult.getOutput();
+								for (feeNum in feeList) {
+									if (feeList[feeNum].getFeeitemStatus().equals("INVOICED")) {
+										if (pDuplicate == "Y") {
+											logDebug("Invoiced fee " + fcode + " found, subtracting invoiced amount from update qty.");
+											adjustedQty = adjustedQty - feeList[feeNum].getFeeUnit();
+											invFeeFound = true;
+										} else {
+											invFeeFound = true;
+											logDebug("Invoiced fee " + fcode + " found.  Not updating this fee. Not assessing new fee " + fcode);
+										}
+									}
+									if (feeList[feeNum].getFeeitemStatus().equals("NEW")) {
+										adjustedQty = adjustedQty - feeList[feeNum].getFeeUnit();
+									}
+								}
+								for (feeNum in feeList)
+									if (feeList[feeNum].getFeeitemStatus().equals("NEW") && !feeUpdated) // update this fee item
+									{
+										var feeSeq = feeList[feeNum].getFeeSeqNbr();
+										var editResult = aa.finance.editFeeItemUnit(capId, adjustedQty + feeList[feeNum].getFeeUnit(), feeSeq);
+										feeUpdated = true;
+										if (editResult.getSuccess()) {
+											logDebug("Updated Qty on Existing Fee Item: " + fcode + " to Qty: " + fqty);
+											if (finvoice == "Y") {
+												feeSeqList.push(feeSeq);
+												paymentPeriodList.push(fperiod);
+											}
+										} else {
+											logDebug("**ERROR: updating qty on fee item (" + fcode + "): " + editResult.getErrorMessage());
+											break
+										}
+									}
+							} else {
+								logDebug("**ERROR: getting fee items (" + fcode + "): " + getFeeResult.getErrorMessage())
+							}
+							// Add fee if no fee has been updated OR invoiced fee already exists and duplicates are allowed
+							if (!feeUpdated && adjustedQty != 0 && (!invFeeFound || invFeeFound && pDuplicate == "Y")){
+								feeSeq = addFee(fcode, fsched, fperiod, adjustedQty, finvoice);
+							}else{
+								feeSeq = null;
+							}
+							updateFeeItemInvoiceFlag(feeSeq, finvoice);
+							return feeSeq;
 					}
 				}
 			}
