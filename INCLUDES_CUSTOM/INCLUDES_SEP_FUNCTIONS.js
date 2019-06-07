@@ -1,3 +1,4 @@
+//INCLUDES_SEP_CUSTOM START
 function sepGetReqdDocs() {
 try{
 	//see if any records are set up--module can be specific or "ALL", look for both
@@ -18,14 +19,12 @@ try{
 				var vEventName = aa.env.getValue("EventName");
 				if(vEventName.indexOf("Before")>-1){
 					var submittedDocList = aa.env.getValue("DocumentModelList");
-					if(!matches(submittedDocList,"",null,"undefined")){
-						if(submittedDocList.length>0){
-							for (var counter = 0; counter < submittedDocList.size(); counter++) {
-								var doc = submittedDocList.get(counter);
-								logDebug("category: " + doc.getDocCategory()) ;
-							}
+					if(submittedDocList.length>0){
+						for (var counter = 0; counter < submittedDocList.size(); counter++) {
+							var doc = submittedDocList.get(counter);
+							logDebug("category: " + doc.getDocCategory()) ;
 						}
-					}
+					}	
 				}else{
 					var submittedDocList = aa.document.getDocumentListByEntity(capId,"CAP").getOutput().toArray();
 				}
@@ -60,7 +59,7 @@ try{
 						var recdTypeArr = "" + recdType
 						var arrAppType = recdTypeArr.split("/");
 						if (arrAppType.length != 4){
-							logDebug("The record type is incorrectly formatted: " + ats);
+							logDebug("The record type is incorrectly formatted: " + recdType);
 						}else{
 							if(vEventName.indexOf("Before")>-1){
 								var aTypeLevel=[];
@@ -131,9 +130,7 @@ try{
 }catch(err){
 	logDebug("An error occurred in sepGetReqdDocs: " + err.message);
 	logDebug(err.stack);
-	//cancel=true;
 }}
-
 
 function sepEmailNotifContactWkfl(recdType, contactType, respectPriChannel, notName, rName, taskName, taskStatus, sysFromEmail, addtlQuery) {
 try{
@@ -142,7 +139,7 @@ try{
 		var recdTypeArr = "" + recdType
 		var arrAppType = recdTypeArr.split("/");
 		if (arrAppType.length != 4){
-			logDebug("The record type is incorrectly formatted: " + ats);
+			logDebug("The record type is incorrectly formatted: " + recdType);
 			return false;
 		}else{
 			for (xx in arrAppType){
@@ -155,23 +152,23 @@ try{
 			var chkFilter = ""+addtlQuery;
 			if (chkFilter.length==0 ||eval(chkFilter) ) {
 				var cntType = ""+contactType;
+				logDebug("cntType: " + cntType);
 				if(cntType.indexOf(",")>-1){
 					var arrType = cntType.split(",");
 					for(con in arrType){
 						var priContact = getContactObj(capId,arrType[con]);
-						sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail,respectPriChannel);
+						sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
 					}
 				}else{
 					if(cntType.toUpperCase()=="ALL"){
 						var arrType = getContactObjs(capId);
 						for(con in arrType){
-							var thisCnt = arrType[con];
-							var priContact = getContactObj(capId,thisCnt.type);
-							sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail,respectPriChannel);
+							var priContact = getContactObj(capId,arrType[con]);
+							sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
 						}
 					}else{
 						var priContact = getContactObj(capId,cntType);
-						sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail,respectPriChannel);
+						sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
 					}						
 				}						
 			}
@@ -182,13 +179,13 @@ try{
 	logDebug(err.stack);
 }}
 
-function sepEmailNotifContact(recdType, contactType, respectPriChannel, notName, rName, sysFromEmail, addtlQuery) {
+function sepEmailNotifContactAppSub(recdType, contactType, respectPriChannel, notName, rName, sysFromEmail, addtlQuery) {
 try{
 	var appMatch = true;
 	var recdTypeArr = "" + recdType
 	var arrAppType = recdTypeArr.split("/");
 	if (arrAppType.length != 4){
-		logDebug("The record type is incorrectly formatted: " + ats);
+		logDebug("The record type is incorrectly formatted: " + recdType);
 		return false;
 	}else{
 		for (xx in arrAppType){
@@ -211,9 +208,8 @@ try{
 				if(cntType.toUpperCase()=="ALL"){
 					var arrType = getContactObjs(capId);
 					for(con in arrType){
-						var thisCnt = arrType[con];
-						var priContact = getContactObj(capId,thisCnt.type);
-						sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail,respectPriChannel);
+						var priContact = getContactObj(capId,arrType[con]);
+						sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
 					}
 				}else{
 					var priContact = getContactObj(capId,cntType);
@@ -223,11 +219,63 @@ try{
 		}
 	}
 }catch(err){
-	logDebug("An error occurred in sepEmailNotifContact: " + err.message);
+	logDebug("An error occurred in sepEmailNotifContactAppSub: " + err.message);
 	logDebug(err.stack);
 }}
 
-function sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail,respectPriChannel){
+function sepSchedInspectionAppSub(recdType, insGroup, insType, pendSched, asiField, asiValue, daysAhead, calWkgDay, inspName, addtlQuery) {
+try{
+	var appMatch = true;
+	var recdTypeArr = "" + recdType
+	var arrAppType = recdTypeArr.split("/");
+	if (arrAppType.length != 4){
+		logDebug("The record type is incorrectly formatted: " + recdType);
+		return false;
+	}else{
+		for (xx in arrAppType){
+			if (!arrAppType[xx].equals(appTypeArray[xx]) && !arrAppType[xx].equals("*")){
+				appMatch = false;
+			}
+		}
+	}
+	if (appMatch){
+		var chkFilter = ""+addtlQuery;
+			logDebug("here: " +addtlQuery);
+		if (chkFilter.length==0 ||eval(chkFilter) ) {
+			var cFld = ""+asiField;
+			var custFld = cFld.trim();
+			var cVal = ""+asiValue;
+			var custVal = cVal.trim();
+			if(matches(custFld,"",null,"undefined") || custVal==AInfo[custFld]){
+				var pendOrSched = ""+pendSched;
+				if(pendOrSched.toUpperCase()=="PENDING"){
+					createPendingInspection(insGroup,insType);
+				}else{
+					if(calWkgDay=="Working"){
+						var dtSched = dateAdd(sysDate,daysAhead,true);
+					}else{
+						var dtSched = dateAdd(sysDate,daysAhead);
+					}
+					scheduleInspectDate(insType,dtSched);
+					if(!matches(inspName,"",null,"undefined")){
+						var inspId = getScheduledInspId(insType);
+						inspName = ""+inspName;
+						if(inspName.toUpperCase()=="AUTO"){
+							autoAssignInspection(inspId);
+						}else{
+							assignInspection(inspId, inspName);
+						}
+					}
+				}
+			}
+		}
+	}
+}catch(err){
+	logDebug("An error occurred in sepSchedInspectionAppSub: " + err.message);
+	logDebug(err.stack);
+}}
+
+function sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail){
 try{
 	if(priContact){
 		var priChannel =  lookup("CONTACT_PREFERRED_CHANNEL",""+ priContact.capContact.getPreferredChannel());
@@ -330,9 +378,12 @@ try{
 		}
 	}
 	if(!emailRpt){
+		logDebug("here");
 		rFiles = [];
 	}
 	var result = null;
+	logDebug("rName: " +rName);
+	logDebug("priEmail: " +priEmail);
 	result = aa.document.sendEmailAndSaveAsDocument(emailFrom, priEmail, null, notName, eParams, capIDScriptModel, rFiles);
 	if(result.getSuccess()){
 		logDebug("Sent email successfully!");
@@ -345,30 +396,20 @@ try{
 	logDebug("An error occurred in sepSendNotification: " + err.message);
 	logDebug(err.stack);
 }}
-function sepUpdateFees(sepRules) {
+
+function sepUpdateFeesWkfl(sepRules) {
 try{
 	for(row in sepRules){
 		if(sepRules[row]["Active"]=="Yes"){
-			var taskMatch = false;
-			//this runs from ASA and WTUA--only check task/status if from WTUA
-			var vEventName = aa.env.getValue("EventName");
-			if(vEventName.indexOf("Workflow")>-1){
-				var taskName = ""+sepRules[row]["Task Name"];
-				var taskStatus = ""+sepRules[row]["Task Status"];
-				if(!matches(taskName,"",null,"undefined" || wfTask==taskName) && wfStatus==taskStatus){
-					taskMatch=true;
-				}
-			}else{
-				//not run from WTUA so ignore task/status
-				taskMatch = true;
-			}
-			if(taskMatch){
+			var taskName = ""+sepRules[row]["Task Name"];
+			var taskStatus = ""+sepRules[row]["Task Status"];
+			if(!matches(taskName,"",null,"undefined" || wfTask==taskName) && wfStatus==taskStatus){
 				var appMatch = true;
 				var recdType = ""+sepRules[row]["Record Type"];
 				var recdTypeArr = "" + recdType;
 				var arrAppType = recdTypeArr.split("/");
 				if (arrAppType.length != 4){
-					logDebug("The record type is incorrectly formatted: " + ats);
+					logDebug("The record type is incorrectly formatted: " + recdType);
 					return false;
 				}else{
 					for (xx in arrAppType){
@@ -381,7 +422,7 @@ try{
 					var addtlQuery = ""+sepRules[row]["Additional Query"];
 					var chkFilter = ""+addtlQuery;
 					if (chkFilter.length==0 ||eval(chkFilter) ) {
-						var cFld = ""+sepRules[row]["Custom Field"];
+						var cFld = ""+sepRules[row]["Custom Field Name"];
 						var custFld = cFld.trim();
 						var cVal = ""+sepRules[row]["Custom Field Value"];
 						var custVal = cVal.trim();
@@ -391,15 +432,26 @@ try{
 							var fperiod = ""+sepRules[row]["Fee Period"];
 							var feeQty = ""+sepRules[row]["Fee Quantity"];
 							if(isNaN(feeQty)){
-								var fqty = parseFloat(AInfo[feeQty]);
+								if(feeQty.indexOf("AInfo")<0 && feeQty.indexOf("estValue")<0  ){
+									var fqty = parseFloat([feeQty]);
+								}else{
+									var fqty = eval(feeQty);
+									logDebug("fqty: " + fqty);
+									if(isNaN(fqty)){
+										logDebug("Fee Quantity does not resolve to a number. Setting fee quantity to 1.");
+										fqty = 1;
+									}
+								}
 							}else{
 								var fqty = parseFloat(feeQty);
 							}
-							var finvoice = ""+sepRules[row]["Fee Code"];
+							var finvoice = ""+sepRules[row]["Auto Invoice"];
+							if(finvoice=="Yes") finvoice = "Y";
 							var pDuplicate = ""+sepRules[row]["Duplicate Fee"];
+							if(pDuplicate=="Yes") pDuplicate = "Y";
 							// If optional argument is blank, use default logic (i.e. allow duplicate fee if invoiced fee is found)
 							if (pDuplicate == null || pDuplicate.length == 0){
-								pDuplicate = "Yes";
+								pDuplicate = "Y";
 							}else{
 								pDuplicate = pDuplicate.toUpperCase();
 							}
@@ -412,7 +464,7 @@ try{
 								var feeList = getFeeResult.getOutput();
 								for (feeNum in feeList) {
 									if (feeList[feeNum].getFeeitemStatus().equals("INVOICED")) {
-										if (pDuplicate == "Yes") {
+										if (pDuplicate == "Y") {
 											logDebug("Invoiced fee " + fcode + " found, subtracting invoiced amount from update qty.");
 											adjustedQty = adjustedQty - feeList[feeNum].getFeeUnit();
 											invFeeFound = true;
@@ -433,7 +485,7 @@ try{
 										feeUpdated = true;
 										if (editResult.getSuccess()) {
 											logDebug("Updated Qty on Existing Fee Item: " + fcode + " to Qty: " + fqty);
-											if (finvoice == "Yes") {
+											if (finvoice == "Y") {
 												feeSeqList.push(feeSeq);
 												paymentPeriodList.push(fperiod);
 											}
@@ -446,7 +498,7 @@ try{
 								logDebug("**ERROR: getting fee items (" + fcode + "): " + getFeeResult.getErrorMessage())
 							}
 							// Add fee if no fee has been updated OR invoiced fee already exists and duplicates are allowed
-							if (!feeUpdated && adjustedQty != 0 && (!invFeeFound || invFeeFound && pDuplicate == "Yes")){
+							if (!feeUpdated && adjustedQty != 0 && (!invFeeFound || invFeeFound && pDuplicate == "Y")){
 								feeSeq = addFee(fcode, fsched, fperiod, adjustedQty, finvoice);
 							}else{
 								feeSeq = null;
@@ -460,7 +512,58 @@ try{
 		}
 	}
 }catch (err){
-	logDebug("An error occurred in sepUpdateFee: " + err.message);
+	logDebug("An error occurred in sepUpdateFeesWkfl: " + err.message);
+	logDebug(err.stack);
+}}
+
+function sepUpdateFeesAppSub(sepRules) {
+try{
+	for(row in sepRules){
+		if(sepRules[row]["Active"]=="Yes"){
+			var appMatch = true;
+			var recdType = ""+sepRules[row]["Record Type"];
+			var recdTypeArr = "" + recdType;
+			var arrAppType = recdTypeArr.split("/");
+			if (arrAppType.length != 4){
+				logDebug("The record type is incorrectly formatted: " + recdType);
+				return false;
+			}else{
+				for (xx in arrAppType){
+					if (!arrAppType[xx].equals(appTypeArray[xx]) && !arrAppType[xx].equals("*")){
+						appMatch = false;
+					}
+				}
+			}
+			if (appMatch){
+				var addtlQuery = ""+sepRules[row]["Additional Query"];
+				var chkFilter = ""+addtlQuery;
+				if (chkFilter.length==0 ||eval(chkFilter) ) {
+					var cFld = ""+sepRules[row]["Custom Field Name"];
+					var custFld = cFld.trim();
+					var cVal = ""+sepRules[row]["Custom Field Value"];
+					var custVal = cVal.trim();
+					if(matches(custFld,"",null,"undefined") || custVal==AInfo[custFld]){
+						var fcode = ""+sepRules[row]["Fee Code"];
+						var fsched = ""+sepRules[row]["Fee Schedule"];
+						var fperiod = ""+sepRules[row]["Fee Period"];
+						var feeQty = ""+sepRules[row]["Fee Quantity"];
+						if(isNaN(feeQty)){
+							var fqty = parseFloat(AInfo[feeQty]);
+						}else{
+							var fqty = parseFloat(feeQty);
+						}
+						var finvoice = ""+sepRules[row]["Auto Invoice"];
+						if(finvoice=="Yes") finvoice = "Y";
+						var pDuplicate = ""+sepRules[row]["Duplicate Fee"];
+						if(pDuplicate=="Yes") pDuplicate = "Y";
+						updateFee(fcode,fsched,fperiod,parseFloat(feeQty),finvoice,pDuplicate);
+					}
+				}
+			}
+		}
+	}
+}catch (err){
+	logDebug("An error occurred in sepUpdateFeesAppSub: " + err.message);
 	logDebug(err.stack);
 }}
 
@@ -492,7 +595,7 @@ try{
 								var recdTypeArr = "" + recdType;
 								var arrAppType = recdTypeArr.split("/");
 								if (arrAppType.length != 4){
-									logDebug("The record type is incorrectly formatted: " + ats);
+									logDebug("The record type is incorrectly formatted: " + recdType);
 									return false;
 								}else{
 									for (xx in arrAppType){
@@ -597,6 +700,47 @@ try{
 												}
 											}
 											break;
+										case "Child Records Status":
+											var canProceed = false;
+											var strChildInfo = ""+ sepRules[row]["Required Elements List"];
+											var arrChildRecs = [];
+											if(strChildInfo.length>0){
+												var arrChildRecs = strChildInfo.split("|");
+												for (ch in arrChildRecs){
+													arrThisChild = arrChildRecs[ch].split(",");
+													var arrChildren = getChildren(arrThisChild[0]);
+													var status2Chk = ""+arrThisChild[1];
+													if(status2Chk.toUpperCase()=="ANY"){
+														canProceed =- true;
+													}else{
+														var badStatus=false;
+														for(st in arrChildren){
+															var chCap = aa.cap.getCap(arrChildren[st]).getOutput();
+															if(chCap.getCapStatus().toUpperCase()!=status2Chk.toUpperCase()){
+																badStatus=true;
+															}
+														}
+														if(badStatus){
+															canProceed=false;
+														}
+													}		
+												}
+											}else{
+												canProceed=false;
+											}
+											if(!canProceed){
+												cancel=true;
+												showMessage=true;
+												comment( "'"+ taskName + "' cannot be set to '" + taskStatus + "' when either there is no child record of the type " );
+												if(feesDue.length==0){
+													comment("--All Fees--");
+												}else{
+													for( x in feesDue){
+														comment(feesDue[x]);
+													}
+												}
+											}
+											break;
 										}
 									}
 								}
@@ -672,7 +816,7 @@ try{
 								var recdTypeArr = "" + recdType;
 								var arrAppType = recdTypeArr.split("/");
 								if (arrAppType.length != 4){
-									logDebug("The record type is incorrectly formatted: " + ats);
+									logDebug("The record type is incorrectly formatted: " + recdType);
 									return false;
 								}else{
 									for (xx in arrAppType){
@@ -693,8 +837,28 @@ try{
 												logDebug("Parent ID not correctly formatted: " + sepRules[row]["Parent Record Type"]);
 												return false;
 											}else{
-												var parCapId = createParent(arrParRec[0], arrParRec[1], arrParRec[2], arrParRec[3],capName); 
-											}
+												var parCapId = false;
+												var appCreateResult = aa.cap.createApp(arrParRec[0], arrParRec[1], arrParRec[2], arrParRec[3],capName);
+												logDebug("creating cap " +arrParRec);
+												if (appCreateResult.getSuccess()){
+													var newId = appCreateResult.getOutput();
+													logDebug("cap " + arrParRec + " created successfully ");
+													// create Detail Record
+													capModel = aa.cap.newCapScriptModel().getOutput();
+													capDetailModel = capModel.getCapModel().getCapDetailModel();
+													capDetailModel.setCapID(newId);
+													aa.cap.createCapDetail(capDetailModel);
+													var newObj = aa.cap.getCap(newId).getOutput();	//Cap object
+													var result = aa.cap.createAppHierarchy(newId, capId); 
+													if (result.getSuccess()){
+														logDebug("Parent application successfully linked");
+														parCapId = newId;
+													}else{
+														logDebug("Could not link applications");
+													}
+												}else{
+													logDebug( "**ERROR: adding parent App: " + appCreateResult.getErrorMessage());
+												}											}
 											if(parCapId){
 												var newLPType = ""+sepRules[row]["Create LP Type"];
 												if(!matches(newLPType, "",null,"undefined")){
@@ -730,9 +894,22 @@ try{
 												licEditExpInfo(newAppStatus, expDate);
 												updateAppStatus(newAppStatus, "Updated via sepIssueLicenseWorkflow.");
 												capId = currCapId;
-												if(""+sepRules[row]["Copy Custom Fields/Lists"]=="Yes"){
+												if(""+sepRules[row]["Copy Custom Fields/Lists"]=="ALL"){
 													copyAppSpecific(parCapId);
 													copyASITables(capId, parCapId);
+													logDebug("Copied all ASI/T.");
+												}else{
+													if(!matches(""+sepRules[row]["Copy Custom Fields/Lists"],"",null,"undefined")){
+														var copyList = ""+sepRules[row]["Copy Custom Fields/Lists"];
+														var arrCopy = [];
+														if(copyList.indexOf("|")>-1){
+															arrCopy = copyList.split("|");
+														}else{
+															arrCopy.push(copyList);
+														}
+														copyAppSpecificInclude(parCapId,arrCopy);
+														copyASITablesInclude(capId, parCapId,arrCopy);
+													}
 												}
 												if(!matches(""+sepRules[row]["Copy Contacts"],"",null,"undefined")){
 													var strContacts = ""+sepRules[row]["Copy Contacts"];
@@ -766,19 +943,18 @@ try{
 														var arrType = cntType.split(",");
 														for(con in arrType){
 															var priContact = getContactObj(capId,arrType[con]);
-															sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail,respectPriChannel);
+															sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
 														}
 													}else{
 														if(cntType.toUpperCase()=="ALL"){
 															var arrType = getContactObjs(capId);
 															for(con in arrType){
-																var thisCnt = arrType[con];
-																var priContact = getContactObj(capId,thisCnt.type);
-																sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail,respectPriChannel);
+																var priContact = getContactObj(capId,arrType[con]);
+																sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
 															}
 														}else{
 															var priContact = getContactObj(capId,cntType);
-															sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail,respectPriChannel);
+															sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
 														}						
 													}						
 												}else{
@@ -805,3 +981,101 @@ try{
 	logDebug("A JavaScript Error occurred: sepIssueLicenseWorkflow:  " + err.message);
 	logDebug(err.stack)
 }}
+
+//copy of copyAppSpecific and copyASITables except optional param is include not ignore
+function copyAppSpecificInclude(newCap) // copy all App Specific info into new Cap, 1 optional parameter for ignoreArr
+{
+	var includeArr = new Array();
+	var limitCopy = false;
+	if (arguments.length > 1) 
+	{
+		includeArr = arguments[1];
+		limitCopy = true;
+	}
+	
+	for (asi in AInfo){
+		//Check list
+		if(limitCopy){
+			var ignore=true;
+		  	for(var i = 0; i < includeArr.length; i++)
+		  		if(includeArr[i] == asi){
+		  			ignore=false;
+		  			break;
+		  		}
+		  	if(ignore)
+		  		continue;
+		}
+		editAppSpecific(asi,AInfo[asi],newCap);
+	}
+}
+
+
+
+function copyASITablesInclude(pFromCapId, pToCapId) {
+	// par3 is optional 0 based string array of table to include
+	var itemCap = pFromCapId;
+
+	var gm = aa.appSpecificTableScript.getAppSpecificTableGroupModel(itemCap).getOutput();
+	var ta = gm.getTablesArray()
+		var tai = ta.iterator();
+	var tableArr = new Array();
+	var includeArr = new Array();
+	var limitCopy = false;
+	if (arguments.length > 2) {
+		includeArr = arguments[2];
+		limitCopy = true;
+	}
+	while (tai.hasNext()) {
+		var tsm = tai.next();
+
+		var tempObject = new Array();
+		var tempArray = new Array();
+		var tn = tsm.getTableName() + "";
+		var numrows = 0;
+
+		//Check list
+		if (limitCopy) {
+			var ignore = true;
+			for (var i = 0; i < includeArr.length; i++)
+				if (includeArr[i] == tn) {
+					ignore = false;
+					break;
+				}
+			if (ignore)
+				continue;
+		}
+		if (!tsm.rowIndex.isEmpty()) {
+			var tsmfldi = tsm.getTableField().iterator();
+			var tsmcoli = tsm.getColumns().iterator();
+			var readOnlyi = tsm.getAppSpecificTableModel().getReadonlyField().iterator(); // get Readonly filed
+			var numrows = 1;
+			while (tsmfldi.hasNext()) // cycle through fields
+			{
+				if (!tsmcoli.hasNext()) // cycle through columns
+				{
+					var tsmcoli = tsm.getColumns().iterator();
+					tempArray.push(tempObject); // end of record
+					var tempObject = new Array(); // clear the temp obj
+					numrows++;
+				}
+				var tcol = tsmcoli.next();
+				var tval = tsmfldi.next();
+
+				var readOnly = 'N';
+				if (readOnlyi.hasNext()) {
+					readOnly = readOnlyi.next();
+				}
+
+				var fieldInfo = new asiTableValObj(tcol.getColumnName(), tval, readOnly);
+				tempObject[tcol.getColumnName()] = fieldInfo;
+				//tempObject[tcol.getColumnName()] = tval;
+			}
+
+			tempArray.push(tempObject); // end of record
+		}
+
+		addASITable(tn, tempArray, pToCapId);
+		logDebug("ASI Table Array : " + tn + " (" + numrows + " Rows)");
+	}
+} 
+//INCLUDES_SEP_CUSTOM END
