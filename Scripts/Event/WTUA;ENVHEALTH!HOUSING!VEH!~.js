@@ -1,45 +1,46 @@
-// WTUA;ENVHEALTH!HOUSING!VEH!~
-if (wfTask == 'Initial Processing' && (wfStatus == 'Complete Notice of Violation') && AInfo['Reinspection Date (in 21 days if blank)'] != null && AInfo['Reinspection Date (in 21 days if blank)'] != '') {
-	scheduleInspectDate('Reinspection',AInfo['Reinspection Date (in 21 days if blank)'],AInfo['Assigned To']);
+
+if (wfTask == 'Initial Processing' && (wfStatus == 'Complete Notice of Violation') && getTSIfieldValue('Reinspection Date', 'Initial Processing') != null) {
+	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Initial Processing'),AInfo['Assigned To']);
 	}
 
-if (wfTask == 'Initial Processing' && (wfStatus == 'Complete Notice of Violation') && (AInfo['Reinspection Date (in 21 days if blank)'] == null ||AInfo['Reinspection Date (in 21 days if blank)'] == '')) {
+if (wfTask == 'Initial Processing' && (wfStatus == 'Complete Notice of Violation') && getTSIfieldValue('Reinspection Date', 'Initial Processing') == null) {
 	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,20)),AInfo['Assigned To']);
-	editTaskSpecific('Initial Processing','Reinspection Date (in 21 days if blank)',nextWorkDay(dateAdd(null,20)));
+	editTaskSpecific('Initial Processing','Reinspection Date',nextWorkDay(dateAdd(null,20)));
 	}
 
-if (wfTask == 'Initial Processing' && wfStatus == 'Notice of Violation' && (AInfo['Reinspection Date (in 21 days if blank)'] == null || AInfo['Reinspection Date (in 21 days if blank)'] == '')) {
-	editTaskSpecific('Initial Processing','Reinspection Date (in 21 days if blank)',nextWorkDay(dateAdd(null,20)));
+if (wfTask == 'Initial Processing' && wfStatus == 'Notice of Violation' && getTSIfieldValue('Reinspection Date', 'Initial Processing') == null) {
+	editTaskSpecific('Initial Processing','Reinspection Date',nextWorkDay(dateAdd(null,20)));
 	}
 
-if (wfTask == 'Additional Processing' && (wfStatus == 'Complete Cntr Referral 18 Day' || wfStatus == 'Complete Cntr Referral 21 Day') && AInfo['Next Inspection'] != null && AInfo['Next Inspection'] != '') {
-	scheduleInspectDate('Reinspection',AInfo['Next Inspection'],'EMASON');
-	assignTask('Towing Inspection','EMASON');
+if (wfTask == 'Additional Processing' && matches(wfStatus,'Complete Cntr Referral 18 Day','Complete Cntr Referral 21 Day') && getTSIfieldValue('Reinspection Date', 'Additional Processing') != null) {
+	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Additional Processing'),'ARUSIE');
+	assignTask('Towing Inspection','ARUSIE');
 	}
 
-if (wfTask == 'Additional Processing' && (wfStatus == 'Complete Cntr Referral 18 Day' || wfStatus == 'Complete Cntr Referral 21 Day') && (AInfo['Next Inspection'] == null ||AInfo['Next Inspection'] == '')) {
-	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,13)),'EMASON');
+if (wfTask == 'Additional Processing' && matches(wfStatus,'Complete Cntr Referral 18 Day','Complete Cntr Referral 21 Day') && getTSIfieldValue('Reinspection Date', 'Additional Processing') == null) {
+	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,13)),'ARUSIE');
 	editTaskSpecific('Reinspection','Reinspection Date',nextWorkDay(dateAdd(null,13)));
-	assignTask('Towing Inspection','EMASON');
+	assignTask('Towing Inspection','ARUSIE');
 	}
 
 if (wfTask == 'Towing Inspection' && wfStatus == 'Reinspection') {
-	scheduleInspectDate('Reinspection',AInfo['Reinspect on'],AInfo['Assigned To']);
+	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Towing Inspection'),AInfo['Assigned To']);
 	}
 
 if (wfTask == 'Reinspection' && wfStatus == 'Reinspection') {
-	scheduleInspectDate('Reinspection',AInfo['Schedule Reinspection On'],AInfo['Assigned To']);
+	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Reinspection'),AInfo['Assigned To']);
 	}
 
 if (wfTask == 'Initial Processing' && wfStatus == 'Contractor Referral 48 Hours') {
-	assignTask('Towing Inspection','EMASON');
+	activateTask('Towing Inspection');
+	assignTask('Towing Inspection','ARUSIE');
 	}
 
-if (wfTask == 'Initial Processing' && wfStatus == 'Contractor Referral 48 Hours' && AInfo['Reinspection Date (in 21 days if blank)'] != null && AInfo['Reinspection Date (in 21 days if blank)'] != '') {
-	scheduleInspectDate('Reinspection',AInfo['Reinspection Date (in 21 days if blank)'],'EMASON');
+if (wfTask == 'Initial Processing' && wfStatus == 'Contractor Referral 48 Hours' && getTSIfieldValue('Reinspection Date', 'Initial Processing') != null) {
+	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Initial Processing'),'ARUSIE');
 	}
 
-if (wfTask == 'Initial Processing' && wfStatus == 'Contractor Referral 48 Hours' && (AInfo['Reinspection Date (in 21 days if blank)'] == null || AInfo['Reinspection Date (in 21 days if blank)'] == '')) {
-	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,20)),'EMASON');
-	editTaskSpecific('Initial Processing','Reinspection Date (in 21 days if blank)',nextWorkDay(dateAdd(null,20)));
+if (wfTask == 'Initial Processing' && wfStatus == 'Contractor Referral 48 Hours' && getTSIfieldValue('Reinspection Date', 'Initial Processing') == null) {
+	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,20)),'ARUSIE');
+	editTaskSpecific('Initial Processing','Reinspection Date',nextWorkDay(dateAdd(null,20)));
 	}
