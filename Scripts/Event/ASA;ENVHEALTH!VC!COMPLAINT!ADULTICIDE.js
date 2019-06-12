@@ -8,6 +8,7 @@ try{
 	}else{
 		scheduleInspect(capId, "Adulticide Inspection", 1);
 	}
+
 }catch(err){
 	logDebug("A JavaScript Error occurred: ASA:EnvHealth/VC/Complaint/Adulticide: " + err.message);
 	logDebug(err.stack)
