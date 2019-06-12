@@ -1,6 +1,7 @@
 // IRSA;ENVHEALTH!HOUSING!TRA!~
 if (isTaskActive('Reinspection') && matches(inspResult,'In Violation','In Violation - Ticket Issued')) {
 	closeTask('Reinspection','In Violation','Updated by Script');
+        activateTask("Additional Processing");
 	assignTask('Additional Processing',AInfo['Assigned To']);
 	}
 
