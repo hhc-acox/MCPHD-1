@@ -80,8 +80,14 @@ editAppSpecific('Reason for Invest',RFI,newChildID);
 
 //replaced branch(ES_GET_ADDRESS_FOR_CHILD)
 ES_GET_ADDRESS_FOR_CHILD();
+//Testing the GIS object
+                copyParcelGisObjects();
+                x = getGISInfo("MCPHD","VectorZones","vectorzone");
+                logDebug ("Mosquito Control Zones =" + x);
+                x = getGISInfo("MCPHD","Parcel","parcel_c");
+                //x = getGISBufferInfo1("MCPHD","Parcel","50","parcel_i");
+                logDebug ("Parcels_I =" + x);
 
-//replaced branch(ES_HHC_CONTACTS_PROCESS)
 ES_HHC_CONTACTS_PROCESS();
 if (AInfo['INVESTIGATION TYPE.Online Complaint'] == 'CHECKED') {
 	editAppSpecific('Reason for Invest','Online Complaint',newChildID);
