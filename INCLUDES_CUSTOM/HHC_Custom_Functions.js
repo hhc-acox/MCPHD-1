@@ -865,10 +865,11 @@ function tableHasRows(t) {
 	} 		else {
 				return false;
 	}
+	}
 	catch(err)
 		{
 		logDebug("A JavaScript Error occurred: tableHasRows:  " + err.message);
 		logDebug(err.stack);
 		}
-	}
+	
 }
