@@ -532,7 +532,8 @@ function HHC_VIOLATIONS_LOOP_COURT()
 function HHC_ASSIGN_NEW_LEHS() {
 	try{
 		var ctLead = AInfo['ParcelAttribute.CensusTract'];
-		var newUserID = lookup('Census - Lead EHS',AInfo['ParcelAttribute.CensusTract']);
+		var newUserIDfull = lookup('Census - Lead EHS',AInfo['ParcelAttribute.CensusTract']);
+			newUserID = convertForAssignedTo(newUserIDfull);
 			if (AInfo['Assigned To'] != null && AInfo['Assigned To'] != AInfo['Previous Assigned To']) {
 				var newUserID = AInfo['Assigned To'];
 				}
@@ -547,14 +548,14 @@ function HHC_ASSIGN_NEW_LEHS() {
 				editAppSpecific('Previous Assigned To', newUserID);
 				editAppSpecific('Assigned To', newUserID);
 				editAppSpecific('Census Tract', ctLead);
-				assignCap(newUserID);
+				assignCap(newUserIDfull);
 				
 			if (checkInspectionResult('Initial Lead Inspection', 'Scheduled')) {
-				assignInspection(inspNum, newUserID);
+				assignInspection(inspNum, newUserIDfull);
 				}
 
 			if (checkInspectionResult('Reinspection', 'Scheduled')) {
-				assignInspection(inspNum, newUserID);
+				assignInspection(inspNum, newUserIDfull);
 				}
 
 		}
@@ -564,7 +565,6 @@ function HHC_ASSIGN_NEW_LEHS() {
 		logDebug(err.stack);
 	}
 }
-
 function hhc_getTheCensusTract(capId)
 {
 		try {
