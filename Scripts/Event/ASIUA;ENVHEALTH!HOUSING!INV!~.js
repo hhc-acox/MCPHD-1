@@ -1,7 +1,6 @@
 // ASIUA;ENVHEALTH!HOUSING!INV!~
 if (capStatus == 'Pending Case Creation' && AInfo['REQUIRED CASES.VEH'] == 'CHECKED') {
-	
-//start replaced branch: ES_VEH_CREATE_CHILD_CASE
+
  {
 editAppSpecific('VEH Created',dateAdd(null,0));
 updateAppStatus('Finaled','Child Case Created');
@@ -12,24 +11,20 @@ updateAppStatus('In Violation','Created from INV',newChildID);
 assignCap(AInfo['Assigned To'],newChildID);
 editAppSpecific('INV Case',capIDString,newChildID);
 editAppName(capName,newChildID);
-
-//replaced branch(ES_GET_ADDRESS_FOR_CHILD)
-ES_GET_ADDRESS_FOR_CHILD();
+HHC_GET_ADDRESS_FOR_CHILD();
+HHC_CONTACTS_PROCESS();
 validGIS = false;
 overrideMessage = '';
 copyParcelGisObjects();
 
 if (AInfo['Online Complaint'] == 'CHECKED') {
 	editAppSpecific('Reason for Invest','Online Complaint',newChildID);
+		}
 	}
-
 }
-//end replaced branch: ES_VEH_CREATE_CHILD_CASE;
-	}
 
 if (capStatus == 'Pending Case Creation' && AInfo['HSG'] == 'CHECKED') {
 	
-//start replaced branch: ES_HSG_CREATE_CHILD_CASE
  {
 editAppSpecific('HSG Created',dateAdd(null,0),capId);
 var RFI = AInfo['Reason for Invest'];
@@ -41,29 +36,20 @@ updateAppStatus('In Violation','Created from INV',newChildID);
 assignCap(AInfo['Assigned To'],newChildID);
 editAppSpecific('INV Case',capIDString,newChildID);
 editAppSpecific('Emergency','N',newChildID);
-editAppSpecific('Ordinance Chapter','10',newChildID);
+editAppSpecific('Ordinance Chapter','10-Residential',newChildID);
 editAppSpecific('Owner Occupied','N',newChildID);
-editAppSpecific('Interior Violations','N',newChildID);
-editAppSpecific('Healthy Homes Assessment Completed','N',newChildID);
-editAppSpecific('Lead','N',newChildID);
 editAppSpecific('Reason for Invest',RFI,newChildID);
-
-//replaced branch(ES_GET_ADDRESS_FOR_CHILD)
-ES_GET_ADDRESS_FOR_CHILD();
-
-//replaced branch(ES_HHC_CONTACTS_PROCESS)
-ES_HHC_CONTACTS_PROCESS();
+copyParcelGisObjects();
+HHC_GET_ADDRESS_FOR_CHILD();
+HHC_CONTACTS_PROCESS();
 if (AInfo['Online Complaint'] == 'CHECKED') {
 	editAppSpecific('Reason for Invest','Online Complaint',newChildID);
+		}
 	}
-
 }
-//end replaced branch: ES_HSG_CREATE_CHILD_CASE;
-	}
 
 if (capStatus == 'Pending Case Creation' && AInfo['TRA'] == 'CHECKED') {
 	
-//start replaced branch: ES_TRA_CREATE_CHILD_CASE
  {
 editAppSpecific('REQUIRED CASES.TRA Created',dateAdd(null,0),capId);
 var RFI = AInfo['Reason for Invest'];
@@ -75,24 +61,14 @@ updateAppStatus('In Violation','Created from INV',newChildID);
 assignCap(AInfo['Assigned To'],newChildID);
 editAppSpecific('INV Case',capIDString,newChildID);
 editAppSpecific('Emergency','N',newChildID);
-editAppSpecific('Ordinance Chapter','10',newChildID);
+editAppSpecific('Ordinance Chapter','10-Residential',newChildID);
 editAppSpecific('Reason for Invest',RFI,newChildID);
+copyParcelGisObjects();
+HHC_GET_ADDRESS_FOR_CHILD();
+HHC_CONTACTS_PROCESS();
 
-//replaced branch(ES_GET_ADDRESS_FOR_CHILD)
-ES_GET_ADDRESS_FOR_CHILD();
-//Testing the GIS object
-                copyParcelGisObjects();
-                x = getGISInfo("MCPHD","VectorZones","vectorzone");
-                logDebug ("Mosquito Control Zones =" + x);
-                x = getGISInfo("MCPHD","Parcel","parcel_c");
-                //x = getGISBufferInfo1("MCPHD","Parcel","50","parcel_i");
-                logDebug ("Parcels_I =" + x);
-
-ES_HHC_CONTACTS_PROCESS();
 if (AInfo['INVESTIGATION TYPE.Online Complaint'] == 'CHECKED') {
 	editAppSpecific('Reason for Invest','Online Complaint',newChildID);
+		}
 	}
-
 }
-//end replaced branch: ES_TRA_CREATE_CHILD_CASE;
-	}
