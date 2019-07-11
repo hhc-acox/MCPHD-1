@@ -1,0 +1,42 @@
+//ASIUA;ENVHEALTH~HHECMSC~LINV~!
+if (AInfo['Assigned To'] != AInfo['Previous Assigned To']) 
+	{
+		HHC_ASSIGN_NEW_LEHS();
+	}
+
+if (capStatus == 'Pending Case Creation' && AInfo['Consumer Product Testing'] == 'CHECKED') 
+	{
+editAppSpecific('CPT Created',dateAdd(null,0));
+updateAppStatus('Finaled','Child Case Created');
+newChildID = createChild('EnvHealth','HHECMSC','CPS','NA','');
+copyAppSpecific(newChildID);
+comment('New child app id = '+ newChildID);
+updateAppStatus('In Violation','Created from LINV',newChildID);
+assignCap(AInfo['Assigned To'],newChildID);
+editAppSpecific('INV Case',capIDString,newChildID);
+HHC_GET_ADDRESS_FOR_CHILD();
+	}
+if (capStatus == 'Pending Case Creation' && AInfo['LHH'] == 'CHECKED') 
+{
+editAppSpecific('LHH Created',dateAdd(null,0));
+updateAppStatus('Finaled','Child Case Created');
+newChildID = createChild('EnvHealth','HHECMSC','LHH','NA','');
+copyAppSpecific(newChildID);
+comment('New child app id = '+ newChildID);
+updateAppStatus('In Violation','Created from LINV',newChildID);
+assignCap(AInfo['Assigned To'],newChildID);
+editAppSpecific('INV Case',capIDString,newChildID);
+HHC_GET_ADDRESS_FOR_CHILD();
+}
+if (capStatus == 'Pending Case Creation' && AInfo['BBE'] == 'CHECKED') 
+	{
+editAppSpecific('BBE Created',dateAdd(null,0));
+updateAppStatus('Finaled','Child Case Created');
+newChildID = createChild('EnvHealth','HHECMSC','BBE','NA','');
+copyAppSpecific(newChildID);
+comment('New child app id = '+ newChildID);
+updateAppStatus('In Violation','Created from LINV',newChildID);
+assignCap(AInfo['Assigned To'],newChildID);
+editAppSpecific('INV Case',capIDString,newChildID);
+HHC_GET_ADDRESS_FOR_CHILD();
+	}
