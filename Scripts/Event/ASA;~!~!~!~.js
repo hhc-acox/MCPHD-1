@@ -5,7 +5,7 @@
 //	logDebug("A JavaScript Error occurred: ASA:*/*/*/*: Copy GIS Object: " + err.message);
 //	logDebug(err.stack)
 //} 
-//	copyParcelGisObjects(); 
+	copyParcelGisObjects(); 
 
 //assess fees
 try{
