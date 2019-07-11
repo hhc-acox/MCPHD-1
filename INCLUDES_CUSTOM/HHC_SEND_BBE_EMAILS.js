@@ -61,4 +61,9 @@ function HHC_SEND_BBE_EMAILS() {
 				}
 
 		}
+	catch(err)
+	{
+	logDebug("A JavaScript Error occurred: HHC_SEND_BBE_EMAILS:  " + err.message);
+	logDebug(err.stack);
+	}
 }
