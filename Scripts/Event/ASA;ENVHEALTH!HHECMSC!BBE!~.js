@@ -1,47 +1,37 @@
 // ASA;ENVHEALTH!HHECMSC!BBE!~ 
-// 7.5.17 chaas: the user LLOBDELL below is not yet setup in MCPHD configuration
 // See ASA:ENVHEALTH/*/*/*
+cContactAry = new Array();
+masterArray = new Array();
+elementArray = new Array();
 areaInspector = 'LLOBDELL';
 var complInitInsp = false;
 var InspSwitch = false;
 cContactResult = AInfo[''];
 cContactsExist = false;
-cContactAry = new Array();
-masterArray = new Array();
-elementArray = new Array();
-editAppSpecific('GENERAL.Assigned To',areaInspector);
+editAppSpecific('Assigned To',areaInspector);
 assignCap(areaInspector);
 
-// 7.5.17 chaas: no custom fields in any of the GENERAL custom field subgroups for Inspection Needed 
-if (AInfo['GENERAL.Inspection Needed'] == 'Yes') {
-	InspSwitch = true;
-	}
-
-if (!matches(AInfo['GENERAL.Initial Inspection Date'],null,'',' ')) {
+if (!matches(AInfo['Initial Inspection Date'],null,'',' ')) {
 	complInitInsp = true;
 	}
 
-if (InspSwitch && complInitInsp) {
-	scheduleInspectDate('Initial Inspection',AInfo['GENERAL.Initial Inspection Date'],'LLOBDELL');
+if (complInitInsp) {
+	scheduleInspectDate('Initial Inspection',AInfo['Initial Inspection Date'],'LLOBDELL');
 	}
 
-if (InspSwitch && complInitInsp) {
-	theDate = AInfo['GENERAL.Initial Inspection Date'].substring(6,10) + '-' + AInfo['GENERAL.Initial Inspection Date'].substring(0,2) + '-' + AInfo['GENERAL.Initial Inspection Date'].substring(3,5);
+if (complInitInsp) {
+	theDate = AInfo['Initial Inspection Date'].substring(6,10) + '-' + AInfo['Initial Inspection Date'].substring(0,2) + '-' + AInfo['Initial Inspection Date'].substring(3,5);
 	comment('The new date is ' + theDate);
 	}
 
-if (InspSwitch && complInitInsp) {
+if (complInitInsp) {
 	resultInspection('Initial Inspection','Completed',theDate,'Resulted by Script');
-	deactivateTask('Initial Processing','Completed','Updated by Script'); //verified task/status
+	deactivateTask('Initial Processing','Completed','Updated by Script'); 
 	}
 
-if (InspSwitch && complInitInsp == false) {
+if (complInitInsp == false) {
 	scheduleInspectDate('Initial Inspection',nextWorkDay(dateAdd(null,2)),'LLOBDELL');
-	editAppSpecific('GENERAL.Initial Inspection Date', nextWorkDay(dateAdd(null,2)));
-	}
-
-if (AInfo['GENERAL.Inspection Needed'] == 'Yes') {
-	editAppSpecific('GENERAL.Inspection Needed','No');
+	editAppSpecific('Initial Inspection Date', nextWorkDay(dateAdd(null,2)));
 	}
 
 cContactResult = aa.people.getCapContactByCapID(capId);
@@ -58,10 +48,10 @@ if (tableHasRows('TYPEOFCONTACT')) {
 if (getMyContacts && cContactsExist) {
 	cContactAry = cContactResult.getOutput();
 	for(yy in cContactAry) 
-//replaced branch(ES_SEND_BBE_EMAILS)
-ES_SEND_BBE_EMAILS();
+
+HHC_SEND_BBE_EMAILS();
 	}
 
 if (cContactsExist) {
-	addASITable('TYPE OF CONTACT',masterArray,capId); //verified ASIT
+	addASITable('TYPE OF CONTACT',masterArray,capId);
 	}
