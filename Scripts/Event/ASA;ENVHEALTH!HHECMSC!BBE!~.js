@@ -3,7 +3,7 @@
 cContactAry = new Array();
 masterArray = new Array();
 elementArray = new Array();
-areaInspector = 'LLOBDELL';
+areaInspector = hhcgetUserByDiscipline('HHCESMCBedBugs');
 var complInitInsp = false;
 var InspSwitch = false;
 cContactResult = AInfo[''];
@@ -16,7 +16,7 @@ if (!matches(AInfo['Initial Inspection Date'],null,'',' ')) {
 	}
 
 if (complInitInsp) {
-	scheduleInspectDate('Initial Inspection',AInfo['Initial Inspection Date'],'LLOBDELL');
+	scheduleInspectDate('Initial Inspection',AInfo['Initial Inspection Date'],areaInspector);
 	}
 
 if (complInitInsp) {
@@ -30,7 +30,7 @@ if (complInitInsp) {
 	}
 
 if (complInitInsp == false) {
-	scheduleInspectDate('Initial Inspection',nextWorkDay(dateAdd(null,2)),'LLOBDELL');
+	scheduleInspectDate('Initial Inspection',nextWorkDay(dateAdd(null,2)),areaInspector);
 	editAppSpecific('Initial Inspection Date', nextWorkDay(dateAdd(null,2)));
 	}
 
