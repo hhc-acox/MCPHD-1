@@ -1,6 +1,5 @@
 var assignedEHS = '';
 assignedEHS = convertForAssignedTo(AInfo['Assigned To']);
-assignedEHS=assignedEHS+'@HAHPDC1.HHCORP.ORG';
 comment('assignedEHS is '+assignedEHS);
 
 if (wfTask == 'Initial Processing' && matches(wfStatus,'Complete Notice of Violation','Complete Emergency NOV') && getTSIfieldValue('Reinspection Date', 'Initial Processing') != null) {
