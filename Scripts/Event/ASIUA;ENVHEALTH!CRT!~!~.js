@@ -1,4 +1,4 @@
-//lwacht: 280918: #118: Case status – JUSTIS first, then changes to initial hearing once Cause # is received.
+//lwacht: 280918: #118: Case status â€“ JUSTIS first, then changes to initial hearing once Cause # is received.
 try{
 	if(!matches(AInfo["Cause #"],"",null,"undefined") && capStatus=="Justis Pending"){
 		updateAppStatus("Initial Hearing", "Updated via ASIUA:EnvHealth/Housing/CRT/*");
