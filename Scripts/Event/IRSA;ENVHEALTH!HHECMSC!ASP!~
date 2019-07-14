@@ -1,0 +1,25 @@
+//IRSA;ENVHEALTH!HHECMSC!ASP!~
+var assignedTo = getAssignedToRecord();
+if(checkInspectionResult('Initial Inspection','Complete')) {
+	scheduleInspectDate('Follow-up',nextWorkDay(dateAdd(null,2)),assignedTo);  //Needs a method to use the recheck date field to get the date
+	updateTask('Case Intake','Follow-up','Updated by Script');
+}
+if(checkInspectionResult('Initial Inspection','Unable to Inspect')) {
+	scheduleInspectDate('Initial Inspection',nextWorkDay(dateAdd(null,0)),assignedTo); 
+	}
+if(checkInspectionResult('Initial Inspection','Reinspection Needed')) {
+	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,2)),assignedTo);  //Needs a method to use the recheck date field to get the date
+	}
+if(checkInspectionResult('Follow-up','Complete')) {
+	updateTask('Inspection','Complete','Updated by Script');
+	}
+if(checkInspectionResult('Follow-up','Reinspection Needed')) {
+	updateTask('Inspection','Reinspections','Updated by Script');
+	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,13)),assignedTo);
+	}
+if(checkInspectionResult('Reinspection','Reinspection Needed')) {
+	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,13)),assignedTo);
+	}
+if (isTaskStatus('Close','Case Closed') {
+	inspCancelAll();
+}
