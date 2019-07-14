@@ -14,7 +14,6 @@ if (matches(appTypeArray[1],'EHSM','HHECMSC','Housing') && (!matches(appTypeArra
 				areaInspector = lookup('Census - Housing EHS',censusTract);
 					var aInsp = convertForAssignedTo(areaInspector);
 				editAppSpecific('Assigned To',aInsp);
-				editAppSpecific('Previous Assigned To',aInsp);
 				logDebug('Inspector to Assign: '+aInsp);
 					}
 
@@ -34,32 +33,4 @@ if (matches(appTypeArray[1],'EHSM','HHECMSC','Housing') && (!matches(appTypeArra
 				editAppSpecific('Assigned To',areaInspector);
 				editAppSpecific('Previous Assigned To',areaInspector);
 					}
-//Asthma EHS
-			if (matches(appTypeArray[2],'ASP') && AInfo['Assigned To'] == null) {
-				areaInspector = hhcgetUserByDiscipline('HHCESMCAsthma');
-				editAppSpecific('Assigned To',areaInspector);
-				comment('the Asthma area Inspector is: '+areaInspector);
-				}
-	
-//CPS EHS
-			if (matches(appTypeArray[2],'CPS') && AInfo['Assigned To'] == null) {
-				areaInspector = hhcgetUserByDiscipline('HHCESMCConsumerProductSafety');
-				editAppSpecific('Assigned To',areaInspector);
-				comment('the CPS area Inspector is: '+areaInspector);
-				}
-	
-//Radon EHS
-			if (matches(appTypeArray[2],'RAD') && AInfo['Assigned To'] == null) {
-				areaInspector = hhcgetUserByDiscipline('HHCESMCRadon');
-				editAppSpecific('Assigned To',areaInspector);
-				comment('the Radon area Inspector is: '+areaInspector);
-				}	
-
-//Senior Care EHS
-			if (matches(appTypeArray[2],'SCM') && AInfo['Assigned To'] == null) {
-				areaInspector = hhcgetUserByDiscipline('HHCESMCSeniorCare');
-				editAppSpecific('Assigned To',areaInspector);
-				comment('the Senior Care area Inspector is: '+areaInspector);
-				}	
-
 }
