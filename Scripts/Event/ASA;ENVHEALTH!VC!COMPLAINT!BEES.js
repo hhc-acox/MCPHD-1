@@ -1,4 +1,4 @@
-ASA;ENVHEALTH!VC!COMPLAINT!BEES.js
+//ASA;ENVHEALTH!VC!COMPLAINT!BEES.js
 copyParcelGisObjects();
 var aZone = getVectorZone(capId);
 var techByZone = hhcgetUserByDiscipline('VCBees');
