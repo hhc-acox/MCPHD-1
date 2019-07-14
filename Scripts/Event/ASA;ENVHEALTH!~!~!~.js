@@ -135,6 +135,13 @@ if (matches(appTypeArray[2],'SEC') && AInfo['Initial Inspection Date'] != null) 
 if (matches(appTypeArray[2],'LHH') && AInfo['Initial Inspection Date'] != null) {
 	resultInspection('Initial Lead Inspection','In Violation',theDate,'Resulted by Script');
 	}
+//Consumer Product Safety
+if (scheduleInspectDatematches(appTypeArray[2],'CPS') && AInfo['Recall']=='Yes') {
+	scheduleInspectDate('CP Initial Recall Inspection',nextWorkDay(dateAdd(null,0)),areaInspector);
+	}
+if (matches(appTypeArray[2],'CPS') && AInfo['Recall']=='No') {
+	scheduleInspectDate('CP Routine Inspection',nextWorkDay(dateAdd(null,0)),areaInspector);
+	}
 //Set the address to the Application Name field on the record
 HHC_GET_ADDRESS();
 
@@ -144,6 +151,4 @@ if (matches(appTypeArray[2],'VEH','HSG','SEC','TRA','LHH')) {
 
 if (areaInspector == null || areaInspector == 'undefined') {
 	overrideMessage = 'The EHS Inspector could not be determined. Speak to a System Administrator to resolve the problem.<BR><BR>';
-	}
-
- 	
+	}	
