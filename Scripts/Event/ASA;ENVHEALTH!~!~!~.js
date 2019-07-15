@@ -43,8 +43,9 @@ if (matches(appTypeArray[2],'CPS')) {
 	}
 	
 //Radon EHS
-if (matches(appTypeArray[2],'RAD')) {
+if (matches(appTypeArray[2],'Radon')) {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCRadon');
+	updateTask('Inspection','Reinspections','Updated by Script');
 	comment('the Radon area Inspector is: '+areaInspector);
 	}	
 
@@ -55,12 +56,12 @@ if (matches(appTypeArray[2],'SCM')) {
 	}	
 
 //LINV EHS
-if (AInfo['Assigned To'] == null && AInfo['Asthma'] == 'CHECKED') {
+if (AInfo['Asthma'] == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCAsthma');
 	comment('the LINV is for Asthma: '+areaInspector);
 	}
 	
-if (AInfo['Assigned To'] == null && AInfo['Bed Bugs'] == 'CHECKED') {
+if (AInfo['Bed Bugs'] == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCBedBugs');
 	comment('the LINV is for BedBugs: '+areaInspector);
 	}
@@ -70,22 +71,22 @@ if (AInfo['Assigned To'] == null && AInfo['Suspect Lead'] == 'CHECKED') {
 	comment('the LINV is for Lead: '+areaInspector);
 	}
 
-if (AInfo['Assigned To'] == null && AInfo['Consumer Product Safety'] == 'CHECKED') {
+if (AInfo['Consumer Product Safety'] == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCConsumerProductSafety');
 	comment('the LINV is for Consumer Product Safety: '+areaInspector);
 	}
 	
-if (AInfo['Assigned To'] == null && AInfo['Healthy Homes'] == 'CHECKED') {
+if (AInfo['Healthy Homes'] == 'CHECKED') {
 	areaInspector = lookup('Census - Lead EHS',censusTract);
 	comment('the LINV is for Healthy Homes: '+areaInspector);
 	}
 
-if (AInfo['Assigned To'] == null && AInfo['Radon'] == 'CHECKED') {
+if (AInfo['Radon'] == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCRadon');
 	comment('the LINV is for Radon: '+areaInspector);
 	}
 
-	if (AInfo['Assigned To'] == null && AInfo['Senior Care'] == 'CHECKED') {
+	if (AInfo['Senior Care'] == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCSeniorCare');
 	comment('the LINV is for Senior Care: '+areaInspector);
 	}
@@ -132,7 +133,7 @@ if (matches(appTypeArray[2],'LHH') && AInfo['Initial Inspection Date'] != null) 
 	resultInspection('Initial Lead Inspection','In Violation',theDate,'Resulted by Script');
 	}
 //Consumer Product Safety
-if (scheduleInspectDatematches(appTypeArray[2],'CPS') && AInfo['Recall']=='Yes') {
+if (matches(appTypeArray[2],'CPS') && AInfo['Recall']=='Yes') {
 	scheduleInspectDate('CP Initial Recall Inspection',nextWorkDay(dateAdd(null,0)),areaInspector);
 	}
 if (matches(appTypeArray[2],'CPS') && AInfo['Recall']=='No') {
