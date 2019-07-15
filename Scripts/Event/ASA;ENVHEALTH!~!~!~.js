@@ -51,7 +51,7 @@ if (matches(appTypeArray[2],'CPS')) {
 //Radon EHS
 if (matches(appTypeArray[1],'Radon')) {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCRadon');
-	updateTask('Inspection','Reinspections','Updated by Script');
+	updateTask('Radon Intake','Accepted','Updated by Script');
 	comment('the Radon area Inspector is: '+areaInspector);
 	}	
 
