@@ -10,9 +10,7 @@ censusTract = AInfo['ParcelAttribute.CensusTract'];
 editAppSpecific('Census Tract',censusTract);
 comment('the census tract is: '+censusTract);
 //Getting and Setting the EHS - to the Assigned To field and the Case.
-//The rest of the departments will have to be added to this section if they use the Census Tract method to assign Work.
-//Also, new Census Tract tables need to be created for additional departments.
-//Manually Entered EHS during case creation.  Method used if department has not been setup.
+//The rest of the departments will have to be added to this section in the future.
 
 //Housing EHS
 if (matches(appTypeArray[1],'EHSM','HHECMSC','Housing') && (matches(appTypeArray[2],'HSG','TRA','VEH','INV','SEC'))) {
@@ -114,7 +112,6 @@ if (matches(appTypeArray[2],'VEH','HSG','SEC','TRA','LHH')) {
 if (matches(appTypeArray[2],'VEH','HSG','TRA') && AInfo['Initial Inspection Date'] != null) {
 	scheduleInspectDate('Initial Inspection',AInfo['Initial Inspection Date'],areaInspector);
 	}
-// 7.5.17 chaas: SEC subtype is not in MCPHD configuration
 if (matches(appTypeArray[2],'SEC') && AInfo['Initial Inspection Date'] != null) {
 	scheduleInspectDate('SEC Action',AInfo['Initial Inspection Date'],areaInspector);
 	}
@@ -127,7 +124,6 @@ if (matches(appTypeArray[2],'LHH') && AInfo['Initial Inspection Date'] != null) 
 if (matches(appTypeArray[2],'VEH','HSG','TRA') && AInfo['Initial Inspection Date'] != null) {
 	resultInspection('Initial Inspection','In Violation',theDate,'Resulted by Script');
 	}
-// 7.5.17 chaas: SEC subtype is not in MCPHD configuration
 if (matches(appTypeArray[2],'SEC') && AInfo['Initial Inspection Date'] != null) {
 	resultInspection('SEC Action','In Violation',theDate,'Resulted by Script');
 	}
