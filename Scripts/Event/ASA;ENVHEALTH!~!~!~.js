@@ -13,7 +13,13 @@ comment('the census tract is: '+censusTract);
 //The rest of the departments will have to be added to this section in the future.
 
 //Housing EHS
-if (matches(appTypeArray[1],'EHSM','HHECMSC','Housing') && (matches(appTypeArray[2],'HSG','TRA','VEH','INV','SEC'))) {
+if (matches(appTypeArray[2],'HSG','TRA','VEH','INV')) {
+	areaInspector = lookup('Census - Housing EHS',censusTract); 
+	logDebug('Inspector to Assign: '+areaInspector);
+	}
+	
+//SEC Assigment
+if (matches(appTypeArray[3],'SEC')) {
 	areaInspector = lookup('Census - Housing EHS',censusTract); 
 	logDebug('Inspector to Assign: '+areaInspector);
 	}
@@ -43,7 +49,7 @@ if (matches(appTypeArray[2],'CPS')) {
 	}
 	
 //Radon EHS
-if (matches(appTypeArray[2],'Radon')) {
+if (matches(appTypeArray[1],'Radon')) {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCRadon');
 	updateTask('Inspection','Reinspections','Updated by Script');
 	comment('the Radon area Inspector is: '+areaInspector);
@@ -109,11 +115,16 @@ if (matches(appTypeArray[2],'VEH','HSG','SEC','TRA','LHH')) {
 	theDate = AInfo['Initial Inspection Date'].substring(6,10) + '-' + AInfo['Initial Inspection Date'].substring(0,2) + '-' + AInfo['Initial Inspection Date'].substring(3,5);
 	comment('The new date is ' + theDate);
 	}
+//Get the SEC Initial Inspection Date Information
+if (matches(appTypeArray[3],'SEC')) {
+	theDate = AInfo['Initial Inspection Date'].substring(6,10) + '-' + AInfo['Initial Inspection Date'].substring(0,2) + '-' + AInfo['Initial Inspection Date'].substring(3,5);
+	comment('The new date is ' + theDate);
+	}
 //Housing Initial Inspection scheduling
 if (matches(appTypeArray[2],'VEH','HSG','TRA') && AInfo['Initial Inspection Date'] != null) {
 	scheduleInspectDate('Initial Inspection',AInfo['Initial Inspection Date'],areaInspector);
 	}
-if (matches(appTypeArray[2],'SEC') && AInfo['Initial Inspection Date'] != null) {
+if (matches(appTypeArray[3],'SEC') && AInfo['Initial Inspection Date'] != null) {
 	scheduleInspectDate('SEC Action',AInfo['Initial Inspection Date'],areaInspector);
 	}
 //Healthy Homes Initial Inspection scheduling
@@ -125,7 +136,7 @@ if (matches(appTypeArray[2],'LHH') && AInfo['Initial Inspection Date'] != null) 
 if (matches(appTypeArray[2],'VEH','HSG','TRA') && AInfo['Initial Inspection Date'] != null) {
 	resultInspection('Initial Inspection','In Violation',theDate,'Resulted by Script');
 	}
-if (matches(appTypeArray[2],'SEC') && AInfo['Initial Inspection Date'] != null) {
+if (matches(appTypeArray[3],'SEC') && AInfo['Initial Inspection Date'] != null) {
 	resultInspection('SEC Action','In Violation',theDate,'Resulted by Script');
 	}
 //Healthy Homes - result the Initial Inspection (LHH only)
@@ -142,7 +153,11 @@ if (matches(appTypeArray[2],'CPS') && AInfo['Recall']=='No') {
 //Set the address to the Application Name field on the record
 HHC_GET_ADDRESS();
 
-if (matches(appTypeArray[2],'VEH','HSG','SEC','TRA','LHH')) {
+if (matches(appTypeArray[2],'VEH','HSG','TRA','LHH')) {
+	updateAppStatus('In Violation','Initial Status');
+	}
+	
+if (matches(appTypeArray[3],'SEC')) {
 	updateAppStatus('In Violation','Initial Status');
 	}
 
