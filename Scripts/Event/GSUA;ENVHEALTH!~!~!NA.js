@@ -1,5 +1,4 @@
 //lwacht: 190117
-
 try{
 	if (GuidesheetModel && "LAB SAMPLES" == GuidesheetModel.getGuideType().toUpperCase()) {
 		//for(xx in GuidesheetModel){ 
@@ -8,6 +7,13 @@ try{
 		//	}
 		//}
 		var thisCapId = GuidesheetModel.capID;
+		for(x in thisCapId){
+			if(typeof(thisCapId[x])!="function"){
+				logDebug(x+": " + thisCapId[x]);
+			}
+		}
+		var tCapId = aa.cap.getCapID(thisCapId.ID1,thisCapId.ID2,thisCapId.ID3).getOutput();
+		var tAltId =  tCapId.getCustomID();
 		var addResult = aa.address.getAddressByCapId(thisCapId);
 		if (addResult.getSuccess()){
 			var aoArray = addResult.getOutput();
@@ -76,7 +82,7 @@ try{
 						"InspectionID": ""+GuidesheetModel.activityNumber,
 						"ChecklistID": ""+GuidesheetModel.guidesheetSeqNbr,
 						"ChecklistItemID": ""+item.guideItemSeqNbr,
-						"RecordID": ""+thisCapId.getCustomID();
+						"RecordID": ""+ tAltId
 					};
 					dataJsonArray.push(jsonResult);
 					//for(col in thisRow){
