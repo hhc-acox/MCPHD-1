@@ -13,7 +13,8 @@ try{
 			}
 		}
 		var tCapId = aa.cap.getCapID(thisCapId.ID1,thisCapId.ID2,thisCapId.ID3).getOutput();
-		var tAltId =  tCapId.getCustomID();
+		var tAltId = tCapId.getCustomID();
+		logDebug("tAltId: " + tAltId);
 		var addResult = aa.address.getAddressByCapId(thisCapId);
 		if (addResult.getSuccess()){
 			var aoArray = addResult.getOutput();
