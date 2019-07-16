@@ -1,6 +1,26 @@
 //IRSA;ENVHEALTH!HHECMSC!CPS!~
 var assignedTo = getAssignedToRecord();
-if(checkInspectionResult('Initial Inspection','Complete')) {
-	scheduleInspectDate('Follow-up',nextWorkDay(dateAdd(null,2)),assignedTo);  //Needs a method to use the recheck date field to get the date
-	updateTask('Case Intake','Follow-up','Updated by Script');
-}
+if(checkInspectionResult('CP Initial Recall Inspection','Hazard - 1 month')) {
+	scheduleInspectDate('CP Follow-up Recall Compliance',nextWorkDay(dateAdd(null,30)),assignedTo); 
+	}
+if(checkInspectionResult('CP Initial Recall Inspection','Hazard - 6 month')) {
+	scheduleInspectDate('CP Follow-up Recall Compliance',nextWorkDay(dateAdd(null,180)),assignedTo); 
+	}
+if(checkInspectionResult('CP Follow-up Recall Compliance','Hazard - 1 month')) {
+	scheduleInspectDate('CP Follow-up Recall Compliance',nextWorkDay(dateAdd(null,30)),assignedTo); 
+	}
+if(checkInspectionResult('CP Follow-up Recall Compliance','Hazard - 6 month')) {
+	scheduleInspectDate('CP Follow-up Recall Compliance',nextWorkDay(dateAdd(null,180)),assignedTo); 
+	}
+if(checkInspectionResult('CP Routine Inspection','Hazard - 1 month')) {
+	scheduleInspectDate('CP Routine Inspection',nextWorkDay(dateAdd(null,30)),assignedTo); 
+	}
+if(checkInspectionResult('CP Routine Inspection','Hazard - 6 month')) {
+	scheduleInspectDate('CP Routine Inspection',nextWorkDay(dateAdd(null,180)),assignedTo); 
+	}
+if(checkInspectionResult('CP Routine Inspection','Hazard - 1 month')) {
+	scheduleInspectDate('CP Routine Inspection',nextWorkDay(dateAdd(null,30)),assignedTo); 
+	}
+if(checkInspectionResult('CP Routine Inspection','Hazard - 6 month')) {
+	scheduleInspectDate('CP Routine Inspection',nextWorkDay(dateAdd(null,180)),assignedTo); 
+	}
