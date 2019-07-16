@@ -1,15 +1,25 @@
 //IRSA;ENVHEALTH!HHECMSC!ASP!~
 var assignedTo = getAssignedToRecord();
-if(checkInspectionResult('Initial Inspection','Complete')) {
-	scheduleInspectDate('Follow-up',nextWorkDay(dateAdd(null,2)),assignedTo);  //Needs a method to use the recheck date field to get the date
+var theDate = hhcgetInspRecheckDate(capId,inspId);
+if(checkInspectionResult('Initial Inspection','Complete') && theDate == null) {
+	scheduleInspectDate('Follow-up',nextWorkDay(dateAdd(null,1)),assignedTo);  //When there is no Recheck Date
+	updateTask('Case Intake','Follow-up','Updated by Script');
+}
+if(checkInspectionResult('Initial Inspection','Complete') && theDate != null) {
+	scheduleInspectDate('Follow-up',theDate,assignedTo);  //When there is a Recheck Date
 	updateTask('Case Intake','Follow-up','Updated by Script');
 }
 if(checkInspectionResult('Initial Inspection','Unable to Inspect')) {
 	scheduleInspectDate('Initial Inspection',nextWorkDay(dateAdd(null,0)),assignedTo); 
 	}
-if(checkInspectionResult('Initial Inspection','Reinspection Needed')) {
-	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,2)),assignedTo);  //Needs a method to use the recheck date field to get the date
-	}
+if(checkInspectionResult('Initial Inspection','Reinspection Needed') && theDate == null) {
+	scheduleInspectDate('Follow-up',nextWorkDay(dateAdd(null,1)),assignedTo);  //When there is no Recheck Date
+	updateTask('Case Intake','Follow-up','Updated by Script');
+}
+if(checkInspectionResult('Initial Inspection','Reinspection Needed') && theDate != null) {
+	scheduleInspectDate('Follow-up',theDate,assignedTo);  //When there is a Recheck Date
+	updateTask('Case Intake','Follow-up','Updated by Script');
+}	
 if(checkInspectionResult('Follow-up','Complete')) {
 	updateTask('Inspection','Complete','Updated by Script');
 	}
@@ -20,6 +30,6 @@ if(checkInspectionResult('Follow-up','Reinspection Needed')) {
 if(checkInspectionResult('Reinspection','Reinspection Needed')) {
 	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,13)),assignedTo);
 	}
-if (isTaskStatus('Close','Case Closed') {
+if (isTaskStatus('Close','Case Closed')) {
 	inspCancelAll();
 }
