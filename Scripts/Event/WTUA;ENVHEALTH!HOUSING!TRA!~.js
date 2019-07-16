@@ -1,5 +1,6 @@
 var assignedEHS = '';
 assignedEHS = convertForAssignedTo(AInfo['Assigned To']);
+assignedEHS=assignedEHS+'@HAHPDC1.HHCORP.ORG';
 comment('assignedEHS is '+assignedEHS);
 
 if (wfTask == 'Initial Processing' && matches(wfStatus,'Complete Notice of Violation','Complete Emergency NOV') && getTSIfieldValue('Reinspection Date', 'Initial Processing') != null) {
@@ -43,7 +44,7 @@ if (wfTask == 'Additional Processing' && wfStatus == 'Request EHSM Clean') {
 if (wfTask == 'Additional Processing' && wfStatus == 'Request Admin Court Order') {
 	HHC_CREATE_COURT();
 	editAppSpecific('Admin Court Order','Yes',newChildID);
-	activateTask('Request Admin Court Order');
+	activateTask('Requesting Admin Court Order');
 	//Assign to EHS Team Leader
 	var areaTeamLeader = '';
 	var censusTract = '';
@@ -134,5 +135,3 @@ if (wfTask == 'Additional Processing' && wfStatus == 'Court Case') {
 if (wfTask == 'Additional Processing' && wfStatus == 'Court Case') {
 	HHC_CREATE_COURT(); //Creates a Court Case
 	}
-
-
