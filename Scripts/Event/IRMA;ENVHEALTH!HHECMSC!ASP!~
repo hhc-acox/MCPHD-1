@@ -2,7 +2,7 @@
 var assignedTo = getAssignedToRecord();
 var theDate = hhcgetInspRecheckDate(capId,inspId);
 if(checkInspectionResult('Initial Inspection','Complete') && theDate == null) {
-	scheduleInspectDate('Follow-up',nextWorkDay(dateAdd(null,1)),assignedTo);  //When there is no Recheck Date
+	scheduleInspectDate('Follow-up',nextWorkDay(dateAdd(null,0)),assignedTo);  //When there is no Recheck Date
 	updateTask('Case Intake','Follow-up','Updated by Script');
 }
 if(checkInspectionResult('Initial Inspection','Complete') && theDate != null) {
@@ -13,7 +13,7 @@ if(checkInspectionResult('Initial Inspection','Unable to Inspect')) {
 	scheduleInspectDate('Initial Inspection',nextWorkDay(dateAdd(null,0)),assignedTo); 
 	}
 if(checkInspectionResult('Initial Inspection','Reinspection Needed') && theDate == null) {
-	scheduleInspectDate('Follow-up',nextWorkDay(dateAdd(null,1)),assignedTo);  //When there is no Recheck Date
+	scheduleInspectDate('Follow-up',nextWorkDay(dateAdd(null,0)),assignedTo);  //When there is no Recheck Date
 	updateTask('Case Intake','Follow-up','Updated by Script');
 }
 if(checkInspectionResult('Initial Inspection','Reinspection Needed') && theDate != null) {
