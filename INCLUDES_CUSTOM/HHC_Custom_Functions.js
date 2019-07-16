@@ -818,23 +818,6 @@ function addTrashTicketFee() {
 	}
 
 }
-function HHC_CREATE_RCP_CASE() {
-	try{
-		showMessage = true;
-		var saveID = capId;
-		var asgnTo = getAppSpecific('Assigned To');
-		newChildID = createChild('EnvHealth','EHSM','RCP','NA','');
-		copyAppSpecific(newChildID);
-		editAppSpecific('TRA Case',capIDString,newChildID);
-		editAppSpecific('Assigned To EHS',asgnTo,newChildID);
-		copyASITables(saveID,newChildID);
-		HHC_GET_ADDRESS_FOR_CHILD();	
-	}
-	catch(err){
-		logDebug("A JavaScript Error occurred: HHC_CREATE_RCP_CASE:  " + err.message);
-		logDebug(err.stack);
-	}
-}
 function convertForAssignedTo(areaInspector){
 	try{
 	var newAreaInspector = '';
