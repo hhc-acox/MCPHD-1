@@ -1,13 +1,9 @@
-//lwacht: 190117
-
+//send inspection data to LIMS
 try{
 	if (GuidesheetModel && "LAB SAMPLES" == GuidesheetModel.getGuideType().toUpperCase()) {
-		//for(xx in GuidesheetModel){ 
-		//	if(typeof(GuidesheetModel[xx])!="function"){
-		//		logDebug(xx+": " + GuidesheetModel[xx]);
-		//	}
-		//}
 		var thisCapId = GuidesheetModel.capID;
+		var tCapId = aa.cap.getCapID(thisCapId.ID1,thisCapId.ID2,thisCapId.ID3).getOutput();
+		var tAltId = tCapId.getCustomID();
 		var addResult = aa.address.getAddressByCapId(thisCapId);
 		if (addResult.getSuccess()){
 			var aoArray = addResult.getOutput();
@@ -76,7 +72,7 @@ try{
 						"InspectionID": ""+GuidesheetModel.activityNumber,
 						"ChecklistID": ""+GuidesheetModel.guidesheetSeqNbr,
 						"ChecklistItemID": ""+item.guideItemSeqNbr,
-						"RecordID": ""+capIDString
+						"RecordID": ""+tAltId
 					};
 					dataJsonArray.push(jsonResult);
 					//for(col in thisRow){

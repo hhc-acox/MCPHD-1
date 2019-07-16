@@ -1,20 +1,10 @@
 //lwacht: 190117
+/* lwacht: 190716: this was moved up a level so any record type will access it
 try{
 	if (GuidesheetModel && "LAB SAMPLES" == GuidesheetModel.getGuideType().toUpperCase()) {
-		//for(xx in GuidesheetModel){ 
-		//	if(typeof(GuidesheetModel[xx])!="function"){
-		//		logDebug(xx+": " + GuidesheetModel[xx]);
-		//	}
-		//}
 		var thisCapId = GuidesheetModel.capID;
-		for(x in thisCapId){
-			if(typeof(thisCapId[x])!="function"){
-				logDebug(x+": " + thisCapId[x]);
-			}
-		}
 		var tCapId = aa.cap.getCapID(thisCapId.ID1,thisCapId.ID2,thisCapId.ID3).getOutput();
 		var tAltId = tCapId.getCustomID();
-		logDebug("tAltId: " + tAltId);
 		var addResult = aa.address.getAddressByCapId(thisCapId);
 		if (addResult.getSuccess()){
 			var aoArray = addResult.getOutput();
@@ -121,9 +111,10 @@ try{
 		}
 	}
 }catch (err){
-	logDebug("A JavaScript Error occurred: GSUA:EnvHealth/*/*/NA: LIMS Interface: " + err.message);
+	logDebug("A JavaScript Error occurred: GSUA:EnvHealth/ * / * /NA: LIMS Interface: " + err.message);
 	logDebug(err.stack);
 } 
+lwacht: 190716: */
 
 /*lwacht 190307: moved to different event
 try{
