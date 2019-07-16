@@ -13,14 +13,14 @@ if(checkInspectionResult('CP Follow-up Recall Compliance','Hazard - 6 month')) {
 	scheduleInspectDate('CP Follow-up Recall Compliance',nextWorkDay(dateAdd(null,180)),assignedTo); 
 	}
 if(checkInspectionResult('CP Routine Inspection','Hazard - 1 month')) {
-	scheduleInspectDate('CP Follow-up Routine Inspection',nextWorkDay(dateAdd(null,30)),assignedTo); 
+	scheduleInspectDate('CP Routine Inspection',nextWorkDay(dateAdd(null,30)),assignedTo); 
 	}
 if(checkInspectionResult('CP Routine Inspection','Hazard - 6 month')) {
-	scheduleInspectDate('CP Follow-up Routine Inspection',nextWorkDay(dateAdd(null,180)),assignedTo); 
+	scheduleInspectDate('CP Routine Inspection',nextWorkDay(dateAdd(null,180)),assignedTo); 
 	}
-if(checkInspectionResult('CP Follow-up Routine Inspection','Hazard - 1 month')) {
-	scheduleInspectDate('CP Follow-up Routine Inspection',nextWorkDay(dateAdd(null,30)),assignedTo); 
+if(checkInspectionResult('CP Routine Inspection','Hazard - 1 month')) {
+	scheduleInspectDate('CP Routine Inspection',nextWorkDay(dateAdd(null,30)),assignedTo); 
 	}
-if(checkInspectionResult('CP Follow-up Routine Inspection','Hazard - 6 month')) {
-	scheduleInspectDate('CP Follow-up Routine Inspection',nextWorkDay(dateAdd(null,180)),assignedTo); 
+if(checkInspectionResult('CP Routine Inspection','Hazard - 6 month')) {
+	scheduleInspectDate('CP Routine Inspection',nextWorkDay(dateAdd(null,180)),assignedTo); 
 	}
