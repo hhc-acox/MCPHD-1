@@ -76,7 +76,7 @@ try{
 						"InspectionID": ""+GuidesheetModel.activityNumber,
 						"ChecklistID": ""+GuidesheetModel.guidesheetSeqNbr,
 						"ChecklistItemID": ""+item.guideItemSeqNbr,
-						"RecordID": ""+capIDString
+						"RecordID": ""+thisCapId.getCustomID();
 					};
 					dataJsonArray.push(jsonResult);
 					//for(col in thisRow){
