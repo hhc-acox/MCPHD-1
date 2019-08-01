@@ -1,5 +1,5 @@
 //ASA;ENVHEALTH!VC!COMPLAINT!BEES.js
-copyParcelGisObjects();
+copyParcelGisObjects4XAPO();
 var aZone = getVectorZone(capId);
 var techByZone = hhcgetUserByDiscipline('VCBees');
 scheduleInspectDate("Bees Inspection",nextWorkDay(dateAdd(null,0,"Scheduled by script")),techByZone);
