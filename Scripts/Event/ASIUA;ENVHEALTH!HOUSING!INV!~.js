@@ -19,7 +19,7 @@ HHC_GET_ADDRESS_FOR_CHILD();
 HHC_CONTACTS_PROCESS();
 validGIS = false;
 overrideMessage = '';
-copyParcelGisObjects();
+copyParcelGisObjects4XAPO();
 
 if (AInfo['Online Complaint'] == 'CHECKED') {
 	editAppSpecific('Reason for Invest','Online Complaint',newChildID);
