@@ -43,7 +43,7 @@ editAppSpecific('Emergency','N',newChildID);
 editAppSpecific('Ordinance Chapter','10-Residential',newChildID);
 editAppSpecific('Owner Occupied','N',newChildID);
 editAppSpecific('Reason for Invest',RFI,newChildID);
-copyParcelGisObjects();
+copyParcelGisObjects4XAPO();
 HHC_GET_ADDRESS_FOR_CHILD();
 HHC_CONTACTS_PROCESS();
 if (AInfo['Online Complaint'] == 'CHECKED') {
@@ -67,7 +67,7 @@ editAppSpecific('INV Case',capIDString,newChildID);
 editAppSpecific('Emergency','N',newChildID);
 editAppSpecific('Ordinance Chapter','10-Residential',newChildID);
 editAppSpecific('Reason for Invest',RFI,newChildID);
-copyParcelGisObjects();
+copyParcelGisObjects4XAPO();
 HHC_GET_ADDRESS_FOR_CHILD();
 HHC_CONTACTS_PROCESS();
 
