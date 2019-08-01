@@ -1,6 +1,6 @@
 // ASIUA;ENVHEALTH!~!~!~ 
 //This code verifies that the Census Tract, Assigned To and Previous Assigned To are populated if blank for qualifying case types.
-copyParcelGisObjects();
+copyParcelGisObjects4XAPO();
 if (matches(appTypeArray[1],'EHSM','HHECMSC','Housing') && (!matches(appTypeArray[2],'CRT'))) {
 	var areaInspector = '';
 
