@@ -1,5 +1,5 @@
 //ASA;ENVHEALTH!VC!MONITORSITE!*.js
-copyParcelGisObjects();
+copyParcelGisObjects4XAPO();
 var aZone = getVectorZone(capId);
 var getLat = "1.0"; //Need to automate to the correct value
 var getLong = "1.0"; //Need to automate to the correct value
