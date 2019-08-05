@@ -1,4 +1,4 @@
-// IRMA;ENVHEALTH!HOUSING!VEH!~
+// IRSA;ENVHEALTH!HOUSING!VEH!~
 if (isTaskActive('Reinspection') && matches(inspResult,'In Violation')) {
 	closeTask('Reinspection','In Violation','Updated by Script');
 	assignTask('Additional Processing',AInfo['Assigned To']);
@@ -25,4 +25,5 @@ if (isTaskActive('Additional Processing') && matches(inspResult,'In Compliance')
 if (isTaskActive('Additional Processing') && matches(inspResult,'Non-Compliance/Case Closed')) {
 	closeTask('Additional Processing','Non-Compliance/Case Closed','Updated by Script');
 	deactivateTask('Towing Inspection');
+	
 	}
