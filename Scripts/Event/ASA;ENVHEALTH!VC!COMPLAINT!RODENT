@@ -1,9 +1,2 @@
 //ASA;ENVHEALTH!VC!COMPLAINT!RODENT
-var resultDate = sysDate;
-var resultComment = 'Updated by Script';
-var inspStatus = 'Closed';
 scheduleInspectDate("Rodents",nextWorkDay(dateAdd(null,0,"Scheduled by script")),null);
-if (!matches(inspResult,'',' ', null,'undefined')) {
-aa.inspection.resultInspection(capId, inspId, inspStatus, resultDate, resultComment, currentUserID);
-updateAppStatus("Closed");
-}
