@@ -1,10 +1,7 @@
-showDebug = true; 
+/* showDebug = true; 
 showMessage = true; 
 var riskLevel = AInfo["Risk"];
-//lwacht: 181011: resolving issues impacting the scripting i'm doing
-//var inspDate =  inspObj.getInspectionDate().getMonth() + "/" + inspObj.getInspectionDate().getDayOfMonth() + "/" + inspObj.getInspectionDate().getYear();
-var inspDate = inspResultDate;
-//lwacht: 181011: end
+var inspDate =  inspObj.getInspectionDate().getMonth() + "/" + inspObj.getInspectionDate().getDayOfMonth() + "/" + inspObj.getInspectionDate().getYear();
 logDebug("Inspection Date= " + inspDate);
 
 if(inspType == "Pre-Operational Inspection" && inspResult == "Meets Standards"){
@@ -46,4 +43,4 @@ if(riskLevel!=null && riskLevel==3 && inspType == "Routine Inspection" && inspRe
 } 
 if(riskLevel!=null && riskLevel==4 && inspType == "Routine Inspection" && inspResult == "Fails to Meet Standards"){
     scheduleInspection("Routine Inspection", Math.round(( new Date(dateAddMonths(inspDate, 3))- new Date())/(1000*60*60*24) + 1), currentUserID);
-}
+} */
