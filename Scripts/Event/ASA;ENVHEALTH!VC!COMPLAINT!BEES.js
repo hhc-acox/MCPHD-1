@@ -1,5 +1,4 @@
 //ASA:ENVHEALTH/VC/COMPLAINT/BEES
-copyParcelGisObjects4XAPO();
 var resultDate = sysDate;
 var resultComment = 'Updated by Script';
 var inspStatus = 'Closed';
