@@ -45,12 +45,12 @@ if (tableHasRows('TYPEOFCONTACT')) {
 	var getMyContacts = true;
 	}
 
-if (getMyContacts && cContactsExist) {
-	cContactAry = cContactResult.getOutput();
-	for(yy in cContactAry) 
-
-HHC_SEND_BBE_EMAILS();
-	}
+//if (getMyContacts && cContactsExist) {
+//	cContactAry = cContactResult.getOutput();
+//	for(yy in cContactAry) 
+//HHC_SEND_BBE_EMAILS();
+//Not sending emails - need to setup Workflow for printing NOV and Reinspection Letters.
+//	}
 
 if (cContactsExist) {
 	addASITable('TYPE OF CONTACT',masterArray,capId);
