@@ -82,7 +82,7 @@ try {
 	}else{
 		copyContacts(parentCapId, capId);
         var amendCapModel = aa.cap.getCapViewBySingle4ACA(capId);
-        amendCapModel.getCapType().setSpecInfoCode(capModel.getCapType().getSpecInfoCode());
+        amendCapModel.getCapType().setSpecInfoCode(cap.getCapType().getSpecInfoCode());
         aa.env.setValue("CapModel", amendCapModel);
         aa.env.setValue("CAP_MODEL_INITED", "TRUE");       
 	}
