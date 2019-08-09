@@ -81,7 +81,7 @@ try {
 		logDebug("Error finding parent capId.");
 	}else{
 		copyContacts(parentCapId, capId);
-        var amendCapModel = aa.cap.getCapViewBySingle4ACA(targetCapId);
+        var amendCapModel = aa.cap.getCapViewBySingle4ACA(capId);
         amendCapModel.getCapType().setSpecInfoCode(capModel.getCapType().getSpecInfoCode());
         aa.env.setValue("CapModel", amendCapModel);
         aa.env.setValue("CAP_MODEL_INITED", "TRUE");       
