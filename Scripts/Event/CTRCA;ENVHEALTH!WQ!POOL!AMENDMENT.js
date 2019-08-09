@@ -5,11 +5,15 @@ try{
 	if(parCapId){
 		var arrContacts = aa.people.getCapContactByCapID(parCapId).getOutput();
 		for (var i in arrContacts){
-			var attrfound = false;
-			var p = arrContacts[i].getCapContactModel().getPeople();
-			aa.people.removeCapContact(parCapId,p.getContactSeqNumber());		
+			var thisContact = arrContacts[i].getCapContactModel().getPeople();
+			aa.people.removeCapContact(parCapId,thisContact.getContactSeqNumber());		
 		}
 		copyContacts(capId,parCapId);
+		var arrContact = getContactArray();
+		for (cn in arrContact){
+			thisContact = arrContact[cn].contactType;
+			createPublicUserFromContact(thisContact);
+		}
 		updateAppStatus("Closed","Contacts have been processed");
 	}else{
 		logDebug("Error finding the parent record.");
