@@ -81,6 +81,10 @@ try {
 		logDebug("Error finding parent capId.");
 	}else{
 		copyContacts(parentCapId, capId);
+        var amendCapModel = aa.cap.getCapViewBySingle4ACA(targetCapId);
+        amendCapModel.getCapType().setSpecInfoCode(capModel.getCapType().getSpecInfoCode());
+        aa.env.setValue("CapModel", amendCapModel);
+        aa.env.setValue("CAP_MODEL_INITED", "TRUE");       
 	}
 } catch (err) {
 	handleError(err, "Page Flow Script");
