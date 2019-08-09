@@ -74,13 +74,22 @@ capId = cap.getCapID();
 // page flow custom code begin
 try {	
 	var arrContacts = getPeople(capId);
+	var contactList = cap.getContactsGroup();
+	var arrContacts = contactList.toArray();
 	for(cn in arrContacts){
-		sourcePeopleModel = arrContacts[cn];
-		var getUserResult = aa.publicUser.getPublicUserByEmail(sourcePeopleModel.getEmail());
-		if (!getUserResult.getSuccess()) {
+		var thisCont = arrContacts[cn];
+		var getUserResult = aa.publicUser.getPublicUserByEmail(thisCont.getEmail());
+		comment("thisCont.getEmail(): " + thisCont.getEmail());
+		comment("getUserResult.getSuccess() : " + getUserResult.getOutput() );
+		if ( !getUserResult.getOutput()) {
 			cancel = true;
 			showMessage = true;
-			comment("This contact does not have an associated ACA user--please contact this user to set up their ACA account: " + sourcePeopleModel.getEmail()+".");
+			comment("This contact does not have an associated ACA user--please contact this user to set up their ACA account: " + thisCont.getEmail()+".");
+		}
+		if(thisCont.getPeople().getContactTypeFlag()=="organization"){
+			cancel = true;
+			showMessage = true;
+			comment("This contact must be set as an individual (not organization)--please update before continuing: " + thisCont.getEmail()+".");
 		}
 	}
 } catch (err) {
