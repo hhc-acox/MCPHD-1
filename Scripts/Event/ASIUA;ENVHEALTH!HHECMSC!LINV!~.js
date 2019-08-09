@@ -37,8 +37,9 @@ if (capStatus == 'Pending Case Creation' && AInfo['LHH'] == 'CHECKED')
 editAppSpecific('LHH Created',dateAdd(null,0));
 updateAppStatus('Finaled','Child Case Created');
 newChildID = createChild('EnvHealth','HHECMSC','LHH','NA','');
-copyAppSpecific(newChildID);
 comment('New child app id = '+ newChildID);
+HHC_copyGuidesheetToChild(capId);
+copyAppSpecific(newChildID);
 updateAppStatus('In Violation','Created from LINV',newChildID);
 copyOwner(capId, newChildID);
 assignCap(AInfo['Assigned To'],newChildID);
