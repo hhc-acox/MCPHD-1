@@ -1,4 +1,4 @@
-HHC_copyGuidesheetToChild(capId){
+function HHC_copyGuidesheetToChild(capId){
 	try{
 	var r = aa.inspection.getInspections(capId);
 	if (r.getSuccess()) {
