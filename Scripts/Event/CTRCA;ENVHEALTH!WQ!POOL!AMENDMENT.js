@@ -10,6 +10,7 @@ try{
 			aa.people.removeCapContact(parCapId,p.getContactSeqNumber());		
 		}
 		copyContacts(capId,parCapId);
+		updateAppStatus("Closed","Contacts have been processed");
 	}else{
 		logDebug("Error finding the parent record.");
 	}
