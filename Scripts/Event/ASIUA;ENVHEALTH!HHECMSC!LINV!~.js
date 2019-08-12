@@ -1,4 +1,4 @@
-//ASIUA;ENVHEALTH~HHECMSC~LINV~!
+//ASIUA;ENVHEALTH!HHECMSC!LINV!~.js
 if (AInfo['Assigned To'] != AInfo['Previous Assigned To']) 
 	{
 		HHC_ASSIGN_NEW_LEHS();
@@ -9,6 +9,7 @@ if (capStatus == 'Pending Case Creation' && AInfo['Asthma'] == 'CHECKED')
 areaInspector = hhcgetUserByDiscipline('HHCESMCAsthma');
 editAppSpecific('Asthma Created',dateAdd(null,0));
 updateAppStatus('Finaled','Child Case Created');
+branchTask('Create Case','Case Created','Action by Script','');
 newChildID = createChild('EnvHealth','HHECMSC','ASP','NA','');
 copyAppSpecific(newChildID);
 copyOwner(capId, newChildID);
@@ -23,6 +24,7 @@ if (capStatus == 'Pending Case Creation' && AInfo['CPS'] == 'CHECKED')
 areaInspector = hhcgetUserByDiscipline('HHCESMCConsumerProductSafety');
 editAppSpecific('CPS Created',dateAdd(null,0));
 updateAppStatus('Finaled','Child Case Created');
+branchTask('Create Case','Case Created','Action by Script','');
 newChildID = createChild('EnvHealth','HHECMSC','CPS','NA','');
 copyAppSpecific(newChildID);
 copyOwner(capId, newChildID);
@@ -36,6 +38,7 @@ if (capStatus == 'Pending Case Creation' && AInfo['LHH'] == 'CHECKED')
 {
 editAppSpecific('LHH Created',dateAdd(null,0));
 updateAppStatus('Finaled','Child Case Created');
+branchTask('Create Case','Case Created','Action by Script','');
 newChildID = createChild('EnvHealth','HHECMSC','LHH','NA','');
 comment('New child app id = '+ newChildID);
 HHC_copyGuidesheetToChild(capId);
@@ -52,6 +55,7 @@ if (capStatus == 'Pending Case Creation' && AInfo['BBE'] == 'CHECKED')
 areaInspector = hhcgetUserByDiscipline('HHCESMCBedBugs');
 editAppSpecific('BBE Created',dateAdd(null,0));
 updateAppStatus('Finaled','Child Case Created');
+branchTask('Create Case','Case Created','Action by Script','');
 newChildID = createChild('EnvHealth','HHECMSC','BBE','NA','');
 copyAppSpecific(newChildID);
 comment('New child app id = '+ newChildID);
@@ -67,6 +71,7 @@ if (capStatus == 'Pending Case Creation' && AInfo['Senior Care'] == 'CHECKED')
 areaInspector = hhcgetUserByDiscipline('HHCESMCSeniorCare');
 editAppSpecific('Asthma Created',dateAdd(null,0));
 updateAppStatus('Finaled','Child Case Created');
+branchTask('Create Case','Case Created','Action by Script','');
 newChildID = createChild('EnvHealth','HHECMSC','SCM','NA','');
 copyAppSpecific(newChildID);
 copyOwner(capId, newChildID);
@@ -82,6 +87,7 @@ saveID = capId;
 areaInspector = hhcgetUserByDiscipline('HHCESMCRadon');
 editAppSpecific('Radon Created',dateAdd(null,0));
 updateAppStatus('Finaled','Child Case Created');
+branchTask('Create Case','Case Created','Action by Script','');
 newChildID = createChild('EnvHealth','Radon','ServiceRequest','NA','');
 copyAppSpecific(newChildID);
 copyOwner(capId, newChildID);
