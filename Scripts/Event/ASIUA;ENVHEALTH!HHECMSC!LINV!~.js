@@ -41,7 +41,7 @@ updateAppStatus('Finaled','Child Case Created');
 branchTask('Create Case','Case Created','Action by Script','');
 newChildID = createChild('EnvHealth','HHECMSC','LHH','NA','');
 comment('New child app id = '+ newChildID);
-HHC_copyGuidesheetToChild(capId);
+//HHC_copyGuidesheetToChild(capId);
 copyAppSpecific(newChildID);
 updateAppStatus('In Violation','Created from LINV',newChildID);
 copyOwner(capId, newChildID);
