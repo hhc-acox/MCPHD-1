@@ -66,6 +66,11 @@ if (matches(appTypeArray[2],'CCC')) {
 	comment('the CCC Supervisor is: '+areaInspector);
 	}	
 
+//TLP EHSM Assignment
+if (matches(appTypeArray[2],'TLP')) {
+	areaInspector = hhcgetUserByDiscipline('EHSMToolLoan');
+	comment('the CCC Supervisor is: '+areaInspector);
+	}	
 //LINV EHS
 if (AInfo['Asthma'] == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCAsthma');
