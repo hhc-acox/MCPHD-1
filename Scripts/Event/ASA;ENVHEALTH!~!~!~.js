@@ -60,18 +60,12 @@ if (matches(appTypeArray[2],'SCM')) {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCSeniorCare');
 	comment('the Senior Care area Inspector is: '+areaInspector);
 	}	
-//CCC EHSM Supervisor Assignment
+//CCC EHMS Supervisor Assignment
 if (matches(appTypeArray[2],'CCC')) {
 	areaInspector = hhcgetUserByDiscipline('EHSMSupervisor');
 	comment('the CCC Supervisor is: '+areaInspector);
 	}	
 
-//TLP EHSM Assignment
-if (matches(appTypeArray[2],'TLP')) {
-	areaInspector = hhcgetUserByDiscipline('EHSMToolLoan');
-	comment('the CCC Supervisor is: '+areaInspector);
-	}	
-	
 //LINV EHS
 if (AInfo['Asthma'] == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCAsthma');
@@ -115,12 +109,13 @@ if(areaInspector) {
 	assignCap(areaInspector);
 	}
 //lwacht: 151016: end
-//LINV Initial Inspection Scheduling set for next business day and case assignments.
-if (matches(appTypeArray[2],'LINV')) {
+//LINV Initial Inspection Scheduling set for next business day and case assignments.  This logic moved to launch from "Case Intake" on the LINV Workflow 08/12/2019.
+/*if (matches(appTypeArray[2],'LINV')) {
 	updateAppStatus('Open','Initial status');
 	editAppSpecific('Initial Inspection Date',nextWorkDay());
 	scheduleInspectDate('Initial Lead Inspection',nextWorkDay(),areaInspector);
 	}
+	*/
 //Get the Initial Inspection Date and reformat it for resulting the Initial Inspection
 if (matches(appTypeArray[2],'VEH','HSG','SEC','TRA','LHH')) {
 	theDate = AInfo['Initial Inspection Date'].substring(6,10) + '-' + AInfo['Initial Inspection Date'].substring(0,2) + '-' + AInfo['Initial Inspection Date'].substring(3,5);
