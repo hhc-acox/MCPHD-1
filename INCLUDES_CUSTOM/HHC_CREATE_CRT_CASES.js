@@ -55,7 +55,11 @@ function HHC_CREATE_CRT_CASES() {
 						editAppSpecific('EHS Court Day','THURS',newChildID);
 						editAppSpecific('EHS Court Time','1:00 PM',newChildID);
 						}
-
+					//This entire section needs to be rewritten to do the following:
+					//1. Interrogate the parent case and get all of the Section Codes from the Violations, remove any / or - and put them in a string comma separated
+					//2. split the string into individual numbers with "OI" at the end of each number.
+					//3. Push each new number string to an array.
+					//4. push the array to the CRT Offense Codes table.
 					if (parseInt(code10or19) == 10 && appMatch('*/*/TRA/*') && AInfo['Property Type'] == 'Occupied') 
 					{
 						elementArray['OFFENSE CODE'] = '10301OI';
