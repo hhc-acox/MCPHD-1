@@ -1,6 +1,6 @@
 function HHC_getCapAssignment(capId){
 	try {
-	var theCapAssigned =  = capDetail.getAsgnStaff();
+	var theCapAssigned = capDetail.getAsgnStaff();
 	return theCapAssigned;
 	}
 		catch(err)
