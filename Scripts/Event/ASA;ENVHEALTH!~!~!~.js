@@ -9,10 +9,10 @@ var censusTract = '';
 censusTract = AInfo['ParcelAttribute.CensusTract'];
 editAppSpecific('Census Tract',censusTract);
 comment('the census tract is: '+censusTract);
-//Getting and Setting the EHS - to the Assigned To field and the Case.
+//Getting and Setting assignments at the record level.  
 //The rest of the departments will have to be added to this section in the future.
 
-//Housing EHS
+//Housing EHS (EnvHealth/Housing/XXX/NA)
 if (matches(appTypeArray[2],'HSG','TRA','VEH','INV')) {
 	areaInspector = lookup('Census - Housing EHS',censusTract); 
 	logDebug('Inspector to Assign: '+areaInspector);
@@ -113,6 +113,16 @@ if(areaInspector) {
 	editAppSpecific('Previous Assigned To',aInsp);
 	assignCap(areaInspector);
 	}
+//WQ Assignments
+//Body Art Application Supervisor assignments
+if (matches(appTypeArray[2],'Body Art') && matches(appTypeArray[3],'Application')) {
+	areaInspector = hhcgetUserByDiscipline('WQBodyArtSupv');
+	comment('the BAF Supervisor is: '+areaInspector);
+	assignTask('Application Intake', areaInspector);
+	assignCap(areaInspector);
+	updateTask('Application Intake','Application Received');
+	}
+
 //lwacht: 151016: end
 //LINV Initial Inspection Scheduling set for next business day and case assignments.  This logic moved to launch from "Case Intake" on the LINV Workflow 08/12/2019.
 /*if (matches(appTypeArray[2],'LINV')) {
