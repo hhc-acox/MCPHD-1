@@ -1,4 +1,4 @@
-function HHCgetCapAssignment(capId){
+function HHC_getCapAssignment(capId){
 	try {
 	var itemCap = capId
 	var cdScriptObjResult = aa.cap.getCapDetail(itemCap);
@@ -11,8 +11,8 @@ function HHCgetCapAssignment(capId){
 		{ logDebug("**ERROR: No cap detail script object") ; return false; }
 
 	cd = cdScriptObj.getCapDetailModel();
-	var theAssignStaff = cd.getAsgnStaff();
-	var theCapAssigned = theAssignStaff.getOutput();
+	var theAssignStaff = cd.getOutput();
+	var theCapAssigned = theAssignStaff.getAsgnStaff();
 	return theCapAssigned;
 	}
 		catch(err)
