@@ -24,7 +24,7 @@
 								vioCodeNums = v.replace(/\D/g,'');
 									for(var x=0;x<vioCodeNums.length;x+5){
 									newVioCode = vioCodeNums.substring(x, 5)+'IO';	
-									comment('the value is: 'newVioCode);
+									comment('the value is: '+newVioCode);
 									elementArray['OFFENSE CODE'] = newVioCode;
 									masterArray.push(elementArray);
 									comment('elementArray: '+elementArray);
