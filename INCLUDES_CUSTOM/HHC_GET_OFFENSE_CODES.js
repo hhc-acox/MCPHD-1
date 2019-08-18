@@ -6,7 +6,6 @@
 	//var saveID = capId;
 //1. get Violation Table from Parent and interrogate each violation and determine the violation column value
 			var v = ''; 
-			var numsOnlyGetter = /[0-9]/g;
 			var vioCodeNums = '';
 			var newVioCode = '';
 			loadASITable('VIOLATIONS');
@@ -19,16 +18,19 @@
 							//Trash Occupied - Residential - VioCode_Chpt10_Occ
 							if (parseInt(code10or19) == 10 && AInfo['Property Type'] == 'Occupied') 
 								v = lookup('VioCode_Chpt10_Occ',crtVIOLATIONS[a]['Violation']);	
-								vioCodeNums = v.match(numsOnlyGetter);
+								vioCodeNums = v.replace(/\D/g,'');
 									for(var x=0;x<vioCodeNums.length;x+5){
 									newVioCode = vioCodeNums.substring(x, 5)+'IO';	
 									elementArray['OFFENSE CODE'] = newVioCode;
 									masterArray.push(elementArray);
+									v = ''; 
+									vioCodeNums = '';
+									newVioCode = '';
 									}
 							//Trash on vacant lot - Residential - VioCode_Chpt10_VL
 							if (parseInt(code10or19) == 10 && matches(AInfo['Property Type'],'Vacant Lot')) 
 								v = lookup('VioCode_Chpt10_VL',crtVIOLATIONS[i]['Violation']);
-							//Trash on vacant structure - Residential - VioCode_Chpt10_VS
+							//Trash on vacant structure - replace(/\D/g,'');esidential - VioCode_Chpt10_VS
 							if (parseInt(code10or19) == 10 && matches(AInfo['Property Type'],'Vacant Structure')) 
 								v = lookup('VioCode_Chpt10_VS',crtVIOLATIONS[i]['Violation']);
 							//Trash Occupied - Commercial - VioCode_Chpt19
