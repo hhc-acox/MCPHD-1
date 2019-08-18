@@ -21,7 +21,7 @@
 								v = lookup('VioCode_Chpt10_Occ',crtVIOLATIONS[a]['Violation']);	
 								vioCodeNums = v.match(numsOnlyGetter);
 									for(var x=0;x<vioCodeNums.length;x+5){
-									newVioCode = vioCodeNums.substr(x, 5)+'IO';	
+									newVioCode = vioCodeNums.substring(x, 5)+'IO';	
 									elementArray['OFFENSE CODE'] = newVioCode;
 									masterArray.push(elementArray);
 									}
@@ -48,7 +48,7 @@
 			}
 		catch(err)
 		{
-			logDebug("A JavaScript Error occurred: HHC_VIOLATIONS_LOOP:  " + err.message);
+			logDebug("A JavaScript Error occurred: HHC_GET_OFFENSE_CODES:  " + err.message);
 			logDebug(err.stack);
 		}
 	}
