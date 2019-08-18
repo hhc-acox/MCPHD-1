@@ -1,5 +1,7 @@
 	function HHC_GET_OFFENSE_CODES() {
 		try {
+			showMessage = true;
+			showDebug = true; 
 			masterArray = new Array();
 			elementArray = new Array();
 			code10or19 = AInfo['Ordinance Chapter'];
@@ -22,9 +24,11 @@
 								vioCodeNums = v.replace(/\D/g,'');
 									for(var x=0;x<vioCodeNums.length;x+5){
 									newVioCode = vioCodeNums.substring(x, 5)+'IO';	
+									comment('the value is: 'newVioCode);
 									elementArray['OFFENSE CODE'] = newVioCode;
 									masterArray.push(elementArray);
-									comment(masterArray);
+									comment('elementArray: '+elementArray);
+									comment('masterArray: '+masterArray);
 									v = ''; 
 									vioCodeNums = '';
 									newVioCode = '';
@@ -54,7 +58,7 @@
 				//addASITable('OFFENSE CODES',masterArray[0], newChildID);
 				for(var z=1; z<y; z++){
 					//addToASITable('OFFENSE CODES',masterArray[z], newChildID);
-					comment(masterArray);
+					comment('masterArray: '+masterArray);
 					}
 			}
 		catch(err)
