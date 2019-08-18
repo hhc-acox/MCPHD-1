@@ -20,7 +20,7 @@
 							if (parseInt(code10or19) == 10 && AInfo['Property Type'] == 'Occupied') 
 								v = lookup('VioCode_Chpt10_Occ',fixVIOLATIONS[i]['Violation']);	
 								vioCodeNums = v.match(numsOnlyGetter);
-									for(x=0;x<vioCodeNums.length;x+5;){
+									for(var x=0;x<vioCodeNums.length;x+5){
 									newVioCode = vioCodeNums.substr(x, 5)+'IO';	
 									elementArray['OFFENSE CODE'] = newVioCode;
 									masterArray.push(elementArray);
