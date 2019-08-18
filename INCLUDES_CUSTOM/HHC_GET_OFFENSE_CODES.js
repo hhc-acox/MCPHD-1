@@ -27,8 +27,8 @@
 									comment('the value is: '+newVioCode);
 									elementArray['OFFENSE CODE'] = newVioCode;
 									masterArray.push(elementArray);
-									comment('elementArray: '+elementArray);
-									comment('masterArray: '+masterArray);
+									comment('elementArray: '+elementArray[0][y]);
+									comment('masterArray: '+masterArray[0][y]);
 									v = ''; 
 									vioCodeNums = '';
 									newVioCode = '';
@@ -58,7 +58,7 @@
 				//addASITable('OFFENSE CODES',masterArray[0], newChildID);
 				for(var z=1; z<y; z++){
 					//addToASITable('OFFENSE CODES',masterArray[z], newChildID);
-					comment('masterArray: '+masterArray);
+					comment('masterArray: '+masterArray[0][z]);
 					}
 			}
 		catch(err)
