@@ -2,8 +2,8 @@
 		try {
 			showMessage = true;
 			showDebug = true; 
-			masterArray = [];
-			elementArray = [];
+			masterObj = [];
+			elementObj = [];
 			code10or19 = AInfo['Ordinance Chapter'];
 	//var saveID = capId;
 //1. get Violation Table from Parent and interrogate each violation and determine the violation column value
@@ -56,32 +56,33 @@
 						comment('the value of vioCodeNums is '+vioCodeNums);
 
 					}
-						var y = 0;
+						/*var y = 0;
 						var x = 0;
  						if(vioCodeNums.length > 0){
 						for(x=0;x<vioCodeNums.length;x+5){
 									newVioCode = vioCodeNums.substring(x, 5)+'IO';	
 									comment('the value is: '+newVioCode);
-									//elementArray['OFFENSE CODE'] = newVioCode;
-									masterArray['OFFENSE CODE'] = newVioCode;
-									//comment('elementArray: '+elementArray[0]);
-									//comment('elementArray: '+elementArray[y]);
-									//comment('masterArray: '+masterArray[0]);
-									comment('masterArray: '+masterArray[y]);
+									//elementObj['OFFENSE CODE'] = newVioCode;
+									masterObj['OFFENSE CODE'] = newVioCode;
+									//comment('elementObj: '+elementObj[0]);
+									//comment('elementObj: '+elementObj[y]);
+									//comment('masterObj: '+masterObj[0]);
+									comment('masterObj: '+masterObj[y]);
 									v = ''; 
 									newVioCode = '';
 									y++;
+									*/
 						} 
 					}
 				}
- 				//if(y>0){
-					masterArray.push(elementArray);
-					addASITable('OFFENSE CODES',masterArray, newChildID);
+ 				/*if(y>0){
+					masterObj.push(elementObj);
+					addASITable('OFFENSE CODES',masterObj, newChildID);
 				//for(var z=1; z<y; z++){
-				//	addToASITable('OFFENSE CODES',masterArray[z], newChildID);
-					comment('masterArray: '+masterArray);
+				//	addToASITable('OFFENSE CODES',masterObj[z], newChildID);
+					comment('masterObj: '+masterObj);
 				//	}
-			//	}					
+			*/	}					
 			}
 		catch(err)
 		{
