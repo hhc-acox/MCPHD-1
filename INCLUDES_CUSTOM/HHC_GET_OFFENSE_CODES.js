@@ -58,12 +58,12 @@
 					}
 						var y = 0;
 						var x = 0;
- 						if(vioCodeNums.length >= 5){
+ 						if(vioCodeNums.length > 0){
 						for(x=0;x<vioCodeNums.length;x+5){
 									newVioCode = vioCodeNums.substring(x, 5)+'IO';	
 									comment('the value is: '+newVioCode);
 									//elementArray['OFFENSE CODE'] = newVioCode;
-									masterArray.push(newVioCode);
+									masterArray[y] = newVioCode;
 									//comment('elementArray: '+elementArray[0]);
 									//comment('elementArray: '+elementArray[y]);
 									//comment('masterArray: '+masterArray[0]);
@@ -74,13 +74,13 @@
 						} 
 					}
 				}
- 				if(y>0){
+ 				//if(y>0){
 					addASITable('OFFENSE CODES',masterArray, newChildID);
 				//for(var z=1; z<y; z++){
 				//	addToASITable('OFFENSE CODES',masterArray[z], newChildID);
 					comment('masterArray: '+masterArray);
 				//	}
-				}					
+			//	}					
 			}
 		catch(err)
 		{
