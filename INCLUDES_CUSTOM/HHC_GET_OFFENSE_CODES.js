@@ -66,7 +66,6 @@
 									//comment('masterArray: '+masterArray[0]);
 									comment('masterArray: '+masterArray[y]);
 									v = ''; 
-									vioCodeNums = '';
 									newVioCode = '';
 									y++;
 						} 
