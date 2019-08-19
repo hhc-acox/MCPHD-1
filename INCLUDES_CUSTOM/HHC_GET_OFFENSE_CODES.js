@@ -56,33 +56,32 @@
 						comment('the value of vioCodeNums is '+vioCodeNums);
 
 					}
-						/*var y = 0;
+						var y = 0;
 						var x = 0;
- 						if(vioCodeNums.length > 0){
-						for(x=0;x<vioCodeNums.length;x+5){
-									newVioCode = vioCodeNums.substring(x, 5)+'IO';	
-									comment('the value is: '+newVioCode);
+ 					//	if(vioCodeNums.length > 0){
+					//	for(x=0;x<vioCodeNums.length;x+5){
+								//	newVioCode = vioCodeNums.substring(x, 5)+'IO';	
+								//	comment('the value is: '+newVioCode);
 									//elementObj['OFFENSE CODE'] = newVioCode;
-									masterObj['OFFENSE CODE'] = newVioCode;
+								//	masterObj['OFFENSE CODE'] = newVioCode;
 									//comment('elementObj: '+elementObj[0]);
 									//comment('elementObj: '+elementObj[y]);
 									//comment('masterObj: '+masterObj[0]);
-									comment('masterObj: '+masterObj[y]);
-									v = ''; 
-									newVioCode = '';
-									y++;
-									*/
+								//	comment('masterObj: '+masterObj[y]);
+								//	v = ''; 
+								//	newVioCode = '';
+								//	y++;
 						} 
 					}
 				}
- 				/*if(y>0){
-					masterObj.push(elementObj);
-					addASITable('OFFENSE CODES',masterObj, newChildID);
+ 				//if(y>0){
+				//	masterObj.push(elementObj);
+				//	addASITable('OFFENSE CODES',masterObj, newChildID);
 				//for(var z=1; z<y; z++){
 				//	addToASITable('OFFENSE CODES',masterObj[z], newChildID);
-					comment('masterObj: '+masterObj);
+				//	comment('masterObj: '+masterObj);
 				//	}
-			*/	}					
+			//	}					
 			}
 		catch(err)
 		{
