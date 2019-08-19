@@ -22,7 +22,7 @@
 								v = lookup('VioCode_Chpt10_Occ',crtVIOLATIONS[a]['Violation']);	
 								vioCodeNums = vioCodeNums+v.replace(/\D/g,'');
 								v = '';
-							}
+/* 							}
 							//Trash on vacant lot - Residential - VioCode_Chpt10_VL
 							if (parseInt(code10or19) == 10 && matches(AInfo['Property Type'],'Vacant Lot')){
 								v = lookup('VioCode_Chpt10_VL',crtVIOLATIONS[a]['Violation']);
@@ -46,7 +46,7 @@
 								v = lookup('VioCode_Chpt19_VS',crtVIOLATIONS[a]['Violation']);
 								vioCodeNums = vioCodeNums+v.replace(/\D/g,'');
 								v = '';
-							}
+							} */
 //4. Take the complete array and loop through the list doing the following:
 	//for each item remove the part of the string before the "/" and put it in a field in a new array, remove the "/" and do this again for the number of "/" in the string until all string parts are in their own row in the new array.
 	//For each row in the column:
@@ -57,8 +57,8 @@
 						comment('the value of vioCodeNums is '+vioCodeNums);
 						var y = 0;
 						var x = 0;
- 					  	if(vioCodeNums.length > 0){
-					 	for(x=0;x<vioCodeNums.length;x+5){
+						var w = vioCodeNums.length;
+ 					  	 	for(x=0; x<w; x+5){
 									newVioCode = vioCodeNums.substring(x, 5)+'IO';	
 									comment('the value is: '+newVioCode);
 									//elementObj['OFFENSE CODE'] = newVioCode;
@@ -72,7 +72,6 @@
 									newVioCode = '';
 									y++;
 						} 
-					}
 
 					}
 
