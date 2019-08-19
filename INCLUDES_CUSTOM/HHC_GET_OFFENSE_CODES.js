@@ -74,11 +74,11 @@
 					}
 				}
  				if(y>0){
-					addASITable('OFFENSE CODES',masterArray[0], newChildID);
-				for(var z=1; z<y; z++){
-					addToASITable('OFFENSE CODES',masterArray[z], newChildID);
+					addASITable('OFFENSE CODES',masterArray, newChildID);
+				//for(var z=1; z<y; z++){
+				//	addToASITable('OFFENSE CODES',masterArray[z], newChildID);
 					comment('masterArray: '+masterArray);
-					}
+				//	}
 				}					
 			}
 		catch(err)
