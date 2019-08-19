@@ -53,6 +53,7 @@
 	  // remove the "-" and add "OI" at the end
 						}
 						comment('the length of the string is: '+vioCodeNums.length);
+						comment('the number of loops should be: '+vioCodeNums.length/5);
 						comment('the value of vioCodeNums is '+vioCodeNums);
 
 					}
