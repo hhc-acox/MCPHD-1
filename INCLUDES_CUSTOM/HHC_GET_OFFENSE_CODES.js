@@ -61,9 +61,9 @@
 					 	for(x=0;x<vioCodeNums.length;x+5){
 									newVioCode = vioCodeNums.substring(x, 5)+'IO';	
 									comment('the value is: '+newVioCode);
-									elementObj['OFFENSE CODE'] = newVioCode;
+									//elementObj['OFFENSE CODE'] = newVioCode;
 									//masterObj['OFFENSE CODE'] = newVioCode;
-									comment('elementObj: '+elementObj['OFFENSE CODE'].value);
+									//comment('elementObj: '+elementObj['OFFENSE CODE'].value);
 									comment('y: '+y);
 									comment('x: '+x);
 									//comment('elementObj: '+elementObj[y]);
