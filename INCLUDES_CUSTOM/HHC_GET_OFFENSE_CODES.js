@@ -55,25 +55,27 @@
 						comment('the length of the string is: '+vioCodeNums.length);
 						comment('the number of loops should be: '+vioCodeNums.length/5);
 						comment('the value of vioCodeNums is '+vioCodeNums);
-
-					}
 						var y = 0;
 						var x = 0;
- 					//	if(vioCodeNums.length > 0){
-					//	for(x=0;x<vioCodeNums.length;x+5){
-								//	newVioCode = vioCodeNums.substring(x, 5)+'IO';	
-								//	comment('the value is: '+newVioCode);
-									//elementObj['OFFENSE CODE'] = newVioCode;
-								//	masterObj['OFFENSE CODE'] = newVioCode;
-									//comment('elementObj: '+elementObj[0]);
+ 					  	if(vioCodeNums.length > 0){
+					 	for(x=0;x<vioCodeNums.length;x+5){
+									newVioCode = vioCodeNums.substring(x, 5)+'IO';	
+									comment('the value is: '+newVioCode);
+									elementObj['OFFENSE CODE'] = newVioCode;
+									//masterObj['OFFENSE CODE'] = newVioCode;
+									comment('elementObj: '+elementObj['OFFENSE CODE'][0]);
+									comment('y: '+y);
+									comment('x: '+x);
 									//comment('elementObj: '+elementObj[y]);
 									//comment('masterObj: '+masterObj[0]);
 								//	comment('masterObj: '+masterObj[y]);
-								//	v = ''; 
-								//	newVioCode = '';
-								//	y++;
-						//} 
-					//}
+									newVioCode = '';
+									y++;
+						} 
+					}
+
+					}
+
 				}
  				//if(y>0){
 				//	masterObj.push(elementObj);
