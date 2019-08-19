@@ -54,9 +54,10 @@
 						}
 						comment('the length of the string is: '+vioCodeNums.length);
 						comment('the value of vioCodeNums is '+vioCodeNums);
+
+					}
 						var y = 0;
 						var x = 0;
-					}
  						if(vioCodeNums.length >= 5){
 						for(x=0;x<vioCodeNums.length;x+5){
 									newVioCode = vioCodeNums.substring(x, 5)+'IO';	
