@@ -1,4 +1,4 @@
-	function HHC_GET_OFFENSE_CODES() {
+function HHC_GET_OFFENSE_CODES() {
 		try {
 			showMessage = true;
 			showDebug = true; 
@@ -21,35 +21,35 @@
 							if (parseInt(code10or19) == 10 && AInfo['Property Type'] == 'Occupied') {
 								v = lookup('VioCode_Chpt10_Occ',crtVIOLATIONS[a]['Violation']);	
 								v = v.v.replace(/-/g,'');
-								vioCodeNums = vioCodeNums+v.replace(///g,'IO');
+								vioCodeNums = vioCodeNums+v.replace(/\//g,'IO');
 								v = '';
 							}
 							//Trash on vacant lot - Residential - VioCode_Chpt10_VL
 							if (parseInt(code10or19) == 10 && matches(AInfo['Property Type'],'Vacant Lot')){
 								v = lookup('VioCode_Chpt10_VL',crtVIOLATIONS[a]['Violation']);
 								v = v.v.replace(/-/g,'');
-								vioCodeNums = vioCodeNums+v.replace(///g,'IO');
+								vioCodeNums = vioCodeNums+v.replace(/\//g,'IO');
 								v = '';
 							}
 							//Trash on vacant structure - Residential - VioCode_Chpt10_VS
 							if (parseInt(code10or19) == 10 && matches(AInfo['Property Type'],'Vacant Structure')) {
 								v = lookup('VioCode_Chpt10_VS',crtVIOLATIONS[a]['Violation']);
 								v = v.v.replace(/-/g,'');
-								vioCodeNums = vioCodeNums+v.replace(///g,'IO');
+								vioCodeNums = vioCodeNums+v.replace(/\//g,'IO');
 								v = '';
 							}
 							//Trash Occupied - Commercial - VioCode_Chpt19
 							if (parseInt(code10or19) == 19 && AInfo['Property Type'] == 'Occupied') {
 								v = lookup('VioCode_Chpt19',crtVIOLATIONS[a]['Violation']);
 								v = v.v.replace(/-/g,'');
-								vioCodeNums = vioCodeNums+v.replace(///g,'IO');
+								vioCodeNums = vioCodeNums+v.replace(/\//g,'IO');
 								v = '';
 							}
 							//Trash on vacant structure - Commercial - VioCode_Chpt19_VS
 							if (parseInt(code10or19) == 19 && matches(AInfo['Property Type'],'Vacant Structure')) {
 								v = lookup('VioCode_Chpt19_VS',crtVIOLATIONS[a]['Violation']);
 								v = v.v.replace(/-/g,'');
-								vioCodeNums = vioCodeNums+v.replace(///g,'IO');
+								vioCodeNums = vioCodeNums+v.replace(/\//g,'IO');
 								v = '';
 							} 
 
@@ -60,8 +60,7 @@
 						}
 						
 						newVioCode = vioCodeNums.match(/.{1,7}/g);
-	
-									comment('the value is: '+newVioCode);
+						comment('the value is: '+newVioCode);
 									//elementObj['OFFENSE CODE'] = newVioCode;
 									//masterObj['OFFENSE CODE'] = newVioCode;
 									//comment('elementObj: '+elementObj['OFFENSE CODE'].value);
