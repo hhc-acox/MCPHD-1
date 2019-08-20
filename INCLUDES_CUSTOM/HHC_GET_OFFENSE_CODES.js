@@ -53,12 +53,11 @@
 	//For each row in the column:
 	  // remove the "-" and add "OI" at the end
 						}
-						//var y = 0;
-						//var x = 0;
-						//var w = vioCodeNums.length;
- 					  	 //	for(x=0; x<w; x+5){
-							//		newVioCode = vioCodeNums.substring(x, 5)+'IO';	
-							//		comment('the value is: '+newVioCode);
+						var y = 0;
+						var w = vioCodeNums.length;
+ 					  	 	for(var x=0; x<w; x+5){
+									newVioCode = vioCodeNums.substring(x, 5)+'IO';	
+									comment('the value is: '+newVioCode);
 									//elementObj['OFFENSE CODE'] = newVioCode;
 									//masterObj['OFFENSE CODE'] = newVioCode;
 									//comment('elementObj: '+elementObj['OFFENSE CODE'].value);
@@ -69,7 +68,7 @@
 								//	comment('masterObj: '+masterObj[y]);
 							//		newVioCode = '';
 							//		y++;
-						//} 
+						} 
 
 					}
 						comment('the length of the string is: '+vioCodeNums.length);
