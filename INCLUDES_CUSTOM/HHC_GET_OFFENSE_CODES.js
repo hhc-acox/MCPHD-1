@@ -82,7 +82,7 @@ function HHC_GET_OFFENSE_CODES() {
 						comment('the length of the string is: '+newVioCode.length);
 						comment('the number of loops should be: '+newVioCode.length/5);
 						comment('the value of newVioCode is '+newVioCode);
-						comment('element 1 of newVioCode is ' newVioCode[0]);
+						comment('element 1 of newVioCode is ' +newVioCode[0]);
 						tempArray = = aa.util.newHashtable();
 						tempArray.put(1, newVioCode[0]);
 						elementArray['OFFENSE CODE'] = tempArray[0][0];
