@@ -95,8 +95,9 @@ function HHC_GET_OFFENSE_CODES() {
 						
 						if (y=1)  {
 							comment('z round 1 = '+z);
-						masterArray.push(elementArray);	
-						addASITable('OFFENSE CODES',masterArray, newChildID);	
+							addToASITable('OFFENSE CODES',elementArray, newChildID);
+						//masterArray.push(elementArray);	
+						//addASITable('OFFENSE CODES',masterArray, newChildID);	
 						} 
 						else{
 							comment('z round '+y+' is '+z);
