@@ -47,30 +47,33 @@
 								vioCodeNums = vioCodeNums+v.replace(/\D/g,'');
 								v = '';
 							} */
+						comment('the length of the string is: '+vioCodeNums.length);
+						comment('the number of loops should be: '+vioCodeNums.length/5);
+						comment('the value of vioCodeNums is '+vioCodeNums);
 //4. Take the complete array and loop through the list doing the following:
 	//for each item remove the part of the string before the "/" and put it in a field in a new array, remove the "/" and do this again for the number of "/" in the string until all string parts are in their own row in the new array.
 	//For each row in the column:
 	  // remove the "-" and add "OI" at the end
 						}
-						comment('the length of the string is: '+vioCodeNums.length);
-						comment('the number of loops should be: '+vioCodeNums.length/5);
-						comment('the value of vioCodeNums is '+vioCodeNums);
-						var y = 0;
-						var x = 0;
-						var w = vioCodeNums.length;
- 					  	 	for(x=0; x<w; x+5){
-									newVioCode = vioCodeNums.substring(x, 5)+'IO';	
-									comment('the value is: '+newVioCode);
+						//comment('the length of the string is: '+vioCodeNums.length);
+						//comment('the number of loops should be: '+vioCodeNums.length/5);
+						//comment('the value of vioCodeNums is '+vioCodeNums);
+						//var y = 0;
+						//var x = 0;
+						//var w = vioCodeNums.length;
+ 					  	 //	for(x=0; x<w; x+5){
+							//		newVioCode = vioCodeNums.substring(x, 5)+'IO';	
+							//		comment('the value is: '+newVioCode);
 									//elementObj['OFFENSE CODE'] = newVioCode;
 									//masterObj['OFFENSE CODE'] = newVioCode;
 									//comment('elementObj: '+elementObj['OFFENSE CODE'].value);
-									comment('y: '+y);
-									comment('x: '+x);
+							//		comment('y: '+y);
+							//		comment('x: '+x);
 									//comment('elementObj: '+elementObj[y]);
 									//comment('masterObj: '+masterObj[0]);
 								//	comment('masterObj: '+masterObj[y]);
-									newVioCode = '';
-									y++;
+							//		newVioCode = '';
+							//		y++;
 						} 
 
 					}
