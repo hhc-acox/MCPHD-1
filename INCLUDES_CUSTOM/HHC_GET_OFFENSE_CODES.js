@@ -22,7 +22,7 @@
 								v = lookup('VioCode_Chpt10_Occ',crtVIOLATIONS[a]['Violation']);	
 								vioCodeNums = vioCodeNums+v.replace(/\D/g,'');
 								v = '';
-/* 							}
+							}
 							//Trash on vacant lot - Residential - VioCode_Chpt10_VL
 							if (parseInt(code10or19) == 10 && matches(AInfo['Property Type'],'Vacant Lot')){
 								v = lookup('VioCode_Chpt10_VL',crtVIOLATIONS[a]['Violation']);
@@ -46,7 +46,7 @@
 								v = lookup('VioCode_Chpt19_VS',crtVIOLATIONS[a]['Violation']);
 								vioCodeNums = vioCodeNums+v.replace(/\D/g,'');
 								v = '';
-							} */
+							} 
 						comment('the length of the string is: '+vioCodeNums.length);
 						comment('the number of loops should be: '+vioCodeNums.length/5);
 						comment('the value of vioCodeNums is '+vioCodeNums);
@@ -55,9 +55,9 @@
 	//For each row in the column:
 	  // remove the "-" and add "OI" at the end
 						}
-						//comment('the length of the string is: '+vioCodeNums.length);
-						//comment('the number of loops should be: '+vioCodeNums.length/5);
-						//comment('the value of vioCodeNums is '+vioCodeNums);
+						comment('the length of the string is: '+vioCodeNums.length);
+						comment('the number of loops should be: '+vioCodeNums.length/5);
+						comment('the value of vioCodeNums is '+vioCodeNums);
 						//var y = 0;
 						//var x = 0;
 						//var w = vioCodeNums.length;
