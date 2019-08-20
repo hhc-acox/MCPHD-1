@@ -72,7 +72,7 @@
 								//	comment('masterObj: '+masterObj[y]);
 							//		newVioCode = '';
 							//		y++;
-						} 
+						//} 
 
 					}
 						comment('the length of the string is: '+vioCodeNums.length);
