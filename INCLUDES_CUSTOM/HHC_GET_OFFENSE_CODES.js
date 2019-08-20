@@ -79,15 +79,32 @@ function HHC_GET_OFFENSE_CODES() {
 						//} 
 
 					}
-						comment('the length of the string is: '+newVioCode.length);
-						comment('the number of loops should be: '+newVioCode.length/5);
+						
+						comment('the number of loops should be: '+newVioCode.length);
 						comment('the value of newVioCode is '+newVioCode);
 						comment('element 1 of newVioCode is ' +newVioCode[0]);
+						var w = 0;
+						var x = 0;
+						var y = 0;
 						var z = '';
-						z = newVioCode[0];
+						x = newVioCode.length;
+						for (w in newVioCode){
+						z = newVioCode[w];	
 						elementArray['OFFENSE CODE'] = z;
-						masterArray.push(elementArray);
-						addASITable('OFFENSE CODES',masterArray, newChildID);
+						y++;
+						
+						if (y=1)  {
+						masterArray.push(elementArray);	
+						addASITable('OFFENSE CODES',masterArray, newChildID);	
+						} 
+						else{
+						addToASITable('OFFENSE CODES',elementArray, newChildID);	
+						}
+						}
+						
+						
+						
+						
 
 				}
  				//if(y>0){
