@@ -20,31 +20,36 @@
 							//Trash Occupied - Residential - VioCode_Chpt10_Occ
 							if (parseInt(code10or19) == 10 && AInfo['Property Type'] == 'Occupied') {
 								v = lookup('VioCode_Chpt10_Occ',crtVIOLATIONS[a]['Violation']);	
-								vioCodeNums = vioCodeNums+v.replace(/\D/g,'');
+								v = v.v.replace(/-/g,'');
+								vioCodeNums = vioCodeNums+v.replace(///g,'IO');
 								v = '';
 							}
 							//Trash on vacant lot - Residential - VioCode_Chpt10_VL
 							if (parseInt(code10or19) == 10 && matches(AInfo['Property Type'],'Vacant Lot')){
 								v = lookup('VioCode_Chpt10_VL',crtVIOLATIONS[a]['Violation']);
-								vioCodeNums = vioCodeNums+v.replace(/\D/g,'');
+								v = v.v.replace(/-/g,'');
+								vioCodeNums = vioCodeNums+v.replace(///g,'IO');
 								v = '';
 							}
 							//Trash on vacant structure - Residential - VioCode_Chpt10_VS
 							if (parseInt(code10or19) == 10 && matches(AInfo['Property Type'],'Vacant Structure')) {
 								v = lookup('VioCode_Chpt10_VS',crtVIOLATIONS[a]['Violation']);
-								vioCodeNums = vioCodeNums+v.replace(/\D/g,'');
+								v = v.v.replace(/-/g,'');
+								vioCodeNums = vioCodeNums+v.replace(///g,'IO');
 								v = '';
 							}
 							//Trash Occupied - Commercial - VioCode_Chpt19
 							if (parseInt(code10or19) == 19 && AInfo['Property Type'] == 'Occupied') {
 								v = lookup('VioCode_Chpt19',crtVIOLATIONS[a]['Violation']);
-								vioCodeNums = vioCodeNums+v.replace(/\D/g,'');
+								v = v.v.replace(/-/g,'');
+								vioCodeNums = vioCodeNums+v.replace(///g,'IO');
 								v = '';
 							}
 							//Trash on vacant structure - Commercial - VioCode_Chpt19_VS
 							if (parseInt(code10or19) == 19 && matches(AInfo['Property Type'],'Vacant Structure')) {
 								v = lookup('VioCode_Chpt19_VS',crtVIOLATIONS[a]['Violation']);
-								vioCodeNums = vioCodeNums+v.replace(/\D/g,'');
+								v = v.v.replace(/-/g,'');
+								vioCodeNums = vioCodeNums+v.replace(///g,'IO');
 								v = '';
 							} 
 
@@ -53,10 +58,9 @@
 	//For each row in the column:
 	  // remove the "-" and add "OI" at the end
 						}
-						var y = 0;
-						var w = vioCodeNums.length;
- 					  	 	for(var x=0; x<w; x+5){
-									newVioCode = vioCodeNums.substring(x, 5)+'IO';	
+						
+						newVioCode = vioCodeNums.match(/.{1,7}/g);
+	
 									comment('the value is: '+newVioCode);
 									//elementObj['OFFENSE CODE'] = newVioCode;
 									//masterObj['OFFENSE CODE'] = newVioCode;
