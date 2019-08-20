@@ -79,9 +79,10 @@ function HHC_GET_OFFENSE_CODES() {
 						//} 
 
 					}
-						comment('the length of the string is: '+vioCodeNums.length);
-						comment('the number of loops should be: '+vioCodeNums.length/5);
-						comment('the value of vioCodeNums is '+vioCodeNums);	
+						comment('the length of the string is: '+newVioCode.length);
+						comment('the number of loops should be: '+newVioCode.length/5);
+						comment('the value of newVioCode is '+newVioCode);	
+						addASITable('OFFENSE CODES',masterObj, newChildID);
 
 				}
  				//if(y>0){
