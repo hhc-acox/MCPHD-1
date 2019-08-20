@@ -91,7 +91,7 @@ function HHC_GET_OFFENSE_CODES() {
 						for (w in newVioCode){
 						z = newVioCode[w];	
 						elementArray['OFFENSE CODE'] = z;
-						y++;
+						y=y+1;
 						
 						if (y=1)  {
 						masterArray.push(elementArray);	
