@@ -29,6 +29,7 @@ function HHC_GET_OFFENSE_CODES() {
 								v = lookup('VioCode_Chpt10_VL',crtVIOLATIONS[a]['Violation']);
 								v = v.replace(/-/g,'');
 								vioCodeNums = vioCodeNums+v.replace(/\//g,'IO');
+								vioCodeNums = vioCodeNums+'IO';
 								v = '';
 							}
 							//Trash on vacant structure - Residential - VioCode_Chpt10_VS
@@ -36,6 +37,7 @@ function HHC_GET_OFFENSE_CODES() {
 								v = lookup('VioCode_Chpt10_VS',crtVIOLATIONS[a]['Violation']);
 								v = v.replace(/-/g,'');
 								vioCodeNums = vioCodeNums+v.replace(/\//g,'IO');
+								vioCodeNums = vioCodeNums+'IO';
 								v = '';
 							}
 							//Trash Occupied - Commercial - VioCode_Chpt19
@@ -43,6 +45,7 @@ function HHC_GET_OFFENSE_CODES() {
 								v = lookup('VioCode_Chpt19',crtVIOLATIONS[a]['Violation']);
 								v = v.replace(/-/g,'');
 								vioCodeNums = vioCodeNums+v.replace(/\//g,'IO');
+								vioCodeNums = vioCodeNums+'IO';
 								v = '';
 							}
 							//Trash on vacant structure - Commercial - VioCode_Chpt19_VS
@@ -50,6 +53,7 @@ function HHC_GET_OFFENSE_CODES() {
 								v = lookup('VioCode_Chpt19_VS',crtVIOLATIONS[a]['Violation']);
 								v = v.replace(/-/g,'');
 								vioCodeNums = vioCodeNums+v.replace(/\//g,'IO');
+								vioCodeNums = vioCodeNums+'IO';
 								v = '';
 							} 
 
