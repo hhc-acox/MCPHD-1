@@ -99,7 +99,7 @@ function HHC_GET_OFFENSE_CODES() {
 						addASITable('OFFENSE CODES',masterArray, newChildID);	
 						} 
 						else{
-							comment('z round 'y+' is '+z);
+							comment('z round '+y+' is '+z);
 						//addToASITable('OFFENSE CODES',elementArray, newChildID);	
 						}
 						}
