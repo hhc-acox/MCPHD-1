@@ -17,6 +17,27 @@ function HHC_GET_OFFENSE_CODES() {
 						thisrow = crtVIOLATIONS[a];
 						if (matches(thisrow['Status'],'Court') && !matches(thisrow['Violation'],null)) {
 //for each value look up the corresponding codes in the translation table that fits the case and push each code set to an array:
+							//HSG Cases
+							if (matches(appTypeArray[2],'HSG')){
+								if (parseInt(code10or19) == 10) {
+									v = lookup('VioCode_Chpt10_Occ',crtVIOLATIONS[a]['Violation']);	
+									v = v.replace(/-/g,'');
+									vioCodeNums = vioCodeNums+v.replace(/\//g,'IO');
+									vioCodeNums = vioCodeNums+'IO';
+									v = '';
+								}
+								if (parseInt(code10or19) == 19) {
+									v = lookup('VioCode_Chpt19',crtVIOLATIONS[a]['Violation']);	
+									v = v.replace(/-/g,'');
+									vioCodeNums = vioCodeNums+v.replace(/\//g,'IO');
+									vioCodeNums = vioCodeNums+'IO';
+									v = '';
+								}
+								
+							}
+														
+							//TRA Cases
+							if (matches(appTypeArray[2],'TRA')){
 							//Trash Occupied - Residential - VioCode_Chpt10_Occ
 								if (parseInt(code10or19) == 10 && AInfo['Property Type'] == 'Occupied') {
 									v = lookup('VioCode_Chpt10_Occ',crtVIOLATIONS[a]['Violation']);	
@@ -58,9 +79,10 @@ function HHC_GET_OFFENSE_CODES() {
 									v = '';
 								} 
 							}
+						}
 							newVioCode = vioCodeNums.match(/.{1,7}/g);
 						
-						}
+					}
 							comment('the value of newVioCode is '+newVioCode);
 							comment('element 1 of newVioCode is ' +newVioCode[0]);
 							uniqVioCodes = newVioCode.filter(onlyUnique);
@@ -75,17 +97,17 @@ function HHC_GET_OFFENSE_CODES() {
 							z = uniqVioCodes[w];	
 							elementArray['OFFENSE CODE'] = z;
 							addToASITable('OFFENSE CODES',elementArray, newChildID);
-					}
-
 				}
-				
+
 			}
-		catch(err)
-		{
+				
+		}
+	catch(err)
+	{
 			logDebug("A JavaScript Error occurred: HHC_GET_OFFENSE_CODES:  " + err.message);
 			logDebug(err.stack);
-		}
 	}
+}
 function onlyUnique(value, index, self) { 
     return self.indexOf(value) === index;
 }
