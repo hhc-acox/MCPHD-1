@@ -83,9 +83,9 @@ function HHC_GET_OFFENSE_CODES() {
 						comment('the number of loops should be: '+newVioCode.length/5);
 						comment('the value of newVioCode is '+newVioCode);
 						comment('element 1 of newVioCode is ' +newVioCode[0]);
-						tempArray = new array();
-						tempArray = [newVioCode[0]];
-						elementArray['OFFENSE CODE'] = tempArray[0][0];
+						var z = '';
+						z = newVioCode[0];
+						elementArray['OFFENSE CODE'] = z;
 						masterArray.push(elementArray);
 						addASITable('OFFENSE CODES',masterArray, newChildID);
 
