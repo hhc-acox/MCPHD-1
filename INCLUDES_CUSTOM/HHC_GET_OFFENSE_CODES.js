@@ -22,6 +22,7 @@ function HHC_GET_OFFENSE_CODES() {
 								v = lookup('VioCode_Chpt10_Occ',crtVIOLATIONS[a]['Violation']);	
 								v = v.replace(/-/g,'');
 								vioCodeNums = vioCodeNums+v.replace(/\//g,'IO');
+								vioCodeNums = vioCodeNums+'IO';
 								v = '';
 							}
 							//Trash on vacant lot - Residential - VioCode_Chpt10_VL
