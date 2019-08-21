@@ -1,4 +1,4 @@
-//ASA;EnvHealth!VC!LarvicideSite!*.js
+//ASA;EnvHealth!VC!LarvicideSite!~.js
 showDebug = true; 
 showMessage = true; 
 //assign to Mosquito Control Team Leader
