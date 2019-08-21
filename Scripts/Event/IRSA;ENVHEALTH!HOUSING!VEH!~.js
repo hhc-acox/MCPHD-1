@@ -1,4 +1,4 @@
-//IRSA;ENVHEALTH!HOUSING!VEH!~
+//IRSA;ENVHEALTH!HOUSING!VEH!~.js
 	var areaInspector = '';
 	var censusTract = '';
 		censusTract = AInfo['ParcelAttribute.CensusTract'];
