@@ -1,4 +1,4 @@
-function HHC_getRiskDate() {
+function HHC_getRiskDays() {
 	try{
 		var iRisk = AInfo['Risk'];
 		var idays = 0;
@@ -15,7 +15,7 @@ function HHC_getRiskDate() {
 	}
 		catch(err)
 	{
-			logDebug("A JavaScript Error occurred: HHC_getRiskDate:  " + err.message);
+			logDebug("A JavaScript Error occurred: HHC_getRiskDays:  " + err.message);
 			logDebug(err.stack);
 	}
 }
