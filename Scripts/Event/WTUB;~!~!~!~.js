@@ -15,8 +15,10 @@ try{
 }
 
 //stop progress if any of the required fees/inspections/documents are not taken care of
+
 try{
 	sepStopWorkflow();
+	
 }catch(err){
 	logDebug("A JavaScript Error occurred: WTUB:*/*/*/*: " + err.message);
 	logDebug(err.stack)
