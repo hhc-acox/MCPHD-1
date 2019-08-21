@@ -1,10 +1,10 @@
 //WTUA;ENVHEALTH!HOUSING!VEH!~
 var areaInspector = hhcgetUserByDiscipline('HSGVehicleInspections');
-if (wfTask == 'Initial Processing' && (wfStatus == 'Complete Notice of Violation') && getTSIfieldValue('Reinspection Date', 'Initial Processing') != null) {
+if (wfTask == 'Initial Processing' && matches(wfStatus, 'Complete Notice of Violation','Complete Affidavit NOV') && getTSIfieldValue('Reinspection Date', 'Initial Processing') != null) {
 	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Initial Processing'),AInfo['Assigned To']);
 	}
 
-if (wfTask == 'Initial Processing' && (wfStatus == 'Complete Notice of Violation') && getTSIfieldValue('Reinspection Date', 'Initial Processing') == null) {
+if (wfTask == 'Initial Processing' && matches(wfStatus, 'Complete Notice of Violation','Complete Affidavit NOV') && getTSIfieldValue('Reinspection Date', 'Initial Processing') == null) {
 	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,20)),AInfo['Assigned To']);
 	editTaskSpecific('Initial Processing','Reinspection Date',nextWorkDay(dateAdd(null,20)));
 	}
