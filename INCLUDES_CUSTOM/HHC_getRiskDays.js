@@ -11,7 +11,7 @@ function HHC_getRiskDays() {
 			if (parseInt(iRisk) == 3) {
 				idays = 89;
 		}
-		return idays;
+		return parseInt(idays);
 	}
 		catch(err)
 	{
