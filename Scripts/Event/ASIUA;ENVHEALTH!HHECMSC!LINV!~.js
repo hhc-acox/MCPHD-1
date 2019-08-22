@@ -42,6 +42,7 @@ branchTask('Create Case','Case Created','Action by Script','');
 newChildID = createChild('EnvHealth','HHECMSC','LHH','NA','');
 comment('New child app id = '+ newChildID);
 HHC_copyAllInspectionsAndGuidesheetsToChild(capId);
+aa.cap.copyRenewCapDocument(capId, newChildID, "ADMIN");
 copyAppSpecific(newChildID);
 updateAppStatus('In Violation','Created from LINV',newChildID);
 copyOwner(capId, newChildID);
