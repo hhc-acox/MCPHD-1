@@ -8,5 +8,13 @@ if (wfTask == 'Application Intake' && matches(wfStatus,'Withdrawn','Denied')) {
 	}
 
 if (wfTask == 'Application Intake' && matches(wfStatus,'Accepted')) {
-	scheduleInspectDate('Body Art Initial Inspection',nextWorkDay(dateAdd(null,0)),assignedInspector);
+	updateTask('Inspection','Pending');
+	scheduleInspectDate('Initial',nextWorkDay(dateAdd(null,0)),assignedInspector);
+	}
+if (wfTask == 'Inspection' && matches(wfStatus,'Re-Inspection Required')) {
+	assignTask('Inspection',assignedInspector);
+	}
+if (wfTask == 'Inspection' && matches(wfStatus,'Complete')) {
+	assignTask('Inspection',assignedInspector);
+	updateTask('Issuance','Ready for Issuance Fees Due');
 	}
