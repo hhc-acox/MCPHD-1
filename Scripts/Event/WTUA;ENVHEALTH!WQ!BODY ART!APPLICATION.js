@@ -18,3 +18,16 @@ if (wfTask == 'Inspection' && matches(wfStatus,'Complete')) {
 	assignTask('Inspection',assignedInspector);
 	updateTask('Issuance','Ready for Issuance Fees Due');
 	}
+if (wfTask == 'Issuance' && matches(wfStatus,'Withdrawn','Denied')) {
+	updateTask('Close','Closed');
+	closeTask('Close');
+	//move to the close step with the status of closed
+	}
+if (wfTask == 'Issuance' && matches(wfStatus,'Issued')) {
+	updateTask('Close','Closed');
+	closeTask('Close');
+	//Create a Body Art License Function
+	HHC_CREATE_BODYART_LICENSE();
+	//Create a copy inspections and guidesheets function
+
+	}
