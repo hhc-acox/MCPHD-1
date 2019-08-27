@@ -2,8 +2,7 @@
 var assignedInspector = '';
 assignedInspector = HHC_getCapAssignment(); //gets the person assigned to the record.
 if (wfTask == 'Application Intake' && matches(wfStatus,'Withdrawn','Denied')) {
-	updateTask('Close','Closed');
-	//closeTask('Close');
+	closeTask('Close','Closed','Action by Script','Application withdrawn or denied');
 	//move to the close step with the status of closed
 	}
 
@@ -19,14 +18,12 @@ if (wfTask == 'Inspection' && matches(wfStatus,'Complete')) {
 	updateTask('Issuance','Ready for Issuance Fees Due');
 	}
 if (wfTask == 'Issuance' && matches(wfStatus,'Withdrawn','Denied')) {
-	//closeTask('Close');
-	updateTask('Close','Closed');
+	closeTask('Close','Closed','Action by Script','Application withdrawn or denied');
 	//move to the close step with the status of closed
 	}
 if (wfTask == 'Issuance' && matches(wfStatus,'Issued')) {
-	//closeTask('Close');
-	updateTask('Close','Closed');
+	closeTask('Close','Closed','Action by Script', 'License Issued' );
 	//Create a Body Art License Function
-	HHC_CREATE_BODYART_LICENSE();
+	//HHC_CREATE_BODYART_LICENSE();
 	//Create a copy inspections and guidesheets function
 	}
