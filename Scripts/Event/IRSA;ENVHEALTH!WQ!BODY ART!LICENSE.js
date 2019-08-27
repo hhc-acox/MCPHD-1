@@ -17,15 +17,12 @@ var arrInspIds = getInspIdsByStatus("Spore Test","Not Received");
 			}
 		}
 	}
-If (InspFailedTimes == 2){
-	//Create Notice of Violation
-	//Create citation
+if (matches(InspFailedTimes,2)){
 	scheduleInspectDate('Routine',nextWorkDay(dateAdd(null,0)),assignedInspector);
 }
-If (InspFailedTimes == 3){
+if (matches(InspFailedTimes,3)){
 	scheduleInspectDate('Routine',nextWorkDay(dateAdd(null,0)),assignedInspector);
-}	
-			
+}				
 if (matches(inspResult,'Completed')){
 	comment('this is the number: '+RiskDays);
 	scheduleInspectDate('Routine',nextWorkDay(dateAdd(null,RiskDays)),assignedInspector);
