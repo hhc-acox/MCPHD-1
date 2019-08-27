@@ -26,4 +26,11 @@ if (wfTask == 'Issuance' && matches(wfStatus,'Issued')) {
 	//Create a Body Art License Function
 	//HHC_CREATE_BODYART_LICENSE();
 	//Create a copy inspections and guidesheets function
-	}
+	var pParentCapId = parCapId;
+	var newChildID = currCapId;
+	assignedInspector = HHC_getCapAssignment(pParentCapId);
+	assignCap(assignedInspector,newChildID);
+	capId = parCapId;
+	scheduleInspectDate('Initial',nextWorkDay(dateAdd(null,89)),assignedInspector);
+	copyOwner(parCapId, newChildID);
+}
