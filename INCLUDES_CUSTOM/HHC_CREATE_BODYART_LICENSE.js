@@ -3,7 +3,7 @@ function HHC_CREATE_BODYART_LICENSE() {
 		showMessage = true;
 		var saveID = capId;
 		var currDate = new Date();
-		var assignedInspector = HHC_getCapAssignment();
+		var assignedInspector = getAssignedToRecord();
 		currDate = dateAdd(null,0);
 		//EnvHealth/WQ/Body Art/License
 		newChildID = createChild('EnvHealth','WQ','Body Art','License','');
