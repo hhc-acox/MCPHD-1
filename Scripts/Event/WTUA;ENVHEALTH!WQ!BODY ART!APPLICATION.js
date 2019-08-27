@@ -34,7 +34,8 @@ if (wfTask == 'Issuance' && matches(wfStatus,'Issued')) {
 	scheduleInspectDate('Initial',nextWorkDay(dateAdd(null,89)),assignedInspector);
 	copyOwner(parCapId, newChildID); */
 	comment('the capid is - '+capId);
-	messaage('the capid is - '+capId);
+	assignedInspector = HHC_getCapAssignment(capId);
+	comment('assigned is - '+assignedInspector);
+	var parId = getParent();
+	comment('the parId is - '+parId);
 }
-
-	
