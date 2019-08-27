@@ -11,7 +11,7 @@ function HHC_CREATE_BODYART_LICENSE() {
 		copyOwner(saveID, newChildID);
 		copyASITables(saveID,newChildID);
 		updateAppStatus('Active','Created from Body Art Application',newChildID);
-		assignCap(areaInspector,newChildID);
+		assignCap(assignedInspector,newChildID);
 		updateTask('Issuance','Active',null, null, null,newChildID);
 		capId = newChildID;
 		scheduleInspectDate('Initial',nextWorkDay(dateAdd(null,89)),assignedInspector);
