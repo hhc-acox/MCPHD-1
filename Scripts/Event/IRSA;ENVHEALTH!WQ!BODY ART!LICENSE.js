@@ -13,7 +13,7 @@ var arrInspIds = getInspIdsByStatus("Spore Test","Not Received");
 			var thisInspec = arrInspIds[ins];
 			var inspResultDate = convertDate(thisInspec.getScheduledDate());	
 			if(inspResultDate > Past12Months){
-				InspFailedTimes++
+				InspFailedTimes++;
 			}
 		}
 	}
