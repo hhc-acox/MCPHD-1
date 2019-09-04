@@ -1,5 +1,7 @@
 //lwacht: 181016: #64: Adult Spraying
 try{
+	var tPage = getGISInfo("MCPHD","LarvacideSitesAttributeMapping","Page");
+	editAppSpecific("Map Book Page #",tPage);
 	var startDate = new Date();
 	var hh = startDate.getHours().toString();
 	var mi = startDate.getMinutes().toString();
