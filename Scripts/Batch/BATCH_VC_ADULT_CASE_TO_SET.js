@@ -5,6 +5,7 @@
 | Richard Voller - 04/05/2019
 | Updated        - 04/09/2019
 | Richard Voller - 04/12/2019 - Updated to not run on weekends.
+| Richard Voller - 08/28/2019 - Updated for script name change.
 | HHC - CIS
 /------------------------------------------------------------------------------------------------------*/
 /*------------------------------------------------------------------------------------------------------/
@@ -69,7 +70,7 @@ var testing = false;
 if((currDate - cnwd) == 0) //condition that prevents the job from running on Weekends
 {
 		aa.set.removeSetHeader(setCode);  //remove the existing set members if the set exists so you start with a fresh Set.
-		aa.set.createSet("VC_ADULTICIDING_NIGHTLY_ASSIGNMENTS","VC_ADULTICIDING_NIGHTLY_ASSIGNMENTS","VC Adulticide","Populated 5:00 PM daily via batch script VC_POPULATE_ADULTICIDE_SET");
+		aa.set.createSet("VC_ADULTICIDING_NIGHTLY_ASSIGNMENTS","VC_ADULTICIDING_NIGHTLY_ASSIGNMENTS","VC Adulticide","Populated 5:00 PM daily via batch script BATCH_VC_ADULT_CASE_TO_SET");
 		// update set type and status
 		setScriptResult = aa.set.getSetByPK(setCode);
 		//aa.print(setScriptResult);
@@ -87,7 +88,7 @@ if((currDate - cnwd) == 0) //condition that prevents the job from running on Wee
 				{
 					AdultArray = AdultCases.getOutput(); //Puts VC cases in an array
 		
-					aa.print("Line 83. Searching through " + AdultArray.length + " cases.");
+					aa.print("Line 91. Searching through " + AdultArray.length + " cases.");
 				}
 					for(x in AdultArray)
 					{
