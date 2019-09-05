@@ -138,11 +138,11 @@ try{
 											if((cInspType == 'any' || cInspType.length>0) && (InspResultSubmitted == 'any' || InspResultSubmitted.length>0)){ 
 												updateTask(workflowTask,newWorkflowStatus,'Updated by script');
 												}
-												if(Workflow_Assigned_To.length>0 && matches(WorkflowAssignedTo,'Supervisor of Person Assigned to Record','Current Inspector','Person Assigned to the Record','Supervisor of Current Inspector')){
+												if(WorkflowAssignedTo.length>0 && matches(WorkflowAssignedTo,'Supervisor of Person Assigned to Record','Current Inspector','Person Assigned to the Record','Supervisor of Current Inspector')){
 											comment('142 - workflowAssignment '+workflowAssignment);
 														assignTask(workflowTask,workflowAssignment);
 													}
-												if(Workflow_Assigned_To.length>0 && matches(WorkflowAssignedTo,'Current Department')){
+												if(WorkflowAssignedTo.length>0 && matches(WorkflowAssignedTo,'Current Department')){
 											
 														updateTaskDepartment(workflowTask, workflowAssignment);
 													}
