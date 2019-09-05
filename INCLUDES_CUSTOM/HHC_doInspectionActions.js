@@ -51,6 +51,7 @@ try{
 
 			//Record Type Validation
 							if(cInspType.length>0 && InspResultSubmitted.length>0){
+								comment("line 54 - Record Type Validation - section reached");
 								var appMatch = true;
 								var recdType = ""+sepRules[row]["Record Type"];
 								var recdTypeArr = "" + recdType;
@@ -62,12 +63,13 @@ try{
 									for (xx in arrAppType){
 										if (!arrAppType[xx].equals(appTypeArray[xx]) && !arrAppType[xx].equals("*")){
 											appMatch = false;
+											comment("line 66 - appMatch - section reached - "+appMatch);
 										}
 									}
 								}
 								if (appMatch){
 			//Record Assignment if one is selected
-									if(RecordAssignedTo){
+									if(RecordAssignedTo.length>0){
 									if(RecordAssignedTo == 'Current Department'){recordAssignment = currentDepartment; }
 									if(RecordAssignedTo == 'Current Inspector'){recordAssignment = assignedToInspection; }
 									if(RecordAssignedTo == 'Person Assigned to the Record'){recordAssignment = assignedToRecordInspector; }
@@ -76,7 +78,7 @@ try{
 									assignCap(recordAssignment);
 									}
 			//Inspection Assignment if one is selected
-									if(InspAssignedTo){
+									if(InspAssignedTo.length>0){
 									if(InspAssignedTo == 'Current Department'){inspectorAssignment = currentDepartment; }
 									if(InspAssignedTo == 'Current Inspector'){inspectorAssignment = assignedToInspection; }
 									if(InspAssignedTo == 'Person Assigned to the Record'){inspectorAssignment = assignedToRecordInspector; }
@@ -85,7 +87,7 @@ try{
 									assignedInspector = inspectorAssignment;
 									}
 			//Record Assignment if one is selected
-									if(WorkflowAssignedTo){
+									if(WorkflowAssignedTo.length>0){
 									if(WorkflowAssignedTo == 'Current Department'){workflowAssignment = currentDepartment; }
 									if(WorkflowAssignedTo == 'Current Inspector'){workflowAssignment = assignedToInspection; }
 									if(WorkflowAssignedTo == 'Person Assigned to the Record'){workflowAssignment = assignedToRecordInspector; }
@@ -123,7 +125,7 @@ try{
 																				
 										}
 										if(cInspType.length>0 && InspResultSubmitted.length>0 && workflowTask.length>0 && newWorkflowStatus.length>0){
-											if((cInspType == 'any' || inspType == cInspType) && (InspResultSubmitted == 'any' || inspResult == InspResultSubmitted)){ //condition when the insp type and insp result rules match what is entered and there is a wftask and wfstatus entered
+											if((cInspType == 'any' || inspType == cInspType) && (InspResultSubmitted == 'any' || inspResult == InspResultSubmitted)){ 
 												updateTask(workflowTask,newWorkflowStatus,'Updated by script');
 												}
 												if(Workflow_Assigned_To.length>0 && matches(WorkflowAssignedTo,'Supervisor of Person Assigned to Record','Current Inspector','Person Assigned to the Record','Supervisor of Current Inspector')){
