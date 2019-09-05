@@ -95,8 +95,8 @@ try{
 									if(WorkflowAssignedTo == 'Person Assigned to the Record'){workflowAssignment = assignedToRecordInspector; }
 									if(WorkflowAssignedTo == 'Supervisor of Current Inspector'){workflowAssignment = supervisorOfInspector; }
 									if(WorkflowAssignedTo == 'Supervisor of Person Assigned to Record'){workflowAssignment = supervisorOfAssignedToRecord; }
-									
 									}
+									comment('99 - workflowAssignment '+workflowAssignment);
 									comment("100 - cInspType.length "+cInspType.length);
 									comment("InspResultSubmitted.length "+InspResultSubmitted.length);
 									comment("InspTypeToSchedule.length "+InspTypeToSchedule.length);
@@ -133,12 +133,13 @@ try{
 									comment("InspResultSubmitted.length "+InspResultSubmitted.length);
 									comment("workflowTask.length "+ workflowTask.length);
 									comment("newWorkflowStatus.length>0 "+newWorkflowStatus.length);
+									comment('136 - workflowAssignment '+workflowAssignment);
 										if(cInspType.length>0 && InspResultSubmitted.length>0 && workflowTask.length>0 && newWorkflowStatus.length>0){
 											if((cInspType == 'any' || cInspType.length>0) && (InspResultSubmitted == 'any' || InspResultSubmitted.length>0)){ 
 												updateTask(workflowTask,newWorkflowStatus,'Updated by script');
 												}
 												if(Workflow_Assigned_To.length>0 && matches(WorkflowAssignedTo,'Supervisor of Person Assigned to Record','Current Inspector','Person Assigned to the Record','Supervisor of Current Inspector')){
-											
+											comment('142 - workflowAssignment '+workflowAssignment);
 														assignTask(workflowTask,workflowAssignment);
 													}
 												if(Workflow_Assigned_To.length>0 && matches(WorkflowAssignedTo,'Current Department')){
