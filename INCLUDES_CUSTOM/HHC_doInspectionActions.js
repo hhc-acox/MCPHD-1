@@ -65,7 +65,7 @@ try{
 											appMatch = false;
 											comment("line 66 - appMatch - section reached - "+appMatch);
 										}
-									}
+									}comment("line 68 - appMatch - section reached - "+appMatch);
 								}
 								if (appMatch){
 			//Record Assignment if one is selected
