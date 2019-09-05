@@ -134,7 +134,7 @@ try{
 									comment("inspType.length "+ inspType.length);
 									comment("inspResult.length "+inspResult.length);
 										if(cInspType.length>0 && InspResultSubmitted.length>0 && workflowTask.length>0 && newWorkflowStatus.length>0){
-											if((cInspType == 'any' || inspType == cInspType) && (InspResultSubmitted == 'any' || inspResult == InspResultSubmitted)){ 
+											if((cInspType == 'any' || cInspType.length>0) && (InspResultSubmitted == 'any' || InspResultSubmitted.length>0)){ 
 												updateTask(workflowTask,newWorkflowStatus,'Updated by script');
 												}
 												if(Workflow_Assigned_To.length>0 && matches(WorkflowAssignedTo,'Supervisor of Person Assigned to Record','Current Inspector','Person Assigned to the Record','Supervisor of Current Inspector')){
