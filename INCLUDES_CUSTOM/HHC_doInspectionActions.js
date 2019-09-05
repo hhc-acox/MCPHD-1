@@ -65,8 +65,7 @@ try{
 											appMatch = false;
 											comment("line 66 - appMatch - section reached - "+appMatch);
 										}
-									}comment("line 68 - appMatch - section reached - "+appMatch);
-								}
+
 								if (appMatch){
 			//Record Assignment if one is selected
 									if(RecordAssignedTo.length>0){
@@ -144,7 +143,10 @@ try{
 									}else{
 										logDebug("ACTIONS FROM INSPECTIONS: Check filter resolved to false: " + chkFilter);
 									}
-								}else{
+								}
+									}comment("line 68 - appMatch - section reached - "+appMatch);
+								}
+								else{
 									logDebug("ACTIONS FROM INSPECTIONS: No app match: " + recdTypeArr);
 								}
 							}else{
