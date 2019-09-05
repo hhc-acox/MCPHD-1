@@ -1,4 +1,3 @@
-
 function HHC_getDepartmentPath(username)
 	{
 	var suo = aa.person.getUser(username).getOutput(); 
