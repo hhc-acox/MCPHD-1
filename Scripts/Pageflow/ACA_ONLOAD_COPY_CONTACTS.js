@@ -82,6 +82,7 @@ try {
 		logDebug("Error finding parent capId.");
 	}else{
 		copyPeople(parentCapId, capId);
+		copyLicensedProf(parentCapId, capId);
         var amendCapModel = aa.cap.getCapViewBySingle4ACA(capId);
         amendCapModel.getCapType().setSpecInfoCode(cap.getCapType().getSpecInfoCode());
         aa.env.setValue("CapModel", amendCapModel);
@@ -219,7 +220,21 @@ function getPeople(capId)
   return capPeopleArr;
 }
 
+function copyLicensedProf(sCapId, tCapId)
+{
+	//Function will copy all licensed professionals from source CapID to target CapID
 
+	var licProf = aa.licenseProfessional.getLicensedProfessionalsByCapID(sCapId).getOutput();
+	if (licProf != null)
+		for(x in licProf)
+		{
+			licProf[x].setCapID(tCapId);
+			aa.licenseProfessional.createLicensedProfessional(licProf[x]);
+			logDebug("Copied " + licProf[x].getLicenseNbr());
+		}
+	else
+		logDebug("No licensed professional on source");
+}
 
 
 
