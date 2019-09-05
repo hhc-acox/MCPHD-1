@@ -48,7 +48,7 @@ try{
 							var inspectorAssignment = '';
 							var assignedInspector = '';
 							var workflowAssignment = '';
-
+				comment('51 - supervisorOfAssignedToRecord '+supervisorOfAssignedToRecord);
 			//Record Type Validation
 							if(cInspType.length>0 && InspResultSubmitted.length>0){
 								comment("line 54 - Record Type Validation - section reached");
@@ -66,7 +66,7 @@ try{
 											comment("line 66 - appMatch - section reached - "+appMatch);
 										}
 									}comment("line 68 - appMatch - section reached - "+appMatch);
-								}comment("line 69 - appMatch - section reached - "+appMatch);
+								}
 								if (appMatch){
 			//Record Assignment if one is selected
 								comment("RecordAssignedTo.length "+RecordAssignedTo.length);
@@ -168,7 +168,7 @@ try{
 	}
 }
 	catch(err){
-	logDebug("A JavaScript Error occurred: sepIssueLicenseWorkflow:  " + err.message);
+	logDebug("A JavaScript Error occurred: function HHC_doInspectionActions:  " + err.message);
 	logDebug(err.stack)
 }
 }
