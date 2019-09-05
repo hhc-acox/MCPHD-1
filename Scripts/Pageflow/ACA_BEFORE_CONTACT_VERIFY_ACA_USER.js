@@ -79,8 +79,8 @@ try {
 	for(cn in arrContacts){
 		var thisCont = arrContacts[cn];
 		var getUserResult = aa.publicUser.getPublicUserByEmail(thisCont.getEmail());
-		comment("thisCont.getEmail(): " + thisCont.getEmail());
-		comment("getUserResult.getSuccess() : " + getUserResult.getOutput() );
+		//comment("thisCont.getEmail(): " + thisCont.getEmail());
+		//comment("getUserResult.getSuccess() : " + getUserResult.getOutput() );
 		if ( !getUserResult.getOutput()) {
 			cancel = true;
 			showMessage = true;
