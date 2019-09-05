@@ -92,6 +92,26 @@ try {
 			comment("This contact must be set as an individual (not organization)--please update before continuing: " + thisCont.getEmail()+".");
 		}
 	}
+	var arrLPs = getLicensedProfessionalObjectsByRecord(capId);
+	logDebug("arrLPs: " + arrLPs.length);
+	for(lp in arrLPs){
+		logDebug("here");
+		var thisCont = arrLPs[lp];
+		var rLP = thisCont.refLicModel;
+		for(x in rLP){
+			if(typeof(rLP[x])!='function'){
+				logDebug(x+": " + rLP[x]);
+			}
+		}
+		var getUserResult = aa.publicUser.getPublicUserByEmail(rLP.EMailAddress);
+		logDebug("rLP.EMailAddress: " + rLP.EMailAddress);
+		logDebug("getUserResult.getSuccess() : " + getUserResult.getOutput() );
+		if ( !getUserResult.getOutput()) {
+			cancel = true;
+			showMessage = true;
+			comment("This contact does not have an associated ACA user--please contact this user to set up their ACA account: " + rLP.EMailAddress+".");
+		}
+	}
 } catch (err) {
 	handleError(err, "Page Flow Script");
 }
@@ -115,6 +135,31 @@ function getPeople(capId)
     capPeopleArr = null;  
   }
   return capPeopleArr;
+}
+
+function getLicensedProfessionalObjectsByRecord(pCapId,licenseTypeArray){
+	var itemCap = capId;
+	if (pCapId != null){
+        itemCap = pCapId; // use cap ID specified in args
+    }
+    
+	var licenseProfObjArray = new Array();
+	var licenseProfResult = aa.licenseProfessional.getLicensedProfessionalsByCapID(itemCap);
+	if(licenseProfResult.getSuccess()){
+		var licenseProfList = licenseProfResult.getOutput();
+		var licenseProfObjArray= new Array();
+		if (licenseProfList) {
+			for (thisLP in licenseProfList) {
+				if(licenseProfList[thisLP].getLicenseNbr() != null){
+					if (!licenseTypeArray || exists(licenseProfList[thisLP].getLicenseType(), licenseTypeArray))
+					var vLPObj = new licenseProfObject(licenseProfList[thisLP].getLicenseNbr());
+					licenseProfObjArray.push(vLPObj);
+				}
+			}
+		}
+	}
+	
+	return licenseProfObjArray;
 }
 
 // page flow custom code end
