@@ -35,7 +35,7 @@ try{
 						//Need to develop a function for each selection in the assignment field
 								
 						//Current Inspector
-							var assignedToInspection = getLastScheduledInspector(cInspType);
+							var assignedToInspection = getLastScheduledInspector(inspType);
 						//Person Assigned to the Record
 							var assignedToRecordInspector = getAssignedToRecord();
 						//Current Department
@@ -123,7 +123,7 @@ try{
 																				
 										}
 										if(cInspType.length>0 && InspResultSubmitted.length>0 && workflowTask.length>0 && newWorkflowStatus.length>0){
-											if((cInspType == 'any' || InspType == cInspType) && (InspResultSubmitted == 'any' || inspResult == InspResultSubmitted)){ //condition when the insp type and insp result rules match what is entered and there is a wftask and wfstatus entered
+											if((cInspType == 'any' || inspType == cInspType) && (InspResultSubmitted == 'any' || inspResult == InspResultSubmitted)){ //condition when the insp type and insp result rules match what is entered and there is a wftask and wfstatus entered
 												updateTask(workflowTask,newWorkflowStatus,'Updated by script');
 												}
 												if(Workflow_Assigned_To.length>0 && matches(WorkflowAssignedTo,'Supervisor of Person Assigned to Record','Current Inspector','Person Assigned to the Record','Supervisor of Current Inspector')){
