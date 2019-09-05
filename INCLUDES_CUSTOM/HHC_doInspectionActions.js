@@ -131,8 +131,8 @@ try{
 										}
 									comment("132 - cInspType.length "+cInspType.length);
 									comment("InspResultSubmitted.length "+InspResultSubmitted.length);
-									comment("inspType.length "+ inspType.length);
-									comment("inspResult.length "+inspResult.length);
+									comment("workflowTask.length "+ workflowTask.length);
+									comment("newWorkflowStatus.length>0 "+newWorkflowStatus.length>0);
 										if(cInspType.length>0 && InspResultSubmitted.length>0 && workflowTask.length>0 && newWorkflowStatus.length>0){
 											if((cInspType == 'any' || cInspType.length>0) && (InspResultSubmitted == 'any' || InspResultSubmitted.length>0)){ 
 												updateTask(workflowTask,newWorkflowStatus,'Updated by script');
