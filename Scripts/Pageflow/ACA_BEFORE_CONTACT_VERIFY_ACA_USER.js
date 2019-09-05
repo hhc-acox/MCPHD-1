@@ -104,8 +104,8 @@ try {
 			}
 		}
 		var getUserResult = aa.publicUser.getPublicUserByEmail(rLP.EMailAddress);
-		logDebug("rLP.EMailAddress: " + rLP.EMailAddress);
-		logDebug("getUserResult.getSuccess() : " + getUserResult.getOutput() );
+		comment("rLP.EMailAddress: " + rLP.EMailAddress);
+		comment("getUserResult.getSuccess() : " + getUserResult.getOutput() );
 		if ( !getUserResult.getOutput()) {
 			cancel = true;
 			showMessage = true;
