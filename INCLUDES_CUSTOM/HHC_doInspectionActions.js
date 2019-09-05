@@ -69,6 +69,7 @@ try{
 								}comment("line 69 - appMatch - section reached - "+appMatch);
 								if (appMatch){
 			//Record Assignment if one is selected
+								comment("RecordAssignedTo.length "+RecordAssignedTo.length);
 									if(RecordAssignedTo.length>0){
 									if(RecordAssignedTo == 'Current Department'){recordAssignment = currentDepartment; }
 									if(RecordAssignedTo == 'Current Inspector'){recordAssignment = assignedToInspection; }
