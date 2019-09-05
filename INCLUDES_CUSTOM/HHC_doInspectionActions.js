@@ -30,7 +30,7 @@ try{
 							var RecordAssignedTo = ""+sepRules[row]["Record_Assigned_To"];
 							var InspAssignedTo = ""+sepRules[row]["Insp_Assigned_To"];
 							var workflowTask = ""+sepRules[row]["Workflow_Task"];
-							var newWorkflowStatus = ""+sepRules[row]["Use_Recheck_Date"];
+							var newWorkflowStatus = ""+sepRules[row]["New_Workflow_Status"];
 							var WorkflowAssignedTo = ""+sepRules[row]["Workflow_Assigned_To"];
 						//Need to develop a function for each selection in the assignment field
 								
@@ -132,7 +132,7 @@ try{
 									comment("132 - cInspType.length "+cInspType.length);
 									comment("InspResultSubmitted.length "+InspResultSubmitted.length);
 									comment("workflowTask.length "+ workflowTask.length);
-									comment("newWorkflowStatus.length>0 "+newWorkflowStatus.length>0);
+									comment("newWorkflowStatus.length>0 "+newWorkflowStatus.length);
 										if(cInspType.length>0 && InspResultSubmitted.length>0 && workflowTask.length>0 && newWorkflowStatus.length>0){
 											if((cInspType == 'any' || cInspType.length>0) && (InspResultSubmitted == 'any' || InspResultSubmitted.length>0)){ 
 												updateTask(workflowTask,newWorkflowStatus,'Updated by script');
