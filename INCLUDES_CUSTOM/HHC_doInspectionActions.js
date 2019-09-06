@@ -26,7 +26,7 @@ try{
 
 								}else {
 									UseRecheckDate == 'No'} //give the variable a value anyway
-									var DaysToScheduleInTheFuture = ""+sepRules[row]["Days_toSchedule_in_the_Future"]; //number of days in the future
+									var DaysToScheduleInTheFuture = ""+sepRules[row]["Days_to_Schedule_in_the_Future"]; //number of days in the future
 							var RecordAssignedTo = ""+sepRules[row]["Record_Assigned_To"];
 							var InspAssignedTo = ""+sepRules[row]["Insp_Assigned_To"];
 							var workflowTask = ""+sepRules[row]["Workflow_Task"];
