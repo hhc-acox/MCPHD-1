@@ -140,11 +140,11 @@ try{
 									comment("132 - cTask.length "+cTask.length);
 									comment("SubmittedTaskStatus.length "+SubmittedTaskStatus.length);
 									comment("workflowTask.length "+ cTask.length);
-									comment("newWorkflowStatus.length>0 "+newWorkflowStatus.length);
+									comment("newTaskStatus.length>0 "+newTaskStatus.length);
 									comment('136 - workflowAssignment '+workflowAssignment);
 										if(cTask.length>0 && SubmittedTaskStatus.length>0 && New_Task.length>0 && newTaskStatus.length>0)
 											{ 
-												updateTask(New_Task,newWorkflowStatus,'Updated by script');
+												updateTask(New_Task,newTaskStatus,'Updated by script');
 											if(WorkflowAssignedTo.length>0 && matches(WorkflowAssignedTo,'Supervisor of Person Assigned to Record','Current Inspector','Person Assigned to the Record','Supervisor of Current Inspector'))
 												{
 													comment('142 - workflowAssignment '+workflowAssignment);
