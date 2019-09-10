@@ -26,7 +26,7 @@ try{
 
 								}else {
 									UseRecheckDate == 'No'} //give the variable a value anyway
-									var DaysToScheduleInTheFuture = ""+sepRules[row]["Days_to_Schedule_in_the_Future"]; //number of days in the future
+									var DaysToScheduleInTheFuture = ""+sepRules[row]["Days_toSchedule_in_the_Future"]; //number of days in the future
 							var RecordAssignedTo = ""+sepRules[row]["Record_Assigned_To"];
 							var InspAssignedTo = ""+sepRules[row]["Insp_Assigned_To"];
 							var workflowTask = ""+sepRules[row]["Workflow_Task"];
@@ -44,6 +44,8 @@ try{
 							var supervisorOfInspector = HHC_getMyTeamLeadersUserID(assignedToInspection);
 						//Supervisor of Person Assigned to Record
 							var supervisorOfAssignedToRecord = HHC_getMyTeamLeadersUserID(assignedToRecordInspector);
+						//to get Support Staff Method
+							var supportStaff = HHC_getMySupportStaffDepartment(assignedToRecordInspector);
 							var recordAssignment = '';
 							var inspectorAssignment = '';
 							var assignedInspector = '';
@@ -76,7 +78,13 @@ try{
 									if(RecordAssignedTo == 'Person Assigned to the Record'){recordAssignment = assignedToRecordInspector; }
 									if(RecordAssignedTo == 'Supervisor of Current Inspector'){recordAssignment = supervisorOfInspector; }
 									if(RecordAssignedTo == 'Supervisor of Person Assigned to Record'){recordAssignment = supervisorOfAssignedToRecord; }
+									if(RecordAssignedTo == 'Support Staff'){recordAssignment = supportStaff; }
+									if(matches(RecordAssignedTo,'Supervisor of Person Assigned to Record','Current Inspector','Person Assigned to the Record','Supervisor of Current Inspector')){
 									assignCap(recordAssignment);
+								}
+								if(matches(RecordAssignedTo,'Current Department','Support Staff')){
+									HHC_assignDeptCap(recordAssignment);
+								}
 									}
 			//Inspection Assignment if one is selected
 									if(InspAssignedTo.length>0){
@@ -85,6 +93,7 @@ try{
 									if(InspAssignedTo == 'Person Assigned to the Record'){inspectorAssignment = assignedToRecordInspector; }
 									if(InspAssignedTo == 'Supervisor of Current Inspector'){inspectorAssignment = supervisorOfInspector; }
 									if(InspAssignedTo == 'Supervisor of Person Assigned to Record'){inspectorAssignment = supervisorOfAssignedToRecord; }
+									if(InspAssignedTo == 'Support Staff'){inspectorAssignment = supportStaff; }
 									assignedInspector = inspectorAssignment;
 									}
 			//Record Assignment if one is selected
@@ -95,6 +104,7 @@ try{
 									if(WorkflowAssignedTo == 'Person Assigned to the Record'){workflowAssignment = assignedToRecordInspector; }
 									if(WorkflowAssignedTo == 'Supervisor of Current Inspector'){workflowAssignment = supervisorOfInspector; }
 									if(WorkflowAssignedTo == 'Supervisor of Person Assigned to Record'){workflowAssignment = supervisorOfAssignedToRecord; }
+									if(WorkflowAssignedTo == 'Support Staff'){workflowAssignment = supportStaff; }
 									}
 									comment('99 - workflowAssignment '+workflowAssignment);
 									comment("100 - cInspType.length "+cInspType.length);
@@ -138,11 +148,11 @@ try{
 											if((cInspType == 'any' || cInspType.length>0) && (InspResultSubmitted == 'any' || InspResultSubmitted.length>0)){ 
 												updateTask(workflowTask,newWorkflowStatus,'Updated by script');
 												}
-												if(WorkflowAssignedTo.length>0 && matches(WorkflowAssignedTo,'Supervisor of Person Assigned to Record','Current Inspector','Person Assigned to the Record','Supervisor of Current Inspector')){
+												if(Workflow_Assigned_To.length>0 && matches(WorkflowAssignedTo,'Supervisor of Person Assigned to Record','Current Inspector','Person Assigned to the Record','Supervisor of Current Inspector')){
 											comment('142 - workflowAssignment '+workflowAssignment);
 														assignTask(workflowTask,workflowAssignment);
 													}
-												if(WorkflowAssignedTo.length>0 && matches(WorkflowAssignedTo,'Current Department')){
+												if(Workflow_Assigned_To.length>0 && matches(WorkflowAssignedTo,'Current Department')){
 											
 														updateTaskDepartment(workflowTask, workflowAssignment);
 													}
