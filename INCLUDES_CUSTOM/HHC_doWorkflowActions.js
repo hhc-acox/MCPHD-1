@@ -62,8 +62,6 @@ try{
 											}
 							//Supervisor of Person Assigned to Record
 							var supervisorOfAssignedToRecord = "";
-							var recType = ""+sepRules[row]["Record Type"];
-							var deptstring = recType.split("/");
 							//EnvHealth/WQ/Body Art/Application - EnvHealth/Food/FarmersMarketVendor/Application - EnvHealth/WQ/Childcare/Application
 							switch (true) {
 								case deptstring[2] == 'Body Art':
