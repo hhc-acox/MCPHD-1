@@ -40,9 +40,48 @@ try{
 						//Current Department
 							var currentDepartment = HHC_getMyDepartment(assignedToWorkflow);
 						//Supervisor of Current Inspector
-							var supervisorOfInspector = HHC_getMyTeamLeadersUserID(assignedToWorkflow);
-						//Supervisor of Person Assigned to Record
-							var supervisorOfAssignedToRecord = HHC_getMyTeamLeadersUserID(assignedToRecordInspector);
+							var supervisorOfInspector = "";
+							var recType = ""+sepRules[row]["Record Type"];
+							var deptstring = recType.split("/");
+							//EnvHealth/WQ/Body Art/Application - EnvHealth/Food/FarmersMarketVendor/Application - EnvHealth/WQ/Childcare/Application
+							switch (true) {
+								case deptstring[2] == 'Body Art':
+									supervisorOfInspector = hhcgetUserByDiscipline('WQBodyArtSupv');
+									break;															
+								case deptstring[2] == 'FarmersMarketVendor':
+									supervisorOfInspector = hhcgetUserByDiscipline('FoodsFarmersMarketVendor');
+									break;															
+								case deptstring[2] == 'Childcare':
+									supervisorOfInspector = hhcgetUserByDiscipline('WQChildCareSupv');
+									break;	
+								case deptstring[2] == 'FoodsFarmersMarketEvent':
+									supervisorOfInspector = hhcgetUserByDiscipline('FoodsFarmersMarketEvent');
+									break;					
+								default:
+									supervisorOfInspector = HHC_getMyTeamLeadersUserID(assignedToWorkflow);
+											}
+							//Supervisor of Person Assigned to Record
+							var supervisorOfAssignedToRecord = "";
+							var recType = ""+sepRules[row]["Record Type"];
+							var deptstring = recType.split("/");
+							//EnvHealth/WQ/Body Art/Application - EnvHealth/Food/FarmersMarketVendor/Application - EnvHealth/WQ/Childcare/Application
+							switch (true) {
+								case deptstring[2] == 'Body Art':
+									supervisorOfAssignedToRecord = hhcgetUserByDiscipline('WQBodyArtSupv');
+									break;															
+								case deptstring[2] == 'FarmersMarketVendor':
+									supervisorOfAssignedToRecord = hhcgetUserByDiscipline('FoodsFarmersMarketVendor');
+									break;															
+								case deptstring[2] == 'Childcare':
+									supervisorOfAssignedToRecord = hhcgetUserByDiscipline('WQChildCareSupv');
+									break;	
+								case deptstring[2] == 'FoodsFarmersMarketEvent':
+									supervisorOfAssignedToRecord = hhcgetUserByDiscipline('FoodsFarmersMarketEvent');
+									break;					
+								default:
+									supervisorOfAssignedToRecord = HHC_getMyTeamLeadersUserID(assignedToRecordInspector);
+											}							
+	
 			//to get Support Staff Method
 							var supportStaff = HHC_getMySupportStaffDepartment(assignedToRecordInspector);
 							//Setup variables
