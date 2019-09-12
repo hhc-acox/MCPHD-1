@@ -172,8 +172,7 @@ try{
 													scheduleInspectDate(InspTypeToSchedule,nextWorkDay(dateAdd(null,0)),null); //schedule inspection for tomorrow
 												}
 													assignInspection(inspId, assignedInspector);
-											}											
-																				
+											}										
 										}
 									comment("132 - cInspType.length "+cInspType.length);
 									comment("InspResultSubmitted.length "+InspResultSubmitted.length);
@@ -196,7 +195,7 @@ try{
 										var customFunctions = ""+sepRules[row]["Custom_Functions"];
 										var chkFilter = ""+customFunctions;
 									if (chkFilter.length>0) {
-										customFunctions;
+										eval(customFunctions);
 									}else{
 										logDebug("ACTIONS FROM INSPECTIONS: Check filter resolved to false: " + chkFilter);
 									}
