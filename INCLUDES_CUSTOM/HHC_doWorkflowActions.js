@@ -32,7 +32,6 @@ try{
 							//Record Info
 							var newRecordStatus = ""+sepRules[row]["New Record Status"];							
 							var RecordAssignedTo = ""+sepRules[row]["Record_Assigned_To"];
-								
 						//Current Inspector on Workflow
 						var assignedToWorkflow = getAssignedToRecord(); //needs to be developed. Using assigned to record for now.
 						//Person Assigned to the Record
@@ -78,8 +77,7 @@ try{
 									break;					
 								default:
 									supervisorOfAssignedToRecord = HHC_getMyTeamLeadersUserID(assignedToRecordInspector);
-											}							
-	
+											}
 			//to get Support Staff Method
 							var supportStaff = HHC_getMySupportStaffDepartment(assignedToRecordInspector);
 							//Setup variables
@@ -196,7 +194,7 @@ try{
 										var customFunctions = ""+sepRules[row]["Custom_Functions"];
 										var chkFilter = ""+customFunctions;
 									if (chkFilter.length>0) {
-										customFunctions;
+										eval(customFunctions);
 									}else{
 										logDebug("ACTIONS FROM WORKFLOW: Check filter resolved to false: " + chkFilter);
 									}
