@@ -181,7 +181,7 @@ try{
 												updateTask(New_Task,newTaskStatus,'Updated by script');
 											if(WorkflowAssignedTo.length>0 && matches(WorkflowAssignedTo,'Supervisor of Person Assigned to Record','Current Inspector','Person Assigned to the Record','Supervisor of Current Inspector'))
 												{
-													comment('142 - workflowAssignment '+workflowAssignment);
+													//comment('142 - workflowAssignment '+workflowAssignment);
 													assignTask(New_Task,workflowAssignment);
 												}
 											if(WorkflowAssignedTo.length>0 && matches(WorkflowAssignedTo,'Current Department','Support Staff'))
@@ -195,11 +195,11 @@ try{
 									if (chkFilter.length>0) {
 										eval(customFunctions);
 									}else{
-										logDebug("ACTIONS FROM WORKFLOW: Check filter resolved to false: " + chkFilter);
+										//logDebug("ACTIONS FROM WORKFLOW: Check filter resolved to false: " + chkFilter);
 									}
 								}
 								else{
-									logDebug("ACTIONS FROM WORKFLOW: No app match: " + recdTypeArr);
+									//logDebug("ACTIONS FROM WORKFLOW: No app match: " + recdTypeArr);
 								}
 							}else{
 								logDebug("ACTIONS FROM WORKFLOW: No Workflow type and Result match: " + cTask + "/" + SubmittedTaskStatus);
