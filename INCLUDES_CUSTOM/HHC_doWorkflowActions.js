@@ -88,7 +88,7 @@ try{
 				//comment('88 - supervisorOfAssignedToRecord '+supervisorOfAssignedToRecord);
 			//Record Type Validation
 							if(cTask.length>0 && SubmittedTaskStatus.length>0){
-								comment("line 54 - Record Type Validation - section reached");
+								//comment("line 54 - Record Type Validation - section reached");
 								var appMatch = true;
 								var recdType = ""+sepRules[row]["Record Type"];
 								var recdTypeArr = "" + recdType;
@@ -106,7 +106,7 @@ try{
 			//if the record is okay					
 							if (appMatch){
 			//Record Assignment if one is selected
-								comment("RecordAssignedTo.length "+RecordAssignedTo.length);
+								//comment("RecordAssignedTo.length "+RecordAssignedTo.length);
 									if(RecordAssignedTo.length>0){
 									if(RecordAssignedTo == 'Current Department'){recordAssignment = currentDepartment; }
 									if(RecordAssignedTo == 'Current Inspector'){recordAssignment = assignedToInspection; }
@@ -132,7 +132,7 @@ try{
 									assignedInspector = inspectorAssignment;
 									}
 			//Workflow Assignment if one is selected
-								comment("WorkflowAssignedTo.length "+WorkflowAssignedTo.length);
+								//comment("WorkflowAssignedTo.length "+WorkflowAssignedTo.length);
 									if(WorkflowAssignedTo.length>0){
 									if(WorkflowAssignedTo == 'Current Department'){workflowAssignment = currentDepartment; }
 									if(WorkflowAssignedTo == 'Current Inspector'){workflowAssignment = assignedToInspection; }
@@ -141,10 +141,10 @@ try{
 									if(WorkflowAssignedTo == 'Supervisor of Person Assigned to Record'){workflowAssignment = supervisorOfAssignedToRecord; }
 									if(WorkflowAssignedTo == 'Support Staff'){workflowAssignment = supportStaff; }
 									}
-									comment('99 - workflowAssignment '+workflowAssignment);
-									comment("100 - cTask.length "+cTask.length);
-									comment("SubmittedTaskStatus.length "+SubmittedTaskStatus.length);
-									comment("InspTypeToSchedule.length "+InspTypeToSchedule.length);
+									//comment('99 - workflowAssignment '+workflowAssignment);
+									//comment("100 - cTask.length "+cTask.length);
+									//comment("SubmittedTaskStatus.length "+SubmittedTaskStatus.length);
+									//comment("InspTypeToSchedule.length "+InspTypeToSchedule.length);
 									
 										if(cTask.length>0 && SubmittedTaskStatus.length>0 && InspTypeToSchedule.length>0){
 		
@@ -171,11 +171,11 @@ try{
 											}											
 																				
 										}
-									comment("132 - cTask.length "+cTask.length);
-									comment("SubmittedTaskStatus.length "+SubmittedTaskStatus.length);
-									comment("workflowTask.length "+ cTask.length);
-									comment("newTaskStatus.length>0 "+newTaskStatus.length);
-									comment('136 - workflowAssignment '+workflowAssignment);
+									//comment("132 - cTask.length "+cTask.length);
+									//comment("SubmittedTaskStatus.length "+SubmittedTaskStatus.length);
+									//comment("workflowTask.length "+ cTask.length);
+									//comment("newTaskStatus.length>0 "+newTaskStatus.length);
+									//comment('136 - workflowAssignment '+workflowAssignment);
 										if(cTask.length>0 && SubmittedTaskStatus.length>0 && New_Task.length>0 && newTaskStatus.length>0)
 											{ 
 												updateTask(New_Task,newTaskStatus,'Updated by script');
