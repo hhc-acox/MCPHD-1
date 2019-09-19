@@ -10,12 +10,13 @@ function hhcgetUserByDiscipline(userDiscipline){
 			logDebug("**ERROR: getUserObjsByDiscipline: " + sysUserResult.getErrorMessage());
 			return userObjArray;
 		}
-	
+		if(sysUserList.length > 0){
 			for(var iUser in sysUserList){
 				var userId = sysUserList[iUser].getUserID();
 		}
 	
 			return userId;
+		}
 		} 
 	catch(err)
 	{
