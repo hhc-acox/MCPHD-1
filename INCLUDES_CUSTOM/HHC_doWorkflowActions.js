@@ -196,14 +196,14 @@ try{
 									if (chkFilter.length>0) {
 										eval(customFunctions);
 									}else{
-										logDebug("ACTIONS FROM WORKFLOW: Check filter resolved to false: " + chkFilter);
+										//logDebug("ACTIONS FROM WORKFLOW: Check filter resolved to false: " + chkFilter);
 									}
 								}
 								else{
-									logDebug("ACTIONS FROM WORKFLOW: No app match: " + recdTypeArr);
+									//logDebug("ACTIONS FROM WORKFLOW: No app match: " + recdTypeArr);
 								}
 							}else{
-								logDebug("ACTIONS FROM WORKFLOW: No Workflow type and Result match: " + cTask + "/" + SubmittedTaskStatus);
+								//logDebug("ACTIONS FROM WORKFLOW: No Workflow type and Result match: " + cTask + "/" + SubmittedTaskStatus);
 							}
 						}
 					}
