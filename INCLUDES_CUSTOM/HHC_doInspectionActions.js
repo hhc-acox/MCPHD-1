@@ -86,7 +86,7 @@ try{
 							var inspectorAssignment = '';
 							var assignedInspector = '';
 							var workflowAssignment = '';
-				comment('51 - supervisorOfAssignedToRecord '+supervisorOfAssignedToRecord);
+				//comment('51 - supervisorOfAssignedToRecord '+supervisorOfAssignedToRecord);
 			//Record Type Validation
 							if(cInspType.length>0 && InspResultSubmitted.length>0){
 								comment("line 54 - Record Type Validation - section reached");
@@ -174,17 +174,17 @@ try{
 													assignInspection(inspId, assignedInspector);
 											}										
 										}
-									comment("132 - cInspType.length "+cInspType.length);
+									comment("177 - cInspType.length "+cInspType.length);
 									comment("InspResultSubmitted.length "+InspResultSubmitted.length);
 									comment("workflowTask.length "+ workflowTask.length);
 									comment("newWorkflowStatus.length>0 "+newWorkflowStatus.length);
-									comment('136 - workflowAssignment '+workflowAssignment);
+									comment('181 - workflowAssignment '+workflowAssignment);
 										if(cInspType.length>0 && InspResultSubmitted.length>0 && workflowTask.length>0 && newWorkflowStatus.length>0){
 											if((cInspType == 'any' || cInspType.length>0) && (InspResultSubmitted == 'any' || InspResultSubmitted.length>0)){ 
 												updateTask(workflowTask,newWorkflowStatus,'Updated by script');
 												}
 												if(WorkflowAssignedTo.length>0 && matches(WorkflowAssignedTo,'Supervisor of Person Assigned to Record','Current Inspector','Person Assigned to the Record','Supervisor of Current Inspector')){
-											comment('142 - workflowAssignment '+workflowAssignment);
+											comment('187 - workflowAssignment '+workflowAssignment);
 														assignTask(workflowTask,workflowAssignment);
 													}
 												if(WorkflowAssignedTo.length>0 && matches(WorkflowAssignedTo,'Current Department')){
