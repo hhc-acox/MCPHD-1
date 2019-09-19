@@ -85,7 +85,7 @@ try{
 							var inspectorAssignment = '';
 							var assignedInspector = '';
 							var workflowAssignment = '';
-				comment('51 - supervisorOfAssignedToRecord '+supervisorOfAssignedToRecord);
+				//comment('88 - supervisorOfAssignedToRecord '+supervisorOfAssignedToRecord);
 			//Record Type Validation
 							if(cTask.length>0 && SubmittedTaskStatus.length>0){
 								comment("line 54 - Record Type Validation - section reached");
@@ -100,9 +100,8 @@ try{
 									for (xx in arrAppType){
 										if (!arrAppType[xx].equals(appTypeArray[xx]) && !arrAppType[xx].equals("*")){
 											appMatch = false;
-											comment("line 66 - appMatch - section reached - "+appMatch);
 										}
-									}comment("line 68 - appMatch - section reached - "+appMatch);
+									}
 								}
 			//if the record is okay					
 							if (appMatch){
@@ -196,14 +195,14 @@ try{
 									if (chkFilter.length>0) {
 										eval(customFunctions);
 									}else{
-										//logDebug("ACTIONS FROM WORKFLOW: Check filter resolved to false: " + chkFilter);
+										logDebug("ACTIONS FROM WORKFLOW: Check filter resolved to false: " + chkFilter);
 									}
 								}
 								else{
-									//logDebug("ACTIONS FROM WORKFLOW: No app match: " + recdTypeArr);
+									logDebug("ACTIONS FROM WORKFLOW: No app match: " + recdTypeArr);
 								}
 							}else{
-								//logDebug("ACTIONS FROM WORKFLOW: No Workflow type and Result match: " + cTask + "/" + SubmittedTaskStatus);
+								logDebug("ACTIONS FROM WORKFLOW: No Workflow type and Result match: " + cTask + "/" + SubmittedTaskStatus);
 							}
 						}
 					}
