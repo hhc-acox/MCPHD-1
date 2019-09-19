@@ -59,7 +59,7 @@ try{
 									supervisorOfInspector = hhcgetUserByDiscipline('FoodsFarmersMarketEvent');
 									break;					
 								default:
-									supervisorOfInspector = HHC_getMyTeamLeadersUserID(assignedToWorkflow);
+									supervisorOfInspector = HHC_getMyTeamLeadersUserID(assignedToRecordInspector);
 											}
 							//Supervisor of Person Assigned to Record
 							var supervisorOfAssignedToRecord = "";
@@ -89,7 +89,7 @@ try{
 				//comment('51 - supervisorOfAssignedToRecord '+supervisorOfAssignedToRecord);
 			//Record Type Validation
 							if(cInspType.length>0 && InspResultSubmitted.length>0){
-								comment("line 54 - Record Type Validation - section reached");
+								//comment("line 54 - Record Type Validation - section reached");
 								var appMatch = true;
 								var recdType = ""+sepRules[row]["Record Type"];
 								var recdTypeArr = "" + recdType;
@@ -101,13 +101,12 @@ try{
 									for (xx in arrAppType){
 										if (!arrAppType[xx].equals(appTypeArray[xx]) && !arrAppType[xx].equals("*")){
 											appMatch = false;
-											comment("line 66 - appMatch - section reached - "+appMatch);
 										}
-									}comment("line 68 - appMatch - section reached - "+appMatch);
+									}
 								}
 								if (appMatch){
 			//Record Assignment if one is selected
-								comment("RecordAssignedTo.length "+RecordAssignedTo.length);
+								//comment("RecordAssignedTo.length "+RecordAssignedTo.length);
 									if(RecordAssignedTo.length>0){
 									if(RecordAssignedTo == 'Current Department'){recordAssignment = currentDepartment; }
 									if(RecordAssignedTo == 'Current Inspector'){recordAssignment = assignedToInspection; }
@@ -133,7 +132,7 @@ try{
 									assignedInspector = inspectorAssignment;
 									}
 			//Record Assignment if one is selected
-								comment("WorkflowAssignedTo.length "+WorkflowAssignedTo.length);
+								//comment("WorkflowAssignedTo.length "+WorkflowAssignedTo.length);
 									if(WorkflowAssignedTo.length>0){
 									if(WorkflowAssignedTo == 'Current Department'){workflowAssignment = currentDepartment; }
 									if(WorkflowAssignedTo == 'Current Inspector'){workflowAssignment = assignedToInspection; }
@@ -142,10 +141,10 @@ try{
 									if(WorkflowAssignedTo == 'Supervisor of Person Assigned to Record'){workflowAssignment = supervisorOfAssignedToRecord; }
 									if(WorkflowAssignedTo == 'Support Staff'){workflowAssignment = supportStaff; }
 									}
-									comment('99 - workflowAssignment '+workflowAssignment);
-									comment("100 - cInspType.length "+cInspType.length);
-									comment("InspResultSubmitted.length "+InspResultSubmitted.length);
-									comment("InspTypeToSchedule.length "+InspTypeToSchedule.length);
+									//comment('99 - workflowAssignment '+workflowAssignment);
+									//comment("100 - cInspType.length "+cInspType.length);
+									//comment("InspResultSubmitted.length "+InspResultSubmitted.length);
+									//comment("InspTypeToSchedule.length "+InspTypeToSchedule.length);
 										if(cInspType.length>0 && InspResultSubmitted.length>0 && InspTypeToSchedule.length>0){
 			//define assignedInspector		
 											if(matches(InspAssignedTo,'Supervisor of Person Assigned to Record','Current Inspector','Person Assigned to the Record','Supervisor of Current Inspector')){
@@ -174,17 +173,17 @@ try{
 													assignInspection(inspId, assignedInspector);
 											}										
 										}
-									comment("177 - cInspType.length "+cInspType.length);
-									comment("InspResultSubmitted.length "+InspResultSubmitted.length);
-									comment("workflowTask.length "+ workflowTask.length);
-									comment("newWorkflowStatus.length>0 "+newWorkflowStatus.length);
-									comment('181 - workflowAssignment '+workflowAssignment);
+									//comment("177 - cInspType.length "+cInspType.length);
+									//comment("InspResultSubmitted.length "+InspResultSubmitted.length);
+									//comment("workflowTask.length "+ workflowTask.length);
+									//comment("newWorkflowStatus.length>0 "+newWorkflowStatus.length);
+									//comment('181 - workflowAssignment '+workflowAssignment);
 										if(cInspType.length>0 && InspResultSubmitted.length>0 && workflowTask.length>0 && newWorkflowStatus.length>0){
 											if((cInspType == 'any' || cInspType.length>0) && (InspResultSubmitted == 'any' || InspResultSubmitted.length>0)){ 
 												updateTask(workflowTask,newWorkflowStatus,'Updated by script');
 												}
 												if(WorkflowAssignedTo.length>0 && matches(WorkflowAssignedTo,'Supervisor of Person Assigned to Record','Current Inspector','Person Assigned to the Record','Supervisor of Current Inspector')){
-											comment('187 - workflowAssignment '+workflowAssignment);
+											//comment('187 - workflowAssignment '+workflowAssignment);
 														assignTask(workflowTask,workflowAssignment);
 													}
 												if(WorkflowAssignedTo.length>0 && matches(WorkflowAssignedTo,'Current Department')){
@@ -197,11 +196,11 @@ try{
 									if (chkFilter.length>0) {
 										eval(customFunctions);
 									}else{
-										logDebug("ACTIONS FROM INSPECTIONS: Check filter resolved to false: " + chkFilter);
+										//logDebug("ACTIONS FROM INSPECTIONS: Check filter resolved to false: " + chkFilter);
 									}
 								}
 								else{
-									logDebug("ACTIONS FROM INSPECTIONS: No app match: " + recdTypeArr);
+									//logDebug("ACTIONS FROM INSPECTIONS: No app match: " + recdTypeArr);
 								}
 							}else{
 								logDebug("ACTIONS FROM INSPECTIONS: No Inspection type and Result match: " + cInspType + "/" + InspResultSubmitted);
