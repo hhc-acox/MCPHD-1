@@ -16,7 +16,7 @@ try{
 				var sepRules = loadASITable("ACTIONS FOR CASE CREATION",cfgCapId);
 				if(sepRules.length>0){
 					for(row in sepRules){
-						if(sepRules[row]["Active"]=="Yes" and recType.length>0){
+						if(sepRules[row]["Active"]=="Yes" && sepRules[row]["Record Type"]>0){
 							var recType = ""+sepRules[row]["Record Type"];
 							var complaintType = ""+sepRules[row]["Complaint Type"];
 							var ResidentialOrCommercial = ""+sepRules[row]["Residential or Commercial"];
