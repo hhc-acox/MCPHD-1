@@ -16,7 +16,7 @@ try{
 				var sepRules = loadASITable("ACTIONS FOR CASE CREATION",cfgCapId);
 				if(sepRules.length>0){
 					for(row in sepRules){
-						if(sepRules[row]["Active"]=="Yes" && sepRules[row]["Record Type"]>0){
+						if(sepRules[row]["Active"]=="Yes"){
 							var recType = ""+sepRules[row]["Record Type"];
 							var complaintType = ""+sepRules[row]["Complaint Type"];
 							var ResidentialOrCommercial = ""+sepRules[row]["Residential or Commercial"];
@@ -25,7 +25,7 @@ try{
 							var RecordAssignedTo = "";
 							var LayerName = ""+sepRules[row]["GIS Layer Name"]; 
 							var IdField = ""+sepRules[row]["GIS Id Field"];
-							switch (true) {
+							switch(true) {
 								case RecordAssignmentChoice == 'Inspector by Discipline':
 								case RecordAssignmentChoice == 'Supervisor by Discipline':
 								//if there is more than 1 person in a discipline, assign to the department
@@ -53,7 +53,7 @@ try{
 									break;	
 								default:
 									RecordAssignedTo = 'undefined';
-											}
+							}
 
 							var recordAssignment = RecordAssignedTo;
 
