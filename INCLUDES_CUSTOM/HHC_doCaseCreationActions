@@ -1,4 +1,3 @@
-//HHC_doWorkflowActions
 function HHC_doCaseCreationActions(){
 try{
 	//see if any records are set up--module can be specific or "ALL", look for both
@@ -45,7 +44,8 @@ try{
 										{
 										//Assigned to person	
 										RecordAssignedTo = hhcgetUserByDiscipline(RecordAssignmentValue);
-										}}
+										}
+										}
 									break;																			
 								case RecordAssignmentChoice == 'Inspector by GIS Zone':
 								
@@ -76,16 +76,16 @@ try{
 									}
 								}
 			//if the record is okay					
-							if (RecordAssignedTo.length>0){
+							if (recordAssignment.length>0){
 			//Record Assignment
-
-										assignCap(recordAssignment);
+									assignCap(recordAssignment);
 								}
 																	
 								else{
 									//logDebug("ACTIONS FROM CASE CREATION: The value of the assignment is: " + RecordAssignedTo);
 								}
-							}else{
+							}
+							else{
 								//logDebug("AACTIONS FROM CASE CREATION: Complaint Type Missing: " + recType);
 							}
 						}
