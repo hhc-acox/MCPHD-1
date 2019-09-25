@@ -1,6 +1,7 @@
 function HHC_getMySupportStaffDepartment(username)
 	{
 		try{
+			if (username.length>0){
 			var suo = aa.person.getUser(username).getOutput(); 
 			var dpt = aa.people.getDepartmentList(null).getOutput();
 			var suof = suo.deptOfUser;
@@ -38,6 +39,7 @@ function HHC_getMySupportStaffDepartment(username)
 							return(p);	
 					}		
 				}
+			}
 			}
 		catch(err)
 		{
