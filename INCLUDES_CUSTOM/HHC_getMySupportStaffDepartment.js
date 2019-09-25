@@ -1,7 +1,7 @@
 function HHC_getMySupportStaffDepartment(username)
 	{
 		try{
-			if (username.length>0){
+			if (!username){
 			var suo = aa.person.getUser(username).getOutput(); 
 			var dpt = aa.people.getDepartmentList(null).getOutput();
 			var suof = suo.deptOfUser;
