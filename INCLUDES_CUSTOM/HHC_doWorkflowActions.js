@@ -33,7 +33,7 @@ try{
 							var newRecordStatus = ""+sepRules[row]["New Record Status"];							
 							var RecordAssignedTo = ""+sepRules[row]["Record_Assigned_To"];
 						//Current Inspector on Workflow
-						var assignedToWorkflow = getAssignedToRecord(); //needs to be developed. Using assigned to record for now.
+						var assignedToWorkflow = ""+getAssignedToRecord(); //needs to be developed. Using assigned to record for now.
 						//Person Assigned to the Record
 							var assignedToRecordInspector = getAssignedToRecord();
 						//Current Department
