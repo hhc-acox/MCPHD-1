@@ -15,9 +15,3 @@ if (isTaskActive('Inspection') && matches(inspResult,'In Violation')) {
 	closeTask('Inspection','In Violation','Updated by Script');
 	editAppSpecific('Resulted in Violation','Yes');
 	}
-
-if (inspType == 'Initial Inspection') {
-	inspIDate = inspObj.getInspectionDate().getMonth() + '/' + inspObj.getInspectionDate().getDayOfMonth() + '/' + inspObj.getInspectionDate().getYear();
-	editAppSpecific('Initial Inspection Date',inspIDate);
-	}
-
