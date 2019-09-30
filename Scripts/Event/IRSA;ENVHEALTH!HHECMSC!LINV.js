@@ -15,8 +15,3 @@ if ((inspType == 'Initial Lead Inspection') && matches(inspResult,'In Violation'
 	editAppSpecific('Resulted in Violation','Yes');
 	updateAppStatus("Pending Case Creation");
 	}
-
-if (inspType == 'Initial Lead Inspection') {
-	inspIDate = inspObj.getInspectionDate().getMonth() + '/' + inspObj.getInspectionDate().getDayOfMonth() + '/' + inspObj.getInspectionDate().getYear();
-	editAppSpecific('Initial Inspection Date',inspIDate);
-	}
