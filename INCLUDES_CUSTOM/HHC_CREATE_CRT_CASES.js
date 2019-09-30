@@ -45,7 +45,7 @@ function HHC_CREATE_CRT_CASES() {
 					elementArray = new Array();
 					code10or19 = AInfo['Ordinance Chapter'];
 					updateAppStatus('Legal Review','Initial Status',newChildID);
-					assignCap('BGREGORY@HAHPDC1.HHCORP.ORG',newChildID);
+					assignCap('BGREGORY',newChildID);
 					editAppSpecific('Parent Case',capIDString,newChildID);
 					
 					if (appMatch('*/*/LHH/*')) 
