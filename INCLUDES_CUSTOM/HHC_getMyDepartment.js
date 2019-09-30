@@ -1,6 +1,7 @@
 function HHC_getMyDepartment(username)
 	{
 		try{
+			if (username != null) {
 			var suo = aa.person.getUser(username).getOutput(); 
 			var dpt = aa.people.getDepartmentList(null).getOutput();
 			var suof = suo.deptOfUser;
@@ -10,7 +11,8 @@ function HHC_getMyDepartment(username)
 				var p = m.getDeptName();
 				var n = m.getServiceProviderCode() + "/" + m.getAgencyCode() + "/" + m.getBureauCode() + "/" + m.getDivisionCode() + "/" + m.getSectionCode() + "/" + m.getGroupCode() + "/" + m.getOfficeCode();
 					if (n == suof){
-							return(p);		
+							return(p);	
+						}					
 					}		
 				}
 			}
