@@ -5,6 +5,7 @@ function HHC_GET_OFFENSE_CODES() {
 			masterArray = [];
 			elementArray = [];
 			code10or19 = AInfo['Ordinance Chapter'];
+			logDebug("HHC_GET_OFFENSE_CODES: Starts here");
 //get Violation Table from Parent and interrogate each violation and determine the violation column value
 			var v = ''; 
 			var vioCodeNums = '';
@@ -18,7 +19,9 @@ function HHC_GET_OFFENSE_CODES() {
 						if (matches(thisrow['Status'],'Court') && !matches(thisrow['Violation'],null)) {
 //for each value look up the corresponding codes in the translation table that fits the case and push each code set to an array:
 							//HSG Cases
+							logDebug("HHC_GET_OFFENSE_CODES: Housing Case");
 							if (matches(appTypeArray[2],'HSG')){
+								logDebug("HHC_GET_OFFENSE_CODES: parseInt(code10or19) - "+parseInt(code10or19));
 								if (parseInt(code10or19) == 10) {
 									v = lookup('VioCode_Chpt10_Occ',crtVIOLATIONS[a]['Violation']);	
 									v = v.replace(/-/g,'');
