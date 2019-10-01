@@ -142,6 +142,14 @@ if (matches(appTypeArray[3],'SEC')) {
 	comment('The new date is ' + theDate);
 	}
 //Housing Initial Inspection scheduling
+//INV Initial Inspection scheduling
+if (matches(appTypeArray[2],'INV') && AInfo['Initial Inspection Date'] != null) {
+	scheduleInspectDate('Initial Inspection',AInfo['Initial Inspection Date'],areaInspector);
+	}
+if (matches(appTypeArray[2],'INV') && AInfo['Initial Inspection Date'] == null) {
+	editAppSpecific('Initial Inspection Date',dateAdd(null,1,'Y'));
+	scheduleInspectDate('Initial Inspection',dateAdd(null,1,'Y'),areaInspector);
+	}
 if (matches(appTypeArray[2],'VEH','HSG','TRA') && AInfo['Initial Inspection Date'] != null) {
 	scheduleInspectDate('Initial Inspection',AInfo['Initial Inspection Date'],areaInspector);
 	}
