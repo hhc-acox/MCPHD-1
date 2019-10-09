@@ -1,13 +1,16 @@
-function HHC_doCaseCreationActions(){
-try{
-	//see if any records are set up--module can be specific or "ALL", look for both
-	var sepScriptConfig = aa.cap.getCapIDsByAppSpecificInfoField("Module Name", appTypeArray[0]);
-	if(sepScriptConfig.getSuccess()){
-		var sepScriptConfigArr = sepScriptConfig.getOutput();
-		if(sepScriptConfigArr.length<1){
-			var sepScriptConfig = aa.cap.getCapIDsByAppSpecificInfoField("Module Name", "ALL");
-			if(sepScriptConfig.getSuccess()){
-				var sepScriptConfigArr = sepScriptConfig.getOutput();
+
+function HHC_doCaseCreationActionsLOCAL(){
+	try{
+		sepScriptConfigArr = new Array();
+		//see if any records are set up--module can be specific or "ALL", look for both
+		var sepScriptConfig = aa.cap.getCapIDsByAppSpecificInfoField("Module Name", appTypeArray[0]);
+		if(sepScriptConfig.getSuccess()){
+			var sepScriptConfigArr = sepScriptConfig.getOutput();
+			if(sepScriptConfigArr.length<1){
+				var sepScriptConfig = aa.cap.getCapIDsByAppSpecificInfoField("Module Name", "ALL");
+				if(sepScriptConfig.getSuccess()){
+					var sepScriptConfigArr = sepScriptConfig.getOutput();
+				}
 			}
 		}
 		if(sepScriptConfigArr.length>0){
@@ -22,50 +25,48 @@ try{
 							var ResidentialOrCommercial = ""+sepRules[row]["Residential or Commercial"];
 							var RecordAssignmentChoice = ""+sepRules[row]["Record Assignment Choice"];
 							var RecordAssignmentValue = ""+sepRules[row]["Name of Discipline"];
-							var RecordAssignedTo = "rvoller"; //test
 							var LayerName = ""+sepRules[row]["GIS Layer Name"]; 
 							var IdField = ""+sepRules[row]["GIS Id Field"];
- 							switch(true) {
+							switch(true) {
 								case RecordAssignmentChoice == 'Inspector by Discipline':
 								case RecordAssignmentChoice == 'Supervisor by Discipline':
 								//if there is more than 1 person in a discipline, assign to the department
-										var sysUserList
-										var sysUserResult = aa.people.getSysUserListByDiscipline(RecordAssignmentValue);
-										
-										if (sysUserResult.getSuccess()) {
-												sysUserList = sysUserResult.getOutput().toArray();
-										if (sysUserList.length>1)
-										{
-										//More than 1 person, assign to department
-										var userId = sysUserList[0].getUserID();
-										HHC_getMyDepartment(userId);
-										}
-										else
-										{
-										//Assigned to person	
-										RecordAssignedTo = hhcgetUserByDiscipline(RecordAssignmentValue);
-										}
-										}
+									var sysUserList;
+									var sysUserResult = aa.people.getSysUserListByDiscipline(RecordAssignmentValue);											
+									if (sysUserResult.getSuccess()) {
+											sysUserList = sysUserResult.getOutput().toArray();
+											if (sysUserList.length>1)	{
+												//More than 1 person, assign to department
+												var userId = sysUserList[0].getUserID();
+												HHC_getMyDepartment(userId);
+											}
+											else {
+												//Assigned to person	
+												RecordAssignedTo = hhcgetUserByDiscipline(RecordAssignmentValue);
+											}
+									}
 									break;																			
 								case RecordAssignmentChoice == 'Inspector by GIS Zone':
-								
-									 RecordAssignedTo = 'undefined';
+									zone = getGISInfo("MCPHD", LayerName, IdField);
+									if (zone && zone != "undefined" && zone != null)
+										RecordAssignedTo = zone;
+									else
+										RecordAssignedTo = null;
 									break;	
 								default:
 									RecordAssignedTo = 'undefined';
 							} 
-
+	
 							var recordAssignment = RecordAssignedTo;
-
-			//Record Type Validation
-							if(complaintType.length>0 && recType.length>0){
+	
+							//Record Type Validation
+							if(recType.length>0){
 								var appMatch = true;
 								var recType = ""+sepRules[row]["Record Type"];
 								var recdTypeArr = "" + recType;
 								var arrAppType = recdTypeArr.split("/");
-								if (arrAppType.length != 4){
-								
-									return false;
+								if (arrAppType.length != 4){								
+									appMatch = false;
 								}else{
 									for (xx in arrAppType){
 										if (!arrAppType[xx].equals(appTypeArray[xx]) && !arrAppType[xx].equals("*")){
@@ -74,18 +75,20 @@ try{
 										}
 									}
 								}
-			//if the record is okay					
-							if (recordAssignment.length>0){
-			//Record Assignment
-									assignCap(recordAssignment);
+								//if the record is okay					
+								if (appMatch && recordAssignment.length>0){
+									if (appMatch("EnvHealth/WQ/Complaint/NA")) {
+										compType = getAppSpecific("Complaint Type", capId);
+										facType = getAppSpecific("Facility Type", capId);
+										if (compType == complaintType || facType == ResidentialOrCommercial)
+											assignCap(recordAssignment);
+									}
+									else {
+									//Record Assignment
+										aa.print("Assgined cap to " + recordAssignment);
+										assignCap(recordAssignment);
+									}
 								}
-																	
-								else{
-									//logDebug("ACTIONS FROM CASE CREATION: The value of the assignment is: " + RecordAssignedTo);
-								}
-							}
-							else{
-								//logDebug("AACTIONS FROM CASE CREATION: Complaint Type Missing: " + recType);
 							}
 						}
 					}
@@ -93,9 +96,13 @@ try{
 			}
 		}
 	}
-}
-	catch(err){
-	logDebug("A JavaScript Error occurred: function HHC_doCaseCreationActions:  " + err.message);
-	logDebug(err.stack)
-}
-}
+		catch(err){
+		logDebug("A JavaScript Error occurred: function HHC_doCaseCreationActions:  " + err.message);
+		logDebug(err.stack)
+	}
+	}
+	
+
+
+
+
