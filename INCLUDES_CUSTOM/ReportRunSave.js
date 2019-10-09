@@ -4,8 +4,7 @@ function reportRunSave(reportName, view, edmsSave, storeToDisk, reportModule, re
 	var rFile = new Array();
 	var error = "";
 	var reportModel = aa.reportManager.getReportModelByName(reportName); //get detail of report to drive logic
-	if (reportModel.getSuccess()) 
-	{
+	if (reportModel.getSuccess()) 	{
 		reportDetail = reportModel.getOutput();
 		name = reportDetail.getReportDescription();
 		if (name == null || name == "") 
