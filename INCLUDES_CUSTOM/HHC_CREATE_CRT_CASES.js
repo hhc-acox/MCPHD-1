@@ -56,7 +56,7 @@ function HHC_CREATE_CRT_CASES() {
 						editAppSpecific('EHS Court Time','1:00 PM',newChildID);
 						}
 
-					HHC_GET_OFFENSE_CODES();	
+					HHC_GET_OFFENSE_CODES(newChildID);	
 					HHC_GET_ADDRESS_FOR_CHILD();
 				}
 				ccnt++;
