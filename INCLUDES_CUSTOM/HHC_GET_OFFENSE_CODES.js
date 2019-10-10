@@ -1,23 +1,23 @@
-function HHC_GET_OFFENSE_CODES() {
+function HHC_GET_OFFENSE_CODES(childID) {
 		try {
-			showMessage = true;
-			showDebug = true; 
-			masterArray = [];
-			elementArray = [];
-			code10or19 = AInfo['Ordinance Chapter'];
-			logDebug("HHC_GET_OFFENSE_CODES: Starts here");
-//get Violation Table from Parent and interrogate each violation and determine the violation column value
-			var v = ''; 
-			var vioCodeNums = '';
-			var newVioCode = '';
-			var uniqVioCodes = '';
-			loadASITable('VIOLATIONS');
-				if (tableHasRows('VIOLATIONS')) {
-					crtVIOLATIONS = loadASITable('VIOLATIONS');
+			try {
+				if (!childID) {
+					logDebug("Required parameter child ID is null");
+					return;
+				}
+				code10or19 = AInfo['Ordinance Chapter'];
+				logDebug("HHC_GET_OFFENSE_CODES: Starts here");
+				//get Violation Table from current record and interrogate each violation and determine the violation column value
+				var v = ''; 
+				var vioCodeNums = '';
+				var newVioCode = '';
+				var uniqVioCodes = '';
+				crtVIOLATIONS = loadASITable('VIOLATIONS');
+				if (crtVIOLATIONS && crtVIOLATIONS.length > 0) {
 					for(a in crtVIOLATIONS) {
 						thisrow = crtVIOLATIONS[a];
 						if (matches(thisrow['Status'],'Court') && !matches(thisrow['Violation'],null)) {
-//for each value look up the corresponding codes in the translation table that fits the case and push each code set to an array:
+							//for each value look up the corresponding codes in the translation table that fits the case and push each code set to an array:
 							//HSG Cases
 							logDebug("HHC_GET_OFFENSE_CODES: Housing Case");
 							if (matches(appTypeArray[2],'HSG')){
@@ -35,10 +35,8 @@ function HHC_GET_OFFENSE_CODES() {
 									vioCodeNums = vioCodeNums+v.replace(/\//g,'IO');
 									vioCodeNums = vioCodeNums+'IO';
 									v = '';
-								}
-								
-							}
-														
+								}	
+							}													
 							//TRA Cases
 							if (matches(appTypeArray[2],'TRA')){
 							//Trash Occupied - Residential - VioCode_Chpt10_Occ
@@ -81,36 +79,26 @@ function HHC_GET_OFFENSE_CODES() {
 									vioCodeNums = vioCodeNums+'IO';
 									v = '';
 								} 
+							}					
+							newVioCodes = vioCodeNums.match(/.{1,7}/g);		
+							logDebug(newVioCodes.length);
+							for (z in newVioCodes) {
+								thisVioCode = newVioCodes[z];
+								newOffenseRow = new Array();
+								newOffenseRow['OFFENSE CODE'] = new asiTableValObj("OFFENSE CODE", thisVioCode, 'N');
+								addToASITable('OFFENSE CODES',newOffenseRow, childID);
 							}
 						}
-							newVioCode = vioCodeNums.match(/.{1,7}/g);
-						
-					}
-							comment('the value of newVioCode is '+newVioCode);
-							comment('element 1 of newVioCode is ' +newVioCode[0]);
-							uniqVioCodes = newVioCode.filter(onlyUnique);
-							comment('the value of uniqVioCodes is '+uniqVioCodes);
-							comment('element 1 of uniqVioCodes is ' +uniqVioCodes[0]);
-							var w = 0;
-							var x = 0;
-							var y = 0;
-							var z = '';
-							x = uniqVioCodes.length;
-							for (w in uniqVioCodes){
-							z = uniqVioCodes[w];	
-							elementArray['OFFENSE CODE'] = z;
-							addToASITable('OFFENSE CODES',elementArray, newChildID);
-				}
-
+						else {
+							logDebug("Status is not court or violation is null");
+						}
+					} // end for each row
+				}		
+			}	
+			catch(err) {
+				logDebug("A JavaScript Error occurred: HHC_GET_OFFENSE_CODES:  " + err.message);
+				logDebug(err.stack);
 			}
-				
 		}
-	catch(err)
-	{
-			logDebug("A JavaScript Error occurred: HHC_GET_OFFENSE_CODES:  " + err.message);
-			logDebug(err.stack);
-	}
-}
-function onlyUnique(value, index, self) { 
-    return self.indexOf(value) === index;
-}
+
+
