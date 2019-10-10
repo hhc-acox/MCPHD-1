@@ -1,5 +1,4 @@
 function HHC_GET_OFFENSE_CODES(childID) {
-		try {
 			try {
 				if (!childID) {
 					logDebug("Required parameter child ID is null");
