@@ -24,58 +24,59 @@ function HHC_GET_OFFENSE_CODES(childID) {
 								if (parseInt(code10or19) == 10) {
 									v = lookup('VioCode_Chpt10_Occ',crtVIOLATIONS[a]['Violation']);	
 									v = v.replace(/-/g,'');
-									vioCodeNums = vioCodeNums+v.replace(/\//g,'IO');
-									vioCodeNums = vioCodeNums+'IO';
+									vioCodeNums = vioCodeNums+v.replace(/\//g,'OI');
+									vioCodeNums = vioCodeNums+'OI';
 									v = '';
 								}
 								if (parseInt(code10or19) == 19) {
 									v = lookup('VioCode_Chpt19',crtVIOLATIONS[a]['Violation']);	
 									v = v.replace(/-/g,'');
-									vioCodeNums = vioCodeNums+v.replace(/\//g,'IO');
-									vioCodeNums = vioCodeNums+'IO';
+									vioCodeNums = vioCodeNums+v.replace(/\//g,'OI');
+									vioCodeNums = vioCodeNums+'OI';
 									v = '';
 								}	
 							}													
 							//TRA Cases
 							if (matches(appTypeArray[2],'TRA')){
 							//Trash Occupied - Residential - VioCode_Chpt10_Occ
+							logDebug("HHC_GET_OFFENSE_CODES: Trash Case");
 								if (parseInt(code10or19) == 10 && AInfo['Property Type'] == 'Occupied') {
 									v = lookup('VioCode_Chpt10_Occ',crtVIOLATIONS[a]['Violation']);	
 									v = v.replace(/-/g,'');
-									vioCodeNums = vioCodeNums+v.replace(/\//g,'IO');
-									vioCodeNums = vioCodeNums+'IO';
+									vioCodeNums = vioCodeNums+v.replace(/\//g,'OI');
+									vioCodeNums = vioCodeNums+'OI';
 									v = '';
 								}
 								//Trash on vacant lot - Residential - VioCode_Chpt10_VL
 								if (parseInt(code10or19) == 10 && matches(AInfo['Property Type'],'Vacant Lot')){
 									v = lookup('VioCode_Chpt10_VL',crtVIOLATIONS[a]['Violation']);
 									v = v.replace(/-/g,'');
-									vioCodeNums = vioCodeNums+v.replace(/\//g,'IO');
-									vioCodeNums = vioCodeNums+'IO';
+									vioCodeNums = vioCodeNums+v.replace(/\//g,'OI');
+									vioCodeNums = vioCodeNums+'OI';
 									v = '';
 								}
 								//Trash on vacant structure - Residential - VioCode_Chpt10_VS
 								if (parseInt(code10or19) == 10 && matches(AInfo['Property Type'],'Vacant Structure')) {
 									v = lookup('VioCode_Chpt10_VS',crtVIOLATIONS[a]['Violation']);
 									v = v.replace(/-/g,'');
-									vioCodeNums = vioCodeNums+v.replace(/\//g,'IO');
-									vioCodeNums = vioCodeNums+'IO';
+									vioCodeNums = vioCodeNums+v.replace(/\//g,'OI');
+									vioCodeNums = vioCodeNums+'OI';
 									v = '';
 								}
 								//Trash Occupied - Commercial - VioCode_Chpt19
 								if (parseInt(code10or19) == 19 && AInfo['Property Type'] == 'Occupied') {
 									v = lookup('VioCode_Chpt19',crtVIOLATIONS[a]['Violation']);
 									v = v.replace(/-/g,'');
-									vioCodeNums = vioCodeNums+v.replace(/\//g,'IO');
-									vioCodeNums = vioCodeNums+'IO';
+									vioCodeNums = vioCodeNums+v.replace(/\//g,'OI');
+									vioCodeNums = vioCodeNums+'OI';
 									v = '';
 								}
 								//Trash on vacant structure - Commercial - VioCode_Chpt19_VS
 								if (parseInt(code10or19) == 19 && matches(AInfo['Property Type'],'Vacant Structure')) {
 									v = lookup('VioCode_Chpt19_VS',crtVIOLATIONS[a]['Violation']);
 									v = v.replace(/-/g,'');
-									vioCodeNums = vioCodeNums+v.replace(/\//g,'IO');
-									vioCodeNums = vioCodeNums+'IO';
+									vioCodeNums = vioCodeNums+v.replace(/\//g,'OI');
+									vioCodeNums = vioCodeNums+'OI';
 									v = '';
 								} 
 							}					
@@ -99,5 +100,3 @@ function HHC_GET_OFFENSE_CODES(childID) {
 				logDebug(err.stack);
 			}
 		}
-
-
