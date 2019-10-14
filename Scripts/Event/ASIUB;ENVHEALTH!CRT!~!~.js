@@ -1,1 +1,1 @@
-validateForCourt();
+If (AInfo["Send to Court System"] == "CHECKED") validateForCourt();
