@@ -1,5 +1,5 @@
 function validateForCourt() {
-
+	showMessage = true;
 	itemCap = capId
 	if (arguments.length > 0)
 		itemCap = arguments[0]
@@ -66,6 +66,8 @@ function validateForCourt() {
 
 	if (localCancel) {
 		cancel = true;
-		comment(errMess);
+		logMessage(errMess);
+		return true;
 	}
+	return false;
 }
