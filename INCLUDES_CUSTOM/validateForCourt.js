@@ -55,19 +55,38 @@ function validateForCourt() {
 		errMess += "Missing court info: At least one contact is required.";
 	}
 
-	offTable = loadASITable("OFFENSE CODES")
-	if (!offTable || offTable.length ==0) {
-		errMess += "Missing offense codes for court case."; localCancel = true;
-	}
+
+	var asitModel = aa.env.getValue("AppSpecificTableGroupModel");
+	beforeDocTable = loadASITableBeforeEvent("DOCUMENTS", asitModel);
 	docTable = loadASITable("DOCUMENTS");
-	if (!docTable || docTable.length == 0) {
+	existingTableEmpty = true; newTableEmpty = true;
+	if (docTable && docTable.length > 0) {
+		existingTableEmpty = false;	
+	}
+	if (beforeDocTable && beforeDocTable.length > 0) {
+		newTableEmpty = false;
+	}
+
+	if (existingTableEmpty && newTableEmpty) {
 		errMess += "Missing entry in documents table for court case."; localCancel = true;
+	}
+
+
+	offTable = loadASITable("OFFENSE CODES")
+	var asitModel = aa.env.getValue("AppSpecificTableGroupModel");
+	beforeOffTable = loadASITableBeforeEvent("OFFENSE CODES", asitModel);
+	existingTableEmpty = true; newTableEmpty = true;
+	if (offTable && offTable.length > 0) 
+		existingTableEmpty = false;
+	if (beforeOffTable && beforeOffTable.length > 0)
+		newTableEmpty = false;
+	if (existingTableEmpty && newTableEmpty) {
+		errMess += "Missing offense codes for court case."; localCancel = true;
 	}
 
 	if (localCancel) {
 		cancel = true;
-		logMessage(errMess);
-		return true;
+		comment(errMess);
 	}
-	return false;
 }
+
