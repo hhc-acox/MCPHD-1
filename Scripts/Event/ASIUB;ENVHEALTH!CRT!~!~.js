@@ -1,1 +1,1 @@
-If (AInfo["Send to Court System"] == "CHECKED") validateForCourt();
+if (AInfo["Send to Court System"] == "CHECKED") validateForCourt();
