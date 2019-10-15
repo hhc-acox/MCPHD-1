@@ -1,8 +1,7 @@
 function validateForCourt() {
 	showMessage = true;
 	itemCap = capId
-	if (arguments.length > 0)
-		itemCap = arguments[0]
+	if (arguments.length > 0)	itemCap = arguments[0]
 	localCancel = false;
 	errMess = "";
 
@@ -43,6 +42,8 @@ function validateForCourt() {
 				errMess += "Contact address must have a state"; localCancel = true; }
 			if (!cAddr.getZip() || cAddr.getZip() == "" ) {
 				errMess += "Contact address must have a zip"; localCancel = true; }
+			if (!cAddr.getAddressLine1() || cAddr.getAddressLine1() == "" ) {
+				errMess += "Contact address must have an address"; localCancel = true; }
 
 		}
 		else {
@@ -56,33 +57,7 @@ function validateForCourt() {
 	}
 
 
-	var asitModel = aa.env.getValue("AppSpecificTableGroupModel");
-	beforeDocTable = loadASITableBeforeEvent("DOCUMENTS", asitModel);
-	docTable = loadASITable("DOCUMENTS");
-	existingTableEmpty = true; newTableEmpty = true;
-	if (docTable && docTable.length > 0) {
-		existingTableEmpty = false;	
-	}
-	if (beforeDocTable && beforeDocTable.length > 0) {
-		newTableEmpty = false;
-	}
-
-	if (existingTableEmpty && newTableEmpty) {
-		errMess += "Missing entry in documents table for court case."; localCancel = true;
-	}
-
-
-	offTable = loadASITable("OFFENSE CODES")
-	var asitModel = aa.env.getValue("AppSpecificTableGroupModel");
-	beforeOffTable = loadASITableBeforeEvent("OFFENSE CODES", asitModel);
-	existingTableEmpty = true; newTableEmpty = true;
-	if (offTable && offTable.length > 0) 
-		existingTableEmpty = false;
-	if (beforeOffTable && beforeOffTable.length > 0)
-		newTableEmpty = false;
-	if (existingTableEmpty && newTableEmpty) {
-		errMess += "Missing offense codes for court case."; localCancel = true;
-	}
+	
 
 	if (localCancel) {
 		cancel = true;
