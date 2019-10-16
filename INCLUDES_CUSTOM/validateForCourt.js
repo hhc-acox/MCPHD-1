@@ -56,11 +56,11 @@ function validateForCourt() {
 		errMess += "Missing court info: At least one contact is required.";
 	}
 
-    if ((typeof(DOCUMENTS) != "object") {
+    if (typeof(DOCUMENTS) != "object") {
     	errMess += "Missing court info: At least one entry in the DOCUMENTS list is required.";  	
     }
     
-    if ((typeof(OFFENSECODES) != "object") {
+    if (typeof(OFFENSECODES) != "object") {
     	errMess += "Missing court info: At least one entry in the OFFENSE CODES list is required.";  	
     }
 
