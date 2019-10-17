@@ -31,7 +31,10 @@
 			}
 		}
 		if (strAddress != "") {
-			newAppName += " - " + strAddress;
+			if (newAppName != "")
+				newAppName += " - " + strAddress;
+			else
+				newAppName = strAddress
 		}
 		
 		editAppName(newAppName);
