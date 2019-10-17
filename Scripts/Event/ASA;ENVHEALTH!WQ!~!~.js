@@ -39,3 +39,22 @@
 		
 		editAppName(newAppName);
 	}
+
+	
+	if (appMatch("EnvHealth/WQ/Body Art/Application") || appMatch("EnvHealth/WQ/Childcare/Application") || appMatch("EnvHealth/WQ/Pool/Construction Permit") ) {
+		newAppName = "";
+		if (AInfo["Profile Name"]) {
+			newAppName += AInfo["Profile Name"];
+			editAppName(newAppName);
+		}
+		
+	}
+	
+	if (appMatch("EnvHealth/WQ/Pool/Application")  ) {
+		newAppName = "";
+		if (AInfo["Facility Name"]) {
+			newAppName += AInfo["Facility Name"];
+			editAppName(newAppName);
+		}
+		
+	}
