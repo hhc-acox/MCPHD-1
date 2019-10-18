@@ -21,7 +21,7 @@ function validateForCourt() {
 				useThisContact = conArray[0];
 			}
 			conPeop = useThisContact.getPeople();
-			if (!conPeop.getContactTypeFlag() || conPeop.getContactTypeFlag() == "" || conPeop.getContactTypeFlag == "individual") {
+			if (!conPeop.getContactTypeFlag() || conPeop.getContactTypeFlag() == "" || conPeop.getContactTypeFlag() == "individual") {
 				// check fields for individual
 				if (!conPeop.getLastName() || conPeop.getLastName() == "" ) {
 					errMess += "Individual contact must have last name";
