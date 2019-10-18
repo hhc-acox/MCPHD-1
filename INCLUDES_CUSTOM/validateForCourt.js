@@ -57,19 +57,24 @@ function validateForCourt() {
 	}
 
     if (typeof(DOCUMENTS) != "object") {
+    	localCancel = true;
     	errMess += "Missing court info: At least one entry in the DOCUMENTS list is required.";  	
     }
     if (typeof(DOCUMENTS) == "object" && DOCUMENTS.length == 0) {
+    	localCancel = true;
     	errMess += "Missing court info: At least one entry in the DOCUMENTS list is required.";  	
     }
     
     if (typeof(OFFENSECODES) != "object") {
+    	localCancel = true;
     	errMess += "Missing court info: At least one entry in the OFFENSE CODES list is required.";  	
     }
     if (typeof(OFFENSECODES) == "object" && OFFENSECODES.length == 0) {
-    	errMess += "Missing court info: At least one entry in the DOCUMENTS list is required.";  	
+    	localCancel = true;
+    	errMess += "Missing court info: At least one entry in the OFFENSE CODES list is required.";  	
     }
-	
+    
+  
 
 	if (localCancel) {
 		cancel = true;
