@@ -7,7 +7,7 @@ var Past12Months = dateAdd(null,-364);
 Past12Months = new Date(Past12Months);
 Past12Months = Past12Months.getTime();
 var InspFailedTimes = 0;
-var arrInspIds = getInspIdsByStatus("Spore Test","Not Received");
+var arrInspIds = getInspIdsByStatus("Spore Tests","Not Received");
 	if(arrInspIds.length>0){
 		for (ins in arrInspIds){
 			var thisInspec = arrInspIds[ins];
