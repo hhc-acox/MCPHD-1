@@ -18,10 +18,11 @@ var arrInspIds = getInspIdsByStatus("Spore Test","Not Received");
 		}
 	}
 if (matches(InspFailedTimes,2)){
-	scheduleInspectDate('Routine',nextWorkDay(dateAdd(null,0)),assignedInspector);
+	scheduleInspectDate('Initial',nextWorkDay(dateAdd(null,0)),assignedInspector, null, "Missing spore test");
+	// create a notice of violation and citation ....
 }
 if (matches(InspFailedTimes,3)){
-	scheduleInspectDate('Routine',nextWorkDay(dateAdd(null,0)),assignedInspector);
+	scheduleInspectDate('Initial',nextWorkDay(dateAdd(null,0)),assignedInspector, null, "Missing spore test");
 }				
 if (matches(inspResult,'Completed')){
 	comment('this is the number: '+RiskDays);
@@ -29,5 +30,5 @@ if (matches(inspResult,'Completed')){
 }
 
 if (matches(inspType,'Spore Test') && matches(inspResult,'Positive')) {
-	scheduleInspectDate('Routine',nextWorkDay(dateAdd(null,0)),assignedInspector);
+	scheduleInspectDate('Initial',nextWorkDay(dateAdd(null,0)),assignedInspector, null, "Failed spore test");
 }
