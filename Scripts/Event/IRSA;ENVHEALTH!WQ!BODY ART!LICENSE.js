@@ -32,3 +32,4 @@ if (matches(inspResult,'Completed')){
 if (matches(inspType,'Spore Test') && matches(inspResult,'Positive')) {
 	scheduleInspectDate('Initial',nextWorkDay(dateAdd(null,0)),assignedInspector, null, "Failed spore test");
 }
+
