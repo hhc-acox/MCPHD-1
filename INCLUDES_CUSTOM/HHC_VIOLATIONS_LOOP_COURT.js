@@ -1,9 +1,9 @@
 function HHC_VIOLATIONS_LOOP_COURT() 
 {
 	try{
-		loadASITable('VIOLATIONS');
+		crtVIOLATIONS = loadASITable('VIOLATIONS');
 		AllFinaled = false;
-		if (tableHasRows('VIOLATIONS')) {
+		if (crtVIOLATIONS && crtVIOLATIONS.length > 0) {
 			fixVIOLATIONS = loadASITable('VIOLATIONS');
 			iRows = fixVIOLATIONS.length;
 			iFins = 0;
@@ -24,7 +24,7 @@ function HHC_VIOLATIONS_LOOP_COURT()
 			}
 		}
 
-		if (tableHasRows('VIOLATIONS')) {
+		if (crtVIOLATIONS && crtVIOLATIONS.length > 0) {
 		addASITable('VIOLATIONS',fixVIOLATIONS);
 		}
 	}
