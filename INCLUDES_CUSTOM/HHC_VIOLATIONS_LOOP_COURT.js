@@ -10,7 +10,7 @@ function HHC_VIOLATIONS_LOOP_COURT()
 			removeASITable('VIOLATIONS');
 		}
 
-		if (tableHasRows('VIOLATIONS')) {
+		if (crtVIOLATIONS && crtVIOLATIONS.length > 0) {
 			for(i in fixVIOLATIONS) {
 				eachrow = fixVIOLATIONS[i];
 				{
