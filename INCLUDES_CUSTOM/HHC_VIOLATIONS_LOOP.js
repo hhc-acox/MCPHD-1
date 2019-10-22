@@ -1,12 +1,12 @@
 function HHC_VIOLATIONS_LOOP() 
 {
 	try{
-		loadASITable('VIOLATIONS');
-			if (tableHasRows('VIOLATIONS')) {
+		finVIOLATIONS = loadASITable('VIOLATIONS');
+			if (finVIOLATIONS && finVIOLATIONS.length > 0) {
 				fixVIOLATIONS = loadASITable('VIOLATIONS');
 				removeASITable('VIOLATIONS');
 			}
-			if (tableHasRows('VIOLATIONS')) {
+			if (finVIOLATIONS && finVIOLATIONS.length > 0) {
 				for(i in fixVIOLATIONS) {
 					eachrow = fixVIOLATIONS[i];
 					if (matches(eachrow['Status'],'Open', 'Court')) {
@@ -17,7 +17,7 @@ function HHC_VIOLATIONS_LOOP()
 
 			}
 
-		if (tableHasRows('VIOLATIONS')) {
+		if (finVIOLATIONS && finVIOLATIONS.length > 0) {
 			addASITable('VIOLATIONS',fixVIOLATIONS);
 		}
 	}
