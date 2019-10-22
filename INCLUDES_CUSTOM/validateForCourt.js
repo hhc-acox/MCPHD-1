@@ -49,7 +49,6 @@ function validateForCourt() {
 				errMess += "Contact address must have a zip"; localCancel = true; }
 			if (!cAddr.getAddressLine1() || cAddr.getAddressLine1() == "" ) {
 				errMess += "Contact address must have an address"; localCancel = true; }
-
 		}
 		else {
 			localCancel = true;
