@@ -25,6 +25,11 @@ function validateForCourt() {
 				// check fields for individual
 				if (!conPeop.getLastName() || conPeop.getLastName() == "" ) {
 					errMess += "Individual contact must have last name";
+					localCancel = true;
+				}
+				if (!conPeop.getFirstName() || conPeop.getFirstName() == "" ) {
+					errMess += "Individual contact must have first name";
+					localCancel = true;
 				}
 			}
 			else {
