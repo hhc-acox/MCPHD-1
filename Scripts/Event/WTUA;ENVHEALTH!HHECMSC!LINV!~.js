@@ -14,20 +14,24 @@ if (wfTask == 'Case Intake' && wfStatus == 'Complete' && AInfo['Bed Bugs'] == 'C
 	scheduleInspectDate('Initial Inspection',nextWorkDay(dateAdd(null,1)),AInfo['Assigned To']);
 	}
 //Create LHH Reinspection and create letter
-	if (wfTask == "Inspection" && matches(wfStatus,"Complete Notice of Violation","Complete Lead Risk Ass Ltr") && getTSIfieldValue('Reinspection Date', 'Inspection') != null) {
-	scheduleInspectDate("Reinspection",getTSIfieldValue('Reinspection Date', 'Inspection'),AInfo["Assigned To"]);
-	}
+if (wfTask == "Inspection" && matches(wfStatus,"Complete Notice of Violation","Complete Lead Risk Ass Ltr") && getTSIfieldValue('Reinspection Date', 'Inspection') != null) {
+	inspId = scheduleInspectDateReturnInspID("Reinspection",getTSIfieldValue('Reinspection Date', 'Inspection'),AInfo["Assigned To"]);
+	copyLeadViolations(inspId);
+}
 
 if (wfTask == "Inspection" && matches(wfStatus,"Complete Notice of Violation","Complete Lead Risk Ass Ltr") && getTSIfieldValue('Reinspection Date', 'Inspection') == null) {
-	scheduleInspectDate("Reinspection",nextWorkDay(dateAdd(null,29)),AInfo["Assigned To"]);
+	inspId = scheduleInspectDateReturnInspID("Reinspection",nextWorkDay(dateAdd(null,29)),AInfo["Assigned To"]);
+	copyLeadViolations(inspId);
 	editTaskSpecific("Inspection","Reinspection Date",nextWorkDay(dateAdd(null,29)));
 	}
 //Create BBE Reinspection and create letter
 	if (wfTask == "Inspection" && matches(wfStatus,"Complete BedBug Notice of Violation") && getTSIfieldValue('Reinspection Date', 'Inspection') != null) {
-	scheduleInspectDate("Reinspection",getTSIfieldValue('Reinspection Date', 'Inspection'),AInfo["Assigned To"]);
+		inspId = scheduleInspectDateReturnInspID("Reinspection",getTSIfieldValue('Reinspection Date', 'Inspection'),AInfo["Assigned To"]);
+		copyLeadViolations(inspId);
 	}
 
 if (wfTask == "Inspection" && matches(wfStatus,"Complete BedBug Notice of Violation") && getTSIfieldValue('Reinspection Date', 'Inspection') == null) {
-	scheduleInspectDate("Reinspection",nextWorkDay(dateAdd(null,29)),AInfo["Assigned To"]);
+	inspId = scheduleInspectDateReturnInspID("Reinspection",nextWorkDay(dateAdd(null,29)),AInfo["Assigned To"]);
+	copyLeadViolations(inspId);
 	editTaskSpecific("Inspection","Reinspection Date",nextWorkDay(dateAdd(null,29)));
 	}
