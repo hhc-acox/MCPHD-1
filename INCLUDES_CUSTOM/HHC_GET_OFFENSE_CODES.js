@@ -81,7 +81,7 @@ function HHC_GET_OFFENSE_CODES(childID) {
 									} 
 								}
 							//LHH Cases using Guidesheets
-								logDebug("HHC_GET_OFFENSE_CODES: Housing Case");
+								logDebug("HHC_GET_OFFENSE_CODES: LHH Case");
 								if (matches(appTypeArray[2],'LHH')){
 									logDebug("HHC_GET_OFFENSE_CODES: parseInt(code10or19) - "+parseInt(code10or19));
 									if (parseInt(code10or19) == 10) {
@@ -103,7 +103,7 @@ function HHC_GET_OFFENSE_CODES(childID) {
 							}
 								
 							newVioCodes = vioCodeNums.match(/.{1,7}/g);		
-							logDebug(newVioCodes.length);
+							logDebug('LHH viocodes length '+newVioCodes.length);
 							for (z in newVioCodes) {
 								thisVioCode = newVioCodes[z];
 								newOffenseRow = new Array();
