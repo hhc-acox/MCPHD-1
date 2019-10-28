@@ -39,7 +39,8 @@ if (wfTask == taskName) {
 
 
 	if (wfTask == "Initial Processing" && matches(wfStatus,"Complete Notice of Violation","Complete Emergency") && !matches(theDate,"",null,"undefined")) {
-	scheduleInspectDate("Reinspection",theDate,AInfo["Assigned To"]);
+		inspId = scheduleInspectDateReturnInspID("Reinspection",theDate,AInfo["Assigned To"]);
+		copyLeadViolations(inspId);
 	}
 
 if (wfTask == "Initial Processing" && matches(wfStatus,"Complete Notice of Violation","Complete Emergency") && matches(theDate,"",null,"undefined")) {
@@ -52,7 +53,8 @@ if (wfTask == "Initial Processing" && wfStatus == "Complete Lead No Hzd Found Lt
 	}
 
 if (wfTask == "Initial Processing" && (wfStatus == "Reinspection" || wfStatus == "Complete Reinspection Ltr" || wfStatus == "Complete Lead Clear Fail Ltr"|| wfStatus == "Complete Lead Reinspection Ltr"|| wfStatus == "Complete Next Action Court Ltr"|| wfStatus == "Complete Lead Risk Ass Ltr") && !matches(theDate,"",null,"undefined")) {
-	scheduleInspectDate("Reinspection",theDate,AInfo["Assigned To"]);
+	inspId = scheduleInspectDateReturnInspID("Reinspection",theDate,AInfo["Assigned To"]);
+	copyLeadViolations(inspId);
 	}
 
 if (wfTask == "Initial Processing" && (wfStatus == "Reinspection" || wfStatus == "Complete Reinspection Ltr" || wfStatus == "Complete Lead Clear Fail Ltr" || wfStatus == "Complete Lead Reinspection Ltr"|| wfStatus == "Complete Next Action Court Ltr"|| wfStatus == "Complete Lead Risk Ass Ltr") && (matches(theDate,"",null,"undefined"))) {
@@ -61,7 +63,8 @@ if (wfTask == "Initial Processing" && (wfStatus == "Reinspection" || wfStatus ==
 	}
 
 if (wfTask == "Reinspection" && matches(wfStatus,"Reinspection","Complete Reinspection Ltr","Complete Next Action Court Ltr","Complete Lead Reinspection Ltr", "Complete Lead Clear Fail Ltr","Complete Lead Add Vio Reinspection Ltr") && !matches(theDate,"",null,"undefined")) {
-	scheduleInspectDate("Reinspection",theDate,AInfo["Assigned To"]);
+	inspId = scheduleInspectDateReturnInspID("Reinspection",theDate,AInfo["Assigned To"]);
+	copyLeadViolations(inspId);
 	}
 
 if (wfTask == "Reinspection" && matches(wfStatus,"Reinspection","Complete Reinspection Ltr","Complete Next Action Court Ltr","Complete Lead Reinspection Ltr", "Complete Lead Clear Fail Ltr","Complete Lead Add Vio Reinspection Ltr") && matches(theDate,"",null,"undefined")) {
@@ -78,16 +81,19 @@ if (wfTask == "Reinspection"  && matches(wfStatus,"Court Case")) {
 	}
 
 if (wfTask == "Final Processing" && (wfStatus == "Yearly Inspection") && !matches(theDate,"",null,"undefined")) {
-	scheduleInspectDate("Reinspection",theDate,AInfo["Assigned To"]);
+	inspId = scheduleInspectDateReturnInspID("Reinspection",theDate,AInfo["Assigned To"]);
+	copyLeadViolations(inspId);
 	}
 
 if (wfTask == "Final Processing" && (wfStatus == "Yearly Inspection") && matches(theDate,"",null,"undefined")) {
-	scheduleInspectDate("Reinspection",nextWorkDay(dateAdd(null,364)),lookup("Census - Lead EHS",AInfo["ParcelAttribute.CensusTract"]));
+	inspId = scheduleInspectDateReturnInspID("Reinspection",nextWorkDay(dateAdd(null,364)),lookup("Census - Lead EHS",AInfo["ParcelAttribute.CensusTract"]));
+	copyLeadViolations(inspId);
 	editTaskSpecific("Final Processing","Reinspection Date",nextWorkDay(dateAdd(null,364)));
 	}
 
 if (wfTask == "Final Processing" && (wfStatus == "Permanent Injunction") && !matches(theDate,"",null,"undefined")) {
-	scheduleInspectDate("Reinspection",theDate,AInfo["Assigned To"]);
+	inspId = scheduleInspectDateReturnInspID("Reinspection",theDate,AInfo["Assigned To"]);
+	copyLeadViolations(inspId);
 	}
 	
 if (wfTask == "Final Processing" && matches(wfStatus,"Complete Lead Clear Fail Ltr","Complete Lead Final Clr Ltr")) {
@@ -100,7 +106,8 @@ if (wfTask == "Final Processing" && (wfStatus == "Permanent Injunction") && (mat
 	}
 
 	if (wfTask == "Education Provided" && wfStatus == "Reinspect" && !matches(theDate,"",null,"undefined")) {
-	scheduleInspectDate("Reinspection",theDate,AInfo["Assigned To"]);
+		inspId = scheduleInspectDateReturnInspID("Reinspection",theDate,AInfo["Assigned To"]);
+		copyLeadViolations(inspId);
 	}
 
 if (wfTask == "Education Provided" && matches(wfStatus,"Complete Lead No Hzd Found Ltr")) {
