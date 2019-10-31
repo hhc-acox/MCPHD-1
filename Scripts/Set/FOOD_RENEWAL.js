@@ -112,8 +112,6 @@ try {
         	feeSeq = addFee("FS0008", "FS_GENERAL", "FINAL", 1, "N");
     		invoiceOneNow(feeSeq, "FINAL", capId);
         }
-       
-
         runReportAttach(capId, "Food Application Annual Renewal", "CaseNumber", capIDString)
 
     }
