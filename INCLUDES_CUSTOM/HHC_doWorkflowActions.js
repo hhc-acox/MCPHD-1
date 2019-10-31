@@ -17,7 +17,7 @@ try{
 				var sepRules = loadASITable("ACTIONS FROM WORKFLOW",cfgCapId);
 				if(sepRules.length>0){
 					for(row in sepRules){
-						if(sepRules[row]["Active"]=="Yes"){
+						if(sepRules[row]["Active"]=="Yes" && wfTask == sepRules[row]["Current Task"] && wfStatus == sepRules[row]["Submitted Task Status"]){
 							//Workflow Required
 							var cTask = ""+sepRules[row]["Current Task"];
 							var SubmittedTaskStatus = ""+sepRules[row]["Submitted Task Status"];
@@ -205,7 +205,7 @@ try{
 								logDebug("ACTIONS FROM WORKFLOW: No Workflow type and Result match: " + cTask + "/" + SubmittedTaskStatus);
 							}
 						}
-					}
+					}//
 				}
 			}
 		}
