@@ -53,7 +53,7 @@ var sysDate = aa.date.getCurrentDate();
 
 var SetMemberArray= aa.env.getValue("SetMemberArray");
 var setID = aa.env.getValue("SetID");
-var setName = getSetName(setID);
+
 
 try {
     // set is created by user. Contains active food license records
