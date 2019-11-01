@@ -5,7 +5,7 @@ function HHC_CheckContact()
 		appName = cTempAry[yy][0];
 		cContactTypeToCheckFor = cTempAry[yy][1];
 		cContactSeqNum = cTempAry[yy][2];
-			if (appName != prevName && matches(cContactTypeToCheckFor, 'Property Owner', 'Owner/Operator', 'Facility Owner','Business Owner','Tenant')) {
+			if (appName != prevName && matches(cContactTypeToCheckFor, 'Property Owner', 'Owner/Operator', 'Facility Owner','Business Owner','Tenant','Pool Construction Company')) {
 				addCourtCase = true;
 			}
 
