@@ -37,7 +37,7 @@ function HHC_CONTACTS_PROCESS()
 						appSeqNum = cContactAry[yy].getCapContactModel().getPeople().getContactSeqNumber();
 						cContactDelete = false;
 							if (appConType == 'Complainant') {
-								cContactDelete = true;
+								cContactDelete = false; //true
 								}
 
 							if (cContactDelete) {
