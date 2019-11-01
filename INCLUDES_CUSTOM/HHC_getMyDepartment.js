@@ -4,7 +4,8 @@ function HHC_getMyDepartment(username)
 			if (username != null) {
 			var suo = aa.person.getUser(username).getOutput(); 
 			var dpt = aa.people.getDepartmentList(null).getOutput();
-			var suof = suo.deptOfUser;
+			var suof = '';
+				suof = suo.deptOfUser+'';
 			for (var thisdpt in dpt)
 				{
 				var m = dpt[thisdpt];
