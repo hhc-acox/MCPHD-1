@@ -60,6 +60,31 @@ try{
 	logDebug("A JavaScript Error occurred: WTUA:*/*/*/*: Send Notifications: " + err.message);
 	logDebug(err.stack)
 }
+try{
+	//see if any records are set up--module can be specific or "ALL", look for both
+	var sepScriptConfig = aa.cap.getCapIDsByAppSpecificInfoField("Module Name", appTypeArray[0]);
+	if(sepScriptConfig.getSuccess()){
+		var sepScriptConfigArr = sepScriptConfig.getOutput();
+		if(sepScriptConfigArr.length<1){
+			var sepScriptConfig = aa.cap.getCapIDsByAppSpecificInfoField("Module Name", "ALL");
+			if(sepScriptConfig.getSuccess()){
+				var sepScriptConfigArr = sepScriptConfig.getOutput();
+			}
+		}
+		if(sepScriptConfig.length>0){
+			for(sep in sepScriptConfig){
+				var cfgCapId = sepScriptConfig[sep].getCapID();
+				var sepFees = loadASITable("ACTIONS FROM WORKFLOW",cfgCapId);
+				if(sepFees.length>0){
+					sepUpdateFees(sepFees);
+				}
+			}
+		}
+	}
+}catch(err){
+	logDebug("A JavaScript Error occurred: WTUA:*/*/*/*: Actions from Workflow: " + err.message);
+	logDebug(err.stack)
+}
 
 try{
 	HHC_doWorkflowActions();
