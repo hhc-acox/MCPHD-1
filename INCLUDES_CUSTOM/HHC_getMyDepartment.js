@@ -4,10 +4,6 @@ function HHC_getMyDepartment(username)
 			if (username != null) {
 			var suo = aa.person.getUser(username).getOutput(); 
 			var dpt = aa.people.getDepartmentList(null).getOutput();
-			if(!suo.getSuccess()){
-				continue;
-			}
-			else{
 			var suof = suo.deptOfUser;
 			for (var thisdpt in dpt)
 				{
