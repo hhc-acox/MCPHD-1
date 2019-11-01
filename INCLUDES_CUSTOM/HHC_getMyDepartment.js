@@ -6,19 +6,17 @@ function HHC_getMyDepartment(username)
 			var dpt = aa.people.getDepartmentList(null).getOutput();
 			if(suo.getSuccess()){
 				var suof = '';
-			if (suo.deptOfUser != null){
 				suof = suo.deptOfUser;
 			for (var thisdpt in dpt)
 				{
 				var m = dpt[thisdpt];
 				var p = m.getDeptName();
 				var n = m.getServiceProviderCode() + "/" + m.getAgencyCode() + "/" + m.getBureauCode() + "/" + m.getDivisionCode() + "/" + m.getSectionCode() + "/" + m.getGroupCode() + "/" + m.getOfficeCode();
-					if (n == suof){
-							return(p);	
+					if (n == suof)
+						{
+						return(p);	
 						}					
-					}		
-				}
-			
+				}		
 			}
 		}
 		catch(err)
