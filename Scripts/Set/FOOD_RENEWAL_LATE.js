@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------------------------------/
-| Set Script - Food Establishment Renewal
+| Set Script - Food Establishment Renewal Late 
 | 
 /------------------------------------------------------------------------------------------------------*/
 /*------------------------------------------------------------------------------------------------------/
@@ -42,7 +42,7 @@ function getScriptText(vScriptName, servProvCode, useProductScripts) {
 /*------------------------------------------------------------------------------------------------------/
 | BEGIN Event Specific Variables
 /------------------------------------------------------------------------------------------------------*/
-var showDebug = 3;
+var showDebug = false;
 var showMessage = false;
 var cnt = 0;
 var currentUserID = "ADMIN";
@@ -54,7 +54,7 @@ var sysDate = aa.date.getCurrentDate();
 
 var SetMemberArray= aa.env.getValue("SetMemberArray");
 var setID = aa.env.getValue("SetID");
-
+var setName = getSetName(setID);
 
 try {
     // set is created by user. Contains active food license records
@@ -64,56 +64,17 @@ try {
         var capIDString = capId.getCustomID();	
 
         //testing....
-      //  var appNum ="FOOD19-209567"; 
-     //   var capIdObj = aa.cap.getCapID(appNum);
-     //   capId = capIdObj.getOutput();
-    //    capIDString = capId.getCustomID();
-        updateAppStatus("About to Expire");
-        
-        eType = getAppSpecific("Type of Establishment", capId);
-        if (matches(eType, "Caterer", "Little League", "School", "Shared Kitchen", "Tavern", "Restaurant")) {
-        	numEmp = getAppSpecific("Number of Persons Employed DD", capId)
-        	if (numEmp == "0-9" || numEmp == "0 - 9") {
-        		feeSeq = addFee("FS0001", "FS_GENERAL", "FINAL", 1, "N");
-        		invoiceOneNow(feeSeq, "FINAL", capId);
-        	}
-        	if (numEmp == "10-40" || numEmp == "10 - 40") {
-        		feeSeq = addFee("FS0002", "FS_GENERAL", "FINAL", 1, "N");
-        		invoiceOneNow(feeSeq, "FINAL", capId);
-        	}
-        	if (numEmp == "40+" || numEmp == "40 +") {
-        		feeSeq = addFee("FS0003", "FS_GENERAL", "FINAL", 1, "N");
-        		invoiceOneNow(feeSeq, "FINAL", capId);
-        	}
-        }
-        if (matches(eType, "Bakery", "Commissary", "Farmers Market Commissary", "Grocery")) {
-        	sqFt = getAppSpecific("Total Square Feet of the Facility DD", capId);
-        	if (sqft == "0-3,000") {
-        		feeSeq = addFee("FS0004", "FS_GENERAL", "FINAL", 1, "N");
-        		invoiceOneNow(feeSeq, "FINAL", capId);
-        	}
-        	if (sqft == "3,000-30,000") {
-        		feeSeq = addFee("FS0005", "FS_GENERAL", "FINAL", 1, "N");
-        		invoiceOneNow(feeSeq, "FINAL", capId);
-        	}
-        	if (sqft == "30,001-40,000") {
-        		feeSeq = addFee("FS0006", "FS_GENERAL", "FINAL", 1, "N");
-        		invoiceOneNow(feeSeq, "FINAL", capId);
-        	}
-        	if (sqft == "40,001-60,000") {
-        		feeSeq = addFee("FS0007", "FS_GENERAL", "FINAL", 1, "N");
-        		invoiceOneNow(feeSeq, "FINAL", capId);
-        	}
-        	if (sqft == "60,001+") {
-        		feeSeq = addFee("FS0008", "FS_GENERAL", "FINAL", 1, "N");
-        		invoiceOneNow(feeSeq, "FINAL", capId);
-        	}
-        }
-        if (eType == "Limited Service School") {
-        	feeSeq = addFee("FS0008", "FS_GENERAL", "FINAL", 1, "N");
-    		invoiceOneNow(feeSeq, "FINAL", capId);
-        }
-        runReportAttach(capId, "Food Application Annual Renewal", "CaseNumber", capIDString)
+        //var appNum ="FOOD19-210146"; 
+        //var capIdObj = aa.cap.getCapID(appNum);
+        //capId = capIdObj.getOutput();
+        //capIDString = capId.getCustomID();
+        updateAppStatus("Expired");
+
+       feeSeq = updateFee("FS0029", "FS_GENERAL", "FINAL", 1, "N");
+       invoiceOneNow(feeSeq, "FINAL", capId);
+
+       runReportAttach(capId, "Food Application Annual Renewal", "CaseNumber", capIDString);
+)
 
     }
 }
