@@ -18,8 +18,8 @@ try{
 				if(sepRules.length>0){
 							comment("wfTask "+wfTask);
 							comment("wfStatus "+wfStatus);
-							comment("sepRules[row]["Current Task"] "+sepRules[row]["Current Task"]);
-							comment("sepRules[row]["Submitted Task Status"] "+sepRules[row]["Submitted Task Status"]);
+							comment("Current Task "+sepRules[row]["Current Task"]);
+							comment("Submitted Task "+sepRules[row]["Submitted Task Status"]);
 					for(row in sepRules){
 						if(sepRules[row]["Active"]=="Yes" && wfTask == sepRules[row]["Current Task"] && wfStatus == sepRules[row]["Submitted Task Status"]){
 
