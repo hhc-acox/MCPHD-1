@@ -74,7 +74,7 @@ try {
        invoiceOneNow(feeSeq, "FINAL", capId);
 
        runReportAttach(capId, "Food Application Annual Renewal", "CaseNumber", capIDString);
-)
+
 
     }
 }
