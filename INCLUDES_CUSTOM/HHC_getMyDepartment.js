@@ -27,3 +27,4 @@ function HHC_getMyDepartment(username)
 		logDebug(err.stack);
 		}
 	}
+}
