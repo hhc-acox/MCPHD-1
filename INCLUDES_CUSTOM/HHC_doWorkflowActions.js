@@ -18,14 +18,12 @@ try{
 				if(sepRules.length>0){
 							comment("wfTask "+wfTask);
 							comment("wfStatus "+wfStatus);
-							comment("Current Task "+sepRules[row]["Current Task"]);
-							comment("Submitted Task "+sepRules[row]["Submitted Task Status"]);
-					for(row in sepRules){
-						if(sepRules[row]["Active"]=="Yes" && wfTask == sepRules[row]["Current Task"] && wfStatus == sepRules[row]["Submitted Task Status"]){
 
+					for(row in sepRules){
 							//Workflow Required
 							var cTask = ""+sepRules[row]["Current Task"];
 							var SubmittedTaskStatus = ""+sepRules[row]["Submitted Task Status"];
+						if(sepRules[row]["Active"]=="Yes" && matches(wfTask,cTask) && matches(wfStatus,SubmittedTaskStatus)){
 							//Inspection fields
 							var InspTypeToSchedule = ""+sepRules[row]["Insp Type to Schedule"];
 							var DaysToScheduleInTheFuture = ""+sepRules[row]["Days_to_Schedule_in_the_Future"]; //number of days in the future
@@ -92,7 +90,7 @@ try{
 							var workflowAssignment = '';
 				//comment('88 - supervisorOfAssignedToRecord '+supervisorOfAssignedToRecord);
 			//Record Type Validation
-							if(cTask.length>0 && SubmittedTaskStatus.length>0){
+							if(matches(wfTask,cTask) && matches(wfStatus,SubmittedTaskStatus)){
 								//comment("line 54 - Record Type Validation - section reached");
 								var appMatch = true;
 								var recdType = ""+sepRules[row]["Record Type"];
@@ -181,7 +179,7 @@ try{
 									//comment("workflowTask.length "+ cTask.length);
 									//comment("newTaskStatus.length>0 "+newTaskStatus.length);
 									//comment('136 - workflowAssignment '+workflowAssignment);
-										if(cTask.length>0 && SubmittedTaskStatus.length>0 && New_Task.length>0 && newTaskStatus.length>0)
+										if(matches(wfTask,cTask) && matches(wfStatus,SubmittedTaskStatus) && New_Task.length>0 && newTaskStatus.length>0)
 											{ 
 												updateTask(New_Task,newTaskStatus,'Updated by script');
 											if(WorkflowAssignedTo.length>0 && matches(WorkflowAssignedTo,'Supervisor of Person Assigned to Record','Current Inspector','Person Assigned to the Record','Supervisor of Current Inspector'))
@@ -210,7 +208,7 @@ try{
 								logDebug("ACTIONS FROM WORKFLOW: No Workflow type and Result match: " + cTask + "/" + SubmittedTaskStatus);
 							}
 						}
-					}//
+					}
 				}
 			}
 		}
