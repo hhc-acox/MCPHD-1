@@ -16,9 +16,8 @@ try{
 				var cfgCapId = sepScriptConfigArr[sep].getCapID();
 				var sepRules = loadASITable("ACTIONS FROM WORKFLOW",cfgCapId);
 				if(sepRules.length>0){
-							comment("wfTask "+wfTask);
-							comment("wfStatus "+wfStatus);
-
+							//comment("wfTask "+wfTask);
+							//comment("wfStatus "+wfStatus);
 					for(row in sepRules){
 							//Workflow Required
 							var cTask = ""+sepRules[row]["Current Task"];
@@ -195,8 +194,10 @@ try{
 											}
 										var customFunctions = ""+sepRules[row]["Custom_Functions"];
 										var chkFilter = ""+customFunctions;
+										comment("Custom Function b4: "+customFunctions);
 									if (chkFilter.length>0) {
 										eval(customFunctions);
+										comment("Custom Function after: "+customFunctions);
 									}else{
 										//logDebug("ACTIONS FROM WORKFLOW: Check filter resolved to false: " + chkFilter);
 									}
@@ -207,6 +208,7 @@ try{
 							}else{
 								logDebug("ACTIONS FROM WORKFLOW: No Workflow type and Result match: " + cTask + "/" + SubmittedTaskStatus);
 							}
+							if(matches(wfTask,cTask) && matches(wfStatus,"Court", "Court Case") && matches(SubmittedTaskStatus,"Court", "Court Case")){HHC_CREATE_COURT();}
 						}
 					}
 				}
