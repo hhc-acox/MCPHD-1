@@ -4,11 +4,8 @@ function HHC_getMyDepartment(username)
 			if (username != null) {
 			var suo = aa.person.getUser(username).getOutput(); 
 			var dpt = aa.people.getDepartmentList(null).getOutput();
-			if(!suo.getSuccess()){
-				continue;
-			}
-			else{
-			var suof = '';
+			if(suo.getSuccess()){
+				var suof = '';
 			if (suo.deptOfUser != null){
 				suof = suo.deptOfUser;
 			for (var thisdpt in dpt)
@@ -21,8 +18,9 @@ function HHC_getMyDepartment(username)
 						}					
 					}		
 				}
+			
 			}
-			}
+		}
 		catch(err)
 		{
 		logDebug("A JavaScript Error occurred: HHC_getMyDepartment:  " + err.message);
