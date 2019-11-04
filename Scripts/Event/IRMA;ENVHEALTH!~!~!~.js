@@ -1,4 +1,5 @@
 // IRMA;ENVHEALTH!~!~!~ 
+/*
 var currDateFix;
 var inspDate;
 var one_day=1000*60*60*24;
@@ -21,3 +22,4 @@ if (fixfutureDate<fixinspDate) {
 	cancel = true;
 	}
 }
+*/
