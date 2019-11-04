@@ -74,36 +74,101 @@ if (matches(appTypeArray[2],'TLP')) {
 //LINV EHS
 if (AInfo['Asthma'] == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCAsthma');
+	editAppSpecific('Asthma Created',dateAdd(null,0));
+	updateAppStatus('Finaled','Child Case Created');
+	branchTask('Create Case','Case Created','Action by Script','');
+	newChildID = createChild('EnvHealth','HHECMSC','ASP','NA','');
+	HHC_copyAllInspectionsAndGuidesheetsToChild(capId);
+	aa.cap.copyRenewCapDocument(capId, newChildID, "ADMIN");
+	copyAppSpecific(newChildID);
+	copyOwner(capId, newChildID);
+	comment('New child app id = '+ newChildID);
+	updateAppStatus('In Violation','Created from LINV',newChildID);
+	assignCap(areaInspector,newChildID);
+	HHC_GET_ADDRESS_FOR_CHILD();
 	comment('the LINV is for Asthma: '+areaInspector);
 	}
 	
 if (AInfo['Bed Bugs'] == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCBedBugs');
+	editAppSpecific('BBE Created',dateAdd(null,0));
+	updateAppStatus('Finaled','Child Case Created');
+	branchTask('Create Case','Case Created','Action by Script','');
+	newChildID = createChild('EnvHealth','HHECMSC','BBE','NA','');
+	HHC_copyAllInspectionsAndGuidesheetsToChild(capId);
+	aa.cap.copyRenewCapDocument(capId, newChildID, "ADMIN");
+	copyAppSpecific(newChildID);
+	comment('New child app id = '+ newChildID);
+	updateAppStatus('In Violation','Created from LINV',newChildID);
+	copyOwner(capId, newChildID);
+	assignCap(areaInspector,newChildID);
+	editAppSpecific('INV Case',capIDString,newChildID);
+	HHC_GET_ADDRESS_FOR_CHILD();
+	//Create Bed Bug Case
 	comment('the LINV is for BedBugs: '+areaInspector);
 	}
 
 if (AInfo['Assigned To'] == null && AInfo['Suspect Lead'] == 'CHECKED') {
 	areaInspector = lookup('Census - Lead EHS',AInfo['ParcelAttribute.CensusTract']);
+	scheduleInspectDate('Initial Lead Inspection',nextWorkDay(dateAdd(null,0)),areaInspector);
 	comment('the LINV is for Lead: '+areaInspector);
 	}
 
 if (AInfo['Consumer Product Safety'] == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCConsumerProductSafety');
+	editAppSpecific('CPS Created',dateAdd(null,0));
+	updateAppStatus('Finaled','Child Case Created');
+	branchTask('Create Case','Case Created','Action by Script','');
+	newChildID = createChild('EnvHealth','HHECMSC','CPS','NA','');
+	HHC_copyAllInspectionsAndGuidesheetsToChild(capId);
+	aa.cap.copyRenewCapDocument(capId, newChildID, "ADMIN");
+	copyAppSpecific(newChildID);
+	copyOwner(capId, newChildID);
+	comment('New child app id = '+ newChildID);
+	updateAppStatus('Open','Created from LINV',newChildID);
+	assignCap(areaInspector,newChildID);
+	HHC_GET_ADDRESS_FOR_CHILD();
+	//create CPS case
 	comment('the LINV is for Consumer Product Safety: '+areaInspector);
-	}
-	
-if (AInfo['Healthy Homes'] == 'CHECKED') {
-	areaInspector = lookup('Census - Lead EHS',censusTract);
-	comment('the LINV is for Healthy Homes: '+areaInspector);
 	}
 
 if (AInfo['Radon'] == 'CHECKED') {
+	saveID = capId;
 	areaInspector = hhcgetUserByDiscipline('HHCESMCRadon');
+	editAppSpecific('Radon Created',dateAdd(null,0));
+	updateAppStatus('Finaled','Child Case Created');
+	branchTask('Create Case','Case Created','Action by Script','');
+	newChildID = createChild('EnvHealth','Radon','ServiceRequest','NA','');
+	HHC_copyAllInspectionsAndGuidesheetsToChild(capId);
+	aa.cap.copyRenewCapDocument(capId, newChildID, "ADMIN");
+	copyAppSpecific(newChildID);
+	copyOwner(capId, newChildID);
+	comment('New child app id = '+ newChildID);
+	updateAppStatus('Open','Created from LINV',newChildID);
+	assignCap(areaInspector,newChildID);
+	capId = newChildID;
+	updateTask('Radon Intake','Accepted','Updated by Script');
+	capId = saveID;
+	HHC_GET_ADDRESS_FOR_CHILD();
+	//Create Radon case
 	comment('the LINV is for Radon: '+areaInspector);
 	}
 
 	if (AInfo['Senior Care'] == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCSeniorCare');
+	editAppSpecific('Asthma Created',dateAdd(null,0));
+	updateAppStatus('Finaled','Child Case Created');
+	branchTask('Create Case','Case Created','Action by Script','');
+	newChildID = createChild('EnvHealth','HHECMSC','SCM','NA','');
+	HHC_copyAllInspectionsAndGuidesheetsToChild(capId);
+	aa.cap.copyRenewCapDocument(capId, newChildID, "ADMIN");
+	copyAppSpecific(newChildID);
+	copyOwner(capId, newChildID);
+	comment('New child app id = '+ newChildID);
+	updateAppStatus('Open','Created from LINV',newChildID);
+	assignCap(areaInspector,newChildID);
+	HHC_GET_ADDRESS_FOR_CHILD();
+	//create senior care case
 	comment('the LINV is for Senior Care: '+areaInspector);
 	}
 //lwacht: 151016: updating so it doesn't throw an error
