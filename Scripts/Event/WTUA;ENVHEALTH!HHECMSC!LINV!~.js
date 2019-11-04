@@ -23,7 +23,7 @@ if (wfTask == "Inspection" && matches(wfStatus,"Complete BedBug Notice of Violat
 	editTaskSpecific("Inspection","Reinspection Date",nextWorkDay(dateAdd(null,29)));
 }
 	
-if (wfTask == "Inspection" && matches(wfStatus,"Complete") && AInfo['Suspect Lead'] == 'CHECKED'  {
+if (wfTask == "Inspection" && matches(wfStatus,"Complete") && AInfo['Suspect Lead'] == 'CHECKED')  {
 		editAppSpecific('LHH Created',dateAdd(null,0));
 		updateAppStatus('Finaled','Child Case Created');
 		branchTask('Create Case','Case Created','Action by Script','');
