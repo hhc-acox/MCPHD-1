@@ -27,6 +27,8 @@ if (matches(appTypeArray[3],'SEC')) {
 //Healthy Homes EHS	
 if (matches(appTypeArray[2],'LHH','LINV')) {
 	areaInspector = lookup('Census - Lead EHS',censusTract);
+	assignedAreaInspector = String(areaInspector.toUpperCase());
+	areaInspector = assignedAreaInspector;
 	comment('the Healthy Homes area Inspector: '+areaInspector);
 	}
 
@@ -110,6 +112,8 @@ if (AInfo['Bed Bugs'] == 'CHECKED') {
 
 if (AInfo['Assigned To'] == null && AInfo['Suspect Lead'] == 'CHECKED') {
 	areaInspector = lookup('Census - Lead EHS',AInfo['ParcelAttribute.CensusTract']);
+	assignedAreaInspector = String(areaInspector.toUpperCase());
+	areaInspector = assignedAreaInspector;
 	scheduleInspectDate('Initial Lead Inspection',nextWorkDay(dateAdd(null,0)),areaInspector);
 	comment('the LINV is for Lead: '+areaInspector);
 	}
