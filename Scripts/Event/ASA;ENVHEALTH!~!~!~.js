@@ -115,6 +115,7 @@ if (AInfo['Assigned To'] == null && AInfo['Suspect Lead'] == 'CHECKED') {
 	assignedAreaInspector = String(areaInspector.toUpperCase());
 	areaInspector = assignedAreaInspector;
 	scheduleInspectDate('Initial Lead Inspection',nextWorkDay(dateAdd(null,0)),areaInspector);
+	closeTask('Case Intake','Completed');
 	comment('the LINV is for Lead: '+areaInspector);
 	}
 
