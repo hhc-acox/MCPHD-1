@@ -21,6 +21,7 @@ if (wfTask == "Inspection" && matches(wfStatus,"Complete Notice of Violation","C
 if (wfTask == "Inspection" && matches(wfStatus,"Complete BedBug Notice of Violation") && getTSIfieldValue('Reinspection Date', 'Inspection') == null) {
 	scheduleInspectDate("Reinspection",nextWorkDay(dateAdd(null,29)),AInfo["Assigned To"]);
 	editTaskSpecific("Inspection","Reinspection Date",nextWorkDay(dateAdd(null,29)));
+}
 	
 if (wfTask == "Inspection" && matches(wfStatus,"Complete") && AInfo['Suspect Lead'] == 'CHECKED'  {
 		editAppSpecific('LHH Created',dateAdd(null,0));
