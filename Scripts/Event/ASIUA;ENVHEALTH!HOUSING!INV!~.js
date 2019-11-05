@@ -55,7 +55,7 @@ if (AInfo['Online Complaint'] == 'CHECKED') {
 if (capStatus == 'Pending Case Creation' && AInfo['TRA'] == 'CHECKED') {
 	
  {
-editAppSpecific('REQUIRED CASES.TRA Created',dateAdd(null,0),capId);
+editAppSpecific('TRA Created',dateAdd(null,0),capId);
 var RFI = AInfo['Reason for Investigation'];
 updateAppStatus('Finaled','Child Case Created');
 newChildID = createChild('EnvHealth','Housing','TRA','NA','');
