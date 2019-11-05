@@ -31,7 +31,7 @@ if (capStatus == 'Pending Case Creation' && AInfo['HSG'] == 'CHECKED') {
 	
  {
 editAppSpecific('HSG Created',dateAdd(null,0),capId);
-var RFI = AInfo['Reason for Invest'];
+var RFI = AInfo['Reason for Investigation'];
 updateAppStatus('Finaled','Child Case Created');
 newChildID = createChild('EnvHealth','Housing','HSG','NA','');
 copyAppSpecific(newChildID);
@@ -42,7 +42,7 @@ editAppSpecific('INV Case',capIDString,newChildID);
 editAppSpecific('Emergency','N',newChildID);
 editAppSpecific('Ordinance Chapter','10-Residential',newChildID);
 editAppSpecific('Owner Occupied','N',newChildID);
-editAppSpecific('Reason for Invest',RFI,newChildID);
+editAppSpecific('Reason for Investigation',RFI,newChildID);
 copyParcelGisObjects4XAPO();
 HHC_GET_ADDRESS_FOR_CHILD();
 HHC_CONTACTS_PROCESS();
@@ -56,7 +56,7 @@ if (capStatus == 'Pending Case Creation' && AInfo['TRA'] == 'CHECKED') {
 	
  {
 editAppSpecific('REQUIRED CASES.TRA Created',dateAdd(null,0),capId);
-var RFI = AInfo['Reason for Invest'];
+var RFI = AInfo['Reason for Investigation'];
 updateAppStatus('Finaled','Child Case Created');
 newChildID = createChild('EnvHealth','Housing','TRA','NA','');
 copyAppSpecific(newChildID);
@@ -66,13 +66,13 @@ assignCap(areaInspector,newChildID);
 editAppSpecific('INV Case',capIDString,newChildID);
 editAppSpecific('Emergency','N',newChildID);
 editAppSpecific('Ordinance Chapter','10-Residential',newChildID);
-editAppSpecific('Reason for Invest',RFI,newChildID);
+editAppSpecific('Reason for Investigation',RFI,newChildID);
 copyParcelGisObjects4XAPO();
 HHC_GET_ADDRESS_FOR_CHILD();
 HHC_CONTACTS_PROCESS();
 
 if (AInfo['Online Complaint'] == 'CHECKED') {
-	editAppSpecific('Reason for Invest','Online Complaint',newChildID);
+	editAppSpecific('Reason for Investigation','Online Complaint',newChildID);
 		}
 	}
 }
