@@ -1,3 +1,5 @@
+//IRSA:ENVHEALTH/HOUSING/INV/*
+
 if (isTaskActive('Inspection') && matches(inspResult,'Unjustified')) {
 	branchTask('Inspection','Unjustified','Updated by Script');
 	}
@@ -16,6 +18,8 @@ if (isTaskActive('Inspection') && matches(inspResult,'In Violation')) {
 	}
 
 if (matches(inspType, 'Initial Inspection','Reinspection') && matches(inspResult,'In Violation')) {
+	editAppSpecific('Resulted in Violation','Yes');
 	inspIDate = inspObj.getInspectionDate().getMonth() + '/' + inspObj.getInspectionDate().getDayOfMonth() + '/' + inspObj.getInspectionDate().getYear();
 	editAppSpecific('Initial Inspection Date',inspIDate);
+	closeTask('Inspection','In Violation','Updated by Script');
 	}
