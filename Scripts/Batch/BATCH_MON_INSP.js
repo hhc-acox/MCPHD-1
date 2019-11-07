@@ -145,7 +145,11 @@ function mainProcess() {
             if (String(capId.getCustomID()) != "MON-01-01") {
                 continue;
             }
-            */
+            
+            if(capCount > 5){
+                break;
+            }
+           */
 
             var conn = new db();
             var sql = "SELECT G6_ACT_NUM FROM G6ACTION WHERE SERV_PROV_CODE='{0}' AND B1_PER_ID1='{1}' AND B1_PER_ID2='{2}' AND B1_PER_ID3='{3}' ORDER BY G6_COMPL_DD DESC";
@@ -172,7 +176,7 @@ function mainProcess() {
             var inspectorObj = null;
             if (checkZone != null && checkZone != 'null') {
                 var inspUser = lookup("GIS - Larvicide Techs", "Vector Zone " + String("00" + checkZone).substr(-2));
-                var inspRes = aa.person.getUser(arguments[2])
+                var inspRes = aa.person.getUser(String(inspUser))
                 if (inspRes.getSuccess()) {
                     inspectorObj = inspRes.getOutput();
                     logDebug("Found Inspector Zone " + checkZone + " " + inspUser);
@@ -187,6 +191,7 @@ function mainProcess() {
             var inspNumber = null;
             if (schedRes.getSuccess()) {
                 inspNumber = parseInt(schedRes.getOutput(), 10);
+                logDebug("Scheduled " + inspNumber);
             }
             else{
                 logDebug("Could not Schedule Inspection");
@@ -196,7 +201,7 @@ function mainProcess() {
 
             //copy from the old one
             //var newInsp = aa.inspection.getInspection(capId, inspNumber).getOutput();//getInspectionWithGuideSheets(capId, inspNumber);
-            var capId = aa.cap.getCapID("MON-01-01").getOutput();
+            //var capId = aa.cap.getCapID("MON-01-01").getOutput();
 
             var copyList = {
                 "LIGHT TRAP": "TRAP ID",
