@@ -4,7 +4,7 @@
 		censusTract = AInfo['ParcelAttribute.CensusTract'];
 		areaInspector = lookup('Census - Housing EHS',censusTract);
 if (isTaskActive('Reinspection') && matches(inspResult,'In Violation')) {
-	closeTask('Reinspection','In Violation','Updated by Script');
+	branchTask('Reinspection','In Violation','Updated by Script');
 	assignTask('Additional Processing',areaInspector);
 	}
 
