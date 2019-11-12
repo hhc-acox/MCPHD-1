@@ -18,11 +18,12 @@ function HHC_GET_ADDRESS()
 				}
 
 			comment ('The Address is: '+hseNum+' '+streetDir+' '+streetName+' '+streetSuffix);
-			if (streetDir == null) {
+			
+			if (streetDir == null && (matches(appTypeArray[],'HOUSING','HHECMSC'))) {
 				editAppName(hseNum+' '+streetName+' '+streetSuffix);
 				}
 
-			if (streetDir != null) {
+			if (streetDir != null && (matches(appTypeArray[],'HOUSING','HHECMSC'))) {
 				editAppName(hseNum+' '+streetDir+' '+streetName+' '+streetSuffix);
 				}
 
