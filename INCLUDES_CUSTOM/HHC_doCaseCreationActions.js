@@ -22,12 +22,17 @@ function HHC_doCaseCreationActions(){
 					for(row in sepRules){
 						if(sepRules[row]["Active"]=="Yes"){
 							var recType = ""+sepRules[row]["Record Type"];
+							var appMatch = '';
+							var recdTypeArr = "" + recType;
+							var arrAppType = recdTypeArr.split("/");
 							var complaintType = ""+sepRules[row]["Complaint Type"];
 							var ResidentialOrCommercial = ""+sepRules[row]["Residential or Commercial"];
 							var RecordAssignmentChoice = ""+sepRules[row]["Record Assignment Choice"];
 							var RecordAssignmentValue = ""+sepRules[row]["Name of Discipline"];
 							var LayerName = ""+sepRules[row]["GIS Layer Name"]; 
 							var IdField = ""+sepRules[row]["GIS Id Field"];
+							var myDept = arrAppType[1];
+							var mySubDept = arrAppType[2];
 							switch(true) {
 								case RecordAssignmentChoice == 'Inspector by Discipline':
 								case RecordAssignmentChoice == 'Supervisor by Discipline':
@@ -52,8 +57,14 @@ function HHC_doCaseCreationActions(){
 									comment('the LayerName is: '+LayerName);
 									comment('the IdField is: '+IdField);
 									comment('the zone is: '+zone);
-									if (zone && zone != "undefined" && zone != null)
+									comment('Department is :'+arrAppType[1]);
+									comment('The variable myDept is '+myDept);
+									comment('The variable mySubDept is '+mySubDept);
+									
+									if (zone && zone != "undefined" && zone != null && myDept == 'Food')
 										RecordAssignedTo = lookup('GIS - Foods EHS',zone); 
+									else if (zone && zone != "undefined" && zone != null && mySubDept == 'Pool')
+										RecordAssignedTo = lookup('GIS - Pools EHS',zone); 
 									else
 										RecordAssignedTo = null;
 									break;	
