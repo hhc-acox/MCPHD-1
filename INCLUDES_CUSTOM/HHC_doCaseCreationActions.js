@@ -91,7 +91,7 @@ function HHC_doCaseCreationActions(){
 									//Record Assignment
 										aa.print("Assigned cap to " + recordAssignment);
 										assignCap(recordAssignment);
-									}
+								//	}
 								}
 							}
 						}
@@ -105,3 +105,6 @@ function HHC_doCaseCreationActions(){
 		logDebug(err.stack)
 	}
 	}
+	
+
+
