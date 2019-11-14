@@ -1,4 +1,5 @@
-//aa.env.setValue("Zone", "1");
+//aa.env.setValue("Zone", "Vector Zone 01,01,1");
+//aa.env.setValue("inspZone", "1");
 /*------------------------------------------------------------------------------------------------------/
 | Program: BATCH_LARV_INSP.js  Trigger: Batch
 | Client:
@@ -69,7 +70,18 @@ if (batchJobResult.getSuccess()) {
 | Start: BATCH PARAMETERS
 |
 /------------------------------------------------------------------------------------------------------*/
-var checkZone = getParam("Zone"); // Hardcoded dates.   Use for testing only
+var checkZoneArray = getParam("Zone"); // Hardcoded dates.   Use for testing only
+var inspZone = getParam("inspZone");
+checkZoneArray = checkZoneArray.split(",");
+var checkZone = "";
+for(var z in checkZoneArray){
+	if(checkZone != ""){
+		checkZone += ",";
+	}
+	checkZone +="'" + String(checkZoneArray[z]).trim() + "'";
+}
+logDebug("checkZone=("+checkZone+")");
+
 
 /*----------------------------------------------------------------------------------------------------/
 |
@@ -91,6 +103,7 @@ logDebug("Start of Job");
 
 try {
 	mainProcess();
+	
 } catch (err) {
 	logDebug("ERROR: " + err.message + " In " + batchJobName + " Line " + err.lineNumber);
 	logDebug("Stack: " + err.stack);
@@ -129,7 +142,7 @@ function mainProcess() {
 	var sql = "SELECT a.b1_per_id1, a.b1_per_id2,a.b1_per_id3 FROM G6ACTION A " +
 		"INNER JOIN B1PERMIT B1 ON A.SERV_PROV_CODE=B1.SERV_PROV_CODE AND A.B1_PER_ID1=B1.B1_PER_ID1 AND A.B1_PER_ID2=B1.B1_PER_ID2 AND A.B1_PER_ID3=B1.B1_PER_ID3 " +
 		"INNER JOIN BCHCKBOX B ON A.SERV_PROV_CODE=B.SERV_PROV_CODE AND A.B1_PER_ID1=B.B1_PER_ID1 AND A.B1_PER_ID2=B.B1_PER_ID2 AND A.B1_PER_ID3=B.B1_PER_ID3 " +
-		"WHERE A.SERV_PROV_CODE='{0}' and B.B1_CHECKBOX_DESC='Zone' and b.b1_checklist_comment='{1}' " +
+		"WHERE A.SERV_PROV_CODE='{0}' and B.B1_CHECKBOX_DESC='Zone' and b.b1_checklist_comment in ({1}) " +
 		"AND B1.B1_PER_GROUP='EnvHealth' and b1.b1_per_type='VC' and b1.b1_per_sub_type='LarvicideSite' and b1_per_category='NA' " +
 		"AND TRUNC(G6_ACT_DD) = TO_DATE('{2}','MM/DD/YYYY') " +
 		"and exists (SELECT 1 FROM gguidesheet G inner join ggdsheet_item_asi gi on g.serv_prov_code=gi.serv_prov_code and g.guidesheet_seq_nbr=gi.guidesheet_seq_nbr " +
@@ -151,7 +164,7 @@ function mainProcess() {
 		var sql = "SELECT a.b1_per_id1, a.b1_per_id2,a.b1_per_id3 FROM G6ACTION A " +
 			"INNER JOIN B1PERMIT B1 ON A.SERV_PROV_CODE=B1.SERV_PROV_CODE AND A.B1_PER_ID1=B1.B1_PER_ID1 AND A.B1_PER_ID2=B1.B1_PER_ID2 AND A.B1_PER_ID3=B1.B1_PER_ID3 " +
 			"INNER JOIN BCHCKBOX B ON A.SERV_PROV_CODE=B.SERV_PROV_CODE AND A.B1_PER_ID1=B.B1_PER_ID1 AND A.B1_PER_ID2=B.B1_PER_ID2 AND A.B1_PER_ID3=B.B1_PER_ID3 " +
-			"WHERE A.SERV_PROV_CODE='{0}' and B.B1_CHECKBOX_DESC='Zone' and b.b1_checklist_comment='{1}' " +
+			"WHERE A.SERV_PROV_CODE='{0}' and B.B1_CHECKBOX_DESC='Zone' and b.b1_checklist_comment  in ({1}) " +
 			"AND B1.B1_PER_GROUP='EnvHealth' and b1.b1_per_type='VC' and b1.b1_per_sub_type='LarvicideSite' and b1_per_category='NA' " +
 			"AND TRUNC(G6_ACT_DD) = TO_DATE('{2}','MM/DD/YYYY') " +
 			"and exists (SELECT 1 FROM gguidesheet G inner join ggdsheet_item_asi gi on g.serv_prov_code=gi.serv_prov_code and g.guidesheet_seq_nbr=gi.guidesheet_seq_nbr " +
@@ -168,7 +181,7 @@ function mainProcess() {
 		}
 	}
 
-	var inspUsr = lookup("GIS - Larvicide Techs", "Vector Zone " + String("00" + checkZone).substr(-2));
+	var inspUsr = lookup("GIS - Larvicide Techs", "Vector Zone " + String("00" + inspZone).substr(-2));
 
 	for (var i in oneYear) {
 		capId = oneYear[i];
