@@ -49,6 +49,9 @@ function HHC_doCaseCreationActions(){
 									break;																			
 								case RecordAssignmentChoice == 'Inspector by GIS Zone':
 									zone = getGISInfo("MCPHD", LayerName, IdField);
+									comment('the LayerName is: '+LayerName);
+									comment('the IdField is: '+IdField);
+									comment('the zone is: '+zone);
 									if (zone && zone != "undefined" && zone != null)
 										RecordAssignedTo = lookup('GIS - Foods EHS',zone); 
 									else
@@ -102,3 +105,6 @@ function HHC_doCaseCreationActions(){
 		logDebug(err.stack)
 	}
 	}
+	
+
+
