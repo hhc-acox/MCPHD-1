@@ -50,7 +50,7 @@ function HHC_doCaseCreationActions(){
 								case RecordAssignmentChoice == 'Inspector by GIS Zone':
 									zone = getGISInfo("MCPHD", LayerName, IdField);
 									if (zone && zone != "undefined" && zone != null)
-										RecordAssignedTo = zone;
+										RecordAssignedTo = lookup('GIS - Foods EHS',zone); 
 									else
 										RecordAssignedTo = null;
 									break;	
@@ -86,7 +86,7 @@ function HHC_doCaseCreationActions(){
 									}
 									else {
 									//Record Assignment
-										aa.print("Assgined cap to " + recordAssignment);
+										aa.print("Assigned cap to " + recordAssignment);
 										assignCap(recordAssignment);
 									}
 								}
@@ -102,6 +102,3 @@ function HHC_doCaseCreationActions(){
 		logDebug(err.stack)
 	}
 	}
-	
-
-
