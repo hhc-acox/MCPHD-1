@@ -61,9 +61,9 @@ function HHC_doCaseCreationActions(){
 									comment('The variable myDept is '+myDept);
 									comment('The variable mySubDept is '+mySubDept);
 									
-									if (zone && zone != "undefined" && zone != null && myDept == 'Food')
+									if (zone && zone != "undefined" && zone != null && LayerName == 'FoodsDistrict')
 										RecordAssignedTo = lookup('GIS - Foods EHS',zone); 
-									else if (zone && zone != "undefined" && zone != null && mySubDept == 'Pool')
+									else if (zone && zone != "undefined" && zone != null && LayerName == 'PoolInspectorDistrict')
 										RecordAssignedTo = lookup('GIS - Pools EHS',zone); 
 									else
 										RecordAssignedTo = null;
