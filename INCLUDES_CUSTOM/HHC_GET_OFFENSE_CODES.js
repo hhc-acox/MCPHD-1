@@ -11,6 +11,7 @@ function HHC_GET_OFFENSE_CODES(childID) {
 				var vioCodeNums = '';
 				var newVioCode = '';
 				var uniqVioCodes = '';
+				if (matches(appTypeArray[2],'HSG','TRA')){
 				crtVIOLATIONS = loadASITable('VIOLATIONS');
 				if (crtVIOLATIONS && crtVIOLATIONS.length > 0) {
 					for(a in crtVIOLATIONS) {
@@ -18,8 +19,9 @@ function HHC_GET_OFFENSE_CODES(childID) {
 						if (matches(thisrow['Status'],'Court') && !matches(thisrow['Violation'],null)) {
 							//for each value look up the corresponding codes in the translation table that fits the case and push each code set to an array:
 							//HSG Cases
-								logDebug("HHC_GET_OFFENSE_CODES: Housing Case");
+								
 								if (matches(appTypeArray[2],'HSG')){
+									logDebug("HHC_GET_OFFENSE_CODES: Housing Case");
 									logDebug("HHC_GET_OFFENSE_CODES: parseInt(code10or19) - "+parseInt(code10or19));
 									if (parseInt(code10or19) == 10) {
 										v = lookup('VioCode_Chpt10_Occ',crtVIOLATIONS[a]['Violation']);	
@@ -80,9 +82,19 @@ function HHC_GET_OFFENSE_CODES(childID) {
 										v = '';
 									} 
 								}
-							//LHH Cases using Guidesheets
-								logDebug("HHC_GET_OFFENSE_CODES: LHH Case");
+
+							}
+							else {
+								logDebug("Status is not court or violation is null");
+							}
+						} // end for each row
+					}
+				}
+			
+									//LHH Cases using Guidesheets
+								
 								if (matches(appTypeArray[2],'LHH')){
+									logDebug("HHC_GET_OFFENSE_CODES: LHH Case");
 									logDebug("HHC_GET_OFFENSE_CODES: parseInt(code10or19) - "+parseInt(code10or19));
 									if (parseInt(code10or19) == 10) {
 										/* v = lookup('VioCode_Chpt10_Occ',crtVIOLATIONS[a]['Violation']);	
@@ -109,16 +121,13 @@ function HHC_GET_OFFENSE_CODES(childID) {
 								newOffenseRow = new Array();
 								newOffenseRow['OFFENSE CODE'] = new asiTableValObj("OFFENSE CODE", thisVioCode, 'N');
 								addToASITable('OFFENSE CODES',newOffenseRow, childID);
-							}
-						}
-						else {
-							logDebug("Status is not court or violation is null");
-						}
-					} // end for each row
-				}		
-			}	
-			catch(err) {
-				logDebug("A JavaScript Error occurred: HHC_GET_OFFENSE_CODES:  " + err.message);
-				logDebug(err.stack);
-			}
+							}	
+			
+			
+			
+		}	
+		catch(err) {
+			logDebug("A JavaScript Error occurred: HHC_GET_OFFENSE_CODES:  " + err.message);
+			logDebug(err.stack);
 		}
+	}
