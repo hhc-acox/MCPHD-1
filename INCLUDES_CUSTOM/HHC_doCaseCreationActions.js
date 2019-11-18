@@ -105,7 +105,7 @@ function HHC_doCaseCreationActions(){
 								//	}
 								}
 								
-								If(matches(myDept,'WQ','Food') && wfTask == 'Case Intake')
+								if(matches(myDept,'WQ','Food') && wfTask == 'Case Intake')
 								{
 									
 								closeTask('Case Intake');	
