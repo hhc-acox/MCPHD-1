@@ -104,7 +104,15 @@ function HHC_doCaseCreationActions(){
 										assignCap(recordAssignment);
 								//	}
 								}
+								
+								If(matches(myDept,'WQ','Food') && wfTask == 'Case Intake')
+								{
+									
+								closeTask('Case Intake');	
+									
+								}
 							}
+							
 						}
 					}
 				}
