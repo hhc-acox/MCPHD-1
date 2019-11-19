@@ -4,7 +4,7 @@ function HHC_SORT_CONTACTS()
 		showMessage=true;
 		appName = cContactAry[yy].getCapContactModel().getPeople().getFullName();
 		appConType = cContactAry[yy].getCapContactModel().getContactType();
-		appConRelate = cContactAry[yy].getCapContactModel().getRelation();
+		appConRelate = cContactAry[yy].getCapContactModel().getPeople().getRelation();
 		appSeqNum = cContactAry[yy].getCapContactModel().getPeople().getContactSeqNumber();
 		cTempAry[yy] = [[appName],[appConType],[appConRelate],[appSeqNum]];
 		cTempAry.sort();
