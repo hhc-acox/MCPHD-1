@@ -9,8 +9,10 @@ function HHC_CREATE_CRT_CASES() {
 		}
 		if (cContactAry && cContactAry.length > 0) {
 			for (i=0; i<cContactAry.length; i++) {
-				thisContact = cContactAry[i];	
-				if (thisContact.getCapContactModel().getContactType() == "Responsible Party") {
+				thisContact = cContactAry[i];
+				cContactTypeToCheckFor = thisContact.getCapContactModel().getContactType();
+				cContactRelate = thisContact.getCapContactModel().getPeople().getRelation();
+				if ((matches(cContactTypeToCheckFor, 'Deed Holder','Occupant') or cContactRelate == 'Responsible Party')){
 					newChildID = createChild('EnvHealth','CRT','NA','NA','');
 					copyAppSpecific(newChildID);
 					comment('New child app id = '+ newChildID);
