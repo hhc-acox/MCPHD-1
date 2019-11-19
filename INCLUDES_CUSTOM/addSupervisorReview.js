@@ -9,6 +9,8 @@ function addSupervisorReview(itemCap, taskType,  inspID, taskName, statusName) {
 				if (!isSupervisor(currentUserID)) {
 					addAdHocTask("ADHOC_WORKFLOW", "Supervisor Review Workflow", taskName + "-" + statusName, assignTo);
 					logDebug("Added Supervisor Review Workflow task");
+					activateTask(taskName);
+					updateTask(taskName, "In Progress", "Supervisor Review in progress", "Set by script");
 				}
 			}
 			else {
