@@ -89,19 +89,11 @@ function HHC_doCaseCreationActions(){
 										}
 									}
 								}
-								//if the record is okay					
-								//if (appMatch && recordAssignment.length>0){
-								//	if (appMatch("EnvHealth/WQ/Complaint/NA")) {
-								//		compType = getAppSpecific("Complaint Type", capId);
-								//		facType = getAppSpecific("Facility Type", capId);
-								//		if (compType == complaintType || facType == ResidentialOrCommercial)
-								//			assignCap(recordAssignment);
-								//	}
-								//	else {
+
 									//Record Assignment
 										aa.print("Assigned cap to " + recordAssignment);
 										assignCap(recordAssignment);
-								//	}
+							
 								}
 								
 								// Close Case Intakes
@@ -122,4 +114,4 @@ function HHC_doCaseCreationActions(){
 		logDebug(err.stack)
 	}
 	}
-	}
+	
