@@ -64,14 +64,19 @@ if (matches(appTypeArray[2],'SCM')) {
 	}	
 //CCC EHMS Supervisor Assignment
 if (matches(appTypeArray[2],'CCC')) {
-	areaInspector = hhcgetUserByDiscipline('EHSMSupervisor');
+	areaInspector = hhcgetUserByDiscipline('EHSMSupervisor'); //Assigned discipline to Jason Hudson
 	comment('the CCC Supervisor is: '+areaInspector);
 	}	
 
 //TLP EHSM Assignment
 if (matches(appTypeArray[2],'TLP')) {
 	areaInspector = hhcgetUserByDiscipline('EHSMToolLoan');
-	comment('the CCC Supervisor is: '+areaInspector);
+	comment('the TLP EHSMToolLoan is: '+areaInspector);
+	}	
+//RCP EHSM Assignment
+if (matches(appTypeArray[2],'RCP')) {
+	areaInspector = hhcgetUserByDiscipline('EHSMSupervisor'); //Assigned discipline to Jason Hudson
+	comment('the RCP Person is: '+areaInspector);
 	}	
 //LINV EHS
 if (AInfo['Asthma'] == 'CHECKED') {
