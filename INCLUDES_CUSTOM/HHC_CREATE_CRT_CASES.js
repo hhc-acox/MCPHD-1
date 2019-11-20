@@ -96,7 +96,7 @@ function HHC_CREATE_CRT_CASES() {
 						{
 							var csortContactNum = nextNameArr[ii][0];
 							var csortContactNameToCheckFor = nextNameArr[ii][1];
-							var csortContactSeqNum = nextNameArr[ii][3];
+							var csortContactSeqNum = nextNameArr[ii][2];
 							
 							var cContactDelete = true;
 							cCapContactModel = cContactAry[ii].getCapContactModel();
