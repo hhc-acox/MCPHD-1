@@ -10,17 +10,22 @@ if (matches(inspResult,'Technician Completed')) {
 	var userID = hhcgetUserByDiscipline('VCMosquito');
 	assignInspection(inspId, userID);
 }
-if (matches(inspResult,'Supervisor Reviewed')) {
+if (matches(inspResult,'Tech Complete - New Site','Tech Complete - Existing Site')) {
 	//assign to Mosquito Control Biology
 	var userID = hhcgetUserByDiscipline('VCBiology');
 	assignInspection(inspId, userID);
+	
+	//create site if new
+	if (matches(inspResult, 'Tech Complete - New Site')) {
+		CreateLarvicideSite_IfBreeding(capId);	
+	}
 }
 if (matches(inspResult,'Lab Complete')) {
-	CreateLarvicideSite_IfBreeding(capId);
+	//CreateLarvicideSite_IfBreeding(capId);
 	aa.inspection.resultInspection(capId, inspId, inspStatus, resultDate, resultComment, currentUserID);
 	updateAppStatus("Closed");
 }
-if (matches(inspResult,'Unable to Inspect','No Access')) {
+if (matches(inspResult,'Unable to Inspect','No Access', 'Tech Complete - Not Breeding')) {
 	aa.inspection.resultInspection(capId, inspId, inspStatus, resultDate, resultComment, currentUserID);
 	updateAppStatus("Closed");
 }
