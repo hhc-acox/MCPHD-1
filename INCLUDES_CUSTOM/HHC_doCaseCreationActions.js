@@ -100,6 +100,7 @@ function HHC_doCaseCreationActions(){
 								
 								if(aa.workflow.getTask(capId, 'Case Intake').getSuccess() === true && matches(myDept,'WQ','Food')) {
 									closeTask('Case Intake', 'Complete', 'Closed by Script', 'Closed by Script');
+									assignTask('Complaint Review', recordAssignment);
 								}
 							}
 							
