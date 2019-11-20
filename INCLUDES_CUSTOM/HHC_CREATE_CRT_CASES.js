@@ -106,7 +106,7 @@ function HHC_CREATE_CRT_CASES() {
 								cContactDelete = false;
 								}
 
-							if ((!matches(cContactTypeToCheckFor, 'Deed Holder','Occupant') or cContactRelate != 'Responsible Party'))	
+							if ((!matches(cContactTypeToCheckFor, 'Deed Holder','Occupant') || cContactRelate != 'Responsible Party'))	
 						    //Each person on their CRT is always Primary
 							) 
 							{
