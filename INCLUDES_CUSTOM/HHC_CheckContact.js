@@ -6,7 +6,7 @@ function HHC_CheckContact()
 		cContactTypeToCheckFor = cTempAry[yy][1];
 		cContactSeqNum = cTempAry[yy][2];
 		cContactRelate = cTempAry[yy][3];
-			if (appName != prevName && (matches(cContactTypeToCheckFor, 'Deed Holder','Occupant') or cContactRelate == 'Responsible Party')) 
+			if (appName != prevName && (matches(cContactTypeToCheckFor, 'Deed Holder','Occupant') || cContactRelate == 'Responsible Party')) 
 			
 			{
 				addCourtCase = true;
