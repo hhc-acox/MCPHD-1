@@ -44,3 +44,6 @@ if(riskLevel!=null && riskLevel==3 && inspType == "Routine Inspection" && inspRe
 if(riskLevel!=null && riskLevel==4 && inspType == "Routine Inspection" && inspResult == "Fails to Meet Standards"){
     scheduleInspection("Routine Inspection", Math.round(( new Date(dateAddMonths(inspDate, 3))- new Date())/(1000*60*60*24) + 1), currentUserID);
 } */
+
+
+addSupervisorReview(capId, "INSPECTION", inspId, null, null);
