@@ -98,7 +98,7 @@ function HHC_CREATE_CRT_CASES() {
 							var csortContactNameToCheckFor = nextNameArr[ii][1];
 							var csortContactTypeToCheckFor = nextNameArr[ii][2];
 							var csortContactSeqNum = nextNameArr[ii][3];
-							var cContactRelate = nextNameArr[ii][4];
+							var csortContactRelate = nextNameArr[ii][4];
 							var cContactDelete = true;
 							cCapContactModel = cContactAry[ii].getCapContactModel();
 							if (parseInt(ccnt) == parseInt(csortContactNum)) 
@@ -108,7 +108,6 @@ function HHC_CREATE_CRT_CASES() {
 
 							if ((!matches(cContactTypeToCheckFor, 'Deed Holder','Occupant') || cContactRelate != 'Responsible Party'))	
 						    //Each person on their CRT is always Primary
-						
 							{
 								cContactDelete = true;
 								}
