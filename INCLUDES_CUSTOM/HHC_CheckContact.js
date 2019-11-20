@@ -5,9 +5,9 @@ function HHC_CheckContact()
 		appName = cTempAry[yy][0];
 		cContactTypeToCheckFor = cTempAry[yy][1];
 		cContactSeqNum = cTempAry[yy][2];
-		cContactRelate = cTempAry[yy][3];
-			if (appName != prevName && (matches(cContactTypeToCheckFor, 'Deed Holder','Occupant') || cContactRelate == 'Responsible Party')) 
-			
+		
+			if (appName != prevName && (matches(cContactTypeToCheckFor, 'Property Owner','Tenant','Responsible Party'))) 
+						
 			{
 				addCourtCase = true;
 			}
@@ -16,11 +16,12 @@ function HHC_CheckContact()
 				y++;
 			}
 
-		nextNameArr[yy] = [[y],[appName],[cContactTypeToCheckFor],[cContactSeqNum],[cContactRelate]];
-		comment(nextNameArr[yy][0]+' - '+nextNameArr[yy][1]+' - '+nextNameArr[yy][2]+' - '+nextNameArr[yy][3]+' - '+nextNameArr[yy][4]);
+		nextNameArr[yy] = [[y],[appName],[cContactTypeToCheckFor],[cContactSeqNum]];
+		comment(nextNameArr[yy][0]+' - '+nextNameArr[yy][1]+' - '+nextNameArr[yy][2]+' - '+nextNameArr[yy][3]);
 		prevName=String(appName);
 		addCourtCase = false;
 		cContactTypeToCheckFor = '';
+		cContactRelate = '';
 
 		}	
 	catch(err)

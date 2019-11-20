@@ -96,9 +96,8 @@ function HHC_CREATE_CRT_CASES() {
 						{
 							var csortContactNum = nextNameArr[ii][0];
 							var csortContactNameToCheckFor = nextNameArr[ii][1];
-							var csortContactTypeToCheckFor = nextNameArr[ii][2];
 							var csortContactSeqNum = nextNameArr[ii][3];
-							var csortContactRelate = nextNameArr[ii][4];
+							
 							var cContactDelete = true;
 							cCapContactModel = cContactAry[ii].getCapContactModel();
 							if (parseInt(ccnt) == parseInt(csortContactNum)) 
@@ -106,7 +105,7 @@ function HHC_CREATE_CRT_CASES() {
 								cContactDelete = false;
 								}
 
-							if ((!matches(cContactTypeToCheckFor, 'Deed Holder','Occupant') || cContactRelate != 'Responsible Party'))	
+							if ((!matches(cContactTypeToCheckFor, 'Property Owner','Tenant','Responsible Party')))	
 						    //Each person on their CRT is always Primary
 							{
 								cContactDelete = true;
@@ -127,7 +126,7 @@ function HHC_CREATE_CRT_CASES() {
 								}
 
 							showMessage = true;
-							comment(ccnt +' - '+nextNameArr[ii][0]+' ii= '+ii+' - '+nextNameArr[ii][1]+' - '+nextNameArr[ii][2]+' - '+nextNameArr[ii][3]+' - '+nextNameArr[ii][4]+' ---- '+cContactDelete+' - '+cContactSeqNumber+' - '+csortContactSeqNum);
+							comment(ccnt +' - '+nextNameArr[ii][0]+' ii= '+ii+' - '+nextNameArr[ii][1]+' - '+nextNameArr[ii][2]+' - '+nextNameArr[ii][3]+' ---- '+cContactDelete+' - '+cContactSeqNumber+' - '+csortContactSeqNum);
 
 							}
 
