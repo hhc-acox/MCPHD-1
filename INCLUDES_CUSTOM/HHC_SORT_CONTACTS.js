@@ -10,10 +10,11 @@ function HHC_SORT_CONTACTS()
 		{appConType =cContactAry[yy].getCapContactModel().getPeople().getRelation();}
 		appSeqNum = cContactAry[yy].getCapContactModel().getPeople().getContactSeqNumber();
 		
-		if appConType
+		if (appConType){
 		cTempAry[yy] = [[appName],[appConType],[appSeqNum]];
 		cTempAry.sort();
 		comment(cTempAry[yy][0]+' - '+cTempAry[yy][1]+' - '+cTempAry[yy][2]);
+		}
 			}
 	catch(err)
 		{
