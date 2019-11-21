@@ -21,9 +21,7 @@ function HHC_CREATE_CRT_CASES() {
 
 			if (cContactsExist) 
 				{
-					for (i=0; i<concnt; i++) 
-
-					{
+					for (i=0; i<concnt; i++) {
 					cContactResult = AInfo[''];
 					cContactsExist = false;
 					cContactAry = new Array();
@@ -37,7 +35,6 @@ function HHC_CREATE_CRT_CASES() {
 					cPeopleModel = AInfo[''];
 					cc = 0;
 					y = 0;
-				{
 					newChildID = createChild('EnvHealth','CRT','NA','NA','');
 					copyAppSpecific(newChildID);
 					comment('New child app id = '+ newChildID);
@@ -47,6 +44,13 @@ function HHC_CREATE_CRT_CASES() {
 					updateAppStatus('Legal Review','Initial Status',newChildID);
 					assignCap('CSANDERS',newChildID);
 					editAppSpecific('Parent Case',capIDString,newChildID);
+					ccnt++;
+					comment('ccnt = '+ccnt); //This is wrong only shows 1 case
+					capId = newChildID;
+					comment("NEW CHILD ID IS "+newChildID); //makes it here 1 time
+					cContactResult = aa.people.getCapContactByCapID(capId);
+					cContactAry = cContactResult.getOutput();
+					cc = cContactAry.length;
 					
 					if (appMatch('*/*/LHH/*')) 
 					{
@@ -54,18 +58,11 @@ function HHC_CREATE_CRT_CASES() {
 						editAppSpecific('Parent Case',saveID,newChildID);
 						editAppSpecific('EHS Court Day','THURS',newChildID);
 						editAppSpecific('EHS Court Time','1:00 PM',newChildID);
-						}
+					}
 
 					HHC_GET_OFFENSE_CODES(newChildID);	
-					HHC_GET_ADDRESS_FOR_CHILD();
-				}	
-				ccnt++;
-				comment('ccnt = '+ccnt); //makes it here 1 time
-				capId = newChildID;
-				comment("NEW CHILD ID IS "+newChildID); //makes it here 1 time
-				cContactResult = aa.people.getCapContactByCapID(capId);
-				cContactAry = cContactResult.getOutput();
-				cc = cContactAry.length;
+					HHC_GET_ADDRESS_FOR_CHILD();	
+
 				if (cContactResult.getSuccess()) 
 				{
 					cContactsExist = true;
@@ -97,7 +94,7 @@ function HHC_CREATE_CRT_CASES() {
 						{
 							var csortContactNum = nextNameArr[ii][0];
 							var csortContactNameToCheckFor = nextNameArr[ii][1];
-							var csortContactSeqNum = nextNameArr[ii][2];
+							var csortContactSeqNum = nextNameArr[ii][3];
 							
 							var cContactDelete = true;
 							cCapContactModel = cContactAry[ii].getCapContactModel();
@@ -132,8 +129,8 @@ function HHC_CREATE_CRT_CASES() {
 
 							}
 
-			capId = saveID;
-			comment("the saved capId is "+saveID);
+						capId = saveID;
+						comment("the saved capId is "+saveID);
 
 						}
 
