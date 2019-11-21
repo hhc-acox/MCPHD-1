@@ -115,7 +115,7 @@ function HHC_GET_OFFENSE_CODES(childID) {
 							}
 								
 							newVioCodes = vioCodeNums.match(/.{1,7}/g);		
-							logDebug('LHH viocodes length '+newVioCodes.length);
+							logDebug('New Viocodes length for '+appTypeArray[2]+' - '++newVioCodes.length);
 							for (z in newVioCodes) {
 								thisVioCode = newVioCodes[z];
 								newOffenseRow = new Array();
