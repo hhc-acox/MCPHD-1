@@ -51,6 +51,7 @@ function HHC_CREATE_CRT_CASES() {
 					cContactResult = aa.people.getCapContactByCapID(capId);
 					cContactAry = cContactResult.getOutput();
 					cc = cContactAry.length;
+					comment("THE LENGTH OF CC IS "+cc);
 					
 					if (appMatch('*/*/LHH/*')) 
 					{
@@ -60,7 +61,7 @@ function HHC_CREATE_CRT_CASES() {
 						editAppSpecific('EHS Court Time','1:00 PM',newChildID);
 					}
 
-					HHC_GET_OFFENSE_CODES(newChildID);	
+					HHC_GET_OFFENSE_CODES(saveID,newChildID);	
 					HHC_GET_ADDRESS_FOR_CHILD();	
 
 				if (cContactResult.getSuccess()) 
