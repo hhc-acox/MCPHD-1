@@ -72,6 +72,7 @@ if (matches(appTypeArray[2],'CCC')) {
 if (matches(appTypeArray[2],'TLP')) {
 	areaInspector = hhcgetUserByDiscipline('EHSMToolLoan');
 	comment('the TLP EHSMToolLoan is: '+areaInspector);
+	assignCap(areaInspector);
 	}	
 //RCP EHSM Assignment
 if (matches(appTypeArray[2],'RCP')) {
