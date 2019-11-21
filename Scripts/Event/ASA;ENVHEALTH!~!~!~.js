@@ -232,6 +232,9 @@ if (matches(appTypeArray[2],'VEH','HSG','TRA') && AInfo['Initial Inspection Date
 if (matches(appTypeArray[3],'SEC') && AInfo['Initial Inspection Date'] != null) {
 	scheduleInspectDate('SEC Action',AInfo['Initial Inspection Date'],areaInspector);
 	}
+if (matches(appTypeArray[3],'DumpsterSurvey')) {
+	scheduleInspectDate('Rodent Control Dumpster Survey',nextWorkDay(dateAdd(null,0)),null);
+	}	
 //Healthy Homes Initial Inspection scheduling
 if (matches(appTypeArray[2],'LHH') && AInfo['Initial Inspection Date'] != null) {
 	scheduleInspectDate('Initial Lead Inspection',AInfo['Initial Inspection Date'],areaInspector);
