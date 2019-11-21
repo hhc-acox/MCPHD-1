@@ -60,9 +60,9 @@ function HHC_CREATE_CRT_CASES() {
 					HHC_GET_ADDRESS_FOR_CHILD();
 				}	
 				ccnt++;
-				comment('ccnt = '+ccnt);
+				comment('ccnt = '+ccnt); //makes it here 1 time
 				capId = newChildID;
-				comment("NEW CHILD ID IS "+newChildID);
+				comment("NEW CHILD ID IS "+newChildID); //makes it here 1 time
 				cContactResult = aa.people.getCapContactByCapID(capId);
 				cContactAry = cContactResult.getOutput();
 				cc = cContactAry.length;
@@ -75,14 +75,14 @@ function HHC_CREATE_CRT_CASES() {
 					{
 						for(yy in cContactAry) 
 
-						HHC_SORT_CONTACTS();
+						HHC_SORT_CONTACTS(); //makes it here 1 time
 						}
 
 					if (cContactsExist) 
 					{
 						for(yy in cTempAry) 
 
-						HHC_CheckContact();
+						HHC_CheckContact(); //makes it here 1 time
 						}
 
 					if (cContactsExist) 
@@ -90,6 +90,7 @@ function HHC_CREATE_CRT_CASES() {
 						for(yy in nextNameArr) 
 							
 						nextNameArr.sort();
+						comment('Deletes begin here');
 						}	
 						for(ii=0;ii<cc;ii++) 
 
@@ -104,7 +105,8 @@ function HHC_CREATE_CRT_CASES() {
 							{
 								cContactDelete = false;
 								}
-
+								
+							comment('Contact type checking for deletes begin here');
 							if ((!matches(cContactTypeToCheckFor, 'Property Owner','Tenant','Responsible Party')))	
 						    //Each person on their CRT is always Primary
 							{
@@ -114,7 +116,7 @@ function HHC_CREATE_CRT_CASES() {
 							if (cContactDelete) {
 								cPeopleModel = cCapContactModel.getPeople();
 								}
-
+							comment('Parse Int begins here');
 							if (cContactDelete) 
 							{
 								cContactSeqNumber = parseInt(csortContactSeqNum);
