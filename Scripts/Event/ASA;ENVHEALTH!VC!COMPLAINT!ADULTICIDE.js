@@ -6,9 +6,9 @@ try{
 	var hh = startDate.getHours().toString();
 	var mi = startDate.getMinutes().toString();
 	if(hh<17){
-		scheduleInspect(capId, "Adulticide Inspection", 0);
+		scheduleInspect(capId, "Adulticide", 0);
 	}else{
-		scheduleInspect(capId, "Adulticide Inspection", 1);
+		scheduleInspect(capId, "Adulticide", 1);
 	}
 
 }catch(err){
