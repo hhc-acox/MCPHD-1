@@ -115,7 +115,7 @@ function HHC_doCaseCreationActions(){
 				}
 			}
 		}
-	
+	}
 		catch(err){
 		logDebug("A JavaScript Error occurred: function HHC_doCaseCreationActions:  " + err.message);
 		logDebug(err.stack)
