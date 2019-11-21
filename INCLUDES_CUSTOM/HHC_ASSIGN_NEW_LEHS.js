@@ -30,7 +30,7 @@ function HHC_ASSIGN_NEW_LEHS() {
 		}
 	catch(err)
 	{
-		logDebug("A JavaScript Error occurred: HHC_VIOLATIONS_LOOP_COURT:  " + err.message);
+		logDebug("A JavaScript Error occurred: HHC_ASSIGN_NEW_LEHS:  " + err.message);
 		logDebug(err.stack);
 	}
 }
