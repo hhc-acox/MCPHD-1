@@ -18,6 +18,7 @@ function HHC_doCaseCreationActions(){
 				var cfgCapId = sepScriptConfigArr[sep].getCapID();
 				var sepRules = loadASITable("ACTIONS FOR CASE CREATION",cfgCapId);
 				if(sepRules.length>0){
+					var assignmentForType;
 					for(row in sepRules){
 						if(sepRules[row]["Active"]=="Yes"){
 							var recType = ""+sepRules[row]["Record Type"];
@@ -82,28 +83,33 @@ function HHC_doCaseCreationActions(){
 								if (arrAppType.length != 4){								
 									appMatch = false;
 								}else{
-									for (xx in arrAppType){
-										if (!arrAppType[xx].equals(appTypeArray[xx]) && !arrAppType[xx].equals("*")){
+									for (index in arrAppType){
+										if (!arrAppType[index].equals(appTypeArray[index]) && !arrAppType[index].equals("*")){
 											appMatch = false;
-											
 										}
 									}
 								}
+									//If assignment rule for this type
+									if(appMatch) {
+										//Record Assignment
+										assignmentForType = recordAssignment;
+									}
+								}
+							
+						}
+					}
+					
+					// Escape loop
+					if(assignmentForType) {
+						aa.print("Assigned cap to " + assignmentForType);
+					assignCap(assignmentForType);
+					}
 
-									//Record Assignment
-										aa.print("Assigned cap to " + recordAssignment);
-										assignCap(recordAssignment);
-							
-								}
-								
-								// Close Case Intakes
-								
-								if(aa.workflow.getTask(capId, 'Case Intake').getSuccess() === true && matches(myDept,'WQ','Food')&& !(arrayContains('WQ') && arrayContains('Complaint'))) {
-									closeTask('Case Intake', 'Complete', 'Closed by Script', 'Closed by Script');
-									assignTask('Complaint Review', recordAssignment);
-								}
-							}
-							
+					// Close Case Intakes
+					if(aa.workflow.getTask(capId, 'Case Intake').getSuccess() === true && matches(arrAppType[1],'WQ','Food') && !(arrayContains('WQ') && arrayContains('Complaint'))) {
+						closeTask('Case Intake', 'Complete', 'Closed by Script', 'Closed by Script');
+						if(assignmentForType) {
+							assignTask('Complaint Review', assignmentForType);
 						}
 					}
 				}
