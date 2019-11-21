@@ -1,9 +1,10 @@
-function HHC_GET_OFFENSE_CODES(childID) {
+function HHC_GET_OFFENSE_CODES(CapId,childID) {
 			try {
 				if (!childID) {
 					logDebug("Required parameter child ID is null");
 					return;
 				}
+				capId = CapId;
 				code10or19 = AInfo['Ordinance Chapter'];
 				logDebug("HHC_GET_OFFENSE_CODES: Starts here");
 				//get Violation Table from current record and interrogate each violation and determine the violation column value
@@ -122,9 +123,6 @@ function HHC_GET_OFFENSE_CODES(childID) {
 								newOffenseRow['OFFENSE CODE'] = new asiTableValObj("OFFENSE CODE", thisVioCode, 'N');
 								addToASITable('OFFENSE CODES',newOffenseRow, childID);
 							}	
-			
-			
-			
 		}	
 		catch(err) {
 			logDebug("A JavaScript Error occurred: HHC_GET_OFFENSE_CODES:  " + err.message);
