@@ -7,6 +7,7 @@
 | Richard Voller - 04/05/2019   New
 | Richard Voller - 04/09/2019   Updated based on requirements gathering.
 | Richard Voller - 04/10/2019   Added functionality to set Case Status to "Assigned".  Changed Set status to "Processed" if successful.
+| Richard Voller - 11/21/2019   Changed Inspection from "Adulticide Inspection" to "Adulticide" because checklist is associated with "Adulticide".
 | HHC - CIS
 /------------------------------------------------------------------------------------------------------*/
 /*------------------------------------------------------------------------------------------------------/
@@ -93,8 +94,8 @@ for(var i=0; i < SetMemberArray.length; i++)  {
 		assignTech = lookupLOCAL("GIS - Adulticide Techs", aZone);
 		if (assignTech && assignTech != null && assignTech != "") {
 			
-		if (checkInspectionResult("Adulticide Inspection", "Scheduled") == true) { 
-			inspNum=getScheduledInspId("Adulticide Inspection");
+		if (checkInspectionResult("Adulticide", "Scheduled") == true) { 
+			inspNum=getScheduledInspId("Adulticide");
 			assignInspection(inspNum, assignTech);
 			assignCap(assignTech);
 			updateAppStatus("Assigned");
