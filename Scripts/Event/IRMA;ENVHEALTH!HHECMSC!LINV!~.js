@@ -14,4 +14,5 @@ if (isTaskActive('Inspection') && matches(inspResult,'Pending Order')) {
 if (isTaskActive('Inspection') && matches(inspResult,'In Violation')) {
 	closeTask('Inspection','In Violation','Updated by Script');
 	editAppSpecific('Resulted in Violation','Yes');
+	updateAppStatus("Pending Case Creation");
 	}
