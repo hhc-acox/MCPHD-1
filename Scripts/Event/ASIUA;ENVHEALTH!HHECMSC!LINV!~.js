@@ -1,8 +1,9 @@
 //ASIUA;ENVHEALTH!HHECMSC!LINV!~.js
-if (AInfo['Assigned To'] != AInfo['Previous Assigned To']) 
-	{
-		HHC_ASSIGN_NEW_LEHS();
-	}
+
+var areaInspector = '';
+var censusTract = '';
+censusTract = AInfo['ParcelAttribute.CensusTract'];
+areaInspector = lookup('Census - Lead EHS',censusTract);
 //Create Asthma Case
 if (capStatus == 'Pending Case Creation' && AInfo['Asthma'] == 'CHECKED') 
 	{
@@ -50,7 +51,7 @@ aa.cap.copyRenewCapDocument(capId, newChildID, "ADMIN");
 copyAppSpecific(newChildID);
 updateAppStatus('In Violation','Created from LINV',newChildID);
 copyOwner(capId, newChildID);
-assignCap(AInfo['Assigned To'],newChildID);
+assignCap(areaInspector,newChildID);
 editAppSpecific('INV Case',capIDString,newChildID);
 HHC_GET_ADDRESS_FOR_CHILD();
 }
