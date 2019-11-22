@@ -72,15 +72,16 @@ if (matches(appTypeArray[2],'CCC')) {
 if (matches(appTypeArray[2],'TLP')) {
 	areaInspector = hhcgetUserByDiscipline('EHSMToolLoan');
 	comment('the TLP EHSMToolLoan is: '+areaInspector);
-	assignCap(areaInspector);
+	assignCap(areaInspector);					  
 	}	
 //RCP EHSM Assignment
 if (matches(appTypeArray[2],'RCP')) {
 	areaInspector = hhcgetUserByDiscipline('EHSMSupervisor'); //Assigned discipline to Jason Hudson
 	comment('the RCP Person is: '+areaInspector);
 	}	
+	useAppSpecificGroupName == true
 //LINV EHS
-if (AInfo['Asthma'] == 'CHECKED') {
+if (getAppSpecific('Required Cases.Asthma') == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCAsthma');
 	editAppSpecific('Asthma Created',dateAdd(null,0));
 	updateAppStatus('Finaled','Child Case Created');
@@ -97,7 +98,7 @@ if (AInfo['Asthma'] == 'CHECKED') {
 	comment('the LINV is for Asthma: '+areaInspector);
 	}
 	
-if (AInfo['Bed Bugs'] == 'CHECKED') {
+if (getAppSpecific('Required Cases.Bed Bugs') == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCBedBugs');
 	editAppSpecific('BBE Created',dateAdd(null,0));
 	updateAppStatus('Finaled','Child Case Created');
@@ -116,7 +117,7 @@ if (AInfo['Bed Bugs'] == 'CHECKED') {
 	comment('the LINV is for BedBugs: '+areaInspector);
 	}
 
-if (AInfo['Assigned To'] == null && AInfo['Suspect Lead'] == 'CHECKED') {
+if (getAppSpecific('Required Cases.Suspect Lead') == 'CHECKED') {
 	areaInspector = lookup('Census - Lead EHS',AInfo['ParcelAttribute.CensusTract']);
 	assignedAreaInspector = String(areaInspector.toUpperCase());
 	areaInspector = assignedAreaInspector;
@@ -125,7 +126,7 @@ if (AInfo['Assigned To'] == null && AInfo['Suspect Lead'] == 'CHECKED') {
 	comment('the LINV is for Lead: '+areaInspector);
 	}
 
-if (AInfo['Consumer Product Safety'] == 'CHECKED') {
+if (getAppSpecific('Required Cases.Consumer Product Safety') == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCConsumerProductSafety');
 	editAppSpecific('CPS Created',dateAdd(null,0));
 	updateAppStatus('Finaled','Child Case Created');
@@ -143,7 +144,7 @@ if (AInfo['Consumer Product Safety'] == 'CHECKED') {
 	comment('the LINV is for Consumer Product Safety: '+areaInspector);
 	}
 
-if (AInfo['Radon'] == 'CHECKED') {
+if (getAppSpecific('Required Cases.Radon') == 'CHECKED') {
 	saveID = capId;
 	areaInspector = hhcgetUserByDiscipline('HHCESMCRadon');
 	editAppSpecific('Radon Created',dateAdd(null,0));
@@ -165,7 +166,7 @@ if (AInfo['Radon'] == 'CHECKED') {
 	comment('the LINV is for Radon: '+areaInspector);
 	}
 
-	if (AInfo['Senior Care'] == 'CHECKED') {
+	if (getAppSpecific('Required Cases.Senior Care') == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCSeniorCare');
 	editAppSpecific('Asthma Created',dateAdd(null,0));
 	updateAppStatus('Finaled','Child Case Created');
@@ -182,6 +183,7 @@ if (AInfo['Radon'] == 'CHECKED') {
 	//create senior care case
 	comment('the LINV is for Senior Care: '+areaInspector);
 	}
+	useAppSpecificGroupName == false
 //lwacht: 151016: updating so it doesn't throw an error
 if(areaInspector) {
 	var aInsp = convertForAssignedTo(areaInspector);
@@ -234,7 +236,7 @@ if (matches(appTypeArray[3],'SEC') && AInfo['Initial Inspection Date'] != null) 
 	}
 if (matches(appTypeArray[3],'DumpsterSurvey')) {
 	scheduleInspectDate('Rodent Control Dumpster Survey',nextWorkDay(dateAdd(null,0)),null);
-	}	
+	}								
 //Healthy Homes Initial Inspection scheduling
 if (matches(appTypeArray[2],'LHH') && AInfo['Initial Inspection Date'] != null) {
 	scheduleInspectDate('Initial Lead Inspection',AInfo['Initial Inspection Date'],areaInspector);
