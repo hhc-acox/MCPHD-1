@@ -81,7 +81,7 @@ if (matches(appTypeArray[2],'RCP')) {
 	}	
 	useAppSpecificGroupName == true
 //LINV EHS
-if (getAppSpecific('Required Cases.Asthma') == 'CHECKED') {
+if (getAppSpecific('Required Cases.ASP') == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCAsthma');
 	editAppSpecific('Asthma Created',dateAdd(null,0));
 	updateAppStatus('Finaled','Child Case Created');
@@ -144,7 +144,7 @@ if (getAppSpecific('Required Cases.CPS') == 'CHECKED') {
 	comment('the LINV is for Consumer Product Safety: '+areaInspector);
 	}
 
-if (getAppSpecific('Required Cases.Radon') == 'CHECKED') {
+if (getAppSpecific('Required Cases.RAD') == 'CHECKED') {
 	saveID = capId;
 	areaInspector = hhcgetUserByDiscipline('HHCESMCRadon');
 	editAppSpecific('Radon Created',dateAdd(null,0));
@@ -166,7 +166,7 @@ if (getAppSpecific('Required Cases.Radon') == 'CHECKED') {
 	comment('the LINV is for Radon: '+areaInspector);
 	}
 
-	if (getAppSpecific('Required Cases.Senior Care') == 'CHECKED') {
+	if (getAppSpecific('Required Cases.SCM') == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCSeniorCare');
 	editAppSpecific('Asthma Created',dateAdd(null,0));
 	updateAppStatus('Finaled','Child Case Created');
