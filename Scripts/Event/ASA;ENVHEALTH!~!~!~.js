@@ -98,7 +98,7 @@ if (getAppSpecific('Required Cases.Asthma') == 'CHECKED') {
 	comment('the LINV is for Asthma: '+areaInspector);
 	}
 	
-if (getAppSpecific('Required Cases.Bed Bugs') == 'CHECKED') {
+if (getAppSpecific('Required Cases.BBE') == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCBedBugs');
 	editAppSpecific('BBE Created',dateAdd(null,0));
 	updateAppStatus('Finaled','Child Case Created');
@@ -117,7 +117,7 @@ if (getAppSpecific('Required Cases.Bed Bugs') == 'CHECKED') {
 	comment('the LINV is for BedBugs: '+areaInspector);
 	}
 
-if (getAppSpecific('Required Cases.Suspect Lead') == 'CHECKED') {
+if (getAppSpecific('Required Cases.LHH') == 'CHECKED') {
 	areaInspector = lookup('Census - Lead EHS',AInfo['ParcelAttribute.CensusTract']);
 	assignedAreaInspector = String(areaInspector.toUpperCase());
 	areaInspector = assignedAreaInspector;
@@ -126,7 +126,7 @@ if (getAppSpecific('Required Cases.Suspect Lead') == 'CHECKED') {
 	comment('the LINV is for Lead: '+areaInspector);
 	}
 
-if (getAppSpecific('Required Cases.Consumer Product Safety') == 'CHECKED') {
+if (getAppSpecific('Required Cases.CPS') == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCConsumerProductSafety');
 	editAppSpecific('CPS Created',dateAdd(null,0));
 	updateAppStatus('Finaled','Child Case Created');
