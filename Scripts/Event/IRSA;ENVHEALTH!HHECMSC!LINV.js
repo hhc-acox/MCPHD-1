@@ -14,7 +14,7 @@ if (isTaskActive('Inspection') && matches(inspResult,'Pending Order')) {
 if ((inspType == 'Initial Lead Inspection') && matches(inspResult,'In Violation')) {
 	closeTask('Inspection','In Violation','Updated by Script');
 	editAppSpecific('Resulted in Violation','Yes');
-	updateAppStatus("Pending Case Creation");
+	updateAppStatus('Pending Case Creation');
 	}
 try{
 	if(inspType=="Reinspection"){
