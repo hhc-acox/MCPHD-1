@@ -45,9 +45,9 @@ function HHC_CREATE_CRT_CASES() {
 					assignCap('CSANDERS',newChildID);
 					editAppSpecific('Parent Case',capIDString,newChildID);
 					ccnt++;
-					comment('ccnt = '+ccnt); //This is wrong only shows 1 case
+					comment('ccnt = '+ccnt); 
 					capId = newChildID;
-					comment("NEW CHILD ID IS "+newChildID); //makes it here 1 time
+					comment("NEW CHILD ID IS "+newChildID); 
 					cContactResult = aa.people.getCapContactByCapID(capId);
 					cContactAry = cContactResult.getOutput();
 					cc = cContactAry.length;
@@ -90,43 +90,36 @@ function HHC_CREATE_CRT_CASES() {
 						nextNameArr.sort();
 						comment('Deletes begin here');
 						}	
-						for(ii=0;ii<cc;ii++) 
-
-						{
+						for(ii=0;ii<cc;ii++) {
 							var csortContactNum = nextNameArr[ii][0];
 							var csortContactNameToCheckFor = nextNameArr[ii][1];
 							var csortContactSeqNum = nextNameArr[ii][3];
-							
 							var cContactDelete = true;
 							cCapContactModel = cContactAry[ii].getCapContactModel();
 							if (parseInt(ccnt) == parseInt(csortContactNum)) 
 							{
 								cContactDelete = false;
-								}
+							}
 								
 							comment('Contact type checking for deletes begin here');
-							if ((!matches(cContactTypeToCheckFor, 'Property Owner','Tenant','Responsible Party')))	
-						    //Each person on their CRT is always Primary
-							{
-								cContactDelete = true;
-								}
 
-							if (cContactDelete) {
-								cPeopleModel = cCapContactModel.getPeople();
-								}
+
+							//if (cContactDelete) {
+							//	cPeopleModel = cCapContactModel.getPeople();
+							//	}
 							comment('Parse Int begins here');
-							if (cContactDelete) 
+							if (cContactDelete == true) 
 							{
 								cContactSeqNumber = parseInt(csortContactSeqNum);
 								}
 
-							if (cContactDelete) 
+							if (cContactDelete == true) 
 							{
-								aa.people.removeCapContact(capId, cContactSeqNumber);
+								aa.people.removeCapContact(newChildID, cContactSeqNumber);
 								}
 
 							showMessage = true;
-							comment(ccnt +' - '+nextNameArr[ii][0]+' ii= '+ii+' - '+nextNameArr[ii][1]+' - '+nextNameArr[ii][2]+' - '+nextNameArr[ii][3]+' ---- '+cContactDelete+' - '+cContactSeqNumber+' - '+csortContactSeqNum);
+							comment('ccnt = '+ccnt +' - '+'nextNameArr[ii][0] = '+nextNameArr[ii][0]+' ii= '+ii+' - '+'nextNameArr[ii][1] = '+nextNameArr[ii][1]+' - '+'nextNameArr[ii][2] = '+nextNameArr[ii][2]+' - '+nextNameArr[ii][3]+' ---- '+cContactDelete+' - '+cContactSeqNumber+' - '+csortContactSeqNum);
 
 							}
 
