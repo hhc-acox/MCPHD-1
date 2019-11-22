@@ -100,14 +100,12 @@ function HHC_CREATE_CRT_CASES() {
 							{
 								cContactDelete = false;
 							}
-								
+							if (!matches(nextNameArr[ii][2], 'Property Owner','Tenant','Responsible Party'))
+							{
+								cContactDelete = true;
+							}								
 							comment('Contact type checking for deletes begin here');
 
-
-							//if (cContactDelete) {
-							//	cPeopleModel = cCapContactModel.getPeople();
-							//	}
-							comment('Parse Int begins here');
 							if (cContactDelete == true) 
 							{
 								cContactSeqNumber = parseInt(csortContactSeqNum);
