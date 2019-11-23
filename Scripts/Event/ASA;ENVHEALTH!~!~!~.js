@@ -79,8 +79,7 @@ if (matches(appTypeArray[2],'RCP')) {
 	areaInspector = hhcgetUserByDiscipline('EHSMSupervisor'); //Assigned discipline to Jason Hudson
 	comment('the RCP Person is: '+areaInspector);
 	}	
-	useAppSpecificGroupName == true
-//LINV EHS
+	//LINV EHS
 if (AInfo['APS'] == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCAsthma');
 	editAppSpecific('Asthma Created',dateAdd(null,0));
@@ -183,8 +182,7 @@ if (AInfo['RAD'] == 'CHECKED') {
 	//create senior care case
 	comment('the LINV is for Senior Care: '+areaInspector);
 	}
-	useAppSpecificGroupName == false
-//lwacht: 151016: updating so it doesn't throw an error
+	//lwacht: 151016: updating so it doesn't throw an error
 if(areaInspector) {
 	var aInsp = convertForAssignedTo(areaInspector);
 	editAppSpecific('Assigned To',aInsp);
