@@ -5,7 +5,7 @@ var censusTract = '';
 censusTract = AInfo['ParcelAttribute.CensusTract'];
 areaInspector = lookup('Census - Lead EHS',censusTract);
 //Create Asthma Case
-if (capStatus == 'Pending Case Creation' && AInfo['Asthma'] == 'CHECKED') 
+if (capStatus == 'Pending Case Creation' && AInfo['APS'] == 'CHECKED') 
 	{
 areaInspector = hhcgetUserByDiscipline('HHCESMCAsthma');
 editAppSpecific('Asthma Created',dateAdd(null,0));
@@ -74,7 +74,7 @@ editAppSpecific('INV Case',capIDString,newChildID);
 HHC_GET_ADDRESS_FOR_CHILD();
 	}
 //Create Senior Care Case
-if (capStatus == 'Pending Case Creation' && AInfo['Senior Care'] == 'CHECKED') 
+if (capStatus == 'Pending Case Creation' && AInfo['SCM'] == 'CHECKED') 
 	{
 areaInspector = hhcgetUserByDiscipline('HHCESMCSeniorCare');
 editAppSpecific('Asthma Created',dateAdd(null,0));
@@ -91,7 +91,7 @@ assignCap(areaInspector,newChildID);
 HHC_GET_ADDRESS_FOR_CHILD();
 	}
 //Radon Case
-if (capStatus == 'Pending Case Creation' && AInfo['Radon'] == 'CHECKED') 
+if (capStatus == 'Pending Case Creation' && AInfo['RAD'] == 'CHECKED') 
 	{
 saveID = capId;
 areaInspector = hhcgetUserByDiscipline('HHCESMCRadon');
