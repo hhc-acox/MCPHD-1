@@ -17,13 +17,11 @@ if (matches(appTypeArray[2],'HSG','TRA','VEH','INV')) {
 	areaInspector = lookup('Census - Housing EHS',censusTract); 
 	logDebug('Inspector to Assign: '+areaInspector);
 	}
-	
 //SEC Assigment
 if (matches(appTypeArray[3],'SEC')) {
 	areaInspector = lookup('Census - Housing EHS',censusTract); 
 	logDebug('Inspector to Assign: '+areaInspector);
 	}
-
 //Healthy Homes EHS	
 if (matches(appTypeArray[2],'LHH','LINV')) {
 	areaInspector = lookup('Census - Lead EHS',censusTract);
@@ -31,32 +29,27 @@ if (matches(appTypeArray[2],'LHH','LINV')) {
 	areaInspector = assignedAreaInspector;
 	comment('the Healthy Homes area Inspector: '+areaInspector);
 	}
-
 //Asthma EHS
 if (matches(appTypeArray[2],'ASP')) {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCAsthma');
 	comment('the Asthma area Inspector is: '+areaInspector);
-	}
-	
+	}	
 //BedBugs EHS
 if (matches(appTypeArray[2],'BBE')) {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCBedBugs');
 	comment('the BedBugs area Inspector is: '+areaInspector);
-	}
-	
+	}	
 //CPS EHS
 if (matches(appTypeArray[2],'CPS')) {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCConsumerProductSafety');
 	comment('the CPS area Inspector is: '+areaInspector);
-	}
-	
+	}	
 //Radon EHS
 if (matches(appTypeArray[1],'Radon')) {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCRadon');
 	updateTask('Radon Intake','Accepted','Updated by Script');
 	comment('the Radon area Inspector is: '+areaInspector);
 	}	
-
 //Senior Care EHS
 if (matches(appTypeArray[2],'SCM')) {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCSeniorCare');
@@ -67,7 +60,6 @@ if (matches(appTypeArray[2],'CCC')) {
 	areaInspector = hhcgetUserByDiscipline('EHSMSupervisor'); //Assigned discipline to Jason Hudson
 	comment('the CCC Supervisor is: '+areaInspector);
 	}	
-
 //TLP EHSM Assignment
 if (matches(appTypeArray[2],'TLP')) {
 	areaInspector = hhcgetUserByDiscipline('EHSMToolLoan');
@@ -79,10 +71,9 @@ if (matches(appTypeArray[2],'RCP')) {
 	areaInspector = hhcgetUserByDiscipline('EHSMSupervisor'); //Assigned discipline to Jason Hudson
 	comment('the RCP Person is: '+areaInspector);
 	}	
-	//LINV EHS
-if (AInfo['APS'] == 'CHECKED') {
+if (AInfo['ASP'] == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCAsthma');
-	editAppSpecific('Asthma Created',dateAdd(null,0));
+	editAppSpecific('ASP Created',dateAdd(null,0));
 	updateAppStatus('Finaled','Child Case Created');
 	branchTask('Create Case','Case Created','Action by Script','');
 	newChildID = createChild('EnvHealth','HHECMSC','ASP','NA','');
@@ -96,7 +87,6 @@ if (AInfo['APS'] == 'CHECKED') {
 	HHC_GET_ADDRESS_FOR_CHILD();
 	comment('the LINV is for Asthma: '+areaInspector);
 	}
-	
 if (AInfo['BBE'] == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCBedBugs');
 	editAppSpecific('BBE Created',dateAdd(null,0));
@@ -115,7 +105,6 @@ if (AInfo['BBE'] == 'CHECKED') {
 	//Create Bed Bug Case
 	comment('the LINV is for BedBugs: '+areaInspector);
 	}
-
 if (AInfo['LHH'] == 'CHECKED') {
 	areaInspector = lookup('Census - Lead EHS',AInfo['ParcelAttribute.CensusTract']);
 	assignedAreaInspector = String(areaInspector.toUpperCase());
@@ -124,7 +113,6 @@ if (AInfo['LHH'] == 'CHECKED') {
 	closeTask('Case Intake','Completed');
 	comment('the LINV is for Lead: '+areaInspector);
 	}
-
 if (AInfo['CPS'] == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCConsumerProductSafety');
 	editAppSpecific('CPS Created',dateAdd(null,0));
@@ -142,11 +130,10 @@ if (AInfo['CPS'] == 'CHECKED') {
 	//create CPS case
 	comment('the LINV is for Consumer Product Safety: '+areaInspector);
 	}
-
 if (AInfo['RAD'] == 'CHECKED') {
 	saveID = capId;
 	areaInspector = hhcgetUserByDiscipline('HHCESMCRadon');
-	editAppSpecific('Radon Created',dateAdd(null,0));
+	editAppSpecific('RAD Created',dateAdd(null,0));
 	updateAppStatus('Finaled','Child Case Created');
 	branchTask('Create Case','Case Created','Action by Script','');
 	newChildID = createChild('EnvHealth','Radon','ServiceRequest','NA','');
@@ -164,10 +151,9 @@ if (AInfo['RAD'] == 'CHECKED') {
 	//Create Radon case
 	comment('the LINV is for Radon: '+areaInspector);
 	}
-
 	if (AInfo['SCM'] == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCSeniorCare');
-	editAppSpecific('Asthma Created',dateAdd(null,0));
+	editAppSpecific('SCM Created',dateAdd(null,0));
 	updateAppStatus('Finaled','Child Case Created');
 	branchTask('Create Case','Case Created','Action by Script','');
 	newChildID = createChild('EnvHealth','HHECMSC','SCM','NA','');
