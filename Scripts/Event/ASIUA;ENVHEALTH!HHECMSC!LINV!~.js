@@ -22,10 +22,10 @@ assignCap(areaInspector,newChildID);
 HHC_GET_ADDRESS_FOR_CHILD();
 	}
 //Create CPS Case
-if (capStatus == 'Pending Case Creation' && AInfo['CPS'] == 'CHECKED') 
+if (capStatus == 'Pending Case Creation' && AInfo['CPT'] == 'CHECKED') 
 	{
 areaInspector = hhcgetUserByDiscipline('HHCESMCConsumerProductSafety');
-editAppSpecific('CPS Created',dateAdd(null,0));
+editAppSpecific('CPT Created',dateAdd(null,0));
 updateAppStatus('Finaled','Child Case Created');
 branchTask('Create Case','Case Created','Action by Script','');
 newChildID = createChild('EnvHealth','HHECMSC','CPS','NA','');
