@@ -5,10 +5,10 @@ var censusTract = '';
 censusTract = AInfo['ParcelAttribute.CensusTract'];
 areaInspector = lookup('Census - Lead EHS',censusTract);
 //Create Asthma Case
-if (capStatus == 'Pending Case Creation' && AInfo['APS'] == 'CHECKED') 
+if (capStatus == 'Pending Case Creation' && AInfo['ASP'] == 'CHECKED') 
 	{
 areaInspector = hhcgetUserByDiscipline('HHCESMCAsthma');
-editAppSpecific('Asthma Created',dateAdd(null,0));
+editAppSpecific('ASP Created',dateAdd(null,0));
 updateAppStatus('Finaled','Child Case Created');
 branchTask('Create Case','Case Created','Action by Script','');
 newChildID = createChild('EnvHealth','HHECMSC','ASP','NA','');
@@ -77,7 +77,7 @@ HHC_GET_ADDRESS_FOR_CHILD();
 if (capStatus == 'Pending Case Creation' && AInfo['SCM'] == 'CHECKED') 
 	{
 areaInspector = hhcgetUserByDiscipline('HHCESMCSeniorCare');
-editAppSpecific('Asthma Created',dateAdd(null,0));
+editAppSpecific('SCM Created',dateAdd(null,0));
 updateAppStatus('Finaled','Child Case Created');
 branchTask('Create Case','Case Created','Action by Script','');
 newChildID = createChild('EnvHealth','HHECMSC','SCM','NA','');
@@ -95,7 +95,7 @@ if (capStatus == 'Pending Case Creation' && AInfo['RAD'] == 'CHECKED')
 	{
 saveID = capId;
 areaInspector = hhcgetUserByDiscipline('HHCESMCRadon');
-editAppSpecific('Radon Created',dateAdd(null,0));
+editAppSpecific('RAD Created',dateAdd(null,0));
 updateAppStatus('Finaled','Child Case Created');
 branchTask('Create Case','Case Created','Action by Script','');
 newChildID = createChild('EnvHealth','Radon','ServiceRequest','NA','');
