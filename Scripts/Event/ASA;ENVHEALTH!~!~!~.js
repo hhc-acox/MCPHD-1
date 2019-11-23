@@ -87,7 +87,7 @@ if (AInfo['ASP'] == 'CHECKED') {
 	//branchTask('Create Case','Case Created','Action by Script','');
 	newChildID = createChild('EnvHealth','HHECMSC','ASP','NA','');
 	//HHC_copyAllInspectionsAndGuidesheetsToChild(capId);
-	aa.cap.copyRenewCapDocument(capId, newChildID, "ADMIN");
+	//aa.cap.copyRenewCapDocument(capId, newChildID, "ADMIN");
 	copyAppSpecific(newChildID);
 	copyOwner(capId, newChildID);
 	comment('New child app id = '+ newChildID);
@@ -104,7 +104,7 @@ if (AInfo['BBE'] == 'CHECKED') {
 	//branchTask('Create Case','Case Created','Action by Script','');
 	newChildID = createChild('EnvHealth','HHECMSC','BBE','NA','');
 	//HHC_copyAllInspectionsAndGuidesheetsToChild(capId);
-	aa.cap.copyRenewCapDocument(capId, newChildID, "ADMIN");
+	//aa.cap.copyRenewCapDocument(capId, newChildID, "ADMIN");
 	copyAppSpecific(newChildID);
 	comment('New child app id = '+ newChildID);
 	updateAppStatus('In Violation','Created from LINV',newChildID);
@@ -132,7 +132,7 @@ if (AInfo['CPT'] == 'CHECKED') {
 	//branchTask('Create Case','Case Created','Action by Script','');
 	newChildID = createChild('EnvHealth','HHECMSC','CPS','NA','');
 	//HHC_copyAllInspectionsAndGuidesheetsToChild(capId);
-	aa.cap.copyRenewCapDocument(capId, newChildID, "ADMIN");
+	//aa.cap.copyRenewCapDocument(capId, newChildID, "ADMIN");
 	copyAppSpecific(newChildID);
 	copyOwner(capId, newChildID);
 	comment('New child app id = '+ newChildID);
@@ -151,7 +151,7 @@ if (AInfo['RAD'] == 'CHECKED') {
 	//branchTask('Create Case','Case Created','Action by Script','');
 	newChildID = createChild('EnvHealth','Radon','ServiceRequest','NA','');
 	//HHC_copyAllInspectionsAndGuidesheetsToChild(capId);
-	aa.cap.copyRenewCapDocument(capId, newChildID, "ADMIN");
+	//aa.cap.copyRenewCapDocument(capId, newChildID, "ADMIN");
 	copyAppSpecific(newChildID);
 	copyOwner(capId, newChildID);
 	comment('New child app id = '+ newChildID);
@@ -171,7 +171,7 @@ if (AInfo['RAD'] == 'CHECKED') {
 	updateAppStatus('Finaled','Child Case Created');
 	//branchTask('Create Case','Case Created','Action by Script','');
 	newChildID = createChild('EnvHealth','HHECMSC','SCM','NA','');
-	HHC_copyAllInspectionsAndGuidesheetsToChild(capId);
+	//HHC_copyAllInspectionsAndGuidesheetsToChild(capId);
 	//aa.cap.copyRenewCapDocument(capId, newChildID, "ADMIN");
 	copyAppSpecific(newChildID);
 	copyOwner(capId, newChildID);
