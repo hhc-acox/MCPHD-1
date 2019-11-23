@@ -81,7 +81,7 @@ if (matches(appTypeArray[2],'RCP')) {
 	}	
 	useAppSpecificGroupName == true
 //LINV EHS
-if (getAppSpecific('Required Cases.ASP') == 'CHECKED') {
+if (AInfo['APS'] == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCAsthma');
 	editAppSpecific('Asthma Created',dateAdd(null,0));
 	updateAppStatus('Finaled','Child Case Created');
@@ -98,7 +98,7 @@ if (getAppSpecific('Required Cases.ASP') == 'CHECKED') {
 	comment('the LINV is for Asthma: '+areaInspector);
 	}
 	
-if (getAppSpecific('Required Cases.BBE') == 'CHECKED') {
+if (AInfo['BBE'] == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCBedBugs');
 	editAppSpecific('BBE Created',dateAdd(null,0));
 	updateAppStatus('Finaled','Child Case Created');
@@ -117,7 +117,7 @@ if (getAppSpecific('Required Cases.BBE') == 'CHECKED') {
 	comment('the LINV is for BedBugs: '+areaInspector);
 	}
 
-if (getAppSpecific('Required Cases.LHH') == 'CHECKED') {
+if (AInfo['LHH'] == 'CHECKED') {
 	areaInspector = lookup('Census - Lead EHS',AInfo['ParcelAttribute.CensusTract']);
 	assignedAreaInspector = String(areaInspector.toUpperCase());
 	areaInspector = assignedAreaInspector;
@@ -126,7 +126,7 @@ if (getAppSpecific('Required Cases.LHH') == 'CHECKED') {
 	comment('the LINV is for Lead: '+areaInspector);
 	}
 
-if (getAppSpecific('Required Cases.CPS') == 'CHECKED') {
+if (AInfo['CPS'] == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCConsumerProductSafety');
 	editAppSpecific('CPS Created',dateAdd(null,0));
 	updateAppStatus('Finaled','Child Case Created');
@@ -144,7 +144,7 @@ if (getAppSpecific('Required Cases.CPS') == 'CHECKED') {
 	comment('the LINV is for Consumer Product Safety: '+areaInspector);
 	}
 
-if (getAppSpecific('Required Cases.RAD') == 'CHECKED') {
+if (AInfo['RAD'] == 'CHECKED') {
 	saveID = capId;
 	areaInspector = hhcgetUserByDiscipline('HHCESMCRadon');
 	editAppSpecific('Radon Created',dateAdd(null,0));
@@ -166,7 +166,7 @@ if (getAppSpecific('Required Cases.RAD') == 'CHECKED') {
 	comment('the LINV is for Radon: '+areaInspector);
 	}
 
-	if (getAppSpecific('Required Cases.SCM') == 'CHECKED') {
+	if (AInfo['SCM'] == 'CHECKED') {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCSeniorCare');
 	editAppSpecific('Asthma Created',dateAdd(null,0));
 	updateAppStatus('Finaled','Child Case Created');
