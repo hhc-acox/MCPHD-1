@@ -14,7 +14,7 @@ function getEHSMQuadrant(capId){
 			}
 	catch(err)
 	{
-		logDebug("A JavaScript Error occurred: getVectorZone:  " + err.message);
+		logDebug("A JavaScript Error occurred: getEHSMQuadrant:  " + err.message);
 		logDebug(err.stack);
 	}
 }
