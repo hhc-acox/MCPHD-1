@@ -78,6 +78,7 @@ if (matches(appTypeArray[2],'TLP')) {
 if (matches(appTypeArray[2],'RCP')) {
 	areaInspector = hhcgetUserByDiscipline('EHSMSupervisor'); //Assigned discipline to Jason Hudson
 	comment('the RCP Person is: '+areaInspector);
+	assignTask('Case Intake',areaInspector );
 	}	
 	//LINV EHS
 if (AInfo['ASP'] == 'CHECKED') {
