@@ -106,11 +106,13 @@ function HHC_doCaseCreationActions(){
 					}
 
 					// Close Case Intakes
-					if(aa.workflow.getTask(capId, 'Case Intake').getSuccess() === true && matches(arrAppType[1],'WQ','Food') && !(arrayContains('WQ') && arrayContains('Complaint'))) {
+					if(aa.workflow.getTask(capId, 'Case Intake').getSuccess() === true) {
+                                                if(appTypeString.indexOf('WQ') > 0 || (appTypeString.indexOf('Food') > 0 && appTypeString.indexOf('Complaint') < 0)) {
 						closeTask('Case Intake', 'Complete', 'Closed by Script', 'Closed by Script');
 						if(assignmentForType) {
 							assignTask('Complaint Review', assignmentForType);
 						}
+}
 					}
 				}
 			}
