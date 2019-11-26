@@ -99,6 +99,7 @@ function HHC_CREATE_CRT_CASES() {
 							if (parseInt(ccnt) == parseInt(csortContactNum)) 
 							{
 								cContactDelete = false;
+								contactSetPrimary(csortContactNum);
 							}
 							if (!matches(nextNameArr[ii][2], 'Property Owner','Tenant','Responsible Party'))
 							{
