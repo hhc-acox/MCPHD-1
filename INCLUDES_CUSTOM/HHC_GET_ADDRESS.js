@@ -19,11 +19,11 @@ function HHC_GET_ADDRESS()
 
 			comment ('The Address is: '+hseNum+' '+streetDir+' '+streetName+' '+streetSuffix);
 			
-			if (matches(appTypeArray[1],'HOUSING','HHECMSC')) {
+			if (streetDir == null) {
 				editAppName(hseNum+' '+streetName+' '+streetSuffix);
 				}
 
-			if (matches(appTypeArray[1],'HOUSING','HHECMSC')) {
+			if (streetDir != null) {
 				editAppName(hseNum+' '+streetDir+' '+streetName+' '+streetSuffix);
 				}
 
