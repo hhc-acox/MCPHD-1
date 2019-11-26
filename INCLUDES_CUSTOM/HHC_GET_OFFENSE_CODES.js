@@ -114,7 +114,13 @@ function HHC_GET_OFFENSE_CODES(CapId,childID) {
 										vioCodeNums = '19306OI'
 									}	
 							}
-								
+							
+							if (matches(appTypeArray[1],'Food')){
+									logDebug("HHC_GET_OFFENSE_CODES: Food Case");
+										vioCodeNums = '19301OI'
+
+									}	
+							
 							newVioCodes = vioCodeNums.match(/.{1,7}/g);		
 							logDebug('New Viocodes length for '+appTypeArray[2]+' - '+newVioCodes.length);
 							for (z in newVioCodes) {
