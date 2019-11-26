@@ -265,7 +265,10 @@ if (matches(appTypeArray[2],'CPS') && AInfo['Recall']=='No') {
 	scheduleInspectDate('CP Routine Inspection',nextWorkDay(dateAdd(null,0)),areaInspector);
 	}
 //Set the address to the Application Name field on the record
-HHC_GET_ADDRESS();
+if (appTypeString.indexOf('Food')<0 && appTypeString.indexOf('WQ')<0)
+	{
+	HHC_GET_ADDRESS();
+	}
 
 if (matches(appTypeArray[2],'VEH','HSG','TRA','LHH')) {
 	updateAppStatus('In Violation','Initial Status');
@@ -277,4 +280,4 @@ if (matches(appTypeArray[3],'SEC')) {
 
 if (areaInspector == null || areaInspector == 'undefined') {
 	overrideMessage = 'The EHS Inspector could not be determined. Speak to a System Administrator to resolve the problem.<BR><BR>';
-	}	
+	}
