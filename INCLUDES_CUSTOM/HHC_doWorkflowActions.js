@@ -208,7 +208,7 @@ try{
 							}else{
 								logDebug("ACTIONS FROM WORKFLOW: No Workflow type and Result match: " + cTask + "/" + SubmittedTaskStatus);
 							}
-							if(matches(wfTask,cTask) && matches(wfStatus,"Court", "Court Case") && matches(SubmittedTaskStatus,"Court", "Court Case", "Refer to Court")){HHC_CREATE_COURT();}
+							if(matches(wfTask,cTask) && matches(wfStatus,"Court", "Court Case", "Refer to Court") && matches(SubmittedTaskStatus,"Court", "Court Case", "Refer to Court")){HHC_CREATE_COURT();}
 						}
 					}
 				}
