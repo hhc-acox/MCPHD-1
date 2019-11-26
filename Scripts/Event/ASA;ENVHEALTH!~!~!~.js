@@ -52,7 +52,12 @@ if (matches(appTypeArray[2],'CPS')) {
 	
 //Radon EHS
 if (matches(appTypeArray[1],'Radon')) {
-	areaInspector = hhcgetUserByDiscipline('HHCESMCRadon');
+        var department = HHC_getMyDepartment(currentUserID);
+        if (department.indexOf('HHECMSC') > -1) {
+                areaInspector = hhcgetUserByDiscipline('HHCESMCRadon');
+        } else {
+                areaInspector = hhcgetUserByDiscipline('WQRadon');
+        }
 	updateTask('Radon Intake','Accepted','Updated by Script');
 	comment('the Radon area Inspector is: '+areaInspector);
 	}	
