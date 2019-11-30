@@ -65,6 +65,10 @@ function HHC_doCaseCreationActions(){
 										RecordAssignedTo = lookup('GIS - Foods EHS',zone); 
 									else if (zone && zone != "undefined" && zone != null && LayerName == 'PoolInspectorDistrict')
 										RecordAssignedTo = lookup('GIS - Pools EHS',zone); 
+									else if (zone && zone != "undefined" && zone != null && LayerName == 'WellsPumpsOWTS')
+										RecordAssignedTo = lookup('GIS - WellsPumpsOWTS EHS',zone); 
+									else if (zone && zone != "undefined" && zone != null && LayerName == 'EHSMQuadrantDistrict')
+										RecordAssignedTo = lookup('GIS - EHSM Inspector',zone); 
 									else
 										RecordAssignedTo = null;
 									break;	
