@@ -104,7 +104,7 @@ try{
 										}
 									}
 								}
-								if (appMatch){
+								if (appMatch && ((cInspType == inspType || cInspType == 'any') && (InspResultSubmitted == inspResult || InspResultSubmitted == 'any'))){
 			//Record Assignment if one is selected
 								//comment("RecordAssignedTo.length "+RecordAssignedTo.length);
 									if(RecordAssignedTo.length>0){
@@ -146,32 +146,34 @@ try{
 									//comment("InspResultSubmitted.length "+InspResultSubmitted.length);
 									//comment("InspTypeToSchedule.length "+InspTypeToSchedule.length);
 										if(cInspType.length>0 && InspResultSubmitted.length>0 && InspTypeToSchedule.length>0){
-			//define assignedInspector		
-											if(matches(InspAssignedTo,'Supervisor of Person Assigned to Record','Current Inspector','Person Assigned to the Record','Supervisor of Current Inspector')){
-												if(UseRecheckDate == 'Yes'){
-													scheduleInspectDate(InspTypeToSchedule,RecheckDate,assignedInspector); //schedule inspection using recheck date
+											//define assignedInspector		
+											if(cInspType == inspType && InspResultSubmitted == inspResult) {
+												if(matches(InspAssignedTo,'Supervisor of Person Assigned to Record','Current Inspector','Person Assigned to the Record','Supervisor of Current Inspector')){
+													if(UseRecheckDate == 'Yes'){
+														scheduleInspectDate(InspTypeToSchedule,RecheckDate,assignedInspector); //schedule inspection using recheck date
+													}
+													if(UseRecheckDate == 'No' && DaysToScheduleInTheFuture>0){
+														scheduleInspectDate(InspTypeToSchedule,nextWorkDay(dateAdd(null,DaysToScheduleInTheFuture)),assignedInspector);//schedule inspection using #ofDays field
+													}
+													else 
+													{
+														scheduleInspectDate(InspTypeToSchedule,nextWorkDay(dateAdd(null,0)),assignedInspector); //schedule inspection for tomorrow
+													}
 												}
-												if(UseRecheckDate == 'No' && DaysToScheduleInTheFuture>0){
-													scheduleInspectDate(InspTypeToSchedule,nextWorkDay(dateAdd(null,DaysToScheduleInTheFuture)),assignedInspector);//schedule inspection using #ofDays field
+												if(matches(InspAssignedTo,'Current Department')){
+													if(UseRecheckDate == 'Yes'){
+														scheduleInspectDate(InspTypeToSchedule,RecheckDate,null); //schedule inspection using recheck date
+													}
+													if(UseRecheckDate == 'No' && DaysToScheduleInTheFuture>0){
+														scheduleInspectDate(InspTypeToSchedule,nextWorkDay(dateAdd(null,DaysToScheduleInTheFuture)),null);//schedule inspection using #ofDays field
+													}
+													else 
+													{
+														scheduleInspectDate(InspTypeToSchedule,nextWorkDay(dateAdd(null,0)),null); //schedule inspection for tomorrow
+													}
+														assignInspection(inspId, assignedInspector);
 												}
-												else 
-												{
-													scheduleInspectDate(InspTypeToSchedule,nextWorkDay(dateAdd(null,0)),assignedInspector); //schedule inspection for tomorrow
-												}
-											}
-											if(matches(InspAssignedTo,'Current Department')){
-												if(UseRecheckDate == 'Yes'){
-													scheduleInspectDate(InspTypeToSchedule,RecheckDate,null); //schedule inspection using recheck date
-												}
-												if(UseRecheckDate == 'No' && DaysToScheduleInTheFuture>0){
-													scheduleInspectDate(InspTypeToSchedule,nextWorkDay(dateAdd(null,DaysToScheduleInTheFuture)),null);//schedule inspection using #ofDays field
-												}
-												else 
-												{
-													scheduleInspectDate(InspTypeToSchedule,nextWorkDay(dateAdd(null,0)),null); //schedule inspection for tomorrow
-												}
-													assignInspection(inspId, assignedInspector);
-											}										
+											}											
 										}
 									//comment("177 - cInspType.length "+cInspType.length);
 									//comment("InspResultSubmitted.length "+InspResultSubmitted.length);
@@ -181,7 +183,8 @@ try{
 										if(cInspType.length>0 && InspResultSubmitted.length>0 && workflowTask.length>0 && newWorkflowStatus.length>0){
 											if((cInspType == 'any' || cInspType.length>0) && (InspResultSubmitted == 'any' || InspResultSubmitted.length>0)){ 
 												updateTask(workflowTask,newWorkflowStatus,'Updated by script');
-												}
+											}
+											if(cInspType == inspType && InspResultSubmitted == inspResult) {
 												if(WorkflowAssignedTo.length>0 && matches(WorkflowAssignedTo,'Supervisor of Person Assigned to Record','Current Inspector','Person Assigned to the Record','Supervisor of Current Inspector')){
 											//comment('187 - workflowAssignment '+workflowAssignment);
 														assignTask(workflowTask,workflowAssignment);
@@ -190,6 +193,7 @@ try{
 											
 														updateTaskDepartment(workflowTask, workflowAssignment);
 													}
+											}
 										}
 										var customFunctions = ""+sepRules[row]["Custom_Functions"];
 										var chkFilter = ""+customFunctions;
