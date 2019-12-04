@@ -152,7 +152,7 @@ try{
 													if(UseRecheckDate == 'Yes'){
 														scheduleInspectDate(InspTypeToSchedule,RecheckDate,assignedInspector); //schedule inspection using recheck date
 													}
-													if(UseRecheckDate == 'No' && DaysToScheduleInTheFuture>0){
+													else if(UseRecheckDate == 'No' && DaysToScheduleInTheFuture>0){
 														scheduleInspectDate(InspTypeToSchedule,nextWorkDay(dateAdd(null,DaysToScheduleInTheFuture)),assignedInspector);//schedule inspection using #ofDays field
 													}
 													else 
@@ -164,7 +164,7 @@ try{
 													if(UseRecheckDate == 'Yes'){
 														scheduleInspectDate(InspTypeToSchedule,RecheckDate,null); //schedule inspection using recheck date
 													}
-													if(UseRecheckDate == 'No' && DaysToScheduleInTheFuture>0){
+													else if(UseRecheckDate == 'No' && DaysToScheduleInTheFuture>0){
 														scheduleInspectDate(InspTypeToSchedule,nextWorkDay(dateAdd(null,DaysToScheduleInTheFuture)),null);//schedule inspection using #ofDays field
 													}
 													else 
