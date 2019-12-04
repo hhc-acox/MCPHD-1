@@ -62,10 +62,15 @@ removeASITable('CURRENT VIOLATIONS');
 											logDebug("Standard Comment:   "+gsStandardComment);
 											logDebug("---------------------------");
 												for(var k=0;k< guideItemASITs.size();k++) {
-													var ASITSubGroup = guideItemASITs.get(k);
+												var ASITSubGroup = guideItemASITs.get(k);
 													var tableArr = new Array();
+													var ASITGroupName = ASITSubGroup.getGroupName();
+													logDebug("ASITGroupName: " + ASITGroupName);
+													var ASITTableName = ASITSubGroup.getTableName();
+													logDebug("ASITTableName: " + ASITTableName);
 													var columnList = ASITSubGroup.getColumnList();
-														for (var l = 0; l < columnList.size() ; l++ )
+													logDebug("Column List: " + columnList);	
+													for (var l = 0; l < columnList.size() ; l++ )
 														{
 															var column = columnList.get(l);
 															var values = column.getValueMap().values();
