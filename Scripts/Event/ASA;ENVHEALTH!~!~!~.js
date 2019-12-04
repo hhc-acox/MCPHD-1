@@ -37,7 +37,14 @@ if (matches(appTypeArray[2],'ASP')) {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCAsthma');
 	comment('the Asthma area Inspector is: '+areaInspector);
 	}
-	
+
+//Pool/Pump Applicatioon
+if (matches(appTypeString, 'EnvHealth/WQ/Pump/Application','EnvHealth/WQ/Pool/Construction Permit')) {
+	areaInspector = hhcgetUserByDiscipline('HHCESMCBedBugs');
+	var supportStaff = HHC_getMySupportStaffDepartment(areaInspector);
+	assignTask('Intake',supportStaff );
+}
+
 //BedBugs EHS
 if (matches(appTypeArray[2],'BBE')) {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCBedBugs');
