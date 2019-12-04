@@ -21,12 +21,13 @@ try{
 							var InspResultSubmitted = ""+sepRules[row]["Insp_Result_Submitted"];
 							var InspTypeToSchedule = ""+sepRules[row]["Insp_Type_to_Schedule"];
 							var UseRecheckDate = ""+sepRules[row]["Use_Recheck_Date"]; //'Yes/No' field
+							var UseRecheckDate;
 								if(UseRecheckDate == 'Yes') {
-									var RecheckDate = hhcgetInspRecheckDate(capId,inspId);
+									RecheckDate = hhcgetInspRecheckDate(capId,inspId);
 
 								}else {
 									UseRecheckDate == 'No'} //give the variable a value anyway
-									var DaysToScheduleInTheFuture = ""+sepRules[row]["Days_toSchedule_in_the_Future"]; //number of days in the future
+							var DaysToScheduleInTheFuture = ""+sepRules[row]["Days_toSchedule_in_the_Future"]; //number of days in the future
 							var RecordAssignedTo = ""+sepRules[row]["Record_Assigned_To"];
 							var InspAssignedTo = ""+sepRules[row]["Insp_Assigned_To"];
 							var workflowTask = ""+sepRules[row]["Workflow_Task"];
