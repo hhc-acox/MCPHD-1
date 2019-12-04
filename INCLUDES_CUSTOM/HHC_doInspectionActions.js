@@ -150,7 +150,15 @@ try{
 											//define assignedInspector		
 											if(cInspType == inspType && InspResultSubmitted == inspResult) {
 												if(matches(InspAssignedTo,'Supervisor of Person Assigned to Record','Current Inspector','Person Assigned to the Record','Supervisor of Current Inspector')){
-													if(UseRecheckDate == 'Yes'){
+													if(UseRecheckDate == 'Yes') {
+														if(RecheckDate == null || RecheckDate == undefined) {
+															cancel = true;
+														} else {
+															scheduleInspectDate(InspTypeToSchedule,RecheckDate,assignedInspector); //schedule inspection using recheck date
+
+														}
+													}
+													else if(UseRecheckDate == 'Yes'){
 														scheduleInspectDate(InspTypeToSchedule,RecheckDate,assignedInspector); //schedule inspection using recheck date
 													}
 													else if(UseRecheckDate == 'No' && DaysToScheduleInTheFuture>0){
@@ -162,8 +170,13 @@ try{
 													}
 												}
 												if(matches(InspAssignedTo,'Current Department')){
-													if(UseRecheckDate == 'Yes'){
-														scheduleInspectDate(InspTypeToSchedule,RecheckDate,null); //schedule inspection using recheck date
+													if(UseRecheckDate == 'Yes') {
+														if(RecheckDate == null || RecheckDate == undefined) {
+															cancel = true;
+														} else {
+															scheduleInspectDate(InspTypeToSchedule,RecheckDate,null); //schedule inspection using recheck date
+
+														}
 													}
 													else if(UseRecheckDate == 'No' && DaysToScheduleInTheFuture>0){
 														scheduleInspectDate(InspTypeToSchedule,nextWorkDay(dateAdd(null,DaysToScheduleInTheFuture)),null);//schedule inspection using #ofDays field
