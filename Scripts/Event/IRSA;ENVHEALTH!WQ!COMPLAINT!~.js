@@ -1,4 +1,5 @@
 //lwacht: 181024: #133: Autoschedule WQ recheck inspection
+/*
 try{
 	if(!checkInspectionResult("Recheck","Scheduled") && inspResult=="Violations Found") {
 		if(AInfo["Complaint Type"]=="Emergency"){
@@ -11,6 +12,7 @@ try{
 	logDebug("A JavaScript Error occurred: IRSA:EnvHealth/WQ/Complaint/*: " + err.message);
 	logDebug(err.stack)
 }
+*/
 //lwacht: 181024: #133: end
 //lwacht: 181008: #2: Keeping applicant informed
 //lwacht: 190114: record type consolidation, so moved from IRSA:EnvHealth/WQ/Complaint/Pool
