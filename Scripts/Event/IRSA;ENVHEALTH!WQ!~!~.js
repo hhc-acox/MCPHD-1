@@ -68,6 +68,8 @@ removeASITable('CURRENT VIOLATIONS');
 													logDebug("ASITGroupName: " + ASITGroupName);
 													var ASITTableName = ASITSubGroup.getTableName();
 													logDebug("ASITTableName: " + ASITTableName);
+													var ASITColumnName = ASITSubGroup.getColumnName();
+													logDebug("ASITColumnName: " + ASITColumnName);
 													var columnList = ASITSubGroup.getColumnList();
 													logDebug("Column List: " + columnList);	
 													for (var l = 0; l < columnList.size() ; l++ )
