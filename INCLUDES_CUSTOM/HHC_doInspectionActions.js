@@ -22,7 +22,6 @@ try{
 							var InspTypeToSchedule = ""+sepRules[row]["Insp_Type_to_Schedule"];
 							var UseRecheckDate = ""+sepRules[row]["Use_Recheck_Date"]; //'Yes/No' field
 							var UseRecheckDate;
-							var DaysToScheduleInTheFuture;
 								if(UseRecheckDate == 'Yes') {
 									RecheckDate = hhcgetInspRecheckDate(capId,inspId);
 
