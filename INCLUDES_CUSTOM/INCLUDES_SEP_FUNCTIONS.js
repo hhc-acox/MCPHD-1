@@ -687,17 +687,10 @@ try{
 											}else{
 												feeBal = sepFeeBalance();
 											}
-											if(feeBal>0){
+											if(balanceDue>0){
 												cancel=true;
 												showMessage=true;
-												comment( "'"+ taskName + "' cannot be set to '" + taskStatus + "' when there is an outstanding balance ($" + feeBal.toFixed(2) + ") of these fees: " );
-												if(feesDue.length==0){
-													comment("--All Fees--");
-												}else{
-													for( x in feesDue){
-														comment(feesDue[x]);
-													}
-												}
+												comment( "'"+ taskName + "' cannot be set to '" + taskStatus + "' when there is an outstanding balance ($" + balanceDue.toFixed(2) + ")" );
 											}
 											break;
 										case "Inspections Scheduled":
