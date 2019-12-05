@@ -69,6 +69,13 @@ if (matches(appTypeArray[1],'Radon')) {
 	comment('the Radon area Inspector is: '+areaInspector);
 	}	
 
+//Food Applications
+if (appMatch('EnvHealth/Food/*/Application')) {
+	var supportStaff = HHC_getMySupportStaffDepartment(currentUserID);
+	updateTask('Application Intake','Application Received','Updated by Script');
+	assignTask('Application Intake',supportStaff);
+}
+
 //Senior Care EHS
 if (matches(appTypeArray[2],'SCM')) {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCSeniorCare');
