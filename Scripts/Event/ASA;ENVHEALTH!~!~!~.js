@@ -24,7 +24,7 @@ if (matches(appTypeArray[3],'SEC')) {
 	logDebug('Inspector to Assign: '+areaInspector);
 	}
 
-//Healthy Homes EHS	
+//Lead EHS	
 if (matches(appTypeArray[2],'LHH','LINV')) {
 	areaInspector = lookup('Census - Lead EHS',censusTract);
 	assignedAreaInspector = String(areaInspector.toUpperCase());
@@ -75,7 +75,6 @@ if (appMatch('EnvHealth/Food/*/Application')) {
 	updateTask('Application Intake','Application Received','Updated by Script');
 	assignTask('Application Intake',supportStaff);
 }
-
 //Senior Care EHS
 if (matches(appTypeArray[2],'SCM')) {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCSeniorCare');
@@ -220,13 +219,13 @@ if (matches(appTypeArray[2],'Body Art') && matches(appTypeArray[3],'Application'
 	}
 
 //lwacht: 151016: end
-//LINV Initial Inspection Scheduling set for next business day and case assignments.  This logic moved to launch from "Case Intake" on the LINV Workflow 08/12/2019.
-/*if (matches(appTypeArray[2],'LINV')) {
-	updateAppStatus('Open','Initial status');
+//LINV Initial Inspection Scheduling set for next business day and case assignments.  This logic moved to launch from "Case Intake" on the LINV Workflow 08/12/2019.  Case Intake removed and changed back to original functionality no Initial Inspection on ASI so discussion with Dan Fries needed - 12/07/2019.
+if (matches(appTypeArray[2],'LINV')) {
+	updateAppStatus('Pending Case Creation','Initial status');
 	editAppSpecific('Initial Inspection Date',nextWorkDay());
 	scheduleInspectDate('Initial Lead Inspection',nextWorkDay(),areaInspector);
 	}
-	*/
+	
 //Get the Initial Inspection Date and reformat it for resulting the Initial Inspection
 if (matches(appTypeArray[2],'VEH','HSG','SEC','TRA','LHH')) {
 	theDate = AInfo['Initial Inspection Date'].substring(6,10) + '-' + AInfo['Initial Inspection Date'].substring(0,2) + '-' + AInfo['Initial Inspection Date'].substring(3,5);
@@ -255,7 +254,7 @@ if (matches(appTypeArray[3],'SEC') && AInfo['Initial Inspection Date'] != null) 
 if (matches(appTypeArray[3],'DumpsterSurvey')) {
 	scheduleInspectDate('Rodent Control Dumpster Survey',nextWorkDay(dateAdd(null,0)),null);
 	}								
-//Healthy Homes Initial Inspection scheduling
+//LHH Initial Inspection scheduling
 if (matches(appTypeArray[2],'LHH') && AInfo['Initial Inspection Date'] != null) {
 	scheduleInspectDate('Initial Lead Inspection',AInfo['Initial Inspection Date'],areaInspector);
 	}
