@@ -103,6 +103,11 @@ var clFromDate = aa.date.parseDate(fromDate.getMonth() + 1 + '/' + fromDate.getD
 var today = new Date();                        
 var clToDate = aa.date.parseDate(today.getMonth() + 1 + '/' + today.getDate() + '/' + today.getFullYear());
 
+/* Set variables */
+var setCode = 'WATERSHED_SITES'
+var setType = 'Watershed Sites'
+var setStatus = 'Inspections Scheduled'
+
 /*--------------------------------------------------------------------------------------------------------------------|
 |	Convert to a common format (MM/DD/YYYY) and add leading "0"s to all dates 
 |---------------------------------------------------------------------------------------------------------------------*/
@@ -198,6 +203,16 @@ function processRecords(Collection)
 			}
 		}
 	}//End of Collection loop
+	
+	setScriptResult = aa.set.getSetByPK(setCode);
+	//aa.print(setScriptResult);
+	if (setScriptResult.getSuccess())
+	{
+		setScript = setScriptResult.getOutput();
+		setScript.setSetStatus(setStatus);
+		aa.print("Set Status: " + setScript.getSetStatus());
+	}
+	
 	//Script test screen only...
 	aa.print("..........................................");
 	aa.print("Total CAPS retrieved by collection list:  " + thisCapCollection.length);
