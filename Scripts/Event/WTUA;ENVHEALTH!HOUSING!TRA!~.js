@@ -85,13 +85,13 @@ if (wfTask == 'Request EHSM Clean' && wfStatus == 'Complete Request EHSM Clean')
 	HHC_CREATE_RCP_CASE();
 	}
 	
-if (wfTask == 'Requesting Admin Court Order' && wfStatus == 'Request Towing') {
+if (matches(wfTask, 'Additional Processing','Requesting Admin Court Order') && wfStatus == 'Request Towing') {
 	activateTask('Request Towing');
 	//notify towing company by email  - get a copy of how Housing wants the email to look - develop function
 	deactivateTask('Requesting Admin Court Order');
 }
 
-if (wfTask == 'Requesting Admin Court Order' && wfStatus == 'Request EHSM Clean and Towing') {
+if (matches(wfTask,'Additional Processing','Requesting Admin Court Order') && wfStatus == 'Request EHSM Clean and Towing') {
 	//notify towing company by email  - get a copy of how Housing wants the email to look - develop function
 	var areaTeamLeader = '';
 	var censusTract = '';
