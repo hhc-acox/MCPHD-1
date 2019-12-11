@@ -10,9 +10,10 @@ try{
 			var thisCap = tCap.getOutput();
 			var thisStatus = thisCap.getCapStatus();
 			if (thisStatus=="Permanent Injunction" && !isTaskActive("Permanent Injunction")){
-				cancel = true;
+				//cancel = true;
+				//12/11/2019 - Commented out the cancel as requested on the UAT Issues spreadsheet - item # 293
 				showMessage = true;
-				comment("This address has a permanent injunction (" + thisCapId.getCustomID() + "), which must be closed before another record can be opened.");
+				comment("This address has a permanent injunction (" + thisCapId.getCustomID() + "), which should be closed before another record can be opened.");
 			}
 		}else{
 			logDebug("Error getting cap: " +tCap.getErrorMessage());
