@@ -1,8 +1,9 @@
 function HHC_getMyTeamLeadersUserID(username)
-	{
-		try{
-			var suo = aa.person.getUser(username).getOutput(); 
-			var dpt = aa.people.getDepartmentList(null).getOutput();
+{
+	try{
+		var suo = aa.person.getUser(username).getOutput(); 
+		var dpt = aa.people.getDepartmentList(null).getOutput();
+		if (suo != null) {
 			var suof = suo.deptOfUser;
 			var deptstring = suof.split("/");
 			for (var thisdpt in dpt)
@@ -22,9 +23,10 @@ function HHC_getMyTeamLeadersUserID(username)
 				}
 			}
 		}
-		catch(err)
-		{
-		logDebug("A JavaScript Error occurred: HHC_getMyTeamLeadersUserID:  " + err.message);
-		logDebug(err.stack);
-		}
 	}
+	catch(err)
+	{
+	logDebug("A JavaScript Error occurred: HHC_getMyTeamLeadersUserID:  " + err.message);
+	logDebug(err.stack);
+	}
+}
