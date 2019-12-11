@@ -116,14 +116,14 @@ if (wfTask == 'Recurring Inspection' && wfStatus == 'Reinspect' && getTSIfieldVa
 	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Final Processing'),assignedEHS);
 	}
 //Closing the Case-----------------------------------------------------------------------------------------------------------------Closing the Case
-if (matches(wfTask,'Reinspection','Additional Processing','Final Processing','Recurring Inspection','Request EHSM Clean') && matches(wfStatus,'In Compliance', 'Non-Compliance/Case Closed','Cleaned by Other','Cleaned No Billing','Finaled', 'Closed') && balanceDue > 0) {
+if (matches(wfTask,'Reinspection','Additional Processing','Final Processing','Recurring Inspection','Request EHSM Clean','Requesting Admin Court Order') && matches(wfStatus,'In Compliance', 'Non-Compliance/Case Closed','Cleaned by Other','Cleaned No Billing','Finaled', 'Closed') && balanceDue > 0) {
 	//updateTask('Final Processing','Closed/Fees Outstanding','Updated by Script'); Not changed
 	activateTask('Final Processing');
 	updateAppStatus('Final Processing','Status Updated by Script');
 	HHC_VIOLATIONS_LOOP();
 	}
 
-if (matches(wfTask,'Reinspection','Additional Processing','Final Processing','Recurring Inspection', 'Request EHSM Clean') && matches(wfStatus,'In Compliance', 'Non-Compliance/Case Closed','Cleaned by Other','Finaled', 'Closed') && balanceDue == 0) {
+if (matches(wfTask,'Reinspection','Additional Processing','Final Processing','Recurring Inspection', 'Request EHSM Clean','Requesting Admin Court Order') && matches(wfStatus,'In Compliance', 'Non-Compliance/Case Closed','Cleaned by Other','Finaled', 'Closed') && balanceDue == 0) {
 	HHC_VIOLATIONS_LOOP(); //Sets all the violation statuses to Final
 	}
 
