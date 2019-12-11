@@ -44,6 +44,7 @@ if (wfTask == 'Additional Processing' && wfStatus == 'Request Admin Court Order'
 	HHC_CREATE_COURT();
 	editAppSpecific('Admin Court Order','Yes',newChildID);
 	activateTask('Requesting Admin Court Order');
+	deactivateTask('Additional Processing'); //Requested on the UAT issues list by Juli Gonyou item # 403
 	//Assign to EHS Team Leader
 	var areaTeamLeader = '';
 	var censusTract = '';
