@@ -1,3 +1,4 @@
+
 function HHC_getMyDepartment(username)
 {
 	try{
@@ -23,4 +24,3 @@ function HHC_getMyDepartment(username)
 	logDebug("A JavaScript Error occurred: HHC_getMyDepartment:  " + err.message);
 	logDebug(err.stack);
 	}
-}
