@@ -88,12 +88,14 @@ if (wfTask == 'Request EHSM Clean' && wfStatus == 'Complete Request EHSM Clean')
 	
 if (matches(wfTask, 'Additional Processing','Requesting Admin Court Order') && wfStatus == 'Request Towing') {
 	activateTask('Request Towing');
-	//notify towing company by email  - get a copy of how Housing wants the email to look - develop function
+	//notify towing company by email - must update the function with the correct email.
+	sendTowingEmail();
 	deactivateTask('Requesting Admin Court Order');
 }
 
 if (matches(wfTask,'Additional Processing','Requesting Admin Court Order') && wfStatus == 'Request EHSM Clean and Towing') {
-	//notify towing company by email  - get a copy of how Housing wants the email to look - develop function
+	//notify towing company by email - must update the function with the correct email.
+	sendTowingEmail();
 	var areaTeamLeader = '';
 	var censusTract = '';
 	censusTract = AInfo['ParcelAttribute.CensusTract'];
