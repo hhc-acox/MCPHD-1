@@ -33,6 +33,7 @@ function HHC_doCaseCreationActions(){
 							var IdField = ""+sepRules[row]["GIS Id Field"];
 							var myDept = arrAppType[1];
 							var mySubDept = arrAppType[2];
+							var RecordAssignedTo = '';
 							switch(true) {
 								case RecordAssignmentChoice == 'Inspector by Discipline':
 								case RecordAssignmentChoice == 'Supervisor by Discipline':
@@ -72,8 +73,6 @@ function HHC_doCaseCreationActions(){
 									else
 										RecordAssignedTo = null;
 									break;	
-								default:
-									RecordAssignedTo = 'undefined';
 							} 
 	
 							var recordAssignment = RecordAssignedTo;
