@@ -193,8 +193,8 @@ try{
     rSet.close();
     sStmt.close();
 
+    logDebug(capIdList.length + " inspections to reschedule");
     if (capIdList.length > 0) {
-        logDebug(capIdList.length + " inspections to reschedule");
         for (var cIndex in capIdList) {
             capId = capIdList[cIndex];
             var capIdArr = capId.toString().split('-');
