@@ -50,7 +50,7 @@ if (wfTask == 'Additional Processing' && wfStatus == 'Request Admin Court Order'
 	var censusTract = '';
 	censusTract = AInfo['ParcelAttribute.CensusTract'];
 	areaTeamLeader = lookup('Census - Team Leader',censusTract); 
-	assignTask('Request Admin Court Order',areaTeamLeader);
+	assignTask('Requesting Admin Court Order',areaTeamLeader);
 	}
 
 if (wfTask == 'Additional Processing' && wfStatus == 'Ticket' && AInfo['Ticket Due Date'] != null) {
