@@ -59,7 +59,7 @@
 		
 	}
 
-if (appMatch("EnvHealth/WQ/Pool/Construction Permit") || appMatch("EnvHealth/WQ/Pump/Application") || appMatch("EnvHealth/WQ/PrivateWell/Application") || appMatch("EnvHealth/WQ/Sewage/Application")){
+if (appMatch("EnvHealth/WQ/Pump/Application") || appMatch("EnvHealth/WQ/PrivateWell/Application") || appMatch("EnvHealth/WQ/Sewage/Application")){
 		var assignedToRecordInspector = getAssignedToRecord();
 		var supportStaff = HHC_getMySupportStaffDepartment(assignedToRecordInspector);
 		updateTask('Intake','Pending','Updated by script');
