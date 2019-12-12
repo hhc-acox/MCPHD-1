@@ -69,8 +69,8 @@ else
 |
 /------------------------------------------------------------------------------------------------------*/
 /* test parameters  */
-aa.env.setValue("oldUserId", "ADMIN");
-aa.env.setValue("newUserId", "DQUATACKER");
+//aa.env.setValue("oldUserId", "ADMIN");
+//aa.env.setValue("newUserId", "DQUATACKER");
 
 var oldUserId =  getParam("oldUserId");
 var newUserId = getParam("newUserId");
