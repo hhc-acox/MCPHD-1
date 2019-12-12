@@ -134,4 +134,6 @@ if (wfTask == 'Additional Processing' && wfStatus == 'Court Case') {
 
 if (wfTask == 'Additional Processing' && wfStatus == 'Court Case') {
 	HHC_CREATE_COURT(); //Creates a Court Case
+	activateTask('Final Processing');
+	updateAppStatus('Final Processing','Status Updated by Script');
 	}
