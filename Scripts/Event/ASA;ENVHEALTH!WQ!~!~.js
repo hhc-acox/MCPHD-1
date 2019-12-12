@@ -59,13 +59,17 @@
 		
 	}
 
-if (appMatch("EnvHealth/WQ/Pool/Construction Permit") || appMatch("EnvHealth/WQ/Pump/Application") || appMatch("EnvHealth/WQ/PrivateWell/Application") || appMatch("EnvHealth/WQ/Sewage/Application")){
+if (appMatch("EnvHealth/WQ/Pump/Application") || appMatch("EnvHealth/WQ/PrivateWell/Application") || appMatch("EnvHealth/WQ/Sewage/Application")){
 		var assignedToRecordInspector = getAssignedToRecord();
 		var supportStaff = HHC_getMySupportStaffDepartment(assignedToRecordInspector);
 		updateTask('Intake','Pending','Updated by script');
 		assignTask('Intake', supportStaff);
-	} else if (appMatch("EnvHealth/WQ/*/Application")) {
+	} else if (appMatch("EnvHealth/WQ/*/Application") || appMatch("EnvHealth/WQ/Pool/Construction Permit")) {
 		var assignedToRecordInspector = getAssignedToRecord();
 		updateTask('Application Review','Pending','Updated by script');
 		assignTask('Application Review', assignedToRecordInspector);
 	}
+
+if (appMatch("EnvHealth/WQ/Pool/Construction Permit")) {
+	updateFee('WQP001','WQ_POOL','FINAL',1,'Y');
+}
