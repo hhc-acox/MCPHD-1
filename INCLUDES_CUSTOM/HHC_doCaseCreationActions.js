@@ -117,6 +117,12 @@ function HHC_doCaseCreationActions(){
 						}
 }
 					}
+					
+					if(aa.workflow.getTask(capId, 'Intake').getSuccess() === true) {
+						if(appTypeString.indexOf('Pool') > 0 && appTypeString.indexOf('Construction Permit') > 0) {
+							closeTask('Intake', 'Accepted', 'Closed by Script', 'Closed by Script');						      
+				      		}
+					}
 				}
 			}
 		}
