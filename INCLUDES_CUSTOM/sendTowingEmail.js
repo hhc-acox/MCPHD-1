@@ -27,7 +27,7 @@ function sendTowingEmail() {
 	}
 	// Run report Court Ordered Clean Cover Sheet
 	reportParams = aa.util.newHashtable();
-    reportParams.put("CaseNumber", altId);
+    reportParams.put("CaseNumber", "" + capId.getCustomID());
 	reportName = "Court Ordered Clean Cover Sheet";
 	coverSheet = reportRunSave(reportName, false, true, true, "EnvHealth", reportParams, capId);
 	logDebug(coverSheet);
@@ -35,7 +35,7 @@ function sendTowingEmail() {
 		rFiles.push(coverSheet);
 	
 	var emailParams = aa.util.newHashtable();
-	addParameter(emailParams, "$$capID$$", altId);
+	addParameter(emailParams, "$$capID$$", "" + capId.getCustomID());
 	addParameter(emailParams, "$$CAPADDRESS$$", hhc_getTheAddress(capId));
 	var censusTract = '';
 	censusTract = AInfo['ParcelAttribute.CensusTract'];
