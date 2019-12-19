@@ -14,12 +14,12 @@ if (wfTask == 'Initial Processing' && wfStatus == 'Notice of Violation' && getTS
 	}
 
 if (wfTask == 'Additional Processing' && matches(wfStatus,'Complete Cntr Referral 18 Day','Complete Cntr Referral 21 Day') && getTSIfieldValue('Reinspection Date', 'Additional Processing') != null) {
-	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Additional Processing'),'areaInspector');
+	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Additional Processing'),areaInspector);
 	assignTask('Towing Inspection',areaInspector);
 	}
 
 if (wfTask == 'Additional Processing' && matches(wfStatus,'Complete Cntr Referral 18 Day','Complete Cntr Referral 21 Day') && getTSIfieldValue('Reinspection Date', 'Additional Processing') == null) {
-	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,13)),'areaInspector');
+	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,13)),areaInspector);
 	editTaskSpecific('Reinspection','Reinspection Date',nextWorkDay(dateAdd(null,13)));
 	assignTask('Towing Inspection',areaInspector);
 	}
@@ -42,6 +42,6 @@ if (wfTask == 'Initial Processing' && wfStatus == 'Contractor Referral 48 Hours'
 	}
 
 if (wfTask == 'Initial Processing' && wfStatus == 'Contractor Referral 48 Hours' && getTSIfieldValue('Reinspection Date', 'Initial Processing') == null) {
-	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,20)),'areaInspector');
+	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,20)),areaInspector);
 	editTaskSpecific('Initial Processing','Reinspection Date',nextWorkDay(dateAdd(null,20)));
 	}
