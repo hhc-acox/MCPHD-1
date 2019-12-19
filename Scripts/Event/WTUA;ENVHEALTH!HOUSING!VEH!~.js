@@ -1,10 +1,10 @@
 //WTUA;ENVHEALTH!HOUSING!VEH!~
 var areaInspector = hhcgetUserByDiscipline('HSGVehicleInspections');
-if (wfTask == 'Initial Processing' && matches(wfStatus, 'Complete Notice of Violation','Complete Affidavit NOV') && getTSIfieldValue('Reinspection Date', 'Initial Processing') != null) {
+if (wfTask == 'Initial Processing' && matches(wfStatus, 'Complete Notice of Violation') && getTSIfieldValue('Reinspection Date', 'Initial Processing') != null) {
 	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Initial Processing'),AInfo['Assigned To']);
 	}
 
-if (wfTask == 'Initial Processing' && matches(wfStatus, 'Complete Notice of Violation','Complete Affidavit NOV') && getTSIfieldValue('Reinspection Date', 'Initial Processing') == null) {
+if (wfTask == 'Initial Processing' && matches(wfStatus, 'Complete Notice of Violation') && getTSIfieldValue('Reinspection Date', 'Initial Processing') == null) {
 	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,20)),AInfo['Assigned To']);
 	editTaskSpecific('Initial Processing','Reinspection Date',nextWorkDay(dateAdd(null,20)));
 	}
@@ -15,13 +15,13 @@ if (wfTask == 'Initial Processing' && wfStatus == 'Notice of Violation' && getTS
 
 if (wfTask == 'Additional Processing' && matches(wfStatus,'Complete Cntr Referral 18 Day','Complete Cntr Referral 21 Day') && getTSIfieldValue('Reinspection Date', 'Additional Processing') != null) {
 	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Additional Processing'),'areaInspector');
-	assignTask('Towing Inspection','areaInspector');
+	assignTask('Towing Inspection',areaInspector);
 	}
 
 if (wfTask == 'Additional Processing' && matches(wfStatus,'Complete Cntr Referral 18 Day','Complete Cntr Referral 21 Day') && getTSIfieldValue('Reinspection Date', 'Additional Processing') == null) {
 	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,13)),'areaInspector');
 	editTaskSpecific('Reinspection','Reinspection Date',nextWorkDay(dateAdd(null,13)));
-	assignTask('Towing Inspection','areaInspector');
+	assignTask('Towing Inspection',areaInspector);
 	}
 
 if (wfTask == 'Towing Inspection' && wfStatus == 'Reinspection') {
@@ -34,11 +34,11 @@ if (wfTask == 'Reinspection' && wfStatus == 'Reinspection') {
 
 if (wfTask == 'Initial Processing' && wfStatus == 'Contractor Referral 48 Hours') {
 	activateTask('Towing Inspection');
-	assignTask('Towing Inspection','areaInspector');
+	assignTask('Towing Inspection',areaInspector);
 	}
 
 if (wfTask == 'Initial Processing' && wfStatus == 'Contractor Referral 48 Hours' && getTSIfieldValue('Reinspection Date', 'Initial Processing') != null) {
-	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Initial Processing'),'areaInspector');
+	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Initial Processing'),areaInspector);
 	}
 
 if (wfTask == 'Initial Processing' && wfStatus == 'Contractor Referral 48 Hours' && getTSIfieldValue('Reinspection Date', 'Initial Processing') == null) {
