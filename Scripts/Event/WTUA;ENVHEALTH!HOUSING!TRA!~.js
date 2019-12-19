@@ -102,7 +102,7 @@ if (matches(wfTask,'Additional Processing','Requesting Admin Court Order') && wf
 	censusTract = AInfo['ParcelAttribute.CensusTract'];
 	areaTeamLeader = lookup('Census - Team Leader',censusTract); 
 	activateTask('Request EHSM Clean');
-	activateTask('Request Towing');
+	//activateTask('Request Towing'); //As of 12/17/2019, Juli says EHSM should send the email for towing.  They should also deal with the Towing request so it does not need to be active for Housing on the TRA case.
 	deactivateTask('Requesting Admin Court Order');
 	assignTask('Request EHSM Clean',areaTeamLeader);
 }
