@@ -183,3 +183,13 @@ function reportRunSave(reportName, view, edmsSave, storeToDisk, reportModule, re
 
 	return rFile;
 }
+
+
+function changeNameofAttachment(attachmentName) 
+{
+    rptExtLoc = attachmentName.indexOf(".");
+    rptLen = attachmentName.length();
+    ext = attachmentName.substr(rptExtLoc, rptLen);
+    attachName = name + ext;
+    return attachName
+}
