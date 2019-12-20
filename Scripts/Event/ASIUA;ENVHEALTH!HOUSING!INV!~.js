@@ -4,11 +4,12 @@ var censusTract = '';
 censusTract = AInfo['ParcelAttribute.CensusTract'];
 areaInspector = lookup('Census - Housing EHS',censusTract); 
 if (capStatus == 'Pending Case Creation' && AInfo['VEH'] == 'CHECKED') {
-
+var saveID = capId;
 editAppSpecific('VEH Created',dateAdd(null,0));
 updateAppStatus('Finaled','Child Case Created');
 newChildID = createChild('EnvHealth','Housing','VEH','NA','');
 copyAppSpecific(newChildID);
+copyOwner(saveID, newChildID);
 comment('New child app id = '+ newChildID);
 updateAppStatus('In Violation','Created from INV',newChildID);
 assignCap(areaInspector,newChildID);
@@ -26,11 +27,12 @@ if (AInfo['Online Complaint'] == 'CHECKED') {
 	}
 
 if (capStatus == 'Pending Case Creation' && AInfo['HSG'] == 'CHECKED') {
-	
+var saveID = capId;	
 editAppSpecific('HSG Created',dateAdd(null,0),capId);
 var RFI = AInfo['Reason for Investigation'];
 updateAppStatus('Finaled','Child Case Created');
 newChildID = createChild('EnvHealth','Housing','HSG','NA','');
+copyOwner(saveID, newChildID);
 copyAppSpecific(newChildID);
 comment('New child app id = '+ newChildID);
 updateAppStatus('In Violation','Created from INV',newChildID);
@@ -49,11 +51,12 @@ if (AInfo['Online Complaint'] == 'CHECKED') {
 	}
 
 if (capStatus == 'Pending Case Creation' && AInfo['TRA'] == 'CHECKED') {
-	
+var saveID = capId;	
 editAppSpecific('TRA Created',dateAdd(null,0),capId);
 var RFI = AInfo['Reason for Investigation'];
 updateAppStatus('Finaled','Child Case Created');
 newChildID = createChild('EnvHealth','Housing','TRA','NA','');
+copyOwner(saveID, newChildID);
 copyAppSpecific(newChildID);
 comment('New child app id = '+ newChildID);
 updateAppStatus('In Violation','Created from INV',newChildID);
