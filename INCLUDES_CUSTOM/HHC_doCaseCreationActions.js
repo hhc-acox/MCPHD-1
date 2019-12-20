@@ -45,7 +45,8 @@ function HHC_doCaseCreationActions(){
 											if (sysUserList.length>1)	{
 												//More than 1 person, assign to department
 												var userId = sysUserList[0].getUserID();
-												HHC_getMyDepartment(userId);
+												//HHC_getMyDepartment(userId);
+												RecordAssignedTo = userId;
 											}
 											else {
 												//Assigned to person	
