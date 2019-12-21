@@ -180,16 +180,17 @@ function reportRunSave(reportName, view, edmsSave, storeToDisk, reportModule, re
 		error = "Failed to get report detail.  Check report name matches name in Report Manager.";
 		logDebug(error);
 	}
+	
+
+	function changeNameofAttachment(attachmentName) 
+	{
+	    rptExtLoc = attachmentName.indexOf(".");
+	    rptLen = attachmentName.length();
+	    ext = attachmentName.substr(rptExtLoc, rptLen);
+	    attachName = name + ext;
+	    return attachName
+	}
 
 	return rFile;
 }
 
-
-function changeNameofAttachment(attachmentName) 
-{
-    rptExtLoc = attachmentName.indexOf(".");
-    rptLen = attachmentName.length();
-    ext = attachmentName.substr(rptExtLoc, rptLen);
-    attachName = name + ext;
-    return attachName
-}
