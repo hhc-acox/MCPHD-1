@@ -294,3 +294,8 @@ if (matches(appTypeArray[3],'SEC')) {
 if (areaInspector == null || areaInspector == 'undefined') {
 	overrideMessage = 'The EHS Inspector could not be determined. Speak to a System Administrator to resolve the problem.<BR><BR>';
 	}
+
+if (!publicUser && !appMatch("EnvHealth/CRT/*/*") && !appMatch("EnvHealth/Housing/*/*")) {
+	copyOwnerToContact("Owner", "Responsible Party", capId);
+}
+
