@@ -93,8 +93,8 @@ HHC_GET_ADDRESS_FOR_CHILD();
 //Radon Case
 if (capStatus == 'Pending Case Creation' && AInfo['RAD'] == 'CHECKED') 
 	{
-saveID = capId;
 areaInspector = hhcgetUserByDiscipline('HHCESMCRadon');
+comment("The area Inspector for RAD is "+areaInspector);
 editAppSpecific('RAD Created',dateAdd(null,0));
 updateAppStatus('Finaled','Child Case Created');
 branchTask('Create Case','Case Created','Action by Script','');
@@ -106,6 +106,7 @@ copyOwner(capId, newChildID);
 comment('New child app id = '+ newChildID);
 updateAppStatus('Open','Created from LINV',newChildID);
 assignCap(areaInspector,newChildID);
+var saveID = capId;
 capId = newChildID;
 updateTask('Radon Intake','Accepted','Updated by Script');
 capId = saveID;
