@@ -122,7 +122,7 @@ function HHC_GET_OFFENSE_CODES(saveID,childID) {
 									}	
 							if (matches(appTypeArray[1],'WQ')){
 									logDebug("HHC_GET_OFFENSE_CODES: Water Quality Case");
-									loadASITables('CURRENTVIOLATIONS');
+									loadASITables();
 									var crtVIOLATIONS = [];
 									crtVIOLATIONS = loadASITable('CURRENT VIOLATIONS');
 									//comment("this is what the thing looks like"+crtVIOLATIONS[0][0]);
