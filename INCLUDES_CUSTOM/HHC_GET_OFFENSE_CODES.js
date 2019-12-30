@@ -1,10 +1,10 @@
-function HHC_GET_OFFENSE_CODES(CapId,childID) {
+function HHC_GET_OFFENSE_CODES(saveID,childID) {
 			try {
 				if (!childID) {
 					logDebug("Required parameter child ID is null");
 					return;
 				}
-				capId = CapId;
+				capId = saveID;
 				var code10or19 = AInfo['Ordinance Chapter']+'';
 				logDebug("HHC_GET_OFFENSE_CODES: Starts here");
 				//get Violation Table from current record and interrogate each violation and determine the violation column value
@@ -123,7 +123,8 @@ function HHC_GET_OFFENSE_CODES(CapId,childID) {
 							if (matches(appTypeArray[1],'WQ')){
 									logDebug("HHC_GET_OFFENSE_CODES: Water Quality Case");
 									crtVIOLATIONS = loadASITable("CURRENT VIOLATIONS");
-										if (crtVIOLATIONS && crtVIOLATIONS.length > 0) {
+									comment("this is what the thing looks like"+crtVIOLATIONS[a]);
+										if (crtVIOLATIONS && crtVIOLATIONS.indexOf() > -1) {
 											for(a in crtVIOLATIONS) {
 												thisrow = crtVIOLATIONS[a];
 													if (matches(thisrow['Status'],'Court') && !matches(thisrow['Violation'],null)) {
