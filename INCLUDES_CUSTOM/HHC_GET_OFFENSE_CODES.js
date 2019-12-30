@@ -5,7 +5,7 @@ function HHC_GET_OFFENSE_CODES(CapId,childID) {
 					return;
 				}
 				capId = CapId;
-				code10or19 = AInfo['Ordinance Chapter'];
+				var code10or19 = AInfo['Ordinance Chapter']+'';
 				logDebug("HHC_GET_OFFENSE_CODES: Starts here");
 				//get Violation Table from current record and interrogate each violation and determine the violation column value
 				var v = ''; 
@@ -122,7 +122,7 @@ function HHC_GET_OFFENSE_CODES(CapId,childID) {
 									}	
 							if (matches(appTypeArray[1],'WQ')){
 									logDebug("HHC_GET_OFFENSE_CODES: Water Quality Case");
-									crtVIOLATIONS = loadASITable('CURRENTVIOLATIONS');
+									crtVIOLATIONS = loadASITable('CURRENT VIOLATIONS');
 										if (crtVIOLATIONS && crtVIOLATIONS.length > 0) {
 											for(a in crtVIOLATIONS) {
 												thisrow = crtVIOLATIONS[a];
