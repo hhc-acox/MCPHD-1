@@ -1,5 +1,4 @@
 function addSupervisorReview(itemCap, taskType, inspID, taskName, statusName) {
-
     assignTo = HHC_getMyTeamLeadersUserID(currentUserID);
     logDebug("Assigned To: " + assignTo);
 
@@ -30,11 +29,11 @@ function addSupervisorReview(itemCap, taskType, inspID, taskName, statusName) {
                     inspType = iObj.getInspectionType();
 					var stdInsp = getStandardChoiceValues("SUPERVISOR_REVIEW_INSPECTION");
 					for (var e in stdInsp) {
-						if (appMatch(stdInsp[e].value, itemCap)) {
+						if (appMatch(stdInsp[e].value)) {
 							if (inspType == stdInsp[e].key || stdInsp[e].key == '*') {
+                                                                var inspDate = "" + iObj.getScheduledDate().getMonth() + iObj.getScheduledDate().getDayOfMonth() + iObj.getInspectionDate().getYear();
 								var inspKey = inspDate + "-" + inspType + "-" + iObj.getInspectionStatus() + "-" + iNumber;
 								if (!isSupervisor(currentUserID) && !containsAcceptedAdHocTaskForDisposition(capId, inspKey)) {
-									inspDate = "" + iObj.getScheduledDate().getMonth() + iObj.getScheduledDate().getDayOfMonth() + iObj.getInspectionDate().getYear();
 									addAdHocTask("ADHOC_WORKFLOW", "Supervisor Review Inspection", inspKey, assignTo);
 									logDebug("Added Supervisor Review Inspection Task");
 								}
