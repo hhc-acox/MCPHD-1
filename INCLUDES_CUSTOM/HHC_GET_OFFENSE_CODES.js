@@ -120,7 +120,22 @@ function HHC_GET_OFFENSE_CODES(CapId,childID) {
 										vioCodeNums = '19301OI'
 
 									}	
-							
+							if (matches(appTypeArray[1],'WQ')){
+									logDebug("HHC_GET_OFFENSE_CODES: Water Quality Case");
+									crtVIOLATIONS = loadASITable('CURRENTVIOLATIONS');
+										if (crtVIOLATIONS && crtVIOLATIONS.length > 0) {
+											for(a in crtVIOLATIONS) {
+												thisrow = crtVIOLATIONS[a];
+													if (matches(thisrow['Status'],'Court') && !matches(thisrow['Violation'],null)) {
+														v = thisrow['Chapter'];	
+														v = v.replace(/-/g,'');
+														vioCodeNums = vioCodeNums+v.replace(/\//g,'OI');
+														vioCodeNums = vioCodeNums+'OI';
+														v = '';
+												}
+											}
+										}
+							}
 							newVioCodes = vioCodeNums.match(/.{1,7}/g);		
 							logDebug('New Viocodes length for '+appTypeArray[2]+' - '+newVioCodes.length);
 							for (z in newVioCodes) {
