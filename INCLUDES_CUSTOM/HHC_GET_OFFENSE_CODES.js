@@ -14,7 +14,7 @@ function HHC_GET_OFFENSE_CODES(saveID,childID) {
 				var uniqVioCodes = '';
 				if (matches(appTypeArray[2],'HSG','TRA')){
 				crtVIOLATIONS = loadASITable('VIOLATIONS');
-				if (crtVIOLATIONS && crtVIOLATIONS.length > 0) {
+				if (crtVIOLATIONS && crtVIOLATIONS.indexOf() > -1) {
 					for(a in crtVIOLATIONS) {
 						thisrow = crtVIOLATIONS[a];
 						if (matches(thisrow['Status'],'Court') && !matches(thisrow['Violation'],null)) {
@@ -122,7 +122,7 @@ function HHC_GET_OFFENSE_CODES(saveID,childID) {
 									}	
 							if (matches(appTypeArray[1],'WQ')){
 									logDebug("HHC_GET_OFFENSE_CODES: Water Quality Case");
-									crtVIOLATIONS = loadASITable("CURRENT VIOLATIONS");
+									crtVIOLATIONS = loadASITable('CURRENT VIOLATIONS',saveID);
 									comment("this is what the thing looks like"+crtVIOLATIONS[0][0]);
 										if (crtVIOLATIONS && crtVIOLATIONS.indexOf() > -1) {
 											for(a in crtVIOLATIONS) {
