@@ -20,7 +20,8 @@ function HHC_GET_OFFENSE_CODES(saveID,childID) {
 											for(a in crtVIOLATIONS) {
 												thisrow = crtVIOLATIONS[a];
 													if (matches(thisrow['Status'],'OUT','COS') && !matches(thisrow['Violation'],null)) {
-														v = ltrim(thisrow['Chapter']).toString();	
+														v = thisrow['Chapter'].toString();
+														v = v.replace(/^\s+/,"");
 														v = v.replace(/-/g,'');
 														vioCodeNums = vioCodeNums+v.replace(/\//g,'OI');
 														vioCodeNums = vioCodeNums+'OI';
