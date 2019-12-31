@@ -143,7 +143,7 @@ function HHC_GET_OFFENSE_CODES(saveID,childID) {
 							if (newVioCodes != null) {							
 							logDebug('New Viocodes length for '+appTypeArray[2]+' - '+newVioCodes.length);
 							} else {
-							newVioCodes.length = 0;	
+							//newVioCodes.length = 0;	
 							}
 							for (z in newVioCodes) {
 								thisVioCode = newVioCodes[z];
