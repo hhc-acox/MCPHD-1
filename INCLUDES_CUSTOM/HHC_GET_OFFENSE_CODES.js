@@ -21,7 +21,7 @@ function HHC_GET_OFFENSE_CODES(saveID,childID) {
 												thisrow = crtVIOLATIONS[a];
 													if (matches(thisrow['Status'],'OUT','COS') && !matches(thisrow['Violation'],null)) {
 														v = thisrow['Chapter'].toString();
-														v = v.replace(/^\s+/,'');
+														v = v.replace(/^\s+|\s+$/g,''); //Trims the string of leading and trailing spaces
 														v = v.replace(/-/g,'');
 														vioCodeNums = vioCodeNums+v.replace(/\//g,'OI');
 														vioCodeNums = vioCodeNums+'OI';
