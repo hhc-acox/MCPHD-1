@@ -13,13 +13,13 @@ function HHC_GET_OFFENSE_CODES(saveID,childID) {
 				var newVioCode = '';
 				var uniqVioCodes = '';
 				if (matches(appTypeArray[2],'HSG','TRA')){
-				crtVIOLATIONS = loadASITable('VIOLATIONS');
-				if (crtVIOLATIONS && crtVIOLATIONS.length > 0) {
-					for(a in crtVIOLATIONS) {
-						thisrow = crtVIOLATIONS[a];
-						if (matches(thisrow['Status'],'Court') && !matches(thisrow['Violation'],null)) {
-							//for each value look up the corresponding codes in the translation table that fits the case and push each code set to an array:
-							//HSG Cases
+					crtVIOLATIONS = loadASITable('VIOLATIONS');
+					if (crtVIOLATIONS && crtVIOLATIONS.length > 0) {
+						for(a in crtVIOLATIONS) {
+							thisrow = crtVIOLATIONS[a];
+							if (matches(thisrow['Status'],'Court') && !matches(thisrow['Violation'],null)) {
+								//for each value look up the corresponding codes in the translation table that fits the case and push each code set to an array:
+								//HSG Cases
 								
 								if (matches(appTypeArray[2],'HSG')){
 									logDebug("HHC_GET_OFFENSE_CODES: Housing Case");
@@ -42,7 +42,7 @@ function HHC_GET_OFFENSE_CODES(saveID,childID) {
 							//TRA Cases
 								if (matches(appTypeArray[2],'TRA')){
 								//Trash Occupied - Residential - VioCode_Chpt10_Occ
-								logDebug("HHC_GET_OFFENSE_CODES: Trash Case");
+									logDebug("HHC_GET_OFFENSE_CODES: Trash Case");
 									if (parseInt(code10or19) == 10 && AInfo['Property Type'] == 'Occupied') {
 										v = lookup('VioCode_Chpt10_Occ',crtVIOLATIONS[a]['Violation']);	
 										v = v.replace(/-/g,'');
@@ -122,9 +122,9 @@ function HHC_GET_OFFENSE_CODES(saveID,childID) {
 									}	
 							if (matches(appTypeArray[1],'WQ')){
 									logDebug("HHC_GET_OFFENSE_CODES: Water Quality Case");
-									//loadASITables();
+									loadASITables();
 									//var crtVIOLATIONS = [];
-									var crtVIOLATIONS = loadASITable('CURRENT VIOLATIONS');
+									var crtVIOLATIONS = loadASITable('CURRENTVIOLATIONS');
 									//comment("this is what the thing looks like"+crtVIOLATIONS[0][0]);
 										if (crtVIOLATIONS && crtVIOLATIONS.length > 0) {
 											for(a in crtVIOLATIONS) {
@@ -141,9 +141,9 @@ function HHC_GET_OFFENSE_CODES(saveID,childID) {
 							}
 							var newVioCodes = vioCodeNums.match(/.{1,7}/g);	
 							if (newVioCodes != null) {							
-							logDebug('New Viocodes length for '+appTypeArray[2]+' - '+newVioCodes.length);
-							} else {
-							//newVioCodes.length = 0;	
+								logDebug('New Viocodes length for '+appTypeArray[2]+' - '+newVioCodes.length);
+								} else {
+								//newVioCodes.length = 0;	
 							}
 							for (z in newVioCodes) {
 								thisVioCode = newVioCodes[z];
