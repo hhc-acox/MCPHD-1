@@ -14,7 +14,7 @@ function HHC_GET_OFFENSE_CODES(saveID,childID) {
 				var uniqVioCodes = '';
 				if (matches(appTypeArray[2],'HSG','TRA')){
 				crtVIOLATIONS = loadASITable('VIOLATIONS');
-				if (crtVIOLATIONS && crtVIOLATIONS.indexOf() > -1) {
+				if (crtVIOLATIONS && crtVIOLATIONS.length > 0) {
 					for(a in crtVIOLATIONS) {
 						thisrow = crtVIOLATIONS[a];
 						if (matches(thisrow['Status'],'Court') && !matches(thisrow['Violation'],null)) {
@@ -122,11 +122,11 @@ function HHC_GET_OFFENSE_CODES(saveID,childID) {
 									}	
 							if (matches(appTypeArray[1],'WQ')){
 									logDebug("HHC_GET_OFFENSE_CODES: Water Quality Case");
-									loadASITables();
-									var crtVIOLATIONS = [];
-									crtVIOLATIONS = loadASITable('CURRENT VIOLATIONS');
+									//loadASITables();
+									//var crtVIOLATIONS = [];
+									var crtVIOLATIONS = loadASITable('CURRENT VIOLATIONS');
 									//comment("this is what the thing looks like"+crtVIOLATIONS[0][0]);
-										if (crtVIOLATIONS && crtVIOLATIONS.indexOf() > -1) {
+										if (crtVIOLATIONS && crtVIOLATIONS.length > 0) {
 											for(a in crtVIOLATIONS) {
 												thisrow = crtVIOLATIONS[a];
 													if (matches(thisrow['Status'],'Court') && !matches(thisrow['Violation'],null)) {
@@ -139,8 +139,12 @@ function HHC_GET_OFFENSE_CODES(saveID,childID) {
 											}
 										}
 							}
-							newVioCodes = vioCodeNums.match(/.{1,7}/g);		
+							var newVioCodes = vioCodeNums.match(/.{1,7}/g);	
+							if (newVioCodes != null) {							
 							logDebug('New Viocodes length for '+appTypeArray[2]+' - '+newVioCodes.length);
+							} else {
+							newVioCodes.length = 0;	
+							}
 							for (z in newVioCodes) {
 								thisVioCode = newVioCodes[z];
 								newOffenseRow = new Array();
