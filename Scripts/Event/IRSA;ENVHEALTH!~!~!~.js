@@ -47,3 +47,4 @@ if(riskLevel!=null && riskLevel==4 && inspType == "Routine Inspection" && inspRe
 
 
 addSupervisorReview(capId, "INSPECTION", inspId, null, null);
+addCurrentViolations();
