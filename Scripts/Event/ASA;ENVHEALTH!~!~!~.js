@@ -15,12 +15,16 @@ comment('the census tract is: '+censusTract);
 //Housing EHS (EnvHealth/Housing/XXX/NA)
 if (matches(appTypeArray[2],'HSG','TRA','VEH','INV')) {
 	areaInspector = lookup('Census - Housing EHS',censusTract); 
+	editAppSpecific('Assigned To',areaInspector);
+	assignCap(areaInspector);
 	logDebug('Inspector to Assign: '+areaInspector);
 	}
 	
 //SEC Assigment
 if (matches(appTypeArray[3],'SEC')) {
 	areaInspector = lookup('Census - Housing EHS',censusTract); 
+	editAppSpecific('Assigned To',areaInspector);
+	assignCap(areaInspector);
 	logDebug('Inspector to Assign: '+areaInspector);
 	}
 
@@ -29,34 +33,42 @@ if (matches(appTypeArray[2],'LHH','LINV')) {
 	areaInspector = lookup('Census - Lead EHS',censusTract);
 	assignedAreaInspector = String(areaInspector.toUpperCase());
 	areaInspector = assignedAreaInspector;
+	editAppSpecific('Assigned To',areaInspector);
+	editAppSpecific('Previous Assigned To',areaInspector);
+	assignCap(areaInspector);
 	comment('the Healthy Homes area Inspector: '+areaInspector);
 	}
 
 //Asthma EHS
 if (matches(appTypeArray[2],'ASP')) {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCAsthma');
+	assignedAreaInspector = String(areaInspector.toUpperCase());
+	areaInspector = assignedAreaInspector;
+	editAppSpecific('Assigned To',areaInspector);
+	editAppSpecific('Previous Assigned To',areaInspector);
+	assignCap(areaInspector);
 	comment('the Asthma area Inspector is: '+areaInspector);
 	}
-
-//Pool/Pump Applicatioon
-if (matches(appTypeString, 'EnvHealth/WQ/Pump/Application','EnvHealth/WQ/Pool/Construction Permit')) {
-	areaInspector = hhcgetUserByDiscipline('HHCESMCBedBugs');
-	var supportStaff = HHC_getMySupportStaffDepartment(areaInspector);
-	assignTask('Intake',supportStaff );
-}
-
 //BedBugs EHS
 if (matches(appTypeArray[2],'BBE')) {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCBedBugs');
+	assignedAreaInspector = String(areaInspector.toUpperCase());
+	areaInspector = assignedAreaInspector;
+	editAppSpecific('Assigned To',areaInspector);
+	editAppSpecific('Previous Assigned To',areaInspector);
+	assignCap(areaInspector);
 	comment('the BedBugs area Inspector is: '+areaInspector);
-	}
-	
+	}	
 //CPS EHS
 if (matches(appTypeArray[2],'CPS')) {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCConsumerProductSafety');
+	assignedAreaInspector = String(areaInspector.toUpperCase());
+	areaInspector = assignedAreaInspector;
+	editAppSpecific('Assigned To',areaInspector);
+	editAppSpecific('Previous Assigned To',areaInspector);
+	assignCap(areaInspector);
 	comment('the CPS area Inspector is: '+areaInspector);
-	}
-	
+	}	
 //Radon EHS
 if (matches(appTypeArray[1],'Radon')) {
         var department = HHC_getMyDepartment(currentUserID);
@@ -66,7 +78,20 @@ if (matches(appTypeArray[1],'Radon')) {
                 areaInspector = hhcgetUserByDiscipline('WQRadon');
         }
 	updateTask('Radon Intake','Accepted','Updated by Script');
+	assignedAreaInspector = String(areaInspector.toUpperCase());
+	areaInspector = assignedAreaInspector;
+	assignCap(areaInspector);
 	comment('the Radon area Inspector is: '+areaInspector);
+	}	
+//Senior Care EHS
+if (matches(appTypeArray[2],'SCM')) {
+	areaInspector = hhcgetUserByDiscipline('HHCESMCSeniorCare');
+	assignedAreaInspector = String(areaInspector.toUpperCase());
+	areaInspector = assignedAreaInspector;
+	editAppSpecific('Assigned To',areaInspector);
+	editAppSpecific('Previous Assigned To',areaInspector);
+	assignCap(areaInspector);
+	comment('the Senior Care area Inspector is: '+areaInspector);
 	}	
 
 //Food Applications
@@ -75,139 +100,31 @@ if (appMatch('EnvHealth/Food/*/Application')) {
 	updateTask('Application Intake','Application Received','Updated by Script');
 	assignTask('Application Intake',supportStaff);
 }
-//Senior Care EHS
-if (matches(appTypeArray[2],'SCM')) {
-	areaInspector = hhcgetUserByDiscipline('HHCESMCSeniorCare');
-	comment('the Senior Care area Inspector is: '+areaInspector);
-	}	
+
 //CCC EHMS Supervisor Assignment
 if (matches(appTypeArray[2],'CCC')) {
 	areaInspector = hhcgetUserByDiscipline('EHSMSupervisor'); //Assigned discipline to Jason Hudson
+	editAppSpecific('Assigned To',areaInspector);
+	assignCap(areaInspector);
 	comment('the CCC Supervisor is: '+areaInspector);
 	}	
 
 //TLP EHSM Assignment
 if (matches(appTypeArray[2],'TLP')) {
 	areaInspector = hhcgetUserByDiscipline('EHSMToolLoan');
+	editAppSpecific('Assigned To',areaInspector);
+	assignCap(areaInspector);
 	comment('the TLP EHSMToolLoan is: '+areaInspector);
 	assignCap(areaInspector);					  
 	}	
 //RCP EHSM Assignment
 if (matches(appTypeArray[2],'RCP')) {
 	areaInspector = hhcgetUserByDiscipline('EHSMSupervisor'); //Assigned discipline to Jason Hudson
+	editAppSpecific('Assigned To',areaInspector);
+	assignCap(areaInspector);
 	comment('the RCP Person is: '+areaInspector);
 	assignTask('Case Intake',areaInspector );
 	}	
-	//LINV EHS
-if (AInfo['ASP'] == 'CHECKED') {
-	areaInspector = hhcgetUserByDiscipline('HHCESMCAsthma');
-	editAppSpecific('ASP Created',dateAdd(null,0));
-	updateAppStatus('Finaled','Child Case Created');
-	//branchTask('Create Case','Case Created','Action by Script','');
-	newChildID = createChild('EnvHealth','HHECMSC','ASP','NA','');
-	//HHC_copyAllInspectionsAndGuidesheetsToChild(capId);
-	//aa.cap.copyRenewCapDocument(capId, newChildID, "ADMIN");
-	copyAppSpecific(newChildID);
-	copyOwner(capId, newChildID);
-	comment('New child app id = '+ newChildID);
-	updateAppStatus('In Violation','Created from LINV',newChildID);
-	assignCap(areaInspector,newChildID);
-	HHC_GET_ADDRESS_FOR_CHILD();
-	comment('the LINV is for Asthma: '+areaInspector);
-	}
-	
-if (AInfo['BBE'] == 'CHECKED') {
-	areaInspector = hhcgetUserByDiscipline('HHCESMCBedBugs');
-	editAppSpecific('BBE Created',dateAdd(null,0));
-	updateAppStatus('Finaled','Child Case Created');
-	//branchTask('Create Case','Case Created','Action by Script','');
-	newChildID = createChild('EnvHealth','HHECMSC','BBE','NA','');
-	//HHC_copyAllInspectionsAndGuidesheetsToChild(capId);
-	//aa.cap.copyRenewCapDocument(capId, newChildID, "ADMIN");
-	copyAppSpecific(newChildID);
-	comment('New child app id = '+ newChildID);
-	updateAppStatus('In Violation','Created from LINV',newChildID);
-	copyOwner(capId, newChildID);
-	assignCap(areaInspector,newChildID);
-	editAppSpecific('INV Case',capIDString,newChildID);
-	HHC_GET_ADDRESS_FOR_CHILD();
-	//Create Bed Bug Case
-	comment('the LINV is for BedBugs: '+areaInspector);
-	}
-
-if (AInfo['LHH'] == 'CHECKED') {
-	areaInspector = lookup('Census - Lead EHS',AInfo['ParcelAttribute.CensusTract']);
-	assignedAreaInspector = String(areaInspector.toUpperCase());
-	areaInspector = assignedAreaInspector;
-	scheduleInspectDate('Initial Lead Inspection',nextWorkDay(dateAdd(null,0)),areaInspector);
-	closeTask('Case Intake','Completed');
-	comment('the LINV is for Lead: '+areaInspector);
-	}
-
-if (AInfo['CPT'] == 'CHECKED') {
-	areaInspector = hhcgetUserByDiscipline('HHCESMCConsumerProductSafety');
-	editAppSpecific('CPT Created',dateAdd(null,0));
-	updateAppStatus('Finaled','Child Case Created');
-	//branchTask('Create Case','Case Created','Action by Script','');
-	newChildID = createChild('EnvHealth','HHECMSC','CPS','NA','');
-	//HHC_copyAllInspectionsAndGuidesheetsToChild(capId);
-	//aa.cap.copyRenewCapDocument(capId, newChildID, "ADMIN");
-	copyAppSpecific(newChildID);
-	copyOwner(capId, newChildID);
-	comment('New child app id = '+ newChildID);
-	updateAppStatus('Open','Created from LINV',newChildID);
-	assignCap(areaInspector,newChildID);
-	HHC_GET_ADDRESS_FOR_CHILD();
-	//create CPS case
-	comment('the LINV is for Consumer Product Safety: '+areaInspector);
-	}
-
-if (AInfo['RAD'] == 'CHECKED') {
-	saveID = capId;
-	areaInspector = hhcgetUserByDiscipline('HHCESMCRadon');
-	editAppSpecific('RAD Created',dateAdd(null,0));
-	updateAppStatus('Finaled','Child Case Created');
-	//branchTask('Create Case','Case Created','Action by Script','');
-	newChildID = createChild('EnvHealth','Radon','ServiceRequest','NA','');
-	//HHC_copyAllInspectionsAndGuidesheetsToChild(capId);
-	//aa.cap.copyRenewCapDocument(capId, newChildID, "ADMIN");
-	copyAppSpecific(newChildID);
-	copyOwner(capId, newChildID);
-	comment('New child app id = '+ newChildID);
-	updateAppStatus('Open','Created from LINV',newChildID);
-	assignCap(areaInspector,newChildID);
-	capId = newChildID;
-	updateTask('Radon Intake','Accepted','Updated by Script');
-	capId = saveID;
-	HHC_GET_ADDRESS_FOR_CHILD();
-	//Create Radon case
-	comment('the LINV is for Radon: '+areaInspector);
-	}
-
-	if (AInfo['SCM'] == 'CHECKED') {
-	areaInspector = hhcgetUserByDiscipline('HHCESMCSeniorCare');
-	editAppSpecific('SCM Created',dateAdd(null,0));
-	updateAppStatus('Finaled','Child Case Created');
-	//branchTask('Create Case','Case Created','Action by Script','');
-	newChildID = createChild('EnvHealth','HHECMSC','SCM','NA','');
-	//HHC_copyAllInspectionsAndGuidesheetsToChild(capId);
-	//aa.cap.copyRenewCapDocument(capId, newChildID, "ADMIN");
-	copyAppSpecific(newChildID);
-	copyOwner(capId, newChildID);
-	comment('New child app id = '+ newChildID);
-	updateAppStatus('Open','Created from LINV',newChildID);
-	assignCap(areaInspector,newChildID);
-	HHC_GET_ADDRESS_FOR_CHILD();
-	//create senior care case
-	comment('the LINV is for Senior Care: '+areaInspector);
-	}
-	//lwacht: 151016: updating so it doesn't throw an error
-if(areaInspector) {
-	var aInsp = convertForAssignedTo(areaInspector);
-	editAppSpecific('Assigned To',aInsp);
-	editAppSpecific('Previous Assigned To',aInsp);
-	assignCap(areaInspector);
-	}
 //WQ Assignments
 //Body Art Application Supervisor assignments
 if (matches(appTypeArray[2],'Body Art') && matches(appTypeArray[3],'Application')) {
@@ -217,9 +134,14 @@ if (matches(appTypeArray[2],'Body Art') && matches(appTypeArray[3],'Application'
 	assignCap(areaInspector);
 	updateTask('Application Intake','Application Received');
 	}
+	
+//Pool/Pump Application
+if (matches(appTypeString, 'EnvHealth/WQ/Pump/Application','EnvHealth/WQ/Pool/Construction Permit')) {
+var supportStaff = HHC_getMySupportStaffDepartment(currentUserID);
+assignTask('Intake',supportStaff );
+}
 
-//lwacht: 151016: end
-//LINV Initial Inspection Scheduling set for next business day and case assignments.  This logic moved to launch from "Case Intake" on the LINV Workflow 08/12/2019.  Case Intake removed and changed back to original functionality no Initial Inspection on ASI so discussion with Dan Fries needed - 12/07/2019.
+//LINV Initial Inspection Scheduling set for next business day and case assignments.  This logic moved to launch from "Case Intake" on the LINV Workflow 08/12/2019.
 if (matches(appTypeArray[2],'LINV')) {
 	updateAppStatus('Pending Case Creation','Initial status');
 	editAppSpecific('Initial Inspection Date',nextWorkDay());
