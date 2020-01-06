@@ -7,7 +7,8 @@ if (wfTask == 'Initial Processing' && matches(wfStatus,'Complete Notice of Viola
 	}
 
 if (wfTask == 'Initial Processing' && matches(wfStatus,'Complete Notice of Violation','Complete Emergency NOV') && getTSIfieldValue('Reinspection Date', 'Initial Processing') == null) {
-	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,13)),assignedEHS), editTaskSpecific('Initial Processing','Reinspection Date',nextWorkDay(dateAdd(null,13)));
+	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,13)),assignedEHS); 
+	editTaskSpecific('Initial Processing','Reinspection Date',nextWorkDay(dateAdd(null,13)));
 	}
 
 if (wfTask == 'Initial Processing' && wfStatus == 'Notice of Violation' && getTSIfieldValue('Reinspection Date', 'Initial Processing') == null) {
@@ -22,7 +23,11 @@ if (wfTask == 'Reinspection' && wfStatus == 'Reinspection' && getTSIfieldValue('
 	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Reinspection'),assignedEHS);
 	}
 	
-if (wfTask == 'Reinspection' && matches(wfStatus,'In Violation','In Violation - Ticket Issued')) {
+if (wfTask == 'Reinspection' && wfStatus == 'In Violation') {
+	activateTask('Additional Processing');
+	}
+	
+if (wfTask == 'Reinspection' && wfStatus == 'In Violation – Ticket Issued') {
 	activateTask('Additional Processing');
 	}
 //Additional Processing--------------------------------------------------------------------------------------------Additional Processing
