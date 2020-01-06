@@ -21,6 +21,10 @@ if (wfTask == 'Initial Processing' && wfStatus == 'Emergency Notice of Violation
 if (wfTask == 'Reinspection' && wfStatus == 'Reinspection' && getTSIfieldValue('Reinspection Date', 'Reinspection') != null) {
 	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Reinspection'),assignedEHS);
 	}
+	
+if (wfTask == 'Reinspection' && matches(wfStatus,'In Violation','In Violation - Ticket Issued')) {
+	activateTask('Additional Processing');
+	}
 //Additional Processing--------------------------------------------------------------------------------------------Additional Processing
 if (wfTask == 'Additional Processing' && matches(wfStatus,'Reinspection', 'Complete Reinspection Letter', 'Complete Ticket', 'Complete Add Vio Reinspection Ltr') && getTSIfieldValue('Reinspection Date', 'Additional Processing') != null) {
 	scheduleInspectDate('Reinspection', getTSIfieldValue('Reinspection Date', 'Additional Processing'),assignedEHS);
