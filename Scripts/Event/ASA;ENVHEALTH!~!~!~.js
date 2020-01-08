@@ -14,10 +14,19 @@ comment('the census tract is: '+censusTract);
 
 //Housing EHS (EnvHealth/Housing/XXX/NA)
 if (matches(appTypeArray[2],'HSG','TRA','VEH','INV')) {
+	if(AInfo['Reason for Invest'] == 'Needles'){
+	areaInspector = hhcgetUserByDiscipline('HSNeedles');		
+	}
+	if(matches, AInfo['Type of Unit'], 'Motel','Hotel'){
+	areaInspector = hhcgetUserByDiscipline('HSHotelMotel');		
+	}	
+	else
+	{
 	areaInspector = lookup('Census - Housing EHS',censusTract); 
 	editAppSpecific('Assigned To',areaInspector);
 	assignCap(areaInspector);
 	logDebug('Inspector to Assign: '+areaInspector);
+	}
 	}
 	
 //SEC Assigment
@@ -220,4 +229,3 @@ if (areaInspector == null || areaInspector == 'undefined') {
 if (!publicUser && !appMatch("EnvHealth/CRT/*/*") && !appMatch("EnvHealth/Housing/*/*")) {
 	copyOwnerToContact("Owner", "Responsible Party", capId);
 }
-
