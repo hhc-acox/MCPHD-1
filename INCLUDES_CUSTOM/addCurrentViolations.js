@@ -52,13 +52,13 @@ function addCurrentViolations() {
                             if (matches(itemStatus, 'OUT', 'COS')) {
                                 logDebug("Item Name:                 " + itemText);
                                 logDebug("Item Status:                 " + itemStatus);
-                                var n = itemText.lastIndexOf("-");
+                                var n = itemText.indexOf("|");
                                 logDebug("n " + n);
-                                var chpt = itemText.slice(0, n);
+                                var chpt = itemText.slice(0, n - 1);
                                 appChapter = chpt;
                                 logDebug("chpt " + chpt);
                                 var itemTextLength = itemText.lastIndexOf("");
-                                var vioDesc = itemText.slice(n + 1, itemTextLength);
+                                var vioDesc = itemText.slice(n + 2, itemTextLength);
                                 appChecklistItem = vioDesc;
                                 logDebug("vioDesc " + vioDesc);
                                 logDebug("itemText.length " + itemTextLength);
