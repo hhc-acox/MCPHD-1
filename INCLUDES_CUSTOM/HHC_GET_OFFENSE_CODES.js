@@ -121,8 +121,9 @@ function HHC_GET_OFFENSE_CODES(saveID,childID) {
 										if (crtVIOLATIONS && crtVIOLATIONS.length > 0) {
 											for(a in crtVIOLATIONS) {
 												thisrow = crtVIOLATIONS[a];
-													if (matches(thisrow['Status'],'OUT','COS') && !matches(thisrow['Violation'],null)) {
+													if (matches(thisrow['Status'],'OUT','COS','OUT - COS') && !matches(thisrow['Violation'],null)) {
 														v = thisrow['Chapter'].toString();
+														v = v.replace(/,/g,'');
 														v = v.replace(/^\s+|\s+$/g,''); //Trims the string of leading and trailing spaces
 														v = v.replace(/-/g,'');
 														vioCodeNums = vioCodeNums+v.replace(/\//g,'OI');
@@ -139,8 +140,9 @@ function HHC_GET_OFFENSE_CODES(saveID,childID) {
 										if (crtVIOLATIONS && crtVIOLATIONS.length > 0) {
 											for(a in crtVIOLATIONS) {
 												thisrow = crtVIOLATIONS[a];
-													if (matches(thisrow['Status'],'OUT','COS') && !matches(thisrow['Violation'],null)) {
+													if (matches(thisrow['Status'],'OUT','COS','OUT - COS') && !matches(thisrow['Violation'],null)) {
 														v = thisrow['Chapter'].toString();
+														v = v.replace(/,/g,'');
 														v = v.replace(/^\s+|\s+$/g,''); //Trims the string of leading and trailing spaces
 														v = v.replace(/-/g,'');
 														vioCodeNums = vioCodeNums+v.replace(/\//g,'OI');
