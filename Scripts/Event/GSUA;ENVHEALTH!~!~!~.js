@@ -61,7 +61,7 @@ try{
 						limsReason="Other";
 					}
 					var jsonResult = {
-						"SampleID": ""+tableArr[row]["Sample ID"],
+						"SampleID": ""+tableArr[row]["SampleID"],
 						//"SampleID": "345987",
 						"SampleAddress": fullAddress,
 						"Reason": limsReason,
