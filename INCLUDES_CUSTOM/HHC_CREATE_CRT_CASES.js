@@ -112,7 +112,7 @@ function HHC_CREATE_CRT_CASES() {
 								if (cContactResult.getSuccess)
 								{
 									for(eachContact in cContactResult)
-										cContactResult[eachContact].setPrimaryFlag("Y");
+									//	cContactResult[eachContact].setPrimaryFlag("Y"); unable to set primary flag to yes
 									
 								}
 								
