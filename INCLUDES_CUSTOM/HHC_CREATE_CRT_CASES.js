@@ -101,9 +101,15 @@ function HHC_CREATE_CRT_CASES() {
 								cContactDelete = false;
 								//contactSetPrimary(parseInt(csortContactSeqNum)); must set primary for all contacts on court case
 							}
-							if (!matches(nextNameArr[ii][2], 'Property Owner','Tenant','Responsible Party'))
+														if (!matches(nextNameArr[ii][2], 'Property Owner','Tenant','Responsible Party'))
 							{
 								cContactDelete = true;
+							}
+							comment('Setting the primary flag on the contact begins here');
+							if (matches(nextNameArr[ii][2], 'Property Owner','Tenant','Responsible Party'))
+							{
+								//contactSetPrimary(parseInt(csortContactSeqNum));
+								cCapContactModel.setPrimaryFlag("Y");
 							}								
 							comment('Contact type checking for deletes begin here');
 
