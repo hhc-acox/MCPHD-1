@@ -25,7 +25,7 @@ if (matches(appTypeArray[2],'HSG','TRA','VEH','INV') && AInfo['Reason for Invest
 	 areaInspector = hhcgetUserByDiscipline(thisDiscipline);	
 	logDebug('Needles Inspector: '+areaInspector);	 
 	}
-if(matches(appTypeArray[2],'HSG','TRA','VEH','INV') && (matches, AInfo['Type of Unit'], 'Motel','Hotel')){
+if(matches(appTypeArray[2],'HSG','TRA','VEH','INV') && AInfo['Reason for Invest'] == 'Hotel/Motel')){
 	areaInspector = hhcgetUserByDiscipline('HSHotelMotel');	
 	logDebug('Motel Inspector: '+areaInspector);	
 	}	
@@ -236,3 +236,4 @@ if (areaInspector == null || areaInspector == 'undefined') {
 if (!publicUser && !appMatch("EnvHealth/CRT/*/*") && !appMatch("EnvHealth/Housing/*/*")) {
 	copyOwnerToContact("Owner", "Responsible Party", capId);
 }
+
