@@ -105,21 +105,21 @@ function HHC_CREATE_CRT_CASES() {
 							{
 								cContactDelete = true;
 							}
-							comment('Setting the primary flag on the contact begins here');
-							if (matches(nextNameArr[ii][2], 'Property Owner','Tenant','Responsible Party'))
-							{
-								cContactResult = aa.people.getCapContactByCapID(newChildID);
-								if (cContactResult.getSuccess)
-								{
-									for(eachContact in cContactResult)
+							//comment('Setting the primary flag on the contact begins here');
+							//if (matches(nextNameArr[ii][2], 'Property Owner','Tenant','Responsible Party'))
+							//{
+								//cContactResult = aa.people.getCapContactByCapID(newChildID);
+								//if (cContactResult.getSuccess)
+								//{
+									//for(eachContact in cContactResult)
 									//	cContactResult[eachContact].setPrimaryFlag("Y"); unable to set primary flag to yes
 									
-								}
+								//}
 								
 								//contactSetPrimary(parseInt(csortContactSeqNum));
 								//cCapContactModel.setPrimaryFlag("Y");
 								//this.primary = this.capContact.getPrimaryFlag().equals("Y");
-							}								
+							//}								
 							comment('Contact type checking for deletes begin here');
 
 							if (cContactDelete == true) 
