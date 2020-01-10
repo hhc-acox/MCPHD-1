@@ -15,7 +15,10 @@ comment('the census tract is: '+censusTract);
 //Housing EHS (EnvHealth/Housing/XXX/NA)
 if (matches(appTypeArray[2],'HSG','TRA','VEH','INV')) {
 	if(AInfo['Reason for Invest'] == 'Needles'){
-	areaInspector = hhcgetUserByDiscipline('HSNeedles');		
+	 var areaTeamLeader = lookup('Census - Team Leader',censusTract);
+	 var areaTeam = HHC_getTeamByTeamLeaderID(areaTeamLeader);
+	 var thisDiscipline = "HS"+areaTeam+"NeedlesEHS";
+	 areaInspector = hhcgetUserByDiscipline(thisDiscipline);		
 	}
 	if(matches, AInfo['Type of Unit'], 'Motel','Hotel'){
 	areaInspector = hhcgetUserByDiscipline('HSHotelMotel');		
