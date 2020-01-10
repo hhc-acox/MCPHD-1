@@ -108,8 +108,17 @@ function HHC_CREATE_CRT_CASES() {
 							comment('Setting the primary flag on the contact begins here');
 							if (matches(nextNameArr[ii][2], 'Property Owner','Tenant','Responsible Party'))
 							{
+								cContactResult = aa.people.getCapContactByCapID(newChildID);
+								if (cContactResult.getSuccess)
+								{
+									for(eachContact in cContactResult)
+										cContactResult[eachContact].setPrimaryFlag("Y");
+									
+								}
+								
 								//contactSetPrimary(parseInt(csortContactSeqNum));
-								cCapContactModel.setPrimaryFlag("Y");
+								//cCapContactModel.setPrimaryFlag("Y");
+								//this.primary = this.capContact.getPrimaryFlag().equals("Y");
 							}								
 							comment('Contact type checking for deletes begin here');
 
