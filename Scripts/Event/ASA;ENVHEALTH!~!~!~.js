@@ -13,23 +13,27 @@ comment('the census tract is: '+censusTract);
 //The rest of the departments will have to be added to this section in the future.
 
 //Housing EHS (EnvHealth/Housing/XXX/NA)
-if (matches(appTypeArray[2],'HSG','TRA','VEH','INV')) {
-	if(AInfo['Reason for Invest'] == 'Needles'){
+if (matches(appTypeArray[2],'HSG','TRA','VEH','INV'))	
+	{
+	areaInspector = lookup('Census - Housing EHS',censusTract); 
+	logDebug('Census Tract Inspector: '+areaInspector);
+	}
+if (matches(appTypeArray[2],'HSG','TRA','VEH','INV') && AInfo['Reason for Invest'] == 'Needles') {
 	 var areaTeamLeader = lookup('Census - Team Leader',censusTract);
 	 var areaTeam = HHC_getTeamByTeamLeaderID(areaTeamLeader);
 	 var thisDiscipline = "HS"+areaTeam+"NeedlesEHS";
-	 areaInspector = hhcgetUserByDiscipline(thisDiscipline);		
+	 areaInspector = hhcgetUserByDiscipline(thisDiscipline);	
+	logDebug('Needles Inspector: '+areaInspector);	 
 	}
-	if(matches, AInfo['Type of Unit'], 'Motel','Hotel'){
-	areaInspector = hhcgetUserByDiscipline('HSHotelMotel');		
+if(matches(appTypeArray[2],'HSG','TRA','VEH','INV') && (matches, AInfo['Type of Unit'], 'Motel','Hotel')){
+	areaInspector = hhcgetUserByDiscipline('HSHotelMotel');	
+	logDebug('Motel Inspector: '+areaInspector);	
 	}	
-	else
+if (matches(appTypeArray[2],'HSG','TRA','VEH','INV'))	
 	{
-	areaInspector = lookup('Census - Housing EHS',censusTract); 
 	editAppSpecific('Assigned To',areaInspector);
 	assignCap(areaInspector);
 	logDebug('Inspector to Assign: '+areaInspector);
-	}
 	}
 	
 //SEC Assigment
