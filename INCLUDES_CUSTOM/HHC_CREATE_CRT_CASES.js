@@ -115,10 +115,7 @@ function HHC_CREATE_CRT_CASES() {
 									//	cContactResult[eachContact].setPrimaryFlag("Y"); unable to set primary flag to yes
 									
 								//}
-								
-								//contactSetPrimary(parseInt(csortContactSeqNum));
-								//cCapContactModel.setPrimaryFlag("Y");
-								//this.primary = this.capContact.getPrimaryFlag().equals("Y");
+
 							//}								
 							comment('Contact type checking for deletes begin here');
 
