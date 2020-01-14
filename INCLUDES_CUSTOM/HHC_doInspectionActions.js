@@ -40,7 +40,11 @@ try{
 								var UseRecheckDate = ""+sepRules[row]["Use_Recheck_Date"]; //'Yes/No' field
 								var UseRecheckDate;
 									if(UseRecheckDate == 'Yes') {
-										RecheckDate = hhcgetInspRecheckDate(capId,inspId);
+										if(getRecheckDate(capId)) {
+											RecheckDate = getRecheckDate(capId);
+										} else {
+											RecheckDate = hhcgetInspRecheckDate(capId,inspId);
+										}
 
 									}else {
 										UseRecheckDate == 'No'} //give the variable a value anyway
