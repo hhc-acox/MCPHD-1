@@ -102,7 +102,8 @@ if (matches(appTypeArray[1],'Radon')) {
 
 //OWTS
 if (matches(appTypeArray[2],'OWTS')) {
-        assignTask('Site Survey', currentUserID);
+	areaInspector = getAssignedToRecord();
+        assignTask('Site Survey', areaInspector);
 	}
 //Senior Care EHS
 if (matches(appTypeArray[2],'SCM')) {
