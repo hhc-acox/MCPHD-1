@@ -101,7 +101,13 @@ if (matches(appTypeArray[1],'Radon')) {
                 closeTask('Radon Intake', 'Accepted', 'Closed by Script', 'Closed by Script');
         }
 	comment('the Radon area Inspector is: '+areaInspector);
-	}	
+	}
+
+//OWTS
+if (matches(appTypeArray[2],'OWTS')) {
+	areaInspector = getAssignedToRecord();
+        assignTask('Site Survey', areaInspector);
+	}
 //Senior Care EHS
 if (matches(appTypeArray[2],'SCM')) {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCSeniorCare');
