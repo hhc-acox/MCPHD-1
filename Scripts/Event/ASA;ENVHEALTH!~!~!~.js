@@ -98,7 +98,12 @@ if (matches(appTypeArray[1],'Radon')) {
 	areaInspector = assignedAreaInspector;
 	assignCap(areaInspector);
 	comment('the Radon area Inspector is: '+areaInspector);
-	}	
+	}
+
+//OWTS
+if (matches(appTypeArray[2],'OWTS')) {
+        assignTask('Site Survey', currentUserID);
+	}
 //Senior Care EHS
 if (matches(appTypeArray[2],'SCM')) {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCSeniorCare');
