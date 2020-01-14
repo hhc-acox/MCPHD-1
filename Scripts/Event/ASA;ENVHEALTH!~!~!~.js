@@ -97,6 +97,9 @@ if (matches(appTypeArray[1],'Radon')) {
 	assignedAreaInspector = String(areaInspector.toUpperCase());
 	areaInspector = assignedAreaInspector;
 	assignCap(areaInspector);
+	if (department.indexOf('HHECMSC') > -1) {
+                closeTask('Intake', 'Accepted', 'Closed by Script', 'Closed by Script');
+        }
 	comment('the Radon area Inspector is: '+areaInspector);
 	}	
 //Senior Care EHS
