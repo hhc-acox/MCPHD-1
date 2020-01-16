@@ -10,6 +10,7 @@ try{
 				var sepScriptConfigArr = sepScriptConfig.getOutput();
 			}
 		}
+		aa.print("sepFees Script Config: " + sepScriptConfig.length);
 		if(sepScriptConfigArr.length>0){
 						for(sep in sepScriptConfigArr){
 				var cfgCapId = sepScriptConfigArr[sep].getCapID();
