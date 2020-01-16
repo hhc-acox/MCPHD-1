@@ -10,12 +10,14 @@ try{
 				var sepScriptConfigArr = sepScriptConfig.getOutput();
 			}
 		}
-		if(sepScriptConfig.length>0){
-			for(sep in sepScriptConfig){
-				var cfgCapId = sepScriptConfig[sep].getCapID();
+		aa.print("sepFees Script Config: " + sepScriptConfig.length);
+		if(sepScriptConfigArr.length>0){
+						for(sep in sepScriptConfigArr){
+				var cfgCapId = sepScriptConfigArr[sep].getCapID();
 				var sepFees = loadASITable("FEES - WORKFLOW",cfgCapId);
+				aa.print("sepFees: " + sepFees.length);
 				if(sepFees.length>0){
-					sepUpdateFees(sepFees);
+					sepUpdateFeesWkfl(sepFees);
 				}
 			}
 		}
