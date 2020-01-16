@@ -211,7 +211,8 @@ function HHC_doWorkflowActions() {
                                         //comment("newTaskStatus.length>0 "+newTaskStatus.length);
                                         //comment('136 - workflowAssignment '+workflowAssignment);
                                         if (matches(wfTask, cTask) && matches(wfStatus, SubmittedTaskStatus) && New_Task.length > 0 && newTaskStatus.length > 0) {
-                                            updateTask(New_Task, newTaskStatus, 'Updated by script');
+                                            updateTask(wfTask, wfStatus, 'Updated by script', wfStatus);
+                                            updateTask(New_Task, newTaskStatus, 'Updated by script', newTaskStatus);
                                             if (WorkflowAssignedTo.length > 0 && matches(WorkflowAssignedTo, 'Supervisor of Person Assigned to Record', 'Current Inspector', 'Person Assigned to the Record', 'Supervisor of Current Inspector')) {
                                                 //comment('142 - workflowAssignment '+workflowAssignment);
                                                 assignTask(New_Task, workflowAssignment);
