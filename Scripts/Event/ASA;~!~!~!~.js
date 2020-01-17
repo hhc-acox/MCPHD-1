@@ -19,7 +19,7 @@ try{
 					var sepFees = loadASITable("FEES - APP SUBMITTAL",cfgCapId);
 					if(sepFees){
 						if(sepFees.length>0){
-							sepUpdateFees(sepFees);
+							sepUpdateFeesAppSub(sepFees);
 						}
 					}
 				}
