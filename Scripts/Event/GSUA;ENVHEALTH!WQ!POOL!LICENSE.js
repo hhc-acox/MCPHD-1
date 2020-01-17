@@ -5,7 +5,7 @@ if (GuidesheetModel && "POOL TEST RESULTS"== GuidesheetModel.getGuideType().toUp
 		if (tCapDetailObjResult.getSuccess()) {
 			tCapDetail = tCapDetailObjResult.getOutput();
 			capAssignee = tCapDetail.getAsgnStaff();
-			var pResult = aa.person.getUser(userName);
+			var pResult = aa.person.getUser(capAssignee);
 			if (pResult.getSuccess()) {
 				var p = pResult.getOutput();
 				if (p != null)  {
