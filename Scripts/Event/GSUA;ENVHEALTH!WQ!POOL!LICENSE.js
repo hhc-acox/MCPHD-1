@@ -3,7 +3,7 @@ if (GuidesheetModel && "POOL TEST RESULTS"== GuidesheetModel.getGuideType().toUp
 		var tCapId = aa.cap.getCapID(thisCapId.ID1,thisCapId.ID2,thisCapId.ID3).getOutput();	
 		var tCapDetailObjResult = aa.cap.getCapDetail(tCapId);		
 		if (tCapDetailObjResult.getSuccess()) {
-			tCapDetail = capDetailObjResult.getOutput();
+			tCapDetail = tCapDetailObjResult.getOutput();
 			capAssignee = tCapDetail.getAsgnStaff();
 			var pResult = aa.person.getUser(userName);
 			if (pResult.getSuccess()) {
