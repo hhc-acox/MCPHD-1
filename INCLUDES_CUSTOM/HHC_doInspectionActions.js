@@ -38,16 +38,14 @@ try{
 							if(appMatch && ((cInspType == inspType || cInspType == 'any') && (InspResultSubmitted == inspResult || InspResultSubmitted == 'any'))) {
 								var InspTypeToSchedule = ""+sepRules[row]["Insp_Type_to_Schedule"];
 								var UseRecheckDate = ""+sepRules[row]["Use_Recheck_Date"]; //'Yes/No' field
-								var UseRecheckDate;
-									if(UseRecheckDate == 'Yes') {
-										if(getRecheckDate(capId)) {
-											RecheckDate = getRecheckDate(capId);
-										} else {
-											RecheckDate = hhcgetInspRecheckDate(capId,inspId);
-										}
-
-									}else {
-										UseRecheckDate == 'No'} //give the variable a value anyway
+								var RecheckDate;
+								if (getRecheckDate(capId)) {
+									RecheckDate = getRecheckDate(capId);
+								} else if (hhcgetInspRecheckDate(capId,inspId)) {
+									RecheckDate = hhcgetInspRecheckDate(capId,inspId);
+								} else {
+									UseRecheckDate = 'No';
+								} //give the variable a value anyway
 								var DaysToScheduleInTheFuture = ""+sepRules[row]["Days_toSchedule_in_the_Future"]; //number of days in the future
 								var RecordAssignedTo = ""+sepRules[row]["Record_Assigned_To"];
 								var InspAssignedTo = ""+sepRules[row]["Insp_Assigned_To"];
@@ -157,7 +155,7 @@ try{
 												//define assignedInspector		
 												if(cInspType == inspType && InspResultSubmitted == inspResult) {
 													if(matches(InspAssignedTo,'Supervisor of Person Assigned to Record','Current Inspector','Person Assigned to the Record','Supervisor of Current Inspector')){
-														if(UseRecheckDate == 'Yes') {
+														if(UseRecheckDate == 'Yes' || RecheckDate) {
 															if(RecheckDate == null || RecheckDate == undefined) {
 																cancel = true;
 															} else {
@@ -165,7 +163,7 @@ try{
 
 															}
 														}
-														else if(UseRecheckDate == 'Yes'){
+														else if(UseRecheckDate == 'Yes' || RecheckDate){
 															scheduleInspectDate(InspTypeToSchedule,RecheckDate,assignedInspector); //schedule inspection using recheck date
 														}
 														else if(UseRecheckDate == 'No' && DaysToScheduleInTheFuture>0){
