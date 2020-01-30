@@ -1,8 +1,8 @@
 //GQ: Ticket #173
-//Checks results for 2 unsatisfactory in a row, or 3 in 3 weeks and adds a condition
+//Checks results for 2 unsatisfactory in a row, or 3 in 6 weeks and adds a condition
 if (String(inspType) == "Pool Test Results" && String(inspResult) == "Unsatisfactory") {
     var inspArr = aa.inspection.getInspections(capId).getOutput();
-    var checkDate = new Date(dateAdd(null, -21));
+    var checkDate = new Date(dateAdd(null, -42));
     var inspFound = 0;
     var doAddConn = false;
     var checkArr = [];
@@ -19,7 +19,7 @@ if (String(inspType) == "Pool Test Results" && String(inspResult) == "Unsatisfac
                             inspFound++;
                             if (inspFound >= 3) {
                                 doAddConn = true;
-                                logDebug("3 unsatisfactory in prior 21 days");
+                                logDebug("3 unsatisfactory in prior 42 days");
                                 break;
                             }
                         }
@@ -38,7 +38,7 @@ if (String(inspType) == "Pool Test Results" && String(inspResult) == "Unsatisfac
                 return 0;
             });
 
-            if (matches(String(checkArr[1].getInspectionStatus()), "Unsatisfactory")) {
+            if (matches(matches(String(checkArr[0].getInspectionStatus()), "Unsatisfactory") && String(checkArr[1].getInspectionStatus()), "Unsatisfactory")) {
                 doAddConn = true;
                 logDebug("2 sequential unsatisfactory");
             }
@@ -46,6 +46,22 @@ if (String(inspType) == "Pool Test Results" && String(inspResult) == "Unsatisfac
     }
     if (doAddConn) {
         logDebug("Add Condition");
-        addStdCondition("TBD Type", "TBD Description");
+        addStdCondition("Test Results", "Unsatisfactory Test Results");
     }
+}
+
+if (String(inspType) == "Pool Test Results" && String(inspResult) == "Satisfactory"){
+	var capConditions = aa.capCondition.getCapConditions(capId);
+	
+	if (capConditions.getSuccess()){
+		var conditionsOut = capConditions.getOutput();
+		if (conditionsOut.length > 0) {
+			for (i in conditionsOut) {
+				if (conditionsOut[i].conditionDescription == 'Unsatisfactory Test Results' && conditionsOut[i].conditionStatus == 'Applied') {
+					aa.capCondition.deleteCapCondition(capId, conditionsOut[i].conditionNumber);
+				}
+			}
+		}
+		addCondition = false;
+	}
 }
