@@ -3,7 +3,7 @@ function getVectorZone(capId){
 	var vZone = "";
 	var zoneNum = "";
 	try{
-		x = getGISInfo("MCPHD","VectorZones","vectorzone");
+		x = getGISInfo("MCPHD","VectorZone","vectorzone");
 		zoneNum = x.toString();
 		if (x<10){
 		vZone = "Vector Zone 0"+zoneNum;
