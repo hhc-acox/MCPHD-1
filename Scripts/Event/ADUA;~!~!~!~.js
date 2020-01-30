@@ -6,7 +6,7 @@ var capConditions = aa.capCondition.getCapConditions(capId);
 var addCondition = true;
 
 if (capDetail.getSuccess() && capConditions.getSuccess()){
-	if (capDetail.getOutput().infractionFlag == 'Y') {
+	if (capDetail.getOutput().infractionFlag == 'N') {
 		var conditionsOut = capConditions.getOutput();
 		if (conditionsOut.length > 0) {
 			for (i in conditionsOut) {
@@ -16,7 +16,7 @@ if (capDetail.getSuccess() && capConditions.getSuccess()){
 			}
 		}
 	}
-	if (capDetail.getOutput().infractionFlag == 'N') {
+	if (capDetail.getOutput().infractionFlag == 'Y') {
 		var conditionsOut = capConditions.getOutput();
 		if (conditionsOut.length > 0) {
 			for (i in conditionsOut) {
