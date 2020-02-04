@@ -17,6 +17,10 @@ function HHC_CREATE_RCP_CASE() {
 		editAppSpecific('Referral Date',currDate,newChildID);
 		editAppSpecific('Court Order',crtOrder,newChildID);
 		//editAppSpecific('Permanent Injunction',isItPM,newChildID);
+		areaInspector = hhcgetUserByDiscipline('EHSMSupervisor'); //Assigned discipline to Jason Hudson
+		capId = newChildID;
+		assignCap(areaInspector);
+		capId = saveID;
 		copyASITables(saveID,newChildID);
 		HHC_GET_ADDRESS_FOR_CHILD();	
 	}
