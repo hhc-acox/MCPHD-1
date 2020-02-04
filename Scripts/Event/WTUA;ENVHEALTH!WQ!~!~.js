@@ -39,3 +39,7 @@ if ((appMatch("EnvHealth/WQ/Pump/NA") || appMatch("EnvHealth/WQ/Well/NA")) && (w
 		
 		editAppName(newAppName);
 	}
+
+if (appMatch("EnvHealth/WQ/Well/NA") && wfTask == 'Final Permit Creation' && wfStatus == 'Issued') {
+    inspCancelAll();
+}
