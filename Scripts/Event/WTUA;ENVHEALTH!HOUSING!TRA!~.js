@@ -97,24 +97,25 @@ if (wfTask == 'Request EHSM Clean' && wfStatus == 'Complete Request EHSM Clean')
 	
 if (matches(wfTask, 'Additional Processing','Requesting Admin Court Order') && wfStatus == 'Request Towing') {
 	activateTask('Request Towing');
-	//notify towing company by email - must update the function with the correct email.  Request Towing is the only status that should send this notification. 12/17/2019 - rdv
-	sendTowingEmail();
+	//notify towing company by email -no longer need the towing notification for TRA just on VEH as of 02/04/2020 - rdv
+	//sendTowingEmail(); no longer need the towing notification for TRA just on VEH as of 02/04/2020 - rdv
 	deactivateTask('Requesting Admin Court Order');
 }
-
-if (matches(wfTask,'Additional Processing','Requesting Admin Court Order') && wfStatus == 'Request EHSM Clean and Towing') {
-	//notify towing company by email - must update the function with the correct email.
-	//As of 12/17/2019, Juli says EHSM should send the email for towing when the clean and towing are both requested.
-	//sendTowingEmail();
-	var areaTeamLeader = '';
-	var censusTract = '';
-	censusTract = AInfo['ParcelAttribute.CensusTract'];
-	areaTeamLeader = lookup('Census - Team Leader',censusTract); 
-	activateTask('Request EHSM Clean');
-	//activateTask('Request Towing'); //As of 12/17/2019, Juli says EHSM should send the email for towing.  They should also deal with the Towing request so it does not need to be active for Housing on the TRA case.
-	deactivateTask('Requesting Admin Court Order');
-	assignTask('Request EHSM Clean',areaTeamLeader);
-}
+//no longer using the status or task 'Request EHSM Clean and Towing' as of 02/04/2020 - rdv
+// if (matches(wfTask,'Additional Processing','Requesting Admin Court Order') && wfStatus == 'Request EHSM Clean and Towing') {
+	// //notify towing company by email - must update the function with the correct email.
+	// //As of 12/17/2019, Juli says EHSM should send the email for towing when the clean and towing are both requested.
+	// //sendTowingEmail();
+	// var areaTeamLeader = '';
+	// var censusTract = '';
+	// censusTract = AInfo['ParcelAttribute.CensusTract'];
+	// areaTeamLeader = lookup('Census - Team Leader',censusTract); 
+	// activateTask('Request EHSM Clean');
+	// //activateTask('Request Towing'); //As of 12/17/2019, Juli says EHSM should send the email for towing.  They should also deal with the Towing request so it does not need to be active for Housing on the TRA case.
+	// deactivateTask('Requesting Admin Court Order');
+	// assignTask('Request EHSM Clean',areaTeamLeader);
+// }
+//no longer using the status or task 'Request EHSM Clean and Towing' as of 02/04/2020 - rdv
 
 if (wfTask == 'Final Processing' && (wfStatus == 'Permanent Injunction') && getTSIfieldValue('Reinspection Date', 'Final Processing') != null) {
 	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Final Processing'),assignedEHS);
