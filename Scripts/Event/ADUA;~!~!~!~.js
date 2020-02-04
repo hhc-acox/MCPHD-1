@@ -3,20 +3,25 @@ showMessage = true;
 
 var capDetail = aa.cap.getCapDetail(capId);
 var capConditions = aa.capCondition.getCapConditions(capId);
-var addCondition = true;
+var addCondition = false;
 
 if (capDetail.getSuccess() && capConditions.getSuccess()){
-	if (capDetail.getOutput().infractionFlag == 'Y') {
+	if (capDetail.getOutput().infractionFlag == 'N') {
 		var conditionsOut = capConditions.getOutput();
-		if (conditionsOut.length > 0) {
+		if (conditionsOut.length = 0) {
+			addCondition = true;
+		} else {
+			var containsNSF = false;
 			for (i in conditionsOut) {
 				if (conditionsOut[i].conditionComment == 'Do Not Accept Checks.' && conditionsOut[i].conditionStatus == 'Applied') {
-					addCondition = false;
+					containsNSF = true;
 				}
 			}
+			
+			addCondition = !containsNSF; // only apply if doesn't contain NSF
 		}
 	}
-	if (capDetail.getOutput().infractionFlag == 'N') {
+	if (capDetail.getOutput().infractionFlag == 'Y') {
 		var conditionsOut = capConditions.getOutput();
 		if (conditionsOut.length > 0) {
 			for (i in conditionsOut) {
