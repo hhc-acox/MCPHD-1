@@ -36,6 +36,13 @@ function HHC_CONTACTS_PROCESS()
 						appPhoneNum = cContactAry[yy].getPeople().phone1;
 						appSeqNum = cContactAry[yy].getCapContactModel().getPeople().getContactSeqNumber();
 						cContactDelete = false;
+						
+							if (appPhoneNum == '' || appPhoneNum == null){
+								appPhoneNum = cContactAry[yy].getPeople().phone2;
+							}
+							if (appPhoneNum == '' || appPhoneNum == null){
+								appPhoneNum = cContactAry[yy].getPeople().phone3;
+							}
 							if (appConType == 'Complainant') {
 								cContactDelete = true; 
 								}
