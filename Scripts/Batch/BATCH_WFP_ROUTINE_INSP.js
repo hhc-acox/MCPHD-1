@@ -150,28 +150,29 @@ function mainProcess() {
                 continue;
             }
             var dt = new Date();
-            if (checkCycle == "3 Month") {
+            checkCycle = checkCycle.toUpperCase();
+            if (checkCycle.indexOf("3 MONTH") >= 0) {
                 dt = dt.setMonth(dt.getMonth() - 3);
             }
-            else if (checkCycle == "6 Month") {
+            else if (checkCycle.indexOf("6 MONTH") >= 0) {
                 dt = dt.setMonth(dt.getMonth() - 6);
             }
-            else if (checkCycle == "1 Year") {
+            else if (checkCycle.indexOf("1 YEAR") >= 0) {
                 dt = dt.setFullYear(dt.getFullYear() - 1);
             }
-            else if (checkCycle == "2 Year") {
+            else if (checkCycle.indexOf("2 YEAR") >= 0) {
                 dt = dt.setFullYear(dt.getFullYear() - 2);
             }
-            else if (checkCycle == "3 Year") {
+            else if (checkCycle.indexOf("3 YEAR") >= 0) {
                 dt = dt.setFullYear(dt.getFullYear() - 3);
             }
-            else if (checkCycle == "4 Year") {
+            else if (checkCycle.indexOf("4 YEAR") >= 0) {
                 dt = dt.setFullYear(dt.getFullYear() - 4);
             }
-            else if (checkCycle == "5 Year") {
+            else if (checkCycle.indexOf("5 YEAR") >= 0) {
                 dt = dt.setFullYear(dt.getFullYear() - 5);
             }
-            else if (checkCycle == "6 Year") {
+            else if (checkCycle.indexOf("6 YEAR") >= 0) {
                 dt = dt.setFullYear(dt.getFullYear() - 6);
             }
 
@@ -179,17 +180,34 @@ function mainProcess() {
             var inspArr = aa.inspection.getInspections(capId).getOutput();
             var checkDate = new Date(dateAdd(dt, 0));
             var inspFound = false;
+
             for (var i in inspArr) {
                 var insp = inspArr[i];
                 if (String(insp.getInspectionType()) == "Routine") {
-                    var rdt = insp.getInspectionStatusDate();
-                    if (rdt != null) {
-                        var ludt = new Date(dateAdd(rdt, 0));
-                        if (ludt.getTime() > checkDate.getTime()) { //if existing inspection found then mark found and break loop
-                            inspFound = true;
-                            break;
-                        }
-                    }
+                	inspStatus = "" + insp.getInspectionStatus();
+                	if (inspStatus == "Scheduled") {
+                		var sdt = insp.getScheduledDate();
+                		if (sdt != null) {
+                			sudt = new Date(dateAdd(sdt, 0));
+                			if (sudt.getTime() > checkDate.getTime()) {
+                				logDebug("Scheduled inspection found within timeframe, skipping...");               			
+                				inspFound = true;
+                				break;
+                			}
+                		}
+                		
+                	}
+                	else {               
+                		var rdt = insp.getInspectionStatusDate();                  
+	                    if (rdt != null) {
+	                        var ludt = new Date(dateAdd(rdt, 0));
+	                        if (ludt.getTime() > checkDate.getTime()) { //if existing inspection found then mark found and break loop
+	                        	logDebug("Resulted inspection found within timeframe, skipping...");	                   
+	                            inspFound = true;
+	                            break;
+	                        }
+	                    }
+                	}
                 }
             }
             //if no routine found in period then schedule and assign to user assigned to record
