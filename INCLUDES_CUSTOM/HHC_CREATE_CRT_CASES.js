@@ -1,149 +1,149 @@
 function HHC_CREATE_CRT_CASES() {
-	try{
-		showMessage = true;
-		comment('cases to create '+concnt);
-		fixNameArr= new Array();
-		fixNameArr=crtConAry;
-		cContactAry = new Array();
-		var cContactResult = AInfo[''];
-		cContactsExist = false;
-		ccnt=0;
-		cContactResult = aa.people.getCapContactByCapID(capId);
-			if (cContactResult.getSuccess()) 
-				{
-					cContactsExist = true;
-					}
+    try {
+        showMessage = true;
+        comment('cases to create ' + concnt);
+        fixNameArr = new Array();
+        fixNameArr = crtConAry;
+        cContactAry = new Array();
+        var cContactResult = AInfo[''];
+        cContactsExist = false;
+        ccnt = 0;
+        cContactResult = aa.people.getCapContactByCapID(capId);
+        if (cContactResult.getSuccess()) {
+            cContactsExist = true;
+        }
 
-			if (cContactsExist) 
-				{
-					cContactAry = cContactResult.getOutput();
-					}
+        if (cContactsExist) {
+            cContactAry = cContactResult.getOutput();
+        }
 
-			if (cContactsExist) 
-				{
-					for (i=0; i<concnt; i++) {
-					cContactResult = AInfo[''];
-					cContactsExist = false;
-					cContactAry = new Array();
-					nextNameArr = new Array();
-					prevName = 'Start';
-					cTempAry = new Array();
-					var saveID = capId;
-					comment("THE SAVEID IS "+saveID);
-					cCapContactModel = AInfo[''];
-					cContactSeqNumber = 0;
-					cPeopleModel = AInfo[''];
-					cc = 0;
-					y = 0;
-					newChildID = createChild('EnvHealth','CRT','NA','NA','');
-					copyAppSpecific(newChildID);
-					comment('New child app id = '+ newChildID);
-					masterArray = new Array();
-					elementArray = new Array();
-					code10or19 = AInfo['Ordinance Chapter'];
-					updateAppStatus('Legal Review','Initial Status',newChildID);
-					assignCap('CSANDERS',newChildID);
-					editAppSpecific('Parent Case',capIDString,newChildID);
-					ccnt++;
-					comment('ccnt = '+ccnt); 
-					capId = newChildID;
-					comment("NEW CHILD ID IS "+newChildID); 
-					cContactResult = aa.people.getCapContactByCapID(capId);
-					cContactAry = cContactResult.getOutput();
-					cc = cContactAry.length;
-					comment("THE LENGTH OF CC IS "+cc);
-					
-					if (appMatch('*/*/LHH/*')) 
-					{
-						editAppSpecific('Case Type','Lead',newChildID);
-						editAppSpecific('Parent Case',saveID,newChildID);
-						editAppSpecific('EHS Court Day','THURS',newChildID);
-						editAppSpecific('EHS Court Time','1:00 PM',newChildID);
-					}
+        if (cContactsExist) {
+            for (i = 0; i < concnt; i++) {
+                cContactResult = AInfo[''];
+                cContactsExist = false;
+                cContactAry = new Array();
+                nextNameArr = new Array();
+                prevName = 'Start';
+                cTempAry = new Array();
+                var saveID = capId;
+                comment("THE SAVEID IS " + saveID);
+                cCapContactModel = AInfo[''];
+                cContactSeqNumber = 0;
+                cPeopleModel = AInfo[''];
+                cc = 0;
+                y = 0;
+                newChildID = createChild('EnvHealth', 'CRT', 'NA', 'NA', '');
+                copyAppSpecific(newChildID);
+                comment('New child app id = ' + newChildID);
+                masterArray = new Array();
+                elementArray = new Array();
+                code10or19 = AInfo['Ordinance Chapter'];
+                updateAppStatus('Legal Review', 'Initial Status', newChildID);
+                assignCap('CSANDERS', newChildID);
+                editAppSpecific('Parent Case', capIDString, newChildID);
+                ccnt++;
+                comment('ccnt = ' + ccnt);
+                capId = newChildID;
+                comment("NEW CHILD ID IS " + newChildID);
+                cContactResult = aa.people.getCapContactByCapID(capId);
+                cContactAry = cContactResult.getOutput();
+                cc = cContactAry.length;
+                comment("THE LENGTH OF CC IS " + cc);
 
-					HHC_GET_OFFENSE_CODES(saveID,newChildID);	
-					HHC_GET_ADDRESS_FOR_CHILD();	
+                if (appMatch('*/*/LHH/*')) {
+                    editAppSpecific('Case Type', 'Lead', newChildID);
+                    editAppSpecific('Parent Case', saveID, newChildID);
+                    editAppSpecific('EHS Court Day', 'THURS', newChildID);
+                    editAppSpecific('EHS Court Time', '1:00 PM', newChildID);
+                }
 
-				if (cContactResult.getSuccess()) 
-				{
-					cContactsExist = true;
-					}
+                HHC_GET_OFFENSE_CODES(saveID, newChildID);
+                HHC_GET_ADDRESS_FOR_CHILD();
 
-					if (cContactsExist) 
-					{
-						for(yy in cContactAry) 
+                if (cContactResult.getSuccess()) {
+                    cContactsExist = true;
+                }
 
-						HHC_SORT_CONTACTS(); //makes it here 1 time
-						}
+                if (cContactsExist) {
+                    for (yy in cContactAry)
 
-					if (cContactsExist) 
-					{
-						for(yy in cTempAry) 
+                        HHC_SORT_CONTACTS(); //makes it here 1 time
+                }
 
-						HHC_CheckContact(); //makes it here 1 time
-						}
+                if (cContactsExist) {
+                    for (yy in cTempAry)
 
-					if (cContactsExist) 
-					{
-						for(yy in nextNameArr) 
-							
-						nextNameArr.sort();
-						comment('Deletes begin here');
-						}	
-						for(ii=0;ii<cc;ii++) {
-							var csortContactNum = nextNameArr[ii][0];
-							var csortContactNameToCheckFor = nextNameArr[ii][1];
-							var csortContactSeqNum = nextNameArr[ii][3];
-							var cContactDelete = true;
-							cCapContactModel = cContactAry[ii].getCapContactModel();
-							if (parseInt(ccnt) == parseInt(csortContactNum)) 
-							{
-								cContactDelete = false;
-								//contactSetPrimary(parseInt(csortContactSeqNum)); must set primary for all contacts on court case
-							}
-														if (!matches(nextNameArr[ii][2], 'Property Owner','Tenant','Responsible Party'))
-							{
-								cContactDelete = true;
-							}
-							//comment('Setting the primary flag on the contact begins here');
-							//if (matches(nextNameArr[ii][2], 'Property Owner','Tenant','Responsible Party'))
-							//{
-								//cContactResult = aa.people.getCapContactByCapID(newChildID);
-								//if (cContactResult.getSuccess)
-								//{
-									//for(eachContact in cContactResult)
-									//	cContactResult[eachContact].setPrimaryFlag("Y"); unable to set primary flag to yes
-									
-								//}
+                        HHC_CheckContact(); //makes it here 1 time
+                }
 
-							//}								
-							comment('Contact type checking for deletes begin here');
+                if (cContactsExist) {
+                    for (yy in nextNameArr)
 
-							if (cContactDelete == true) 
-							{
-								cContactSeqNumber = parseInt(csortContactSeqNum);
-								}
+                        nextNameArr.sort();
+                    comment('Deletes begin here');
+                }
+                for (ii = 0; ii < cc; ii++) {
+                    var csortContactNum = nextNameArr[ii][0];
+                    var csortContactNameToCheckFor = nextNameArr[ii][1];
+                    var csortContactSeqNum = nextNameArr[ii][3];
+                    var cContactDelete = true;
+                    cCapContactModel = cContactAry[ii].getCapContactModel();
+                    if (parseInt(ccnt) == parseInt(csortContactNum)) {
+                        cContactDelete = false;
+                        //contactSetPrimary(parseInt(csortContactSeqNum)); must set primary for all contacts on court case
+                    }
+                    if (!matches(nextNameArr[ii][2], 'Property Owner', 'Tenant', 'Responsible Party')) {
+                        cContactDelete = true;
+                    }
+                    //comment('Setting the primary flag on the contact begins here');
+                    //if (matches(nextNameArr[ii][2], 'Property Owner','Tenant','Responsible Party'))
+                    //{
+                    //cContactResult = aa.people.getCapContactByCapID(newChildID);
+                    //if (cContactResult.getSuccess)
+                    //{
+                    //for(eachContact in cContactResult)
+                    //	cContactResult[eachContact].setPrimaryFlag("Y"); unable to set primary flag to yes
 
-							if (cContactDelete == true) 
-							{
-								aa.people.removeCapContact(newChildID, cContactSeqNumber);
-								}
+                    //}
 
-							showMessage = true;
-							comment('ccnt = '+ccnt +' - '+'nextNameArr[ii][0] = '+nextNameArr[ii][0]+' ii= '+ii+' - '+'nextNameArr[ii][1] = '+nextNameArr[ii][1]+' - '+'nextNameArr[ii][2] = '+nextNameArr[ii][2]+' - '+nextNameArr[ii][3]+' ---- '+cContactDelete+' - '+cContactSeqNumber+' - '+csortContactSeqNum);
+                    //}								
+                    comment('Contact type checking for deletes begin here');
 
-							}
+                    if (cContactDelete == true) {
+                        cContactSeqNumber = parseInt(csortContactSeqNum);
+                    }
 
-						capId = saveID;
-						comment("the saved capId is "+saveID);
+                    if (cContactDelete == true) {
+                        aa.people.removeCapContact(newChildID, cContactSeqNumber);
+                    }
 
-						}
+                    showMessage = true;
+                    comment('ccnt = ' + ccnt + ' - ' + 'nextNameArr[ii][0] = ' + nextNameArr[ii][0] + ' ii= ' + ii + ' - ' + 'nextNameArr[ii][1] = ' + nextNameArr[ii][1] + ' - ' + 'nextNameArr[ii][2] = ' + nextNameArr[ii][2] + ' - ' + nextNameArr[ii][3] + ' ---- ' + cContactDelete + ' - ' + cContactSeqNumber + ' - ' + csortContactSeqNum);
 
-				}
-			}
-		catch(err)
-		{
-			logDebug("A JavaScript Error occurred: HHC_CREATE_CRT_CASES:  " + err.message);
-			logDebug(err.stack);
-			}
-	}
+                }
+
+                cContactResult = aa.people.getCapContactByCapID(newChildID);
+
+                if (cContactResult.getSuccess()) {
+                    cContactAry = cContactResult.getOutput();
+
+                    if (cContactAry) {
+                        for (qq in cContactAry) {
+                            cContactAry[qq].getCapContactModel().setPrimaryFlag('Y');
+                            saveResult = aa.people.editCapContact(cContactAry[qq].getCapContactModel());
+                            logDebug("Set Primary Results = " + saveResult.getSuccess());
+                        }
+                    }
+                }
+
+                capId = saveID;
+                comment("the saved capId is " + saveID);
+
+            }
+
+        }
+    } catch (err) {
+        logDebug("A JavaScript Error occurred: HHC_CREATE_CRT_CASES:  " + err.message);
+        logDebug(err.stack);
+    }
+}
