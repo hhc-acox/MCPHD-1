@@ -1,4 +1,4 @@
-	if (matches(appTypeArray[2], "File Search", "Lift Station", "Archive") || appMatch("EnvHealth/WQ/Body Art/Application") || appMatch("EnvHealth/WQ/Pump/NA") || appMatch("EnvHealth/WQ/Sewage/Application") || appMatch("EnvHealth/WQ/Private Well/Application")) {
+	if (matches(appTypeArray[2], "File Search", "Lift Station", "Archive") || appMatch("EnvHealth/WQ/Body Art/Application") || appMatch("EnvHealth/WQ/Pump/NA") || appMatch("EnvHealth/WQ/OWTS/NA") || appMatch("EnvHealth/WQ/Well/NA")) {
 		newAppName = "";
 		if (AInfo["Profile Name"]) {
 			newAppName += AInfo["Profile Name"];
@@ -59,7 +59,7 @@
 		
 	}
 
-if (appMatch("EnvHealth/WQ/Pump/NA") || appMatch("EnvHealth/WQ/PrivateWell/Application") || appMatch("EnvHealth/WQ/Sewage/Application")){
+if (appMatch("EnvHealth/WQ/Pump/NA") || appMatch("EnvHealth/WQ/Well/NA") || appMatch("EnvHealth/WQ/OWTS/NA")){
 		var assignedToRecordInspector = getAssignedToRecord();
 		var supportStaff = HHC_getMySupportStaffDepartment(assignedToRecordInspector);
 		updateTask('Intake','Pending','Updated by script');
