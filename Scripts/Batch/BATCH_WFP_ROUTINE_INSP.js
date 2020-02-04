@@ -237,5 +237,6 @@ function mainProcess() {
     logDebug("Total CAPS qualified date range: " + gc.length);
     logDebug("Total CAPS skipped due to status " + capFilterStatus);
     logDebug("Total CAPS processed: " + capCount);
+    
 }
 
