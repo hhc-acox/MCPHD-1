@@ -47,3 +47,9 @@ try{
 }
 //lwacht: 181029: #166b: end
 lwacht: 181107: end  */
+
+if(matches(appTypeArray[2],'Body Art', 'Childcare') && wfStatus == 'Approved' && wfTask == 'Site Survey') {
+	var assignToUser = hhcgetUserByDiscipline('WQBodyArtChildCareSupp');
+	updateTask('Issuance', 'Ready for Issuance Fees Due', 'Updated by script', 'Ready for Issuance Fees Due');
+	assignTask('Issuance', assignToUser);
+}
