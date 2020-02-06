@@ -93,7 +93,7 @@ if (matches(appTypeArray[1],'Radon')) {
         } else {
                 areaInspector = hhcgetUserByDiscipline('WQRadon');
         }
-	updateTask('Radon Intake','Accepted','Updated by Script');
+	//updateTask('Radon Intake','Accepted','Updated by Script');
 	assignedAreaInspector = String(areaInspector.toUpperCase());
 	areaInspector = assignedAreaInspector;
 	assignCap(areaInspector);
