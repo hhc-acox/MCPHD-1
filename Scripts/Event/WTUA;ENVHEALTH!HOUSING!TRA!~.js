@@ -1,6 +1,8 @@
 var assignedEHS = '';
 assignedEHS = convertForAssignedTo(AInfo['Assigned To']);
 comment('assignedEHS is '+assignedEHS);
+var caseStatus = getCapStatus();
+aa.print(caseStatus);
 
 if (wfTask == 'Initial Processing' && matches(wfStatus,'Complete Notice of Violation','Complete Emergency NOV') && getTSIfieldValue('Reinspection Date', 'Initial Processing') != null) {
 	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Initial Processing'),assignedEHS);
@@ -91,7 +93,7 @@ if (wfTask == 'Requesting Admin Court Order' && wfStatus == 'Request EHSM Clean'
 	deactivateTask('Requesting Admin Court Order');
 	}
 
-if (wfTask == 'Request EHSM Clean' && wfStatus == 'Complete Request EHSM Clean') {
+if (wfTask == 'Request EHSM Clean' && wfStatus == 'Complete Request EHSM Clean' && caseStatus != 'EHSM Clean Pending') {
 	HHC_CREATE_RCP_CASE();
 	}
 	
