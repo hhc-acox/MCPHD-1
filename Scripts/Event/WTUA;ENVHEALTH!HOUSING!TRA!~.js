@@ -2,7 +2,7 @@ var assignedEHS = '';
 assignedEHS = convertForAssignedTo(AInfo['Assigned To']);
 comment('assignedEHS is '+assignedEHS);
 var caseStatus = capStatus;
-aa.print(caseStatus);
+comment('The Record Status is '+capStatus);
 
 if (wfTask == 'Initial Processing' && matches(wfStatus,'Complete Notice of Violation','Complete Emergency NOV') && getTSIfieldValue('Reinspection Date', 'Initial Processing') != null) {
 	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Initial Processing'),assignedEHS);
