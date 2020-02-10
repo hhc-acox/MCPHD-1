@@ -5,7 +5,7 @@ if (wfTask == 'Final Processing' && (wfStatus == 'Paid' || wfStatus == 'Finaled'
 	cancel = true;
 	}
 
-if (wfTask == 'Request EHSM Clean' && wfStatus == 'Complete Request EHSM Clean' && capStatus = 'EHSM Clean Pending') {
+if (wfTask == 'Request EHSM Clean' && wfStatus == 'Complete Request EHSM Clean' && capStatus == 'EHSM Clean Pending') {
 	showMessage = true;
 	comment('An RCP Record may have been previously created.  Please check related records.');
 	cancel = true;
