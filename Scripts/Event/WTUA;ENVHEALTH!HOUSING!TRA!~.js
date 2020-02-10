@@ -93,7 +93,7 @@ if (wfTask == 'Requesting Admin Court Order' && wfStatus == 'Request EHSM Clean'
 	deactivateTask('Requesting Admin Court Order');
 	}
 
-if (wfTask == 'Request EHSM Clean' && wfStatus == 'Complete Request EHSM Clean' && caseStatus != 'EHSM Clean Pending') {
+if (wfTask == 'Request EHSM Clean' && wfStatus == 'Complete Request EHSM Clean') {
 	HHC_CREATE_RCP_CASE();
 	}
 	
