@@ -5,24 +5,12 @@ if (wfTask == 'Final Processing' && (wfStatus == 'Paid' || wfStatus == 'Finaled'
 	cancel = true;
 	}
 
-if (wfTask == 'Final Processing' && (wfStatus == 'Paid' || wfStatus == 'Finaled') && isTaskActive('EC Clean Occupied')) {
+if (wfTask == 'Request EHSM Clean' && wfStatus == 'Complete Request EHSM Clean' && capStatus = 'EHSM Clean Pending') {
 	showMessage = true;
-	comment('Cannot Close Case - EC Clean Occupied task is still active');
+	comment('An RCP Record may have been previously created.  Please check related records.');
 	cancel = true;
 	}
-
-if (wfTask == 'Final Processing' && (wfStatus == 'Paid' || wfStatus == 'Finaled') && isTaskActive('EC Clean Vacant')) {
-	showMessage = true;
-	comment('Cannot Close Case - EC Clean Vacant task is still active');
-	cancel = true;
-	}
-
-if (wfTask == 'Final Processing' && matches(wfStatus,'Finaled','Billing Letter Release') && balanceDue != 0) {
-	showMessage = true;
-	comment('Cannot Close Case - Fees are still due');
-	cancel = true;
-	}
-
+	
 if (wfTask == 'Initial Processing' && wfStatus == 'Emergency Notice of Violation' && AInfo['Emergency'] == 'No') {
 	editAppSpecific('Emergency', 'Yes');
 	}
