@@ -1,7 +1,7 @@
 var assignedEHS = '';
 assignedEHS = convertForAssignedTo(AInfo['Assigned To']);
 comment('assignedEHS is '+assignedEHS);
-var caseStatus = getCapStatus();
+var caseStatus = capStatus;
 aa.print(caseStatus);
 
 if (wfTask == 'Initial Processing' && matches(wfStatus,'Complete Notice of Violation','Complete Emergency NOV') && getTSIfieldValue('Reinspection Date', 'Initial Processing') != null) {
