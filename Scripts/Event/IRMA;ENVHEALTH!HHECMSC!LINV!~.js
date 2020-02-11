@@ -1,6 +1,7 @@
 //IRSA;ENVHEALTH!HHECMSC!LINV!~.js
 if (matches(inspType, 'Initial Lead Inspection','Reinspection') && matches(inspResult,'Unjustified')) {
 	closeTask('Closed','Complete','Unjustified - Updated by Script');
+	updateAppStatus('Finaled');
 	}
 
 if (matches(inspType, 'Initial Lead Inspection','Reinspection') && matches(inspResult,'In Violation')) {
