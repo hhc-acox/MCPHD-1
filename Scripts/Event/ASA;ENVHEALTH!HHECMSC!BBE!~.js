@@ -25,12 +25,12 @@ if (complInitInsp) {
 	}
 
 if (complInitInsp) {
-	resultInspection('Initial Inspection','Completed',theDate,'Resulted by Script');
+	resultInspection('Initial Lead Inspection','Completed',theDate,'Resulted by Script');
 	deactivateTask('Initial Processing','Completed','Updated by Script'); 
 	}
 
 if (complInitInsp == false) {
-	scheduleInspectDate('Initial Inspection',nextWorkDay(dateAdd(null,2)),areaInspector);
+	scheduleInspectDate('Initial Lead Inspection',nextWorkDay(dateAdd(null,2)),areaInspector);
 	editAppSpecific('Initial Inspection Date', nextWorkDay(dateAdd(null,2)));
 	}
 
