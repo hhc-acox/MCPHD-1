@@ -184,7 +184,7 @@ assignTask('Intake',supportStaff );
 
 //LINV Initial Inspection Scheduling set for next business day and case assignments.  This logic moved to launch from "Case Intake" on the LINV Workflow 08/12/2019.
 if (matches(appTypeArray[2],'LINV')) {
-	updateAppStatus('Pending Case Creation','Initial status');
+	updateAppStatus('Open','Initial status');
 	editAppSpecific('Initial Inspection Date',nextWorkDay());
 	scheduleInspectDate('Initial Lead Inspection',nextWorkDay(),areaInspector);
 	}
