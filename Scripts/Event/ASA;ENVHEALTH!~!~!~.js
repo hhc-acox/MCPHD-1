@@ -245,7 +245,10 @@ if (matches(appTypeArray[2],'CPS') && AInfo['Recall']=='Yes') {
 if (matches(appTypeArray[2],'CPS') && AInfo['Recall']=='No') {
 	scheduleInspectDate('CP Routine Inspection',nextWorkDay(dateAdd(null,0)),areaInspector);
 	}
-
+//Senior Care
+if (matches(appTypeArray[2],'SCM')) {
+	scheduleInspectDate('Initial Inspection',nextWorkDay(),areaInspector);
+	}
 //Set the address to the Application Name field on the record
 if (appTypeString.indexOf('Food')<0 && appTypeString.indexOf('WQ')<0)
 	{
