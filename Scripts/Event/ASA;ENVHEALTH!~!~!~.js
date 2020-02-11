@@ -44,9 +44,15 @@ if (matches(appTypeArray[3],'SEC')) {
 	logDebug('Inspector to Assign: '+areaInspector);
 	}
 
-//Lead EHS	
-if (matches(appTypeArray[2],'LHH','LINV')) {
-	areaInspector = lookup('Census - Lead EHS',censusTract);
+//LINV EHS	Assignment
+if (matches(appTypeArray[2],'LINV')) {
+	if(AInfo['Asthma'] == 'CHECKED'){areaInspector = hhcgetUserByDiscipline('HHCESMCAsthma'); }
+	if(AInfo['Bed Bugs'] == 'CHECKED'){areaInspector = hhcgetUserByDiscipline('HHCESMCBedBugs'); }
+	if(AInfo['Consumer Product Safety'] == 'CHECKED'){areaInspector = hhcgetUserByDiscipline('HHCESMCConsumerProductSafety'); }
+	if(AInfo['Radon'] == 'CHECKED'){areaInspector = hhcgetUserByDiscipline('HHCESMCRadon'); }
+	if(AInfo['Suspect Lead'] == 'CHECKED'){areaInspector = lookup('Census - Lead EHS',censusTract);}
+	if(AInfo['Senior Care'] == 'CHECKED'){areaInspector = hhcgetUserByDiscipline('HHCESMCSeniorCare');}
+	
 	assignedAreaInspector = String(areaInspector.toUpperCase());
 	areaInspector = assignedAreaInspector;
 	editAppSpecific('Assigned To',areaInspector);
@@ -55,6 +61,16 @@ if (matches(appTypeArray[2],'LHH','LINV')) {
 	comment('the Healthy Homes area Inspector: '+areaInspector);
 	}
 
+//Lead (LHH) EHS
+if (matches(appTypeArray[2],'LHH')) {
+	areaInspector = lookup('Census - Lead EHS',censusTract);
+	assignedAreaInspector = String(areaInspector.toUpperCase());
+	areaInspector = assignedAreaInspector;
+	editAppSpecific('Assigned To',areaInspector);
+	editAppSpecific('Previous Assigned To',areaInspector);
+	assignCap(areaInspector);
+	comment('the Lead area Inspector is: '+areaInspector);
+	}
 //Asthma EHS
 if (matches(appTypeArray[2],'ASP')) {
 	areaInspector = hhcgetUserByDiscipline('HHCESMCAsthma');
