@@ -182,11 +182,12 @@ var supportStaff = HHC_getMySupportStaffDepartment(currentUserID);
 assignTask('Intake',supportStaff );
 }
 
-//LINV Initial Inspection Scheduling set for next business day and case assignments.  This logic moved to launch from "Case Intake" on the LINV Workflow 08/12/2019.
+//LINV Initial Inspection Scheduling set for next business day and case assignments.  This logic moved to launch from "Case Intake" on the LINV Workflow 08/12/2019.  Moved back on 01/14/2020.
 if (matches(appTypeArray[2],'LINV')) {
-	updateAppStatus('Open','Initial status');
+	updateAppStatus('Open','Initial Status');
 	editAppSpecific('Initial Inspection Date',nextWorkDay());
 	scheduleInspectDate('Initial Lead Inspection',nextWorkDay(),areaInspector);
+	closeTask('Case Intake','Complete','Updated by Script');
 	}
 	
 //Get the Initial Inspection Date and reformat it for resulting the Initial Inspection
