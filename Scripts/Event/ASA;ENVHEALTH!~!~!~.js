@@ -234,6 +234,10 @@ if (matches(appTypeArray[3],'SEC') && AInfo['Initial Inspection Date'] != null) 
 if (matches(appTypeArray[2],'LHH') && AInfo['Initial Inspection Date'] != null) {
 	resultInspection('Initial Lead Inspection','In Violation',theDate,'Resulted by Script');
 	}
+//Asthma
+if (matches(appTypeArray[2],'ASP')) {
+	scheduleInspectDate('Initial Inspection',nextWorkDay(),areaInspector);
+	}
 //Consumer Product Safety
 if (matches(appTypeArray[2],'CPS') && AInfo['Recall']=='Yes') {
 	scheduleInspectDate('CP Initial Recall Inspection',nextWorkDay(dateAdd(null,0)),areaInspector);
@@ -241,6 +245,7 @@ if (matches(appTypeArray[2],'CPS') && AInfo['Recall']=='Yes') {
 if (matches(appTypeArray[2],'CPS') && AInfo['Recall']=='No') {
 	scheduleInspectDate('CP Routine Inspection',nextWorkDay(dateAdd(null,0)),areaInspector);
 	}
+
 //Set the address to the Application Name field on the record
 if (appTypeString.indexOf('Food')<0 && appTypeString.indexOf('WQ')<0)
 	{
