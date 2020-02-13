@@ -52,7 +52,7 @@ function addCurrentViolations() {
 								rowVals["DH/CB"] = new asiTableValObj("DH/CB", resultArr[r][7], "N");
 								rowVals["OC"] = new asiTableValObj("OC", resultArr[r][8], "N");
 								rowVals["IP"] = new asiTableValObj("IP", resultArr[r][9], "N");
-								rowVals["Other"] = new asiTableValObj("Other", resultArr[r][10], "N");
+                                rowVals["Other"] = new asiTableValObj("Other", resultArr[r][10], "N");
 								var asitName = "VIOLATIONS";
 								addToASITable(asitName, rowVals, capId);
 							}
@@ -119,12 +119,21 @@ function addCurrentViolations() {
 									logDebug("Item Name:                 " + itemText);
 									logDebug("Item Status:                 " + itemStatus);
 									var n = itemText.indexOf("|");
-									logDebug("n " + n);
-									var chpt = itemText.slice(0, n - 1);
+                                    logDebug("n " + n);
+                                    var chpt = "";
+                                    var itemTextLength = itemText.lastIndexOf("");
+                                    var vioDesc = "";
+
+                                    if(n == -1){
+                                        chpt = itemText;
+                                        vioDesc = "";
+                                    } else {
+                                        chpt = itemText.slice(0, n - 1);
+                                        vioDesc = itemText.slice(n + 2, itemTextLength);
+                                    }
 									appChapter = chpt;
 									logDebug("chpt " + chpt);
-									var itemTextLength = itemText.lastIndexOf("");
-									var vioDesc = itemText.slice(n + 2, itemTextLength);
+                                    
 									appChecklistItem = vioDesc;
 									logDebug("vioDesc " + vioDesc);
 									logDebug("itemText.length " + itemTextLength);
@@ -172,9 +181,14 @@ function addCurrentViolations() {
 											rowVals["Inspection Date"] = new asiTableValObj("Inspection Date", appInspDate, "N");
 											rowVals["Inspection Number"] = new asiTableValObj("Inspection Number", appInspNumber, "N");
 											rowVals["Inspection Type"] = new asiTableValObj("Inspection Type", inspType, "N");
-											rowVals["Inspector"] = new asiTableValObj("Inspector", appInspector, "N");
+                                            rowVals["Inspector"] = new asiTableValObj("Inspector", appInspector, "N");
+
+                                            var rowVals2 = rowVals;
+                                            rowVals2["Corrected Date"] = new asiTableValObj("Corrected Date", "", "N");
+                                            rowVals2["Id"] = new asiTableValObj("Id", "", "N");
+
 											var asitName = "CURRENT VIOLATIONS";
-											addToASITable(asitName, rowVals, capId);
+											addToASITable(asitName, rowVals2, capId);
 
 											var ASITInspId = searchASITable("VIOLATION HISTORY", "Inspection Number", inspId, capId);
 											//var ASITGuideItem = searchASITable("VIOLATION HISTORY","Checklist Item",appChecklistItem,capId);
