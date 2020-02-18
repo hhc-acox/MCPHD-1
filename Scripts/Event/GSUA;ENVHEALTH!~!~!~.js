@@ -1,4 +1,5 @@
 //send inspection data to LIMS
+/*
 try{
 	if (GuidesheetModel && "LAB SAMPLES" == GuidesheetModel.getGuideType().toUpperCase()) {
 		var thisCapId = GuidesheetModel.capID;
@@ -113,6 +114,7 @@ try{
 	logDebug("A JavaScript Error occurred: GSUA:EnvHealth/*/*/NA: LIMS Interface: " + err.message);
 	logDebug(err.stack);
 } 
+*/
 
 /*lwacht 190307: moved to different event
 try{
