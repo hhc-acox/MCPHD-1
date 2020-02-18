@@ -3,6 +3,7 @@ function addCurrentViolations() {
 		var asitRes = aa.appSpecificTableScript.getAppSpecificTableModel(capId, 'VIOLATIONS');
 		
 		if(asitRes.getSuccess()) {
+            removeASITable('VIOLATIONS');
 			try {
 				var gs = getGuideSheetObjects(inspId);
 				
@@ -41,18 +42,63 @@ function addCurrentViolations() {
 							}
 							
 							for (r in resultArr) {
+                                var status = resultArr[r][0];
+                                var date = resultArr[r][1];
+                                var violation = resultArr[r][2];
+                                var xrf = resultArr[r][3];
+                                var explanation = resultArr[r][4];
+                                var location = resultArr[r][5];
+                                var dir = resultArr[r][6];
+                                var dhcb = resultArr[r][7];
+                                var oc = resultArr[r][8];
+                                var ip = resultArr[r][9];
+                                var other = resultArr[r][10];
+
+                                if(!status){
+                                    status = "";
+                                }
+                                if(!date){
+                                    date = "";
+                                }
+                                if(!violation){
+                                    violation = "";
+                                }
+                                if(!xrf){
+                                    xrf = "";
+                                }
+                                if(!explanation){
+                                    explanation = "";
+                                }
+                                if(!location){
+                                    location = "";
+                                }
+                                if(!dir){
+                                    dir = "";
+                                }
+                                if(!dhcb){
+                                    dhcb = "";
+                                }
+                                if(!oc){
+                                    oc = "";
+                                }
+                                if(!ip){
+                                    ip = "";
+                                }
+                                if(!other){
+                                    other = "";
+                                }
 								var rowVals = new Array();
-								rowVals["Status"] = new asiTableValObj("Status", resultArr[r][0], "N");
-								rowVals["Date"] = new asiTableValObj("Date", resultArr[r][1], "N");
-								rowVals["Violation"] = new asiTableValObj("Violation", resultArr[r][2], "N");
-								rowVals["XRF Result"] = new asiTableValObj("XRF Result", resultArr[r][3], "N");
-								rowVals["Explanation"] = new asiTableValObj("Explanation", resultArr[r][4], "N");
-								rowVals["Location"] = new asiTableValObj("Location", resultArr[r][5], "N");
-								rowVals["DIR"] = new asiTableValObj("DIR", resultArr[r][6], "N");
-								rowVals["DH/CB"] = new asiTableValObj("DH/CB", resultArr[r][7], "N");
-								rowVals["OC"] = new asiTableValObj("OC", resultArr[r][8], "N");
-								rowVals["IP"] = new asiTableValObj("IP", resultArr[r][9], "N");
-                                rowVals["Other"] = new asiTableValObj("Other", resultArr[r][10], "N");
+								rowVals["Status"] = new asiTableValObj("Status", status, "Y");
+								rowVals["Date"] = new asiTableValObj("Date", date, "Y");
+								rowVals["Violation"] = new asiTableValObj("Violation", violation, "Y");
+								rowVals["XRF Result"] = new asiTableValObj("XRF Result", xrf, "Y");
+								rowVals["Explanation"] = new asiTableValObj("Explanation", explanation, "Y");
+								rowVals["Location"] = new asiTableValObj("Location", location, "Y");
+								rowVals["DIR"] = new asiTableValObj("DIR", dir, "Y");
+								rowVals["DH/CB"] = new asiTableValObj("DH/CB", dhcb, "Y");
+								rowVals["OC"] = new asiTableValObj("OC", oc, "Y");
+								rowVals["IP"] = new asiTableValObj("IP", ip, "Y");
+                                rowVals["Other"] = new asiTableValObj("Other", other, "Y");
 								var asitName = "VIOLATIONS";
 								addToASITable(asitName, rowVals, capId);
 							}
