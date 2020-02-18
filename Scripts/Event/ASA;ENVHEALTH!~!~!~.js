@@ -109,13 +109,11 @@ if (matches(appTypeArray[1],'Radon')) {
         } else {
                 areaInspector = hhcgetUserByDiscipline('WQRadon');
         }
-	updateTask('Radon Intake','Accepted','Updated by Script');
+	//updateTask('Radon Intake','Accepted','Updated by Script');
 	assignedAreaInspector = String(areaInspector.toUpperCase());
 	areaInspector = assignedAreaInspector;
 	assignCap(areaInspector);
-	if (department.indexOf('HHECMSC') > -1) {
-                closeTask('Radon Intake', 'Accepted', 'Closed by Script', 'Closed by Script');
-        }
+        closeTask('Radon Intake', 'Accepted', 'Closed by Script', 'Closed by Script');
 	comment('the Radon area Inspector is: '+areaInspector);
 	}
 
