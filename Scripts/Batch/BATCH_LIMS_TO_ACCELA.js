@@ -63,6 +63,8 @@ if (batchJobResult.getSuccess()) {
 	logDebug("Batch job ID not found " + batchJobResult.getErrorMessage());
 }
 
+var urlLIMS = "https://208.88.104.180:95/api/LIMSUpdate/Update";
+
 /*----------------------------------------------------------------------------------------------------/
 |
 | Start: BATCH PARAMETERS
@@ -349,7 +351,6 @@ function sendToLims(guidesheet, currentUser){
                     };
                     var nDataJson = JSON.stringify(nData);
                     logDebug("myJSON: " + nDataJson)							
-                    //urlLIMS is stored in INCLUDES_CUSTOM_FUNCTIONS
                    
                     var postResp = httpClientPut(urlLIMS, nDataJson, 'application/json', 'utf-8');
                     if(postResp){
