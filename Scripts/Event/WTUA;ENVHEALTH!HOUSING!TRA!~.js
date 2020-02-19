@@ -99,7 +99,7 @@ if (wfTask == 'Request EHSM Clean' && wfStatus == 'Complete Request EHSM Clean')
 	
 if (matches(wfTask, 'Additional Processing','Requesting Admin Court Order') && wfStatus == 'Request Towing') {
 	activateTask('Request Towing');
-	var thisInsp = hhcgetUserByDiscipline('HSGVehicleInspections');
+	var thisInsp = hhcgetUserByDiscipline('HSGTowing');
 	assignTask('Request Towing',thisInsp);
 	//notify towing company by email -no longer need the towing notification for TRA just on VEH as of 02/04/2020 - rdv
 	//sendTowingEmail(); no longer need the towing notification for TRA just on VEH as of 02/04/2020 - rdv
