@@ -154,7 +154,7 @@ if (wfTask == 'Additional Processing' && wfStatus == 'Court Case') {
 	deactivateTask('Additional Processing');
 	}
 
-if (wfTask == 'Ticket' && (wfStatus == 'Paid' || wfStatus == 'Voided')) {
+if (wfTask == 'Ticket' && wfStatus == 'Paid') {
 	activateTask('Final Processing');
 	deactivateTask('Additional Processing');
 	}
