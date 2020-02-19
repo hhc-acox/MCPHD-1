@@ -229,6 +229,9 @@ function HHC_doWorkflowActions() {
                                         if (matches(wfTask, cTask) && matches(wfStatus, SubmittedTaskStatus) && New_Task == 'Close' && newTaskStatus == 'Closed') {
                                             closeTask('Close', 'Closed', 'Closed by Script', 'Closed by Script');
                                         }
+                                        if (matches(wfTask, cTask) && matches(wfStatus, SubmittedTaskStatus) && New_Task == 'Permit Closed' && newTaskStatus == 'Closed') {
+                                            closeTask('Permit Closed', 'Closed', 'Closed by Script', 'Closed by Script');
+                                        }
                                         var customFunctions = "" + sepRules[row]["Custom_Functions"];
                                         var chkFilter = "" + customFunctions;
                                         comment("Custom Function b4: " + customFunctions);
