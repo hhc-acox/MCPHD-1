@@ -266,5 +266,5 @@ if (areaInspector == null || areaInspector == 'undefined') {
 	}
 
 if (!publicUser && !appMatch("EnvHealth/CRT/*/*") && !appMatch("EnvHealth/Housing/*/*")) {
-	copyOwnerToContact("Owner", "Responsible Party", capId);
+	copyOwnerToContact("Property Owner", "Responsible Party", capId);
 }
