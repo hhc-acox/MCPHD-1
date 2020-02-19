@@ -402,7 +402,7 @@ try{
 		if(sepRules[row]["Active"]=="Yes"){
 			var taskName = ""+sepRules[row]["Task Name"];
 			var taskStatus = ""+sepRules[row]["Task Status"];
-			if(!matches(taskName,"",null,"undefined" || wfTask==taskName) && wfStatus==taskStatus){
+			if(wfTask==taskName && wfStatus==taskStatus){
 				var appMatch = true;
 				var recdType = ""+sepRules[row]["Record Type"];
 				var recdTypeArr = "" + recdType;
