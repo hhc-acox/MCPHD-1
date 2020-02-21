@@ -4,6 +4,17 @@ comment('assignedEHS is '+assignedEHS);
 var caseStatus = capStatus;
 comment('The Record Status is '+capStatus);
 
+if (wfTask == 'Additional Processing' && wfStatus == 'Request Administrative Hearing') {
+        var today = new Date();
+	var day = today.getDate() + 60;
+	var month = today.getMonth() + 1;
+	var year = today.getFullYear();
+	var schedDate = aa.date.parseDate(month + '/' + day + '/' + year)	
+        scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,59)),assignedEHS); 
+	updateAppStatus('Administrative Hearing','Status Updated by Script');
+	addStdConditionWithExpiration("Record Lock", "Admin Hearing",schedDate);
+}
+
 if (wfTask == 'Initial Processing' && matches(wfStatus,'Complete Notice of Violation','Complete Emergency NOV') && getTSIfieldValue('Reinspection Date', 'Initial Processing') != null) {
 	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Initial Processing'),assignedEHS);
 	}
