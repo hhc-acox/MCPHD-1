@@ -107,13 +107,17 @@ if (matches(appTypeArray[1],'Radon')) {
         if (department.indexOf('HHECMSC') > -1) {
                 areaInspector = hhcgetUserByDiscipline('HHCESMCRadon');
         } else {
-                areaInspector = hhcgetUserByDiscipline('WQRadon');
+		var zone = getGISInfo("MCPHD", "Radon", "district");
+                areaInspector = lookup('GIS - Radon',zone);
         }
 	//updateTask('Radon Intake','Accepted','Updated by Script');
 	assignedAreaInspector = String(areaInspector.toUpperCase());
 	areaInspector = assignedAreaInspector;
 	assignCap(areaInspector);
+	assignTask('Radon Intake', areaInspector);
+	assignTask('Initial Visit', areaInspector);
         closeTask('Radon Intake', 'Accepted', 'Closed by Script', 'Closed by Script');
+	scheduleInspectDate('Radon Placement - Initial',nextWorkDay(),areaInspector);
 	comment('the Radon area Inspector is: '+areaInspector);
 	}
 
