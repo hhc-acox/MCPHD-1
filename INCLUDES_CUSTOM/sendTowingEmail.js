@@ -9,7 +9,7 @@ function sendTowingEmail() {
 				aa.print(documentObject.getFileName());
 				fileName = "" + documentObject.getFileName();
 	    		currDocCat = "" + documentObject.getDocCategory();
-	    		if (currDocCat == "Court Order") {
+	    		if (currDocCat == "Contractor Referral") {
 	    			// download the document content
 					var useDefaultUserPassword = true;
 					//If useDefaultUserPassword = true, there is no need to set user name & password, but if useDefaultUserPassword = false, we need define EDMS user name & password.
@@ -26,6 +26,7 @@ function sendTowingEmail() {
 		}
 	}
 	// Run report Court Ordered Clean Cover Sheet
+	/*
 	reportParams = aa.util.newHashtable();
     reportParams.put("CaseNumber", "" + capId.getCustomID());
 	reportName = "Court Ordered Clean Cover Sheet";
@@ -33,6 +34,8 @@ function sendTowingEmail() {
 	logDebug(coverSheet);
 	if (coverSheet)
 		rFiles.push(coverSheet);
+		
+		*/
 	
 	var emailParams = aa.util.newHashtable();
 	addParameter(emailParams, "$$capID$$", "" + capId.getCustomID());
@@ -41,7 +44,7 @@ function sendTowingEmail() {
 	censusTract = AInfo['ParcelAttribute.CensusTract'];
 	areaTeamLeaderEmail = lookup('Census - Team Leader',censusTract); 
 	areaTeamLeader = "";
-	if (areaTeamLeaderEmail && areTeamLeaderEmail != "") {
+	if (areaTeamLeaderEmail && areaTeamLeaderEmail != "") {
 		areaTeamLeaderEmailPieces = areaTeamLeaderEmail.split("@");
 		areaTeamLeader = areaTeamLeaderEmailPieces[0];
 	}
