@@ -8,6 +8,7 @@
 | Richard Voller - 04/09/2019   Updated based on requirements gathering.
 | Richard Voller - 04/10/2019   Added functionality to set Case Status to "Assigned".  Changed Set status to "Processed" if successful.
 | Richard Voller - 11/21/2019   Changed Inspection from "Adulticide Inspection" to "Adulticide" because checklist is associated with "Adulticide".
+| Jake Cox       - 02/24/2020   Various Fixes
 | HHC - CIS
 /------------------------------------------------------------------------------------------------------*/
 /*------------------------------------------------------------------------------------------------------/
@@ -47,8 +48,8 @@ function getScriptText(vScriptName, servProvCode, useProductScripts) {
 /*------------------------------------------------------------------------------------------------------/
 | BEGIN Event Specific Variables
 /------------------------------------------------------------------------------------------------------*/
-var showDebug = false;
-var showMessage = false;
+showDebug = false;
+showMessage = false;
 var maxSeconds = 12*60;	// number of seconds allowed for batch processing, usually < 5*60
 var message = "";								
 var debug = "";									
@@ -56,57 +57,78 @@ var br = "<BR>";
 var sysDate = aa.date.getCurrentDate();
 var sysDateMMDDYYYY = dateFormatted(sysDate.getMonth(),sysDate.getDayOfMonth(),sysDate.getYear(),"")
 //var aZone = 'Adulticide Zone 01' //Develop routine to get zone for each case
-var testing = false; 
+//var testing = false; 
 var assignTech = "";
 var setStatus = "Processed";
 var systemUserObj = aa.person.getUser("ADMIN").getOutput();
 useAppSpecificGroupName = true;
 
-//Get the cases from the set
-if (testing) {
-	SetMemberArray = new Array();
-	SetMemberArray.push("ADC19-00003");
-	set = "VC_ADULTICIDING_NIGHTLY_ASSIGNMENTS";
-}
-else {
-	var SetMemberArray= aa.env.getValue("SetMemberArray");
-	var setID = aa.env.getValue("SetID");
-	set = "VC_ADULTICIDING_NIGHTLY_ASSIGNMENTS";
-		setScriptResult = aa.set.getSetByPK(set);
-			//aa.print("setScriptResult - "+setScriptResult);
-		setScript = setScriptResult.getOutput();
-		setScript.setSetStatus("Processed");
-			aa.print(setScript.getSetStatus());
-			//aa.print("setStatus"+setStatus);
-		updSet = aa.set.updateSetHeader(setScript).getOutput();
-				}
-for(var i=0; i < SetMemberArray.length; i++)  {
-	var id= SetMemberArray[i];
-		if (testing)
-			capId=aa.cap.getCapID(id).getOutput();
-		else 
-			capId = aa.cap.getCapID(id.getID1(), id.getID2(),id.getID3()).getOutput();
-	var capIDString = capId.getCustomID();
-		copyParcelGisObjects();
-	var aZone = getAdulticideZone(capId);
-	aa.print("the zone: "+aZone);
-		message += "Processing " + capIDString + br;
-		assignTech = lookupLOCAL("GIS - Adulticide Techs", aZone);
-		if (assignTech && assignTech != null && assignTech != "") {
-			
-		if (checkInspectionResult("Adulticide", "Scheduled") == true) { 
-			inspNum=getScheduledInspId("Adulticide");
-			assignInspection(inspNum, assignTech);
-			assignCap(assignTech);
-			updateAppStatus("Assigned");
-			editAppSpecific("Zone",aZone);
-		
-			}
-		}
-	}aa.print("the zone: "+aZone);	
+/*------------------------------------------------------------------------------------------------------/
+|
+| <===========Main=Loop================>
+|
+/------------------------------------------------------------------------------------------------------*/
+//if (paramsOK){
+    logMessage("START","Start of Assign Aduliticide Inspections Set Script.");
+    //Get count of records updated
+    var updatedRecordsCount = AssignAdulticideInspections();
+    //Message to Log output
+    logMessage("INFO","Total Inspections Assigned: " + updatedRecordsCount + ".");
+    logMessage("INFO","End of assignment script");
+
 /*------------------------------------------------------------------------------------------------------/
 | <===========END=Main=Loop================>
 /-----------------------------------------------------------------------------------------------------*/
+
+function AssignAdulticideInspections(){
+    var count = 0;
+    //Get the cases from the set
+    var set = "VC_ADULTICIDING_NIGHTLY_ASSIGNMENTS";
+    var SetMembers= aa.set. getCAPSetMembersByPK(set);
+
+    if(SetMembers.getSuccess()){
+        var SetMemberArray = SetMembers.getOutput();
+        /*
+        var setScriptResult = aa.set.getSetByPK(set);
+        //aa.print("setScriptResult - "+setScriptResult);
+        var setScript = setScriptResult.getOutput();
+        setScript.setSetStatus("Processed");
+        aa.print(setScript.getSetStatus());
+        //aa.print("setStatus"+setStatus);
+        var updSet = aa.set.updateSetHeader(setScript).getOutput();
+        */
+        aa.print('Records to process: ' + SetMemberArray.size());
+
+        //SetMemberArray.size()
+        for(var i=0; i < SetMemberArray.size(); i++)  {
+            capId = SetMemberArray.get(i);
+            aa.print('PROCESSING: ' + capId);
+
+            //copyParcelGisObjects();
+            var aZone = getAdulticideZone(capId);
+            aa.print("ZONE: "+aZone);
+            if(aZone){
+                assignTech = lookupLOCAL("GIS - Adulticide Techs", aZone);
+                aa.print('TECH: ' + assignTech);
+                if (assignTech && assignTech != null && assignTech != "") {
+                    
+                    if (checkInspectionResult("Adulticide", "Scheduled") == true) { 
+                        var inspNum=getScheduledInspId("Adulticide");
+                        assignInspection(inspNum, assignTech);
+                        assignCap(assignTech);
+                        updateAppStatus("Assigned");
+                        editAppSpecific("Zone",aZone);
+                        aa.print('ASSIGNED ' + inspNum + ' TO ' + assignTech);
+                        count++;
+                    }
+                }
+            }
+            aa.print('');    
+        }
+    }
+
+    return count;
+}
 
 if (debug.indexOf("**ERROR") > 0)
 	{
@@ -139,5 +161,3 @@ function lookupLOCAL(stdChoice,stdValue)  {
 	}
 	return strControl;
 }
-
-
