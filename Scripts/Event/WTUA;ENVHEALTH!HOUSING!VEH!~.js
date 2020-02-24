@@ -17,6 +17,10 @@ if (wfTask == 'Additional Processing' && matches(wfStatus,'Contractor Referral 1
 editTaskSpecific('Additional Processing','Reinspection Date',nextWorkDay(dateAdd(null,13)));
 	}
 
+if (wfTask == 'Additional Processing' && wfStatus == 'Contractor Referral 18 Day') {
+    sendTowingEmail();
+}
+
 if (wfTask == 'Additional Processing' && matches(wfStatus,'Complete Cntr Referral 18 Day') && getTSIfieldValue('Reinspection Date', 'Additional Processing') == null) {
 	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,13)),areaInspector);
 	editTaskSpecific('Additional Processing','Reinspection Date',nextWorkDay(dateAdd(null,13)));
@@ -37,7 +41,8 @@ if (wfTask == 'Reinspection' && wfStatus == 'Reinspection') {
 	}
 
 if (wfTask == 'Initial Processing' && wfStatus == 'Contractor Referral 48 Hours') {
-	activateTask('Towing Inspection');
+        sendTowingEmail();
+ 	activateTask('Towing Inspection');
 	assignTask('Towing Inspection',areaInspector);
 	}
 
