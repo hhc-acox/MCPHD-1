@@ -1,6 +1,43 @@
+var EMAIL_FROM = "accela-noreply@marionhealth.org";
 //GQ: Ticket #173
 //Checks results for 2 unsatisfactory in a row, or 3 in 6 weeks and adds a condition
+
 if (String(inspType) == "Pool Test Results" && String(inspResult) == "Unsatisfactory") {
+
+    //GQ: TICKET #263 -- RESCHEDULE & NOTIFY
+    var assignedToRecord = getAssignedToRecord();
+    scheduleInspectDate('Recheck', dateAdd(null, 1, true), assignedToRecord);
+
+    var capContactResult = aa.people.getCapContactByCapID(capId);
+    var emailAddress="";
+    if (capContactResult.getSuccess()) {
+        var Contacts = capContactResult.getOutput();
+        for (yy in Contacts)
+            if (Contacts[yy].getCapContactModel().getPrimaryFlag() == "Y")
+                if (Contacts[yy].getEmail() != null)
+                    emailAddress = "" + Contacts[yy].getEmail();
+    }
+
+    if (emailAddress.indexOf("@") > 0) {
+        var eParams = aa.util.newHashtable();
+        eParams.put("$$CAPID$$", capIDString);
+        eParams.put("$$INSPTYPE$$", inspType);
+        eParams.put("$$inspResult$$", inspResult);	
+        //sendNotification(
+            EMAIL_FROM
+            , String(emailAddress)
+            , ""
+            , "EMSE_POOL_TEST_UNSATISFACTORY"
+            , eParams
+            , [], capId
+        );
+        
+    }
+    else {
+        showMessage = true;
+        comment("Primary Contact has no email for auto notification, please notify primary contact.")
+    }
+
     var inspArr = aa.inspection.getInspections(capId).getOutput();
     var checkDate = new Date(dateAdd(null, -42));
     var inspFound = 0;
@@ -50,18 +87,18 @@ if (String(inspType) == "Pool Test Results" && String(inspResult) == "Unsatisfac
     }
 }
 
-if (String(inspType) == "Pool Test Results" && String(inspResult) == "Satisfactory"){
-	var capConditions = aa.capCondition.getCapConditions(capId);
-	
-	if (capConditions.getSuccess()){
-		var conditionsOut = capConditions.getOutput();
-		if (conditionsOut.length > 0) {
-			for (i in conditionsOut) {
-				if (conditionsOut[i].conditionDescription == 'Unsatisfactory Test Results' && conditionsOut[i].conditionStatus == 'Applied') {
-					aa.capCondition.deleteCapCondition(capId, conditionsOut[i].conditionNumber);
-				}
-			}
-		}
-		addCondition = false;
-	}
+if (String(inspType) == "Pool Test Results" && String(inspResult) == "Satisfactory") {
+    var capConditions = aa.capCondition.getCapConditions(capId);
+
+    if (capConditions.getSuccess()) {
+        var conditionsOut = capConditions.getOutput();
+        if (conditionsOut.length > 0) {
+            for (i in conditionsOut) {
+                if (conditionsOut[i].conditionDescription == 'Unsatisfactory Test Results' && conditionsOut[i].conditionStatus == 'Applied') {
+                    aa.capCondition.deleteCapCondition(capId, conditionsOut[i].conditionNumber);
+                }
+            }
+        }
+        addCondition = false;
+    }
 }
