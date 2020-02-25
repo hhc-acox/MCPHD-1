@@ -43,3 +43,9 @@ if ((appMatch("EnvHealth/WQ/Pump/NA") || appMatch("EnvHealth/WQ/Well/NA")) && (w
 if (appMatch("EnvHealth/WQ/Well/NA") && wfTask == 'Final Permit Creation' && wfStatus == 'Issued') {
     inspCancelAll();
 }
+if (appMatch("EnvHealth/WQ/OWTS/NA") && wfTask == 'Inspection' && wfStatus == 'Approved') {
+    if (getAppSpecific("Operator Permit") == 'CHECKED') {
+        deactivateTask('Final Permit Issuance');
+        closeTask('Permit Closed', 'Closed', 'Closed by Script', 'Closed');
+    }
+}
