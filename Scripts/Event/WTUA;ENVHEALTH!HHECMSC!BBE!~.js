@@ -58,7 +58,7 @@ if (wfTask == "Reinspection" && matches(wfStatus,"Reinspection","Complete Reinsp
 	copyLeadViolations(inspId);
 	}
 
-if (wfTask == "Reinspection" && matches(wfStatus,"Reinspection","Complete Reinspection Ltr","Complete Next Action Court Ltr") && matches(theDate,"",null,"undefined")) {
+if (wfTask == "Reinspection" && matches(wfStatus,"Reinspection","Complete Reinspection Ltr","Complete Next Action Court Ltr","Complete Lead Reinspection Ltr") && matches(theDate,"",null,"undefined")) {
 	scheduleInspectDate("Reinspection",nextWorkDay(dateAdd(null,29)),areaInspector);
 	editTaskSpecific("Reinspection","Reinspection Date",nextWorkDay(dateAdd(null,29)));
 	}
