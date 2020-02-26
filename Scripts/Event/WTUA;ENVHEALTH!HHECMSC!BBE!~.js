@@ -2,6 +2,7 @@
         workflowResult = aa.workflow.getTasks(capId); 
         wfObj = workflowResult.getOutput();
         var useTaskSpecificGroupName = true;
+		areaInspector = hhcgetUserByDiscipline('HHCESMCBedBugs');
 		itemCap = capId;
 		var itemName = 'Reinspection Date';
         var stepnumber = 0;
@@ -39,12 +40,12 @@ if (wfTask == taskName) {
 
 
 	if (wfTask == "Initial Processing" && matches(wfStatus,"Complete Notice of Violation","Complete Emergency") && !matches(theDate,"",null,"undefined")) {
-		inspId = scheduleInspectDateReturnInspID("Reinspection",theDate,AInfo["Assigned To"]);
+		inspId = scheduleInspectDateReturnInspID("Reinspection",theDate,areaInspector);
 		copyLeadViolations(inspId);
 	}
 
 if (wfTask == "Initial Processing" && matches(wfStatus,"Complete Notice of Violation","Complete Emergency") && matches(theDate,"",null,"undefined")) {
-	scheduleInspectDate("Reinspection",nextWorkDay(dateAdd(null,29)),AInfo["Assigned To"]);
+	scheduleInspectDate("Reinspection",nextWorkDay(dateAdd(null,29)),areaInspector);
 	editTaskSpecific("Initial Processing","Reinspection Date",nextWorkDay(dateAdd(null,29)));
 	}
 	
@@ -53,12 +54,12 @@ if (wfTask == "Initial Processing" && wfStatus == "Complete Lead No Hzd Found Lt
 	}
 
 if (wfTask == "Reinspection" && matches(wfStatus,"Reinspection","Complete Reinspection Ltr","Complete Next Action Court Ltr","Complete Lead Reinspection Ltr") && !matches(theDate,"",null,"undefined")) {
-	inspId = scheduleInspectDateReturnInspID("Reinspection",theDate,AInfo["Assigned To"]);
+	inspId = scheduleInspectDateReturnInspID("Reinspection",theDate,areaInspector);
 	copyLeadViolations(inspId);
 	}
 
 if (wfTask == "Reinspection" && matches(wfStatus,"Reinspection","Complete Reinspection Ltr","Complete Next Action Court Ltr") && matches(theDate,"",null,"undefined")) {
-	scheduleInspectDate("Reinspection",nextWorkDay(dateAdd(null,29)),AInfo["Assigned To"]);
+	scheduleInspectDate("Reinspection",nextWorkDay(dateAdd(null,29)),areaInspector);
 	editTaskSpecific("Reinspection","Reinspection Date",nextWorkDay(dateAdd(null,29)));
 	}
 	
@@ -71,33 +72,33 @@ if (wfTask == "Reinspection"  && matches(wfStatus,"Court Case")) {
 	}
 
 if (wfTask == "Final Processing" && (wfStatus == "Yearly Inspection") && !matches(theDate,"",null,"undefined")) {
-	inspId = scheduleInspectDateReturnInspID("Reinspection",theDate,AInfo["Assigned To"]);
+	inspId = scheduleInspectDateReturnInspID("Reinspection",theDate,areaInspector);
 	copyLeadViolations(inspId);
 	}
 
 if (wfTask == "Final Processing" && (wfStatus == "Yearly Inspection") && matches(theDate,"",null,"undefined")) {
-	inspId = scheduleInspectDateReturnInspID("Reinspection",nextWorkDay(dateAdd(null,364)),lookup("Census - Lead EHS",AInfo["ParcelAttribute.CensusTract"]));
+	inspId = scheduleInspectDateReturnInspID("Reinspection",nextWorkDay(dateAdd(null,364)),areaInspector);
 	copyLeadViolations(inspId);
 	editTaskSpecific("Final Processing","Reinspection Date",nextWorkDay(dateAdd(null,364)));
 	}
 
 if (wfTask == "Final Processing" && (wfStatus == "Permanent Injunction") && !matches(theDate,"",null,"undefined")) {
-	inspId = scheduleInspectDateReturnInspID("Reinspection",theDate,AInfo["Assigned To"]);
+	inspId = scheduleInspectDateReturnInspID("Reinspection",theDate,areaInspector);
 	copyLeadViolations(inspId);
 	}
 	
 if (wfTask == "Final Processing" && (wfStatus == "Permanent Injunction") && (matches(theDate,"",null,"undefined"))) {
-	scheduleInspectDate("Reinspection",nextWorkDay(dateAdd(null,179)),AInfo["Assigned To"]);
+	scheduleInspectDate("Reinspection",nextWorkDay(dateAdd(null,179)),areaInspector);
 	editTaskSpecific("Final Processing","Reinspection Date",nextWorkDay(dateAdd(null,179)));
 	}
 
 	if (wfTask == "Education Provided" && wfStatus == "Reinspect" && !matches(theDate,"",null,"undefined")) {
-		inspId = scheduleInspectDateReturnInspID("Reinspection",theDate,AInfo["Assigned To"]);
+		inspId = scheduleInspectDateReturnInspID("Reinspection",theDate,areaInspector);
 		copyLeadViolations(inspId);
 	}
 
 if (wfTask == "Education Provided" && matches(wfStatus,"Complete Lead No Hzd Found Ltr")) {
-	assignTask("Education Provided",AInfo["Assigned To"]);
+	assignTask("Education Provided",areaInspector);
 	}
 
 useTaskSpecificGroupName = false; 
