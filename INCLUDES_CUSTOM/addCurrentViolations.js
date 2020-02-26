@@ -3,7 +3,7 @@ function addCurrentViolations() {
 		var asitRes = aa.appSpecificTableScript.getAppSpecificTableModel(capId, 'VIOLATIONS');
 		
 		if(asitRes.getSuccess()) {
-            removeASITable('VIOLATIONS');
+            //removeASITable('VIOLATIONS');
 			try {
 				var gs = getGuideSheetObjects(inspId);
 				
