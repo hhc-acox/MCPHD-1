@@ -126,14 +126,14 @@ function addCurrentViolations() {
 					//var inspectionDate = inspObj.getInspectionDate().getMonth() + '/' + inspObj.getInspectionDate().getDayOfMonth() + '/' + inspObj.getInspectionDate().getYear();
 					//var inspectionDate = aa.util.parseDate(inspObj.getInspectionDate());
 					aa.print("inspectionId " + inspectionId);
-					aa.print("inspectiondate " + inspSchedDate);
+					aa.print("inspectiondate " + inspResultDate);
 					var appChapter = '';
 					var appChecklistItem = '';
 					var appStatus = '';
 					appStatus = inspResult;
 					var appLocation = '';
 					var appViolation = '';
-					var appInspDate = inspSchedDate;
+					var appInspDate = inspResultDate;
 					var appInspNumber = inspectionId.toString();
 					var appInspector = getLastInspector(inspType);
 					aa.print("getInspectionType " + inspType);
@@ -154,14 +154,95 @@ function addCurrentViolations() {
 						var gs = inspModel.getGuideSheets();
 						for (var i = 0; i < gs.size(); i++) {
 							var guideSheetObj = gs.get(i);
-							var guidesheetItem = guideSheetObj.getItems();
+                            var guidesheetItem = guideSheetObj.getItems();
+                            var guidesheetName = guideSheetObj.getGuideType().toUpperCase();
 							for (var j = 0; j < guidesheetItem.size(); j++) {
 								var item = guidesheetItem.get(j);
 								var itemText = item.getGuideItemText();
 								var itemStatus = item.getGuideItemStatus();
 								var gsStandardComment = item.getGuideItemComment();
-								var guideItemASITs = item.getItemASITableSubgroupList();
-								if (matches(itemStatus, 'OUT', 'COS')) {
+                                var guideItemASITs = item.getItemASITableSubgroupList();
+
+                                if (matches(itemStatus, 'IN') && guidesheetName.indexOf('FAILED') > -1) {
+									logDebug("Item Name:                 " + itemText);
+									logDebug("Item Status:                 " + itemStatus);
+									var n = itemText.indexOf("|");
+                                    logDebug("n " + n);
+                                    var chpt = "";
+                                    var itemTextLength = itemText.lastIndexOf("");
+                                    var vioDesc = "";
+
+                                    if(n == -1){
+                                        chpt = itemText;
+                                        vioDesc = "";
+                                    } else {
+                                        chpt = itemText.slice(0, n - 1);
+                                        vioDesc = itemText.slice(n + 2, itemTextLength);
+                                    }
+									appChapter = chpt;
+									logDebug("chpt " + chpt);
+                                    
+									appChecklistItem = vioDesc;
+									logDebug("vioDesc " + vioDesc);
+									logDebug("itemText.length " + itemTextLength);
+									appStatus = itemStatus;
+									appViolation = gsStandardComment;
+									logDebug("Standard Comment:   " + gsStandardComment);
+									logDebug("---------------------------");
+
+									for (var k = 0; k < guideItemASITs.size(); k++) {
+										var ASITSubGroup = guideItemASITs.get(k);
+										var tableArr = new Array();
+										var columnArr = new Array();
+										var ASITGroupName = ASITSubGroup.getGroupName();
+										logDebug("ASITGroupName: " + ASITGroupName);
+										var ASITTableName = ASITSubGroup.getTableName();
+										logDebug("ASITTableName: " + ASITTableName);
+										var columnList = ASITSubGroup.getColumnList();
+
+										for (var l = 0; l < columnList.size(); l++) {
+											var column = columnList.get(l);
+											var columnName = column.getColumnName();
+											var values = column.getValueMap().values();
+											var iteValues = values.iterator();
+											while (iteValues.hasNext()) {
+												logDebug("Guidesheet Column: " + column.getColumnName());
+												var ii = iteValues.next();
+												var zeroBasedRowIndex = ii.getRowIndex() - 1;
+												if (tableArr[zeroBasedRowIndex] == null) tableArr[zeroBasedRowIndex] = new Array();
+												tableArr[zeroBasedRowIndex][column.getColumnName()] = ii.getAttributeValue();
+												appLocation = ii.getAttributeValue();
+												logDebug("Guidesheet Value: " + ii.getAttributeValue());
+												logDebug("---------------------------");
+											}
+                                        }
+
+                                        var srchTable = new Array();
+                                        var tableUpdated = false;
+                                        srchTable = loadASITable('CURRENT VIOLATIONS');
+
+                                        if (srchTable) {
+                                            logDebug("Loaded ASIT");
+                                            for (x in srchTable) {
+                                                thisRow = srchTable[x];
+                                                logDebug("This Chapter: " + thisRow['Chapter'].toString());
+                                                logDebug("Chapter to Check: " + appChapter);
+                                                if (thisRow['Chapter'].toString() == appChapter) {
+                                                    tableUpdated = true;
+                                                    thisRow['Status'] = new asiTableValObj("Status", 'IN', "N");
+                                                    thisRow['Corrected Date'] = new asiTableValObj("Corrected Date", appInspDate, "N");
+                                                }
+                                            }
+
+                                            if (tableUpdated) {
+                                                removeASITable('CURRENT VIOLATIONS');
+                                                addASITable('CURRENT VIOLATIONS', srchTable);
+                                            }
+                                        }
+									}
+                                }
+                                
+								if (matches(itemStatus, 'OUT', 'COS') && itemText.indexOf('Failed') < 0) {
 									logDebug("Item Name:                 " + itemText);
 									logDebug("Item Status:                 " + itemStatus);
 									var n = itemText.indexOf("|");
