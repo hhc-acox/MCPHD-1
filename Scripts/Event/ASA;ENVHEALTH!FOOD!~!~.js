@@ -1,5 +1,6 @@
 showDebug = true;
 showMessage = true;
+copyParcelGisObjects4XAPO();
 var areaInspector = '';
 var zone = getGISInfo("MCPHD", "FoodsDistrict", "district");
 
