@@ -61,7 +61,7 @@
 
 if (appMatch("EnvHealth/WQ/Pump/NA") || appMatch("EnvHealth/WQ/Well/NA") || appMatch("EnvHealth/WQ/OWTS/NA")){
 		var assignedToRecordInspector = getAssignedToRecord();
-		var supportStaff = HHC_getMySupportStaffDepartment(assignedToRecordInspector);
+		var supportStaff = hhcgetUserByDiscipline('WQBodyArtChildCareSupp');
 		updateTask('Intake','Pending','Updated by script');
 		assignTask('Intake', supportStaff);
 	} else if (appMatch("EnvHealth/WQ/*/Application") || appMatch("EnvHealth/WQ/Pool/Construction Permit")) {
