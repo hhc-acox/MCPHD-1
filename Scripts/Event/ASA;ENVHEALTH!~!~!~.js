@@ -126,12 +126,18 @@ if (matches(appTypeArray[1],'Radon')) {
 if (matches(appTypeArray[2],'Lift Station')) {
 	areaInspector = getAssignedToRecord();
         assignTask('Site Creation', areaInspector);
+    }
+    
+    //Farmers Market Vendor
+if (matches(appTypeArray[2],'FarmersMarketEvent')) {
+	HHC_assignDeptCap('Food and Consumer Safety Team C Support');
 	}
 
 //Lift Station
 if (matches(appTypeArray[2],'OWTS')) {
 	areaInspector = getAssignedToRecord();
         assignTask('Site Survey', areaInspector);
+        scheduleInspectDate('Site Survey - Initial',nextWorkDay(),areaInspector);
 	}
 //Senior Care EHS
 if (matches(appTypeArray[2],'SCM')) {
