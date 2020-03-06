@@ -100,7 +100,8 @@ if (matches(appTypeArray[2],'CPS')) {
 	editAppSpecific('Previous Assigned To',areaInspector);
 	assignCap(areaInspector);
 	comment('the CPS area Inspector is: '+areaInspector);
-	}	
+	}
+	
 //Radon EHS
 if (matches(appTypeArray[1],'Radon')) {
         var department = HHC_getMyDepartment(currentUserID);
@@ -122,6 +123,12 @@ if (matches(appTypeArray[1],'Radon')) {
 	}
 
 //OWTS
+if (matches(appTypeArray[2],'Lift Station')) {
+	areaInspector = getAssignedToRecord();
+        assignTask('Site Creation', areaInspector);
+	}
+
+//Lift Station
 if (matches(appTypeArray[2],'OWTS')) {
 	areaInspector = getAssignedToRecord();
         assignTask('Site Survey', areaInspector);
