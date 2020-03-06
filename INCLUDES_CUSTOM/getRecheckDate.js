@@ -13,7 +13,7 @@ function getRecheckDate(capId){
 				if (gs) {
 					gsArray = gs.toArray();
 					for (var loopk in gsArray) {
-						if (gsArray[loopk].guideType == 'Recheck Date') {
+						if (gsArray[loopk].guideType == 'FCS Standard Information') {
 							var gsItems = gsArray[loopk].getItems().toArray()
 							for (var loopi in gsItems) {
 								//exploreObject(gsItems[loopi]);
