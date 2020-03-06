@@ -49,3 +49,8 @@ if (appMatch("EnvHealth/WQ/OWTS/NA") && wfTask == 'Inspection' && wfStatus == 'A
         closeTask('Permit Closed', 'Closed', 'Closed by Script', 'Closed');
     }
 }
+if (appMatch("EnvHealth/WQ/OWTS/NA") && wfTask == 'Site Survey' && wfStatus == 'Complete') {
+   var supportStaff = hhcgetUserByDiscipline('WQBodyArtChildCareSupp');
+   updateTask('Application Intake','Pending','Updated by script');
+   assignTask('Application Intake', supportStaff);
+}
