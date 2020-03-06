@@ -8,3 +8,10 @@ try{
 	logDebug(err.stack)
 }
 //lwacht: 270918: #132: end
+
+var assignToInsp = HHC_getCapAssignment(capId);
+if(wfTask == 'Complaint Review' && wfStatus == 'Inspection Required' && getAppSpecific('Illness Complaint?') == 'No' ) {
+    scheduleInspectDate('Non-illness Complaint',nextWorkDay(),assignToInsp);
+} else {
+    scheduleInspectDate('Illness Complaint',nextWorkDay(),assignToInsp);
+}
