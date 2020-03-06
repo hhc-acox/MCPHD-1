@@ -1,4 +1,7 @@
-	newAppName = AInfo["Complaint Type"];
+	newAppName = AInfo["Complaint Type"]; 
+        if (AInfo["Case Reason"]) {
+            newAppName += " - " + AInfo["Case Reason"];
+        }
 	if (AInfo["Profile Name"])
 		newAppName += " - " + AInfo["Profile Name"];
 	
