@@ -12,6 +12,10 @@ if (asgnToUser != null) {
     assignCap(asgnToUser, childId);
     var tCapId = capId;
     capId = childId;
-    assignTask("Intake", asgnToUser);
+    var taskUsr = hhcgetUserByDiscipline('WQBodyArtChildCareSupp');
+    updateTask('Intake','Pending','Updated by script');
+    assignTask("Intake", taskUsr);
+    feeSeq = addFee("WQ_PUMP", "WQ_PUMP", "FINAL", 1, "Y");
+    invoiceOneNow(feeSeq, "FINAL", capId);
     capId = tCapId;
 }
