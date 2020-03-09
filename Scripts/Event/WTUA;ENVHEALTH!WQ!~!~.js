@@ -59,3 +59,9 @@ if (appMatch("EnvHealth/WQ/OWTS/NA") && wfTask == 'Plan Review' && wfStatus == '
    updateTask('Permit Issuance','Pending','Updated by script');
    assignTask('Permit Issuance', supportStaff);
 }
+
+if (appMatch("EnvHealth/WQ/OWTS/NA") && wfTask == 'Inspection' && wfStatus == 'Approved') {
+   var supportStaff = hhcgetUserByDiscipline('WQBodyArtChildCareSupp');
+   updateTask('Final Permit Issuance','Pending','Updated by script');
+   assignTask('Final Permit Issuance', supportStaff);
+}
