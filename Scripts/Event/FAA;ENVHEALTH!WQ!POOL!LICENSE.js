@@ -4,7 +4,7 @@ if (pId && appMatch("EnvHealth/WQ/Pool/Facility", pId)) {
 	for (x in feeA)	{
 		thisFee = feeA[x];
 		if (thisFee.status == "NEW") {
-			addFee(thisFee.code,thisFee.sched,thisFee.period,thisFee.unit,"N",pId)
+			addFeeWithExtraData(thisFee.code,thisFee.sched,thisFee.period,thisFee.unit,"N",pId,capId.getCustomID(),null,null);
 			editResult = aa.finance.removeFeeItem(capId, thisFee.sequence);
 			if (editResult.getSuccess()) {
 				logDebug("Removed existing Fee Item: " + thisFee.code);
