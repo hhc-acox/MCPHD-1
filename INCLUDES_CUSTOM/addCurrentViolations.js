@@ -320,9 +320,10 @@ function addCurrentViolations() {
 											var ASITInspId = searchASITable("VIOLATION HISTORY", "Inspection Number", inspId, capId);
 											//var ASITGuideItem = searchASITable("VIOLATION HISTORY","Checklist Item",appChecklistItem,capId);
 
-											if (!ASITInspId)
+											if (!ASITInspId) {
 												var logFileName = "VIOLATION HISTORY";
-											addToASITable(logFileName, rowVals, capId);
+												addToASITable(logFileName, rowVals, capId);
+											}
 										}
 									}
 								}
