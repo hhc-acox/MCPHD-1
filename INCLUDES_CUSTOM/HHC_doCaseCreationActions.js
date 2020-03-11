@@ -25,7 +25,7 @@ function HHC_doCaseCreationActions(){
 							var appMatch = '';
 							var recdTypeArr = "" + recType;
 							var arrAppType = recdTypeArr.split("/");
-							var complaintType = ""+sepRules[row]["Complaint Type"];
+                            var complaintType = ""+sepRules[row]["Complaint Type"];
 							var ResidentialOrCommercial = ""+sepRules[row]["Residential or Commercial"];
 							var RecordAssignmentChoice = ""+sepRules[row]["Record Assignment Choice"];
 							var RecordAssignmentValue = ""+sepRules[row]["Name of Discipline"];
@@ -91,7 +91,17 @@ function HHC_doCaseCreationActions(){
 										if (!arrAppType[index].equals(appTypeArray[index]) && !arrAppType[index].equals("*")){
 											appMatch = false;
 										}
-									}
+                                    }
+                                    
+                                    // case types
+                                    if(complaintType != AInfo["Complaint Type"] && complaintType) {
+                                        appMatch = false;
+                                    }
+
+                                    // facility types
+                                    if(ResidentialOrCommercial != AInfo["Facility Type"] && ResidentialOrCommercial) {
+                                        appMatch = false;
+                                    }
 								}
 									//If assignment rule for this type
 									if(appMatch) {
