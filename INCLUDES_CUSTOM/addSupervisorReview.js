@@ -18,6 +18,7 @@ function addSupervisorReview(itemCap, taskType, inspID, taskName, statusName) {
                             logDebug("Added Supervisor Review Workflow task");
                             activateTask(taskName);
                             updateTask(taskName, "In Progress", "Supervisor Review in progress", "Set by script");
+                            cancel = true;
                         }
                     }
                 }
