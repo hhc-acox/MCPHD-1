@@ -7,16 +7,18 @@ if (wfTask == "Issuance" && wfStatus == "Issued") {
 		if (comInfo && comInfo.length > 0) {
 			for (eachRow in comInfo) {
 				licNum = comInfo[eachRow]["Commissary License"];
-				logDebug("Commissary :" + licNum);
-				licCapId = getApplication("" + licNum);
-				if (licCapId) {				
+                                if(licNum && licNum != "") {
+				    logDebug("Commissary :" + licNum);
+				    licCapId = getApplication("" + licNum);
+				    if (licCapId) {				
 					var result = aa.cap.createAppHierarchy(licCapId, pId); 
 					if (result.getSuccess()){
 						logDebug("Parent application successfully linked");
 					}else{
 						logDebug("Could not link applications");
 					}
-				}
+				     }
+                                }
 			}
 		}
 	}
