@@ -42,6 +42,7 @@ function addCurrentViolations() {
 							}
 							
 							for (r in resultArr) {
+                                logDebug(resultArr[r] + "");
                                 var status = resultArr[r][0];
                                 var date = resultArr[r][1];
                                 var violation = resultArr[r][2];
@@ -323,7 +324,9 @@ function addCurrentViolations() {
 											if (!ASITInspId) {
 												var logFileName = "VIOLATION HISTORY";
 												addToASITable(logFileName, rowVals, capId);
-											}
+                                            }
+                                            
+                                            appLocation = "";
 										}
 									}
 								}
