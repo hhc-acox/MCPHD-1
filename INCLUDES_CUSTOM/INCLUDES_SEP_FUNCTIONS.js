@@ -846,197 +846,202 @@ try{
 }}
 
 function sepIssueLicenseWorkflow(){
-try{
-	//see if any records are set up--module can be specific or "ALL", look for both
-	var sepScriptConfig = aa.cap.getCapIDsByAppSpecificInfoField("Module Name", appTypeArray[0]);
-	if(sepScriptConfig.getSuccess()){
-		var sepScriptConfigArr = sepScriptConfig.getOutput();
-		if(sepScriptConfigArr.length<1){
-			var sepScriptConfig = aa.cap.getCapIDsByAppSpecificInfoField("Module Name", "ALL");
-			if(sepScriptConfig.getSuccess()){
-				var sepScriptConfigArr = sepScriptConfig.getOutput();
-			}
-		}
-		if(sepScriptConfigArr.length>0){
-			for(sep in sepScriptConfigArr){
-				var cfgCapId = sepScriptConfigArr[sep].getCapID();
-				var sepRules = loadASITable("LICENSE ISSUANCE - ON WORKFLOW",cfgCapId);
-				if(sepRules.length>0){
-					for(row in sepRules){
-						if(sepRules[row]["Active"]=="Yes"){
-							var taskName = ""+sepRules[row]["Task Name"];
-							var taskStatus = ""+sepRules[row]["Task Status"];
-							if(!matches(taskName,"",null,"undefined" || wfTask==taskName) && wfStatus==taskStatus){
-								var appMatch = true;
-								var recdType = ""+sepRules[row]["Record Type"];
-								var recdTypeArr = "" + recdType;
-								var arrAppType = recdTypeArr.split("/");
-								if (arrAppType.length != 4){
-									logDebug("The record type is incorrectly formatted: " + recdType);
-									return false;
-								}else{
-									for (xx in arrAppType){
-										if (!arrAppType[xx].equals(appTypeArray[xx]) && !arrAppType[xx].equals("*")){
-											appMatch = false;
-										}
-									}
-								}
-								if (appMatch){
-									var addtlQuery = ""+sepRules[row]["Additional Query"];
-									var chkFilter = ""+addtlQuery;
-									if (chkFilter.length==0 ||eval(chkFilter) ) {
-									logDebug("eval(chkFilter): " + eval(chkFilter));
-										if(!matches(sepRules[row]["Parent Record Type"], "",null,"undefined")){
-											var arrParRec = ""+sepRules[row]["Parent Record Type"];
-											var arrParRec = arrParRec.split("/");
-											if(arrParRec.length!=4){
-												logDebug("Parent ID not correctly formatted: " + sepRules[row]["Parent Record Type"]);
-												return false;
-											}else{
-												var parCapId = false;
-												var appCreateResult = aa.cap.createApp(arrParRec[0], arrParRec[1], arrParRec[2], arrParRec[3],capName);
-												logDebug("creating cap " +arrParRec);
-												if (appCreateResult.getSuccess()){
-													var newId = appCreateResult.getOutput();
-													logDebug("cap " + arrParRec + " created successfully ");
-													// create Detail Record
-													capModel = aa.cap.newCapScriptModel().getOutput();
-													capDetailModel = capModel.getCapModel().getCapDetailModel();
-													capDetailModel.setCapID(newId);
-													aa.cap.createCapDetail(capDetailModel);
-													var newObj = aa.cap.getCap(newId).getOutput();	//Cap object
-													var result = aa.cap.createAppHierarchy(newId, capId); 
-													if (result.getSuccess()){
-														logDebug("Parent application successfully linked");
-														parCapId = newId;
-													}else{
-														logDebug("Could not link applications");
-													}
-												}else{
-													logDebug( "**ERROR: adding parent App: " + appCreateResult.getErrorMessage());
-												}											}
-											if(parCapId){
-												var newLPType = ""+sepRules[row]["Create LP Type"];
-												if(!matches(newLPType, "",null,"undefined")){
-													var newLPContact = getContactObj(capId,"Applicant");
-													if(newLPContact){
-														var lpCreated = newLPContact.createRefLicProf(null,newLPType,null,null);
-													}
-												}
-												if(!matches(""+sepRules[row]["Expiration - Year(s)"],"",null,"undefined")){
-													var expDateYear = sysDate.getYear()+parseInt(sepRules[row]["Expiration - Year(s)"]);
-													var expDate = dateFormatted(sysDate.getMonth(), sysDate.getDayOfMonth(), expDateYear, "MM/DD/YYYY");
-													expDate = dateAdd(expDate,1);
-												}else{
-													if(!matches(""+sepRules[row]["Expiration - Month(s)"],"",null,"undefined")){
-														var expDate =  dateAddMonths(sysDate,sepRules[row]["Expiration - Month(s)"]);
-													}else{
-														if(!matches(""+sepRules[row]["Expiration - MM/DD"],"",null,"undefined")){
-															var expDate =  dateAddMonths(sysDate,sepRules[row]["Expiration - Month(s)"]);
-														}else{
-															logDebug("No expiration date listed. Defaulting to one year.");
-															var expDateYear = sysDate.getYear()+1;
-															var expDate = dateFormatted(sysDate.getMonth(), sysDate.getDayOfMonth(), expDateYear, "MM/DD/YYYY");
-														}
-													}
-												}
-												if(matches(""+sepRules[row]["New App Status"],"",null,"undefined")){
-													var newAppStatus = "Active";
-												}else{
-													var newAppStatus = ""+sepRules[row]["New App Status"];
-												}
-												var currCapId = capId;
-												capId = parCapId;
-												licEditExpInfo(newAppStatus, expDate);
-												updateAppStatus(newAppStatus, "Updated via sepIssueLicenseWorkflow.");
-												capId = currCapId;
-												if(""+sepRules[row]["Copy Custom Fields/Lists"]=="ALL"){
-													copyAppSpecific(parCapId);
-													copyASITables(capId, parCapId);
-													logDebug("Copied all ASI/T.");
-												}else{
-													if(!matches(""+sepRules[row]["Copy Custom Fields/Lists"],"",null,"undefined")){
-														var copyList = ""+sepRules[row]["Copy Custom Fields/Lists"];
-														var arrCopy = [];
-														if(copyList.indexOf("|")>-1){
-															arrCopy = copyList.split("|");
-														}else{
-															arrCopy.push(copyList);
-														}
-														copyAppSpecificInclude(parCapId,arrCopy);
-														copyASITablesInclude(capId, parCapId,arrCopy);
-													}
-												}
-												if(!matches(""+sepRules[row]["Copy Contacts"],"",null,"undefined")){
-													var strContacts = ""+sepRules[row]["Copy Contacts"];
-													if(strContacts.toUpperCase()=="ALL"){
-														copyContacts(capId, parCapId);
-													}else{
-														if(strContacts.indexOf("|")>-1){
-															var arrContacts = strContacts.split("|");
-														}else{
-															var arrContacts =[];
-															arrContacts.push(strContacts);
-														}
-														for(c in arrContacts){
-															copyContactsByType(capId, parCapId, arrContacts[c]);
-														}
-													}
-												}
-												if(""+sepRules[row]["Copy Examination"]=="Yes"){
-													aa.examination.copyExaminationList(capId, parCapId);
-												}
-												if(""+sepRules[row]["Copy Education"]=="Yes"){
-													aa.education.copyEducationList(capId, parCapId);
-												}
-												if(""+sepRules[row]["Copy Continuing Education"]=="Yes"){
-													aa.continuingEducation.copyContEducationList(capId, parCapId);
-												}
-												var notName = "" + sepRules[row]["Notification Name"];
-												if(!matches(notName, "","undefined",null)){
-													var cntType = ""+sepRules[row]["Contacts Receiving Notice"];
-													if(cntType.indexOf(",")>-1){
-														var arrType = cntType.split(",");
-														for(con in arrType){
-															var priContact = getContactObj(capId,arrType[con]);
-															sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
-														}
-													}else{
-														if(cntType.toUpperCase()=="ALL"){
-															var arrType = getContactObjs(capId);
-															for(con in arrType){
-																var priContact = getContactObj(capId,arrType[con]);
-																sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
-															}
-														}else{
-															var priContact = getContactObj(capId,cntType);
-															sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
-														}						
-													}						
-												}else{
-													logDebug("No notification name. No email sent.");
-												}
-											}
-										}
-									}else{
-										logDebug("sepIssueLicenseWorkflow: Check filter resolved to false: " + chkFilter);
-									}
-								}else{
-									logDebug("sepIssueLicenseWorkflow: No app match: " + recdTypeArr);
-								}
-							}else{
-								logDebug("sepIssueLicenseWorkflow: no task/status match: " + taskName + "/" + taskStatus);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-}catch(err){
-	logDebug("A JavaScript Error occurred: sepIssueLicenseWorkflow:  " + err.message);
-	logDebug(err.stack)
-}}
+    try{
+        //see if any records are set up--module can be specific or "ALL", look for both
+        var sepScriptConfig = aa.cap.getCapIDsByAppSpecificInfoField("Module Name", appTypeArray[0]);
+        if(sepScriptConfig.getSuccess()){
+            var sepScriptConfigArr = sepScriptConfig.getOutput();
+            if(sepScriptConfigArr.length<1){
+                var sepScriptConfig = aa.cap.getCapIDsByAppSpecificInfoField("Module Name", "ALL");
+                if(sepScriptConfig.getSuccess()){
+                    var sepScriptConfigArr = sepScriptConfig.getOutput();
+                }
+            }
+            if(sepScriptConfigArr.length>0){
+                for(sep in sepScriptConfigArr){
+                    var cfgCapId = sepScriptConfigArr[sep].getCapID();
+                    var sepRules = loadASITable("LICENSE ISSUANCE - ON WORKFLOW",cfgCapId);
+                    if(sepRules.length>0){
+                        for(row in sepRules){
+                            if(sepRules[row]["Active"]=="Yes"){
+                                var taskName = ""+sepRules[row]["Task Name"];
+                                var taskStatus = ""+sepRules[row]["Task Status"];
+                                if(!matches(taskName,"",null,"undefined" || wfTask==taskName) && wfStatus==taskStatus){
+                                    var appMatch = true;
+                                    var recdType = ""+sepRules[row]["Record Type"];
+                                    var recdTypeArr = "" + recdType;
+                                    var arrAppType = recdTypeArr.split("/");
+                                    if (arrAppType.length != 4){
+                                        logDebug("The record type is incorrectly formatted: " + recdType);
+                                        return false;
+                                    }else{
+                                        for (xx in arrAppType){
+                                            if (!arrAppType[xx].equals(appTypeArray[xx]) && !arrAppType[xx].equals("*")){
+                                                appMatch = false;
+                                            }
+                                        }
+                                    }
+                                    if (appMatch){
+                                        var addtlQuery = ""+sepRules[row]["Additional Query"];
+                                        var chkFilter = ""+addtlQuery;
+                                        if (chkFilter.length==0 ||eval(chkFilter) ) {
+                                        logDebug("eval(chkFilter): " + eval(chkFilter));
+                                            if(!matches(sepRules[row]["Parent Record Type"], "",null,"undefined")){
+                                                var arrParRec = ""+sepRules[row]["Parent Record Type"];
+                                                var arrParRec = arrParRec.split("/");
+                                                if(arrParRec.length!=4){
+                                                    logDebug("Parent ID not correctly formatted: " + sepRules[row]["Parent Record Type"]);
+                                                    return false;
+                                                }else{
+                                                    var parCapId = false;
+                                                    var appCreateResult = aa.cap.createApp(arrParRec[0], arrParRec[1], arrParRec[2], arrParRec[3],capName);
+                                                    logDebug("creating cap " +arrParRec);
+                                                    if (appCreateResult.getSuccess()){
+                                                        var newId = appCreateResult.getOutput();
+                                                        logDebug("cap " + arrParRec + " created successfully ");
+                                                        // create Detail Record
+                                                        capModel = aa.cap.newCapScriptModel().getOutput();
+                                                        capDetailModel = capModel.getCapModel().getCapDetailModel();
+                                                        capDetailModel.setCapID(newId);
+                                                        aa.cap.createCapDetail(capDetailModel);
+                                                        var newObj = aa.cap.getCap(newId).getOutput();	//Cap object
+                                                        var result = aa.cap.createAppHierarchy(newId, capId); 
+                                                        if (result.getSuccess()){
+                                                            logDebug("Parent application successfully linked");
+                                                            parCapId = newId;
+                                                        }else{
+                                                            logDebug("Could not link applications");
+                                                        }
+                                                    }else{
+                                                        logDebug( "**ERROR: adding parent App: " + appCreateResult.getErrorMessage());
+                                                    }											}
+                                                if(parCapId){
+                                                    var newLPType = ""+sepRules[row]["Create LP Type"];
+                                                    if(!matches(newLPType, "",null,"undefined")){
+                                                        var newLPContact = getContactObj(capId,"Applicant");
+                                                        if(newLPContact){
+                                                            var lpCreated = newLPContact.createRefLicProf(null,newLPType,null,null);
+                                                        }
+                                                    }
+                                                    if(!matches(""+sepRules[row]["Expiration - Year(s)"],"",null,"undefined")){
+                                                        var expDateYear = sysDate.getYear()+parseInt(sepRules[row]["Expiration - Year(s)"]);
+                                                        var expDate = dateFormatted(sysDate.getMonth(), sysDate.getDayOfMonth(), expDateYear, "MM/DD/YYYY");
+                                                        expDate = dateAdd(expDate,1);
+                                                    }else{
+                                                        if(!matches(""+sepRules[row]["Expiration - Month(s)"],"",null,"undefined")){
+                                                            var expDate =  dateAddMonths(sysDate,sepRules[row]["Expiration - Month(s)"]);
+                                                        }else{
+                                                            if(!matches(""+sepRules[row]["Expiration - MM/DD"],"",null,"undefined")){
+                                                                var expDate =  dateAddMonths(sysDate,sepRules[row]["Expiration - Month(s)"]);
+                                                            }else{
+                                                                logDebug("No expiration date listed. Defaulting to one year.");
+                                                                var expDateYear = sysDate.getYear()+1;
+                                                                var expDate = dateFormatted(sysDate.getMonth(), sysDate.getDayOfMonth(), expDateYear, "MM/DD/YYYY");
+                                                            }
+                                                        }
+                                                    }
+                                                    if(matches(""+sepRules[row]["New App Status"],"",null,"undefined")){
+                                                        var newAppStatus = "Active";
+                                                    }else{
+                                                        var newAppStatus = ""+sepRules[row]["New App Status"];
+                                                    }
+
+                                                    var assignToNewRecord = "" + getAssignedToRecord();
+                                                    var currCapId = capId;
+                                                    capId = parCapId;
+                                                    licEditExpInfo(newAppStatus, expDate);
+                                                    updateAppStatus(newAppStatus, "Updated via sepIssueLicenseWorkflow.");
+
+                                                    assignCap(assignToNewRecord);
+
+                                                    capId = currCapId;
+                                                    if(""+sepRules[row]["Copy Custom Fields/Lists"]=="ALL"){
+                                                        copyAppSpecific(parCapId);
+                                                        copyASITables(capId, parCapId);
+                                                        logDebug("Copied all ASI/T.");
+                                                    }else{
+                                                        if(!matches(""+sepRules[row]["Copy Custom Fields/Lists"],"",null,"undefined")){
+                                                            var copyList = ""+sepRules[row]["Copy Custom Fields/Lists"];
+                                                            var arrCopy = [];
+                                                            if(copyList.indexOf("|")>-1){
+                                                                arrCopy = copyList.split("|");
+                                                            }else{
+                                                                arrCopy.push(copyList);
+                                                            }
+                                                            copyAppSpecificInclude(parCapId,arrCopy);
+                                                            copyASITablesInclude(capId, parCapId,arrCopy);
+                                                        }
+                                                    }
+                                                    if(!matches(""+sepRules[row]["Copy Contacts"],"",null,"undefined")){
+                                                        var strContacts = ""+sepRules[row]["Copy Contacts"];
+                                                        if(strContacts.toUpperCase()=="ALL"){
+                                                            copyContacts(capId, parCapId);
+                                                        }else{
+                                                            if(strContacts.indexOf("|")>-1){
+                                                                var arrContacts = strContacts.split("|");
+                                                            }else{
+                                                                var arrContacts =[];
+                                                                arrContacts.push(strContacts);
+                                                            }
+                                                            for(c in arrContacts){
+                                                                copyContactsByType(capId, parCapId, arrContacts[c]);
+                                                            }
+                                                        }
+                                                    }
+                                                    if(""+sepRules[row]["Copy Examination"]=="Yes"){
+                                                        aa.examination.copyExaminationList(capId, parCapId);
+                                                    }
+                                                    if(""+sepRules[row]["Copy Education"]=="Yes"){
+                                                        aa.education.copyEducationList(capId, parCapId);
+                                                    }
+                                                    if(""+sepRules[row]["Copy Continuing Education"]=="Yes"){
+                                                        aa.continuingEducation.copyContEducationList(capId, parCapId);
+                                                    }
+                                                    var notName = "" + sepRules[row]["Notification Name"];
+                                                    if(!matches(notName, "","undefined",null)){
+                                                        var cntType = ""+sepRules[row]["Contacts Receiving Notice"];
+                                                        if(cntType.indexOf(",")>-1){
+                                                            var arrType = cntType.split(",");
+                                                            for(con in arrType){
+                                                                var priContact = getContactObj(capId,arrType[con]);
+                                                                sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
+                                                            }
+                                                        }else{
+                                                            if(cntType.toUpperCase()=="ALL"){
+                                                                var arrType = getContactObjs(capId);
+                                                                for(con in arrType){
+                                                                    var priContact = getContactObj(capId,arrType[con]);
+                                                                    sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
+                                                                }
+                                                            }else{
+                                                                var priContact = getContactObj(capId,cntType);
+                                                                sepProcessContactsForNotif(priContact, notName, rName, sysFromEmail);
+                                                            }						
+                                                        }						
+                                                    }else{
+                                                        logDebug("No notification name. No email sent.");
+                                                    }
+                                                }
+                                            }
+                                        }else{
+                                            logDebug("sepIssueLicenseWorkflow: Check filter resolved to false: " + chkFilter);
+                                        }
+                                    }else{
+                                        logDebug("sepIssueLicenseWorkflow: No app match: " + recdTypeArr);
+                                    }
+                                }else{
+                                    logDebug("sepIssueLicenseWorkflow: no task/status match: " + taskName + "/" + taskStatus);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }catch(err){
+        logDebug("A JavaScript Error occurred: sepIssueLicenseWorkflow:  " + err.message);
+        logDebug(err.stack)
+    }}
 
 //copy of copyAppSpecific and copyASITables except optional param is include not ignore
 function copyAppSpecificInclude(newCap) // copy all App Specific info into new Cap, 1 optional parameter for ignoreArr
