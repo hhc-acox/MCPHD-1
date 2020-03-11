@@ -17,7 +17,7 @@ function HHC_getMyTeamLeadersUserID(username)
 								var p = peo[x];
 								var q = (p.getServiceProviderCode() + "/" + p.getAgencyCode() + "/" + p.getBureauCode() + "/" + p.getDivisionCode() + "/" + p.getSectionCode() + "/" + p.getGroupCode() + "/" + p.getOfficeCode());
 									if (q == n){
-									return(p.getGaUserID());
+									return(p.getUserID());
 						}
 					}		
 				}
