@@ -21,7 +21,7 @@ if (asitRes.getSuccess()) {
 	}
 
 	for (k in newArr) {
-		if (!newArr[k][calcInd] || newArr[k][calcInd] == '') {
+		
 			var isDuplicate = "";
 			
 			for (var j = 0; j < k; j++) {
@@ -40,10 +40,16 @@ if (asitRes.getSuccess()) {
 				var retrievedDate = new Date(retrievedSpl[2], retrievedSpl[0], retrievedSpl[1]);
 
 				var diffDays = Math.round(Math.abs((retrievedDate - placedDate) / oneDay));
+
+                                if (!placed){
+                                    diffDays = "";
+                                }
 				newArr[k][calcInd] = diffDays.toString();
 
 			}
-		}
+                        else {
+                            newArr[k][calcInd] = "0";
+                        }
 		var rowVals = new Array();
 		rowVals["Sample ID Number"] = new asiTableValObj("Sample ID Number", newArr[k][0], "N");
 		rowVals["Room Use"] = new asiTableValObj("Room Use", newArr[k][1], "N");
