@@ -1,8 +1,13 @@
-	if (matches(appTypeArray[2], "File Search", "Lift Station", "Archive") || appMatch("EnvHealth/WQ/Body Art/Application") || appMatch("EnvHealth/WQ/Pump/NA") || appMatch("EnvHealth/WQ/OWTS/NA") || appMatch("EnvHealth/WQ/Well/NA")) {
-		newAppName = "";
-		if (AInfo["Profile Name"]) {
-			newAppName += AInfo["Profile Name"];
-		}
+	if (matches(appTypeArray[2], "File Search", "Lift Station", "Archive") || appMatch("EnvHealth/WQ/Body Art/Application") || appMatch("EnvHealth/WQ/Pool/Facility") || appMatch("EnvHealth/WQ/Pump/NA") || appMatch("EnvHealth/WQ/OWTS/NA") || appMatch("EnvHealth/WQ/Well/NA")) {
+        newAppName = "";
+        
+        if (matches(appTypeArray[3], 'Facility')) {
+            newAppName += AInfo["Facility Name"];
+        } else {
+            if (AInfo["Profile Name"]) {
+                newAppName += AInfo["Profile Name"];
+            }
+        }
 		
 		var capAddrResult = aa.address.getAddressByCapId(capId);
 		var addressToUse = null;
@@ -41,7 +46,7 @@
 	}
 
 	
-	if (appMatch("EnvHealth/WQ/Childcare/Application") || appMatch("EnvHealth/WQ/Pool/Construction Permit") ) {
+	if (appMatch("EnvHealth/WQ/Childcare/Application")) {
 		newAppName = "";
 		if (AInfo["Profile Name"]) {
 			newAppName += AInfo["Profile Name"];
@@ -50,26 +55,43 @@
 		
 	}
 	
-	if (appMatch("EnvHealth/WQ/Pool/Application")  ) {
+	if (appMatch("EnvHealth/WQ/Pool/Application")  || appMatch("EnvHealth/WQ/Pool/Construction Permit")) {
 		newAppName = "";
 		if (AInfo["Facility Name"]) {
 			newAppName += AInfo["Facility Name"];
-			editAppName(newAppName);
-		}
-		
+		} else if (AInfo["Profile Name"]){
+            newAppName += AInfo["Profile Name"];
+        }
+        
+        if (AInfo["Pool Location"]){
+            newAppName += ' - ' + AInfo["Pool Location"];
+        }
+
+        if (AInfo["Pool Type"]){
+            newAppName += ' - ' + AInfo["Pool Type"];
+        }
+
+        if (AInfo["Description"]){
+            newAppName += ' - ' + AInfo["Description"];
+        }
+
+		editAppName(newAppName);
 	}
 
-if (appMatch("EnvHealth/WQ/Pump/NA") || appMatch("EnvHealth/WQ/Well/NA") || appMatch("EnvHealth/WQ/OWTS/NA")){
+if (appTypeString == "EnvHealth/WQ/Pump/NA" || appTypeString == "EnvHealth/WQ/Well/NA" || appTypeString == "EnvHealth/WQ/OWTS/NA"){
 		var assignedToRecordInspector = getAssignedToRecord();
 		var supportStaff = hhcgetUserByDiscipline('WQBodyArtChildCareSupp');
 		updateTask('Intake','Pending','Updated by script');
 		assignTask('Intake', supportStaff);
-	} else if (appMatch("EnvHealth/WQ/*/Application") || appMatch("EnvHealth/WQ/Pool/Construction Permit")) {
-		var assignedToRecordInspector = getAssignedToRecord();
+	} 
+
+if (appTypeString  == "EnvHealth/WQ/Pool/Application" || appTypeString == "EnvHealth/WQ/Pool/Construction Permit") {
+		var assignedToRecordInspector = hhcgetUserByDiscipline('WQPoolsSupp');
 		updateTask('Application Review','Pending','Updated by script');
 		assignTask('Application Review', assignedToRecordInspector);
-	}
+        removeAllFees(capId);
+}
 
-if (appMatch("EnvHealth/WQ/Pool/Construction Permit")) {
+if (appTypeString == "EnvHealth/WQ/Pool/Construction Permit") {
 	updateFee('WQP001','WQ_POOL','FINAL',1,'Y');
 }
