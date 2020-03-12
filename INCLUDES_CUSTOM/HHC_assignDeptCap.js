@@ -22,7 +22,7 @@ function HHC_assignDeptCap(Department) // optional CapId
 				var p = m.getDeptName();
 
 					if (p == Department){
-							cd.setAsgnDept(Department);	
+							cd.setAsgnDept(m);	
 							cdWrite = aa.cap.editCapDetail(cd);
 					}
 				}
