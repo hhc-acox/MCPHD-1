@@ -1,4 +1,5 @@
-
+showDebug = true;
+showMessage = true;
 //stop progress if any of the required documents are missing
 try{
 	var reqDocs = sepGetReqdDocs();
