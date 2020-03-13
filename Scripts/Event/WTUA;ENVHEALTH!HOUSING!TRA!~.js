@@ -48,7 +48,7 @@ if (wfTask == 'Additional Processing' && matches(wfStatus,'Reinspection', 'Compl
 	scheduleInspectDate('Reinspection', getTSIfieldValue('Reinspection Date', 'Additional Processing'),assignedEHS);
 	}
 
-if (wfTask == 'Additional Processing' && matches(wfStatus,'Reinspection', 'Complete Reinspection Letter', 'Complete Ticket', 'Complete Add Vio Reinspection Ltr') && getTSIfieldValue('Reinspection Date', 'Additional Processing') == null) {
+if (wfTask == 'Additional Processing' && matches(wfStatus,'Reinspection', 'Complete Reinspection Letter', 'Complete Add Vio Reinspection Ltr') && getTSIfieldValue('Reinspection Date', 'Additional Processing') == null) {
 	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,13)),assignedEHS);
 	editTaskSpecific('Additional Processing','Reinspection Date',nextWorkDay(dateAdd(null,13)));
 	}
