@@ -9,3 +9,9 @@ if(wfStatus == 'Approved' && wfTask == 'Application Review') {
 	updateTask('Permit Issuance', 'Pending', 'Updated by script', 'Pending');
 	assignTask('Permit Issuance', assignToUser);
 }
+
+if(wfStatus == 'Approved' && wfTask == 'Inspection' && appMatch('EnvHealth/WQ/Pool/Construction Permit')) {
+	var assignToUser = hhcgetUserByDiscipline('WQPoolsSupp');
+	updateTask('Final Permit Creation', 'Pending', 'Updated by script', 'Pending');
+	assignTask('Final Permit Creation', assignToUser);
+}
