@@ -129,8 +129,8 @@ if (matches(appTypeArray[2],'Lift Station')) {
     }
     
     //Farmers Market Vendor
-if (matches(appTypeArray[2],'FarmersMarketEvent')) {
-	HHC_assignDeptCap('Food and Consumer Safety Team C Support');
+if (appMatch('EnvHealth/Food/FarmersMarketVendor/Application') || appMatch('EnvHealth/Food/Complaint/NA')) {
+	HHC_assignDeptCap("Food and Consumer Safety Team C Support");
 	}
 
 //Lift Station
