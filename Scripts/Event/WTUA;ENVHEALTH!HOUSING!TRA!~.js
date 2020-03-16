@@ -167,7 +167,9 @@ if (wfTask == 'Additional Processing' && wfStatus == 'Court Case') {
 	deactivateTask('Additional Processing');
 	}
 
+    /*
 if (wfTask == 'Ticket' && (wfStatus == 'Paid' || wfStatus == 'Voided')) {
 	activateTask('Final Processing');
 	deactivateTask('Additional Processing');
-	}
+    }
+    */
