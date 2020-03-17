@@ -11,7 +11,7 @@ try{
                 var saveID = capId;
                 capId = TRARec;
 
-                if(((wfTask=="Final Processing" && (wfStatus=="Finaled" || wfStatus=="Paid")) || (wfTask=="Evaluation" && wfStatus=="No Work Assignment")) && TRARec){
+                if(((wfTask=="Final Processing" && wfStatus=="Finaled") || (wfTask=="Evaluation" && wfStatus=="No Work Assignment")) && TRARec){
                     logDebug("Trying to close RCP on TRA");
                     closeTask("Request EHSM Clean", "EHSM Cleaned", "Updated by Script", "EHSM Cleaned");
                 }
