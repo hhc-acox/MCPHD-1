@@ -953,7 +953,7 @@ function sepIssueLicenseWorkflow(){
                                                     updateAppStatus(newAppStatus, "Updated via sepIssueLicenseWorkflow.");
 
                                                     assignCap(assignToNewRecord);
-
+						    scheduleInspectDate('Initial',nextWorkDay(),assignToNewRecord);
                                                     capId = currCapId;
                                                     if(""+sepRules[row]["Copy Custom Fields/Lists"]=="ALL"){
                                                         copyAppSpecific(parCapId);
