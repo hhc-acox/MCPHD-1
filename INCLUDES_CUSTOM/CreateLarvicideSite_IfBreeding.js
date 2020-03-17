@@ -52,12 +52,33 @@ function CreateLarvicideSite_IfBreeding(capId){
                         tmpZone = String(parseInt(tmpZone, 10)); //strip the zeros
                     }
                     zone4cap = tmpZone;
-                    zone4cap = zeroPad(zone4cap, 2);
+                    //zone4cap = zeroPad(zone4cap, 2);
                 }
 
-                var capStringArr = String(capIDString).split("-");
-                if (capStringArr.length == 2) {
-                    var newId = capStringArr[0] + "-" + zone4cap + "-" + capStringArr[1];
+                var vc_conn = new db();
+                var vc_sql = "SELECT SUBSTR(b.B1_ALT_ID, INSTR(b.B1_ALT_ID, '-' ,-1, 1) + 1) as B1_ALT_ID " +
+                    "FROM B1PERMIT b " + 
+                    "WHERE b.B1_ALT_ID like 'LVC-" + zone4cap + "-%' AND b.SERV_PROV_CODE = 'MCPHD'" + 
+                    "ORDER BY TO_NUMBER(SUBSTR(b.B1_ALT_ID, INSTR(b.B1_ALT_ID, '-' ,-1, 1) + 1)) DESC";
+                var ds = vc_conn.dbDataSet(vc_sql, 100);
+                var dsCapIdString = "0";
+                
+                if (ds[0]) {
+                    dsCapIdString = ds[0]["B1_ALT_ID"];
+                    logDebug('Using db-based naming: ' + dsCapIdString);
+                } 
+                var dsNewId = "0";
+
+                if (dsCapIdString) {
+                    logDebug('Highest Seq: ' + parseInt(dsCapIdString));
+                    dsNewId = parseInt(dsCapIdString) + 1;
+
+                    if (dsNewId < 9) {
+                        dsNewId = '0' + dsNewId;
+                    }
+                }
+                if (dsNewId) {
+                    var newId = "LVC-" + zone4cap + "-" + dsNewId;
                     logDebug("New ID " + newId);
                     aa.cap.updateCapAltID(capId, newId);
                 }
