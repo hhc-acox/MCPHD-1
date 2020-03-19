@@ -56,6 +56,7 @@ function CreateLarvicideSite_IfBreeding(capId){
                 }
 
                 var vc_conn = new db();
+
                 var vc_sql = "SELECT SUBSTR(b.B1_ALT_ID, INSTR(b.B1_ALT_ID, '-' ,-1, 1) + 1) as B1_ALT_ID " +
                     "FROM B1PERMIT b " + 
                     "WHERE b.B1_ALT_ID like 'LVC-" + zone4cap + "-%' AND b.SERV_PROV_CODE = 'MCPHD'" + 
@@ -73,12 +74,15 @@ function CreateLarvicideSite_IfBreeding(capId){
                     logDebug('Highest Seq: ' + parseInt(dsCapIdString));
                     dsNewId = parseInt(dsCapIdString) + 1;
 
+
                     if (dsNewId < 9) {
                         dsNewId = '0' + dsNewId;
                     }
                 }
+
                 if (dsNewId) {
                     var newId = "LVC-" + zone4cap + "-" + dsNewId;
+
                     logDebug("New ID " + newId);
                     aa.cap.updateCapAltID(capId, newId);
                 }
