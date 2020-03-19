@@ -39,7 +39,8 @@ function HHC_CREATE_CRT_CASES() {
                 elementArray = new Array();
                 code10or19 = AInfo['Ordinance Chapter'];
                 updateAppStatus('Legal Review', 'Initial Status', newChildID);
-                assignCap('CSANDERS', newChildID);
+                var crtAssignTo = hhcgetUserByDiscipline('CRTAssignments');
+                assignCap(crtAssignTo, newChildID);
                 editAppSpecific('Parent Case', capIDString, newChildID);
                 ccnt++;
                 comment('ccnt = ' + ccnt);
@@ -136,6 +137,25 @@ function HHC_CREATE_CRT_CASES() {
                     }
                 }
 
+                var tItem = aa.workflow.getTask(newChildID, 'Legal Review');
+
+                if (tItem.getSuccess()) {
+                    logDebug('Found Legal Review Task');
+
+                    var tItemUser = aa.person.getUser(crtAssignTo);
+
+                    if(tItemUser.getSuccess()){
+                        var tItemUserObj = tItemUser.getOutput();
+                        tItemOut = tItem.getOutput();
+                        tItemOut.setAssignedUser(tItemUserObj);
+                        tItemOut.setDispositionNote('EHS: ' + currentUserID);
+                        var taskItemToSave = tItemOut.getTaskItem();
+                        var assignResult = aa.workflow.assignTask(taskItemToSave);
+                        var adjustResult = aa.workflow.adjustTaskWithNoAudit(taskItemToSave);
+                    }
+                }
+                //assignTask('Legal Review', crtAssignTo);
+                //updateTask('Legal Review', 'In Progress', 'Updated by Script', 'EHS: ' + currentUserID, null, newChildID);
                 capId = saveID;
                 comment("the saved capId is " + saveID);
 
