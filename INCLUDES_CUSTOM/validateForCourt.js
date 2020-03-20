@@ -21,24 +21,28 @@ function validateForCourt() {
 				useThisContact = conArray[0];
 			}
 			conPeop = useThisContact.getPeople();
-			if (!conPeop.getContactTypeFlag() || conPeop.getContactTypeFlag() == "" || conPeop.getContactTypeFlag() == "individual") {
-				// check fields for individual
-				if (!conPeop.getLastName() || conPeop.getLastName() == "" ) {
-					errMess += "Individual contact must have last name";
-					localCancel = true;
-				}
-				if (!conPeop.getFirstName() || conPeop.getFirstName() == "" ) {
-					errMess += "Individual contact must have first name";
-					localCancel = true;
-				}
-			}
-			else {
-				//check fields for organization
-				if (!conPeop.getBusinessName() || conPeop.getBusinessName() == "") {
-					errMess += "Business contact must have business name";
-					localCancel = true;
-				}
-			}
+            // check fields for individual
+            var individualValid = true;
+            var businessValid = true;
+
+            if ((!conPeop.getFirstName() || conPeop.getFirstName() == "") || (!conPeop.getLastName() || conPeop.getLastName() == "" )) {
+                logDebug('Individual Invalid');
+                individualValid = false;
+                //localCancel = true;
+            }
+            //check fields for organization
+            if (!conPeop.getBusinessName() || conPeop.getBusinessName() == "") {
+                logDebug('Business Invalid');
+                //errMess += "Business contact must have business name";
+                businessValid = false;
+                //localCancel = true;
+            }
+
+            if (!individualValid && !businessValid) {
+                logDebug('Individual contact must have first and last name or a business name');
+                errMess += "Individual contact must have first and last name or a business name";
+                localCancel = true;
+            }
 			// check fields for both types
 			cAddr = conPeop.getCompactAddress();
 			if (!cAddr.getCity() || cAddr.getCity() == "" ) {
@@ -85,4 +89,3 @@ function validateForCourt() {
 		comment(errMess);
 	}
 }
-
