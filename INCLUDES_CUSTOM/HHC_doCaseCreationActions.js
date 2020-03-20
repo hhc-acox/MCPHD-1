@@ -70,7 +70,9 @@ function HHC_doCaseCreationActions(){
 									else if (zone && zone != "undefined" && zone != null && LayerName == 'WellsPumpsOWTS')
 										RecordAssignedTo = lookup('GIS - WellsPumpsOWTS EHS',zone); 
 									else if (zone && zone != "undefined" && zone != null && LayerName == 'EHSMQuadrantDistrict')
-										RecordAssignedTo = lookup('GIS - EHSM Inspector',zone); 
+                                        RecordAssignedTo = lookup('GIS - EHSM Inspector',zone); 
+                                    else if (zone && zone != "undefined" && zone != null && LayerName == 'Radon')
+										RecordAssignedTo = lookup('GIS - Radon',zone); 
 									else
 										RecordAssignedTo = null;
 									break;	
@@ -97,7 +99,7 @@ function HHC_doCaseCreationActions(){
                                     if(complaintType != AInfo["Complaint Type"] && complaintType) {
                                         appMatch = false;
                                     }
-
+                                    
                                     // facility types
                                     if(ResidentialOrCommercial != AInfo["Facility Type"] && ResidentialOrCommercial) {
                                         appMatch = false;
