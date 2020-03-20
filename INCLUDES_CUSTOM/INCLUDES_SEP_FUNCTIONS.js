@@ -904,8 +904,14 @@ function sepIssueLicenseWorkflow(){
                                                         capDetailModel = capModel.getCapModel().getCapDetailModel();
                                                         capDetailModel.setCapID(newId);
                                                         aa.cap.createCapDetail(capDetailModel);
-                                                        var newObj = aa.cap.getCap(newId).getOutput();	//Cap object
-                                                        var result = aa.cap.createAppHierarchy(newId, capId); 
+														var newObj = aa.cap.getCap(newId).getOutput();	//Cap object
+														
+														var result = "";
+														if (appTypeString == 'EnvHealth/WQ/Pool/Application') {
+															result = aa.cap.createAppHierarchy(capId, newId);
+														} else {
+															result = aa.cap.createAppHierarchy(newId, capId);
+														}
                                                         if (result.getSuccess()){
                                                             logDebug("Parent application successfully linked");
                                                             parCapId = newId;
@@ -1041,8 +1047,8 @@ function sepIssueLicenseWorkflow(){
     }catch(err){
         logDebug("A JavaScript Error occurred: sepIssueLicenseWorkflow:  " + err.message);
         logDebug(err.stack)
-    }}
-
+	}
+}
 //copy of copyAppSpecific and copyASITables except optional param is include not ignore
 function copyAppSpecificInclude(newCap) // copy all App Specific info into new Cap, 1 optional parameter for ignoreArr
 {
