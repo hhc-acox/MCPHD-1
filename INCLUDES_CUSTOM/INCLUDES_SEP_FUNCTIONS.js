@@ -908,7 +908,17 @@ function sepIssueLicenseWorkflow(){
 														
 														var result = "";
 														if (appTypeString == 'EnvHealth/WQ/Pool/Application') {
-															result = aa.cap.createAppHierarchy(capId, newId);
+															var currParId = getParent();
+
+															if (currParId) {
+																// remove heirarchy between facility and app
+																removeResult = aa.cap.removeAppHierarchy(currParId, capId);
+																// set license as child of facility
+																addLicResult = aa.cap.createAppHierarchy(currParId, newId);
+																
+															}
+															// set application as child of license
+															result = aa.cap.createAppHierarchy(newId, capId);
 														} else {
 															result = aa.cap.createAppHierarchy(newId, capId);
 														}
