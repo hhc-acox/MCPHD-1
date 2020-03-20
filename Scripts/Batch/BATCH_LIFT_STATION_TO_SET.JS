@@ -157,7 +157,7 @@ function mainProcess() {
             }}*/
 
             var st = String(taskStatus("Site Status"));
-            if (matches(String(capStatus).toUpperCase(), "CLOSED", "INACTIVE")) {
+            if (matches(String(capStatus).toUpperCase(), "CASE CLOSED", "INACTIVE")) {
                 capFilterStatus++;
                 continue;
             }
