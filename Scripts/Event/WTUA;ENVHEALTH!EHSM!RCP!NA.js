@@ -4,6 +4,11 @@ if(wfTask == 'Case Intake' && wfStatus == 'Accepted') {
     scheduleInspectDate('Evaluate',nextWorkDay(dateAdd(null,0)),assignTo);
 }
 
+if (wfTask == 'Billing' && wfStatus == 'Complete Billing Letter' && balanceDue > 0) {
+    activateTask('Final Processing');
+    updateAppStatus('Close Fees Outstanding','Close Fees Outstanding');
+}
+
 try{
                 var TRARec = getParent();
 
@@ -11,7 +16,7 @@ try{
                 var saveID = capId;
                 capId = TRARec;
 
-                if(((wfTask=="Final Processing" && wfStatus=="Finaled") || (wfTask=="Evaluation" && wfStatus=="No Work Assignment")) && TRARec){
+                if(((wfTask=="Final Processing" && wfStatus=="Finaled") || (wfTask=="Evaluation" && wfStatus=="No Work Assignment") || (wfTask == 'Billing' && wfStatus == 'Complete Billing Letter')) && TRARec){
                     logDebug("Trying to close RCP on TRA");
                     closeTask("Request EHSM Clean", "EHSM Cleaned", "Updated by Script", "EHSM Cleaned");
                 }
