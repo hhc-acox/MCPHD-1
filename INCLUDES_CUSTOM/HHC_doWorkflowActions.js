@@ -189,17 +189,34 @@ function HHC_doWorkflowActions() {
                                             if (matches(InspAssignedTo, 'Supervisor of Person Assigned to Record', 'Current Inspector', 'Person Assigned to the Record', 'Supervisor of Current Inspector')) {
 
                                                 if (DaysToScheduleInTheFuture > 0) {
+                                                    if (appTypeString.indexOf('Food') > -1) {
+                                                        scheduleFoodInspectionsByDate(InspTypeToSchedule, nextWorkDay(dateAdd(null, DaysToScheduleInTheFuture)), assignedInspector, capId)
+                                                    } else {
+
+                                                    }
                                                     scheduleInspectDate(InspTypeToSchedule, nextWorkDay(dateAdd(null, DaysToScheduleInTheFuture)), assignedInspector); //schedule inspection using #ofDays field
                                                 } else {
-                                                    scheduleInspectDate(InspTypeToSchedule, nextWorkDay(dateAdd(null, 0)), assignedInspector); //schedule inspection for tomorrow
+                                                    if (appTypeString.indexOf('Food') > -1) {
+                                                        scheduleFoodInspectionsByDate(InspTypeToSchedule, nextWorkDay(dateAdd(null, 0)), assignedInspector, capId)
+                                                    } else {
+                                                        scheduleInspectDate(InspTypeToSchedule, nextWorkDay(dateAdd(null, 0)), assignedInspector); //schedule inspection for tomorrow
+                                                    }
                                                 }
                                             }
                                             if (matches(InspAssignedTo, 'Current Department', 'Support Staff')) {
 
                                                 if (DaysToScheduleInTheFuture > 0) {
-                                                    scheduleInspectDate(InspTypeToSchedule, nextWorkDay(dateAdd(null, DaysToScheduleInTheFuture)), null); //schedule inspection using #ofDays field
+                                                    if (appTypeString.indexOf('Food') > -1) {
+                                                        scheduleFoodInspectionsByDate(InspTypeToSchedule, nextWorkDay(dateAdd(null, DaysToScheduleInTheFuture)), null, capId)
+                                                    } else {
+                                                        scheduleInspectDate(InspTypeToSchedule, nextWorkDay(dateAdd(null, DaysToScheduleInTheFuture)), null); //schedule inspection using #ofDays field
+                                                    }
                                                 } else {
-                                                    scheduleInspectDate(InspTypeToSchedule, nextWorkDay(dateAdd(null, 0)), null); //schedule inspection for tomorrow
+                                                    if (appTypeString.indexOf('Food') > -1) {
+                                                        scheduleFoodInspectionsByDate(InspTypeToSchedule, nextWorkDay(dateAdd(null, 0)), null, capId)
+                                                    } else {
+                                                        scheduleInspectDate(InspTypeToSchedule, nextWorkDay(dateAdd(null, 0)), null); //schedule inspection for tomorrow
+                                                    }
                                                 }
                                                 assignInspection(inspId, assignedInspector); //Assignment when just the department is provided
                                             }
