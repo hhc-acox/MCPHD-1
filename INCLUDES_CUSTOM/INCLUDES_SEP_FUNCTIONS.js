@@ -969,7 +969,12 @@ function sepIssueLicenseWorkflow(){
                                                     updateAppStatus(newAppStatus, "Updated via sepIssueLicenseWorkflow.");
 
                                                     assignCap(assignToNewRecord);
-						    scheduleInspectDate('Initial',nextWorkDay(),assignToNewRecord);
+                                                    if (appTypeString.indexOf('Food') > -1) {
+                                                        scheduleFoodInspectionsByDate('Initial', nextWorkDay(), assignToNewRecord, capId)
+                                                    } else {
+                                                        scheduleInspectDate('Initial',nextWorkDay(),assignToNewRecord);
+                                                    }
+						                            
                                                     capId = currCapId;
                                                     if(""+sepRules[row]["Copy Custom Fields/Lists"]=="ALL"){
                                                         copyAppSpecific(parCapId);
