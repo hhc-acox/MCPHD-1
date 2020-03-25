@@ -228,8 +228,8 @@ function HHC_doWorkflowActions() {
                                         //comment("newTaskStatus.length>0 "+newTaskStatus.length);
                                         //comment('136 - workflowAssignment '+workflowAssignment);
                                         if (matches(wfTask, cTask) && matches(wfStatus, SubmittedTaskStatus) && New_Task.length > 0 && newTaskStatus.length > 0) {
-                                            updateTask(wfTask, wfStatus, 'Updated by script', wfStatus);
-                                            updateTask(New_Task, newTaskStatus, 'Updated by script', newTaskStatus);
+                                                updateTask(wfTask, wfStatus, 'Updated by script', wfStatus);
+                                                updateTask(New_Task, newTaskStatus, 'Updated by script', newTaskStatus);
                                             if (WorkflowAssignedTo.length > 0 && matches(WorkflowAssignedTo, 'Supervisor of Person Assigned to Record', 'Current Inspector', 'Person Assigned to the Record', 'Supervisor of Current Inspector')) {
                                                 //comment('142 - workflowAssignment '+workflowAssignment);
                                                 assignTask(New_Task, workflowAssignment);
@@ -249,6 +249,11 @@ function HHC_doWorkflowActions() {
                                         if (matches(wfTask, cTask) && matches(wfStatus, SubmittedTaskStatus) && New_Task == 'Permit Closed' && newTaskStatus == 'Closed') {
                                             closeTask('Permit Closed', 'Closed', 'Closed by Script', 'Closed by Script');
                                         }
+                                        if (prefix == 'IRSA') {
+                                            deactivateTask(wfTask);
+                                            activateTask(New_Task);
+                                        }
+                                        
                                         var customFunctions = "" + sepRules[row]["Custom_Functions"];
                                         var chkFilter = "" + customFunctions;
                                         comment("Custom Function b4: " + customFunctions);
