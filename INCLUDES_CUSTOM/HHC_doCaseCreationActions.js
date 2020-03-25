@@ -73,6 +73,8 @@ function HHC_doCaseCreationActions(){
                                         RecordAssignedTo = lookup('GIS - EHSM Inspector',zone); 
                                     else if (zone && zone != "undefined" && zone != null && LayerName == 'Radon')
 										RecordAssignedTo = lookup('GIS - Radon',zone); 
+                                    else if (zone && zone != "undefined" && zone != null && LayerName == 'RodentDistrict')
+										RecordAssignedTo = lookup('GIS - Rodent',zone); 
 									else
 										RecordAssignedTo = null;
 									break;	
@@ -148,4 +150,3 @@ function HHC_doCaseCreationActions(){
 		logDebug(err.stack)
 	}
 	}
-	
