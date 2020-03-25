@@ -228,6 +228,7 @@ function HHC_doInspectionActions(){
                                                 if(cInspType.length>0 && InspResultSubmitted.length>0 && workflowTask.length>0 && newWorkflowStatus.length>0){
                                                     if((cInspType == 'any' || cInspType.length>0) && (InspResultSubmitted == 'any' || InspResultSubmitted.length>0)){ 
                                                         updateTask(workflowTask,newWorkflowStatus,'Updated by script');
+                                                        invokeWTUA(workflowTask, newWorkflowStatus);
                                                     }
                                                     if(cInspType == inspType && InspResultSubmitted == inspResult) {
                                                         if(WorkflowAssignedTo.length>0 && matches(WorkflowAssignedTo,'Supervisor of Person Assigned to Record','Current Inspector','Person Assigned to the Record','Supervisor of Current Inspector')){
