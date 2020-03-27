@@ -20,6 +20,11 @@ if (inspType == 'Initial Lead Inspection' && inspResult == 'In Violation') {
     //Create Asthma Case
     if (getAppSpecific('ASP') == 'CHECKED') {
         areaInspector = hhcgetUserByDiscipline('HHCESMCAsthma');
+
+        if (!areaInspector) {
+            areaInspector = currentUserID;
+        }
+
         editAppSpecific('ASP Created', dateAdd(null, 0));
         updateAppStatus('Finaled', 'Child Case Created');
         branchTask('Create Case', 'Case Created', 'Action by Script', '');
@@ -42,6 +47,11 @@ if (inspType == 'Initial Lead Inspection' && inspResult == 'In Violation') {
     //Create CPS Case
     if (getAppSpecific('CPT') == 'CHECKED') {
         areaInspector = hhcgetUserByDiscipline('HHCESMCConsumerProductSafety');
+
+        if (!areaInspector) {
+            areaInspector = currentUserID;
+        }
+
         editAppSpecific('CPS Created', dateAdd(null, 0));
         updateAppStatus('Finaled', 'Child Case Created');
         branchTask('Create Case', 'Case Created', 'Action by Script', '');
@@ -72,6 +82,11 @@ if (inspType == 'Initial Lead Inspection' && inspResult == 'In Violation') {
         copyAppSpecific(newChildID);
         updateAppStatus('In Violation', 'Created from LINV', newChildID);
         copyOwner(capId, newChildID);
+
+        if (!areaInspector) {
+            areaInspector = currentUserID;
+        }
+
         assignCap(areaInspector, newChildID);
         editAppSpecific('INV Case', capIDString, newChildID);
         HHC_GET_ADDRESS_FOR_CHILD();
@@ -79,6 +94,11 @@ if (inspType == 'Initial Lead Inspection' && inspResult == 'In Violation') {
     //Create BBE Case
     if (getAppSpecific('BBE') == 'CHECKED') {
         areaInspector = hhcgetUserByDiscipline('HHCESMCBedBugs');
+
+        if (!areaInspector) {
+            areaInspector = currentUserID;
+        }
+
         editAppSpecific('BBE Created', dateAdd(null, 0));
         updateAppStatus('Finaled', 'Child Case Created');
         branchTask('Create Case', 'Case Created', 'Action by Script', '');
@@ -96,6 +116,11 @@ if (inspType == 'Initial Lead Inspection' && inspResult == 'In Violation') {
     //Create Senior Care Case
     if (getAppSpecific('SCM') == 'CHECKED') {
         areaInspector = hhcgetUserByDiscipline('HHCESMCSeniorCare');
+
+        if (!areaInspector) {
+            areaInspector = currentUserID;
+        }
+
         editAppSpecific('SCM Created', dateAdd(null, 0));
         updateAppStatus('Finaled', 'Child Case Created');
         branchTask('Create Case', 'Case Created', 'Action by Script', '');
@@ -118,6 +143,11 @@ if (inspType == 'Initial Lead Inspection' && inspResult == 'In Violation') {
     //Radon Case
     if (getAppSpecific('RAD') == 'CHECKED') {
         areaInspector = hhcgetUserByDiscipline('HHCESMCRadon');
+
+        if (!areaInspector) {
+            areaInspector = currentUserID;
+        }
+
         comment("The area Inspector for RAD is " + areaInspector);
         editAppSpecific('RAD Created', dateAdd(null, 0));
         updateAppStatus('Finaled', 'Child Case Created');
