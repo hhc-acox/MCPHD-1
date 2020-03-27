@@ -9,6 +9,10 @@ if (wfTask == 'Billing' && wfStatus == 'Complete Billing Letter' && balanceDue >
     updateAppStatus('Close Fees Outstanding','Close Fees Outstanding');
 }
 
+if (wfTask == 'Evaluation' && wfStatus == 'Court Order Needed') {
+    sendNotificationForEHSMCourtNeeded(currentUserID+"", wfComment);
+}
+
 try{
                 var TRARec = getParent();
 
