@@ -1,7 +1,7 @@
 function sendNotificationForSupervisorReviewWkfl(userId, tcomment, template, twfTask, twfStatus) {
 
     if (userId) {
-        var email = getEmailByUserID(supervisorId);
+        var email = getEmailByUserID(userId);
         logDebug('Email: ' + email);
 
         if (email.indexOf("@") > 0) {
