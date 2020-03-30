@@ -1,6 +1,6 @@
 function sendNotificationForSupervisorReviewInspection(userId, tcomment, template, inspectionId) {
     if (userId) {
-        var email = getEmailByUserID(supervisorId);
+        var email = getEmailByUserID(userId);
         logDebug('Email: ' + email);
 
         if (email.indexOf("@") > 0) {
@@ -20,7 +20,7 @@ function sendNotificationForSupervisorReviewInspection(userId, tcomment, templat
             eParams.put("$$CAPID1$$", tid1);	
             eParams.put("$$CAPID2$$", tid2);	
             eParams.put("$$CAPID3$$", tid3);
-            eParams.put("$$INSPECTIONID$$", inspectionId);	
+            eParams.put("$$INSPECTIONID$$", inspectionId+"");	
             eParams.put("$$WFCOMMENT$$", tcomment + "");
             
             sendNotification(
