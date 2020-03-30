@@ -3,7 +3,7 @@ showMessage = true;
 
 try{
 	addSupervisorReview(capId, "WORKFLOW", null, wfTask, wfStatus);
-        if(wfTask.indexOf('Supervisor Review') > -1 && wfStatus == 'Accepted') {
+        if(wfTask.indexOf('Supervisor Review') > -1) {
             logDebug('Continuing Supervisor Review');
             continueSupervisorReview(wfTask, wfNote);
         }
