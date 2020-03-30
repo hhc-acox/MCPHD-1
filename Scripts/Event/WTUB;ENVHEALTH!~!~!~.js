@@ -1,4 +1,4 @@
-if (doesTaskHaveActiveSupervisorReview(wfTask)) {
+if (doesRecordHaveActiveSupervisorReview()) {
 	showMessage = true;
 	comment("Supervisor Review in process");
 	cancel = true;
