@@ -100,6 +100,12 @@ if (wfTask == "Final Processing" && matches(wfStatus,"Complete Lead Clear Fail L
 	assignTask("Final Processing",AInfo["Assigned To"]);
 	}
 
+if (wfTask == "Reinspection" && (wfStatus == "Complete Lead Final Clr Ltr" || wfStatus == "Compliance - No Samples Taken")) {
+	closeTask(wfTask ,wfStatus,'Closed by Script',wfStatus);
+        activateTask('Final Processing');
+        assignTask("Final Processing",AInfo["Assigned To"]);
+	}
+
 if (wfTask == "Final Processing" && (wfStatus == "Permanent Injunction") && (matches(theDate,"",null,"undefined"))) {
 	scheduleInspectDate("Reinspection",nextWorkDay(dateAdd(null,179)),AInfo["Assigned To"]);
 	editTaskSpecific("Final Processing","Reinspection Date",nextWorkDay(dateAdd(null,179)));
@@ -113,5 +119,6 @@ if (wfTask == "Final Processing" && (wfStatus == "Permanent Injunction") && (mat
 if (wfTask == "Education Provided" && matches(wfStatus,"Complete Lead No Hzd Found Ltr")) {
 	assignTask("Education Provided",AInfo["Assigned To"]);
 	}
+
 
 useTaskSpecificGroupName = false; 
