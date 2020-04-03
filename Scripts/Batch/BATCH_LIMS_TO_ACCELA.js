@@ -283,8 +283,7 @@ function sendToLims(guidesheet, currentUser){
                 logDebug("**WARNING: no address for comparison:");
             } 
             var fullAddress = [ao.getHouseNumberStart(),ao.getStreetDirection(),ao.getStreetName(),ao.getStreetSuffix(),,ao.getCity(),,ao.getState(),ao.getZip()].filter(Boolean).join(" ");
-            var currUser = aa.person.getUser(currentUser).getOutput();
-            var inspFullString = ""+currUser;
+            var inspFullString = ""+currentUser;
             var firstPos = inspFullString.lastIndexOf("/")+1;
             var lastPos = inspFullString.length;
             var inspName = inspFullString.substr(firstPos,lastPos);
