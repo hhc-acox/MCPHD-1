@@ -3,9 +3,14 @@ showMessage = true;
 var resultDate = sysDate;
 var resultComment = 'Updated by Script';
 var inspStatus = 'Closed';
-if (matches(inspResult,'Technician Completed')) {
+if (matches(inspResult,'Technician Complete')) {
 	//assign to Mosquito Control Team Leader
 	var userID = hhcgetUserByDiscipline('VCMosquito');
+
+        if (isSupervisor(currentUserID)) {
+            logDebug('User is supervisor');
+            userID = currentUserID;
+        }
 	assignInspection(inspId, userID);
 }
 if (matches(inspResult,'Supervisor Reviewed')) {
