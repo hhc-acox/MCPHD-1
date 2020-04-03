@@ -15,12 +15,12 @@ if (matches(inspResult,'Lab Complete')) {
 	var techByZone = lookup("GIS - Larvicide Techs",aZone); 
 logDebug('Breeding: ' + myResult);
 logDebug('Sample: ' + sampleResult);
-	if(myResult=="Y" || myResult=="Yes")	{
+	if(myResult=="Y" || myResult == "Yes")	{
         scheduleInspectDate("Larvicide",nextWorkDay(dateAdd(inspResultDate,13)),techByZone);
         //aa.inspection.resultInspection(capId, inspId, inspStatus, resultDate, resultComment, currentUserID);
         updateAppStatus("Active");
     }
-    if(sampleResult=="Y" || sampleResult=="Yes"){
+    if(sampleResult=="Y" || sampleResult == "Yes"){
         var userID = hhcgetUserByDiscipline('VCBiology2'); // bio 2 if zone 9 or above
 
         var vcZone = aZone;
