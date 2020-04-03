@@ -4,9 +4,13 @@ var resultComment = 'Updated by Script';
 var inspStatus = 'Closed';
 showDebug = true; 
 showMessage = true; 
-if (matches(inspResult,'Technician Completed')) {
+if (matches(inspResult,'Technician Complete')) {
 	//assign to Mosquito Control Team Leader
 	var userID = hhcgetUserByDiscipline('VCMosquito');
+        if (isSupervisor(currentUserID)) {
+            logDebug('User is supervisor');
+            userID = currentUserID;
+        }
 	assignInspection(inspId, userID);
 }
 if (matches(inspResult,'Supervisor Reviewed')) {
@@ -20,10 +24,10 @@ if (matches(inspResult,'Lab Complete')) {
 	asiGroup = "VC_TIR_CKLST";
 	asiSubGroup = "INSPECTION INFORMATION";
 	HHC_CreateLarvicideSite_IfBreeding_OtherGS(gName,gItem,asiGroup,asiSubGroup);
-	aa.inspection.resultInspection(capId, inspId, inspStatus, resultDate, resultComment, currentUserID);
+	//aa.inspection.resultInspection(capId, inspId, inspStatus, resultDate, resultComment, currentUserID);
 	updateAppStatus("Closed");
 }
 if (matches(inspResult,'Unable to Inspect','No Access')) {
-	aa.inspection.resultInspection(capId, inspId, inspStatus, resultDate, resultComment, currentUserID);
+	//aa.inspection.resultInspection(capId, inspId, inspStatus, resultDate, resultComment, currentUserID);
 	updateAppStatus("Closed");
 }
