@@ -9,6 +9,10 @@ if (isTaskActive('Reinspection') && matches(inspResult,'In Violation','In Violat
 	closeTask('Reinspection','In Violation','Updated by Script');
 	activateTask('Additional Processing');
 	assignTask('Additional Processing',AInfo['Assigned To']);  //assignment not working - investigate
+	if (inspResult == 'In Violation - Ticket Issued') {
+		activateTask('Ticket');
+		assignTask('Additional Processing',AInfo['Assigned To']);
+	}
 	}
 
 if (isTaskActive('Reinspection') && matches(inspResult,'In Compliance')) {
