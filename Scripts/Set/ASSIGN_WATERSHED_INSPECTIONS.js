@@ -211,6 +211,7 @@ function processRecords(Collection)
 		setScript = setScriptResult.getOutput();
 		setScript.setSetStatus(setStatus);
 		aa.print("Set Status: " + setScript.getSetStatus());
+		updSet = aa.set.updateSetHeader(setScript).getOutput();
 	}
 	
 	//Script test screen only...
