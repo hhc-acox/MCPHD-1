@@ -119,7 +119,7 @@ function mainProcess() {
 	//TODO: NEED TO CONFIRM SQL AND LIMIT RECORD
 	var conn = new db();
 
-	var sql = "SELECT b.b1_per_id1, b.b1_per_id2, b.b1_per_id3, g.G6_ACT_NUM FROM b1permit b INNER JOIN g6action g ON b.B1_PER_ID1 = g.B1_PER_ID1 AND b.B1_PER_ID2 = g.B1_PER_ID2 AND b.B1_PER_ID3 = g.B1_PER_ID3 AND b.SERV_PROV_CODE = g.SERV_PROV_CODE INNER JOIN gguidesheet gd ON gd.B1_PER_ID1 = g.B1_PER_ID1 AND gd.B1_PER_ID2 = g.B1_PER_ID2 AND gd.B1_PER_ID3 = g.B1_PER_ID3 AND gd.G6_ACT_NUM = g.G6_ACT_NUM AND gd.SERV_PROV_CODE = g.SERV_PROV_CODE INNER JOIN gguidesheet_item gi ON gi.GUIDESHEET_SEQ_NBR = gd.GUIDESHEET_SEQ_NBR AND gi.SERV_PROV_CODE = gd.SERV_PROV_CODE WHERE B1_PER_TYPE = 'WQ' AND gd.GUIDE_TYPE = 'Lab Samples' AND gi.GUIDE_ITEM_STATUS = 'Send to LIMS' AND b.SERV_PROV_CODE = 'MCPHD'";
+	var sql = "SELECT b.b1_per_id1, b.b1_per_id2, b.b1_per_id3, g.G6_ACT_NUM FROM b1permit b INNER JOIN g6action g ON b.B1_PER_ID1 = g.B1_PER_ID1 AND b.B1_PER_ID2 = g.B1_PER_ID2 AND b.B1_PER_ID3 = g.B1_PER_ID3 AND b.SERV_PROV_CODE = g.SERV_PROV_CODE INNER JOIN gguidesheet gd ON gd.B1_PER_ID1 = g.B1_PER_ID1 AND gd.B1_PER_ID2 = g.B1_PER_ID2 AND gd.B1_PER_ID3 = g.B1_PER_ID3 AND gd.G6_ACT_NUM = g.G6_ACT_NUM AND gd.SERV_PROV_CODE = g.SERV_PROV_CODE INNER JOIN gguidesheet_item gi ON gi.GUIDESHEET_SEQ_NBR = gd.GUIDESHEET_SEQ_NBR AND gi.SERV_PROV_CODE = gd.SERV_PROV_CODE WHERE gd.GUIDE_TYPE = 'Lab Samples' AND gi.GUIDE_ITEM_STATUS = 'Send to LIMS' AND b.SERV_PROV_CODE = 'MCPHD'";
 	
 	//logDebug(sql);
 	var ds = conn.dbDataSet(sql, 100);
@@ -283,6 +283,7 @@ function sendToLims(guidesheet, currentUser){
                 logDebug("**WARNING: no address for comparison:");
             } 
             var fullAddress = [ao.getHouseNumberStart(),ao.getStreetDirection(),ao.getStreetName(),ao.getStreetSuffix(),,ao.getCity(),,ao.getState(),ao.getZip()].filter(Boolean).join(" ");
+            //var currUser = aa.person.getUser(currentUser).getOutput();
             var inspFullString = ""+currentUser;
             var firstPos = inspFullString.lastIndexOf("/")+1;
             var lastPos = inspFullString.length;
@@ -329,7 +330,7 @@ function sendToLims(guidesheet, currentUser){
                         var jsonResult = {
                             "SampleID": ""+tableArr[row]["SampleID"],
                             //"SampleID": "345987",
-                            "SampleAddress": fullAddress,
+                            "SampleAddress": "",
                             "Reason": limsReason,
                             "SampleLocation": [""+tableArr[row]["Sample Location"],tableArr[row]["Other Sample Location"]].filter(Boolean).join(": "),
                             "FieldNotes": ""+tableArr[row]["Field Notes"],
