@@ -6,6 +6,6 @@ if ((getInspector('Rodents') != null) && (matches(inspResult,'undefined',' ','')
 updateAppStatus("Assigned");
 }
 if (!matches(inspResult,'',' ', null,'undefined')) {
-aa.inspection.resultInspection(capId, inspId, inspStatus, resultDate, resultComment, currentUserID);
+//aa.inspection.resultInspection(capId, inspId, inspStatus, resultDate, resultComment, currentUserID);
 updateAppStatus("Closed");
 }
