@@ -1,5 +1,5 @@
 copyParcelGisObjects4XAPO(); 
-
+HHC_doCaseCreationActions();
 //assess fees
 try{
 	//see if any records are set up--module can be specific or "ALL", look for both
