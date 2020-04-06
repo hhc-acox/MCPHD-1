@@ -23,7 +23,8 @@ if (String(inspType) == "Pool Test Results" && String(inspResult) == "Unsatisfac
         eParams.put("$$CAPID$$", capIDString);
         eParams.put("$$INSPTYPE$$", inspType);
         eParams.put("$$inspResult$$", inspResult);	
-        //sendNotification(
+        /*
+        sendNotification(
             EMAIL_FROM
             , String(emailAddress)
             , ""
@@ -31,6 +32,7 @@ if (String(inspType) == "Pool Test Results" && String(inspResult) == "Unsatisfac
             , eParams
             , [], capId
         );
+        */
         
     }
     else {
@@ -95,7 +97,12 @@ if (String(inspType) == "Pool Test Results" && String(inspResult) == "Satisfacto
         if (conditionsOut.length > 0) {
             for (i in conditionsOut) {
                 if (conditionsOut[i].conditionDescription == 'Unsatisfactory Test Results' && conditionsOut[i].conditionStatus == 'Applied') {
-                    aa.capCondition.deleteCapCondition(capId, conditionsOut[i].conditionNumber);
+                    //aa.capCondition.deleteCapCondition(capId, conditionsOut[i].conditionNumber);
+                    conditionsOut[i].setConditionStatus('Condition Met');
+		    conditionsOut[i].setConditionStatusType('Not Applied');
+                    conditionsOut[i].setImpactCode("");
+
+		   aa.capCondition.editCapCondition(conditionsOut[i]);
                 }
             }
         }
