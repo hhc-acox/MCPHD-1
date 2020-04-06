@@ -128,11 +128,11 @@ if((currDate - cnwd) == 0) //condition that prevents the job from running on Wee
 											var inspType = inspList[xx].getInspectionType();
 											inspSchDate = inspList[xx].getScheduledDate().getMonth() + "/" + inspList[xx].getScheduledDate().getDayOfMonth() + "/" + inspList[xx].getScheduledDate().getYear();
 												aa.print("Case: "+capIDString+" Dates: Scheduled - "+inspSchDate+", TodaysDate - "+todaysDate);
-										if (String(inspSchDate).equals(todaysDate)) {
+									//	if (String(inspSchDate).equals(todaysDate)) {
 												aa.print("This Case would get added to the Set - "+capIDString);
 										//Add the Case to the Set
 										aa.set.addCapSetMember(setCode,capIDModel);
-									}
+									//}
 								}
 							}
 						}
