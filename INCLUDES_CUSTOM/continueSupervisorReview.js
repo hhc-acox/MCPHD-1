@@ -22,7 +22,7 @@ function continueSupervisorReview(wfTask, wfNote) {
 		{
             var inspList = inspResultObj.getOutput();
             for (xx in inspList) {
-                if (wfNoteSpl[4] == inspList[xx].getIdNumber()) {
+                if (wfNoteSpl[wfNoteSpl.length - 1] == inspList[xx].getIdNumber()) {
                     var ehs = inspList[xx].getInspector();
 
                     if (ehs) {
