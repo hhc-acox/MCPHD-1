@@ -6,6 +6,8 @@ var RiskDays = HHC_getRiskDays();
 var Past12Months = dateAdd(null,-364);
 Past12Months = new Date(Past12Months);
 Past12Months = Past12Months.getTime();
+
+/*
 var InspFailedTimes = 0;
 var arrInspIds = getInspIdsByStatus("Spore Tests","Not Received");
 	if(arrInspIds.length>0){
@@ -17,6 +19,7 @@ var arrInspIds = getInspIdsByStatus("Spore Tests","Not Received");
 			}
 		}
 	}
+	*/
 if (matches(InspFailedTimes,2)){
 	scheduleInspectDate('Initial',nextWorkDay(dateAdd(null,0)),assignedInspector, null, "Missing spore test");
 	// create a notice of violation and citation ....
