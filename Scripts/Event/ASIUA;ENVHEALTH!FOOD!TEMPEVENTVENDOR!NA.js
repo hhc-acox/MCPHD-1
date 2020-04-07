@@ -14,7 +14,7 @@ if (asitRes.getSuccess()) {
 
     if (rowNum > 0){
         // apply first day fee
-        feeSeq = addFee('TEV01', 'EH_TEV', 'FINAL', 1, 'Y');
+        //feeSeq = addFee('TEV01', 'EH_TEV', 'FINAL', 1, 'Y');
         // apply additional day fee's
         if (rowNum > 1){
             feeSeq = addFee('TEV02', 'EH_TEV', 'FINAL', rowNum - 1, 'Y');
