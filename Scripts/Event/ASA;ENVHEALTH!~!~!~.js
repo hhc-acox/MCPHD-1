@@ -22,6 +22,7 @@ if (matches(appTypeArray[2],'HSG','TRA','VEH','INV') && AInfo['Reason for Invest
 	 var areaTeamLeader = lookup('Census - Team Leader',censusTract);
 	 var areaTeam = HHC_getTeamByTeamLeaderID(areaTeamLeader);
 	 var thisDiscipline = "HS"+areaTeam+"NeedlesEHS";
+         logDebug('Discipline being used: ' + thisDiscipline);
 	 areaInspector = hhcgetUserByDiscipline(thisDiscipline);	
 	logDebug('Needles Inspector: '+areaInspector);	 
 	}
@@ -183,12 +184,12 @@ if (matches(appTypeArray[2],'RCP')) {
 	}	
 //WQ Assignments
 //Body Art Application Supervisor assignments
-if (matches(appTypeArray[2],'Body Art') && matches(appTypeArray[3],'Application')) {
+if (matches(appTypeArray[2],'Body Art', 'Childcare') && matches(appTypeArray[3],'Application')) {
 	areaInspector = hhcgetUserByDiscipline('WQBodyArtSupv');
 	comment('the BAF Supervisor is: '+areaInspector);
-	assignTask('Application Intake', areaInspector);
-	assignCap(areaInspector);
-	updateTask('Application Intake','Application Received');
+	assignTask('Application Review', areaInspector);
+	//assignCap(areaInspector);
+	updateTask('Application Review','Pending');
 	}
 	
 //Pool/Pump Application
