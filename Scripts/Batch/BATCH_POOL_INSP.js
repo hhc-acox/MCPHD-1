@@ -112,7 +112,7 @@ function SchedulePoolInspections()
 {
 	var capCount = 0;
 			//Retrieve records by date range
-			var collectionList = aa.cap.getCapListByCollection(vSearchCapModel, null, null, clFromDate, clToDate , null, new Array());
+			var collectionList = aa.cap.getCapListByCollection(vSearchCapModel, null, null, null, null , null, new Array());
 		
 	if (!collectionList.getSuccess()){
 			logMessage("**ERROR","Retreiving records by Renewal Licenses Expiration Date and Status. Reason is: " + collectionList.getErrorType() + ":" + collectionList.getErrorMessage());
