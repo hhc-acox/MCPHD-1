@@ -46,12 +46,19 @@ function addSupervisorReview(itemCap, taskType, inspID, taskName, statusName) {
                                     var inspDate = "" + iObj.getScheduledDate().getMonth() + '/' + iObj.getScheduledDate().getDayOfMonth() + '/' + iObj.getInspectionDate().getYear();
                                     var inspKey = inspDate + "-" + inspType + "-" + iObj.getInspectionStatus() + "-" + iNumber;
                                     if (!isSupervisor(currentUserID) && !containsAcceptedOrPendingAdHocTaskForDisposition(capId, inspKey)) {
+                                        var tinspComment = "";
 
-                                        if (containsReworkAdHocTaskForDisposition(capId, inspKey)) {
-                                            sendNotificationForSupervisorReviewInspection(assignTo, inspResultComment+"", 'EMSE_SUPREV_INSP_SUP', iNumber);
+                                        if (prefix == 'IRMA') {
+                                            tinspComment += inspResultComment;
+                                        } else {
+                                            tinspComment += inspComment;
                                         }
 
-                                        HHC_addAdHocTask("ADHOC_WORKFLOW", "Supervisor Review Inspection", inspKey, assignTo, inspResultComment+"");
+                                        if (containsReworkAdHocTaskForDisposition(capId, inspKey)) {
+                                            sendNotificationForSupervisorReviewInspection(assignTo, tinspComment, 'EMSE_SUPREV_INSP_SUP', iNumber);
+                                        }
+
+                                        HHC_addAdHocTask("ADHOC_WORKFLOW", "Supervisor Review Inspection", inspKey, assignTo, tinspComment);
                                         logDebug("Added Supervisor Review Inspection Task");
                                     }
                                 }
