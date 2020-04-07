@@ -2,7 +2,7 @@
 | Program: BATCH_REDISTRICT_FOODS.js  Trigger: BATCH
 | Description: This script is designed to be run in Accela - Batch Engine to redistrict foods records and assign the new inspector by GIS
 |
-| Version 1.0 - Initial - Jake Cox
+| Version 1.1 - Updated assignments for B1_PER_SUB_TYPES - Jake Cox
 |
 /------------------------------------------------------------------------------------------------------*/
 /*------------------------------------------------------------------------------------------------------/
@@ -139,8 +139,8 @@ function mainProcess() {
             
             
             if (cap && capId) {
-                //logDebug('Processing: ' + capId.getCustomID());
-                var recType = String(ds[r]["B1_PER_TYPE"]);
+                logDebug('Processing: ' + capId.getCustomID());
+                var recType = String(ds[r]["B1_PER_SUB_TYPE"]);
                 var zone = null;
 
                 if (recType == 'SharedKitchenUser' || recType == 'MobileUnit'){
@@ -173,7 +173,7 @@ function mainProcess() {
                     editAppSpecificNoLog('District', zone, capId);
                     countProcessed++;
                 }
-                //logDebug('Zone: ' + zone);
+                logDebug('Zone: ' + zone);
             }
         }
         countTotal++;
