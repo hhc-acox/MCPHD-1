@@ -89,17 +89,17 @@ function addCurrentViolations() {
                                     other = "";
                                 }
 								var rowVals = new Array();
-								rowVals["Status"] = new asiTableValObj("Status", status, "Y");
-								rowVals["Date"] = new asiTableValObj("Date", date, "Y");
-								rowVals["Violation"] = new asiTableValObj("Violation", violation, "Y");
-								rowVals["XRF Result"] = new asiTableValObj("XRF Result", xrf, "Y");
-								rowVals["Explanation"] = new asiTableValObj("Explanation", explanation, "Y");
-								rowVals["Location"] = new asiTableValObj("Location", location, "Y");
-								rowVals["DIR"] = new asiTableValObj("DIR", dir, "Y");
-								rowVals["DH/CB"] = new asiTableValObj("DH/CB", dhcb, "Y");
-								rowVals["OC"] = new asiTableValObj("OC", oc, "Y");
-								rowVals["IP"] = new asiTableValObj("IP", ip, "Y");
-                                rowVals["Other"] = new asiTableValObj("Other", other, "Y");
+								rowVals["Status"] = new asiTableValObj("Status", status, "N");
+								rowVals["Date"] = new asiTableValObj("Date", date, "N");
+								rowVals["Violation"] = new asiTableValObj("Violation", violation, "N");
+								rowVals["XRF Result"] = new asiTableValObj("XRF Result", xrf, "N");
+								rowVals["Explanation"] = new asiTableValObj("Explanation", explanation, "N");
+								rowVals["Location"] = new asiTableValObj("Location", location, "N");
+								rowVals["DIR"] = new asiTableValObj("DIR", dir, "N");
+								rowVals["DH/CB"] = new asiTableValObj("DH/CB", dhcb, "N");
+								rowVals["OC"] = new asiTableValObj("OC", oc, "N");
+								rowVals["IP"] = new asiTableValObj("IP", ip, "N");
+                                rowVals["Other"] = new asiTableValObj("Other", other, "N");
 								var asitName = "VIOLATIONS";
 								addToASITable(asitName, rowVals, capId);
 							}
