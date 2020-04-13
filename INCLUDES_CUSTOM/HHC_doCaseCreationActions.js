@@ -69,7 +69,7 @@ function HHC_doCaseCreationActions(){
 										RecordAssignedTo = lookup('GIS - Pools EHS',zone); 
 									else if (zone && zone != "undefined" && zone != null && LayerName == 'WellsPumpsOWTS')
                                         RecordAssignedTo = lookup('GIS - WellsPumpsOWTS EHS',zone); 
-                                    else if (zone && zone != "undefined" && zone != null && LayerName == 'GeneralWaterQuality')
+                                    else if (zone && zone != "undefined" && zone != null && LayerName == 'GeneralWaterQualityDistrict')
 										RecordAssignedTo = lookup('GIS - GeneralWaterQuality EHS',zone); 
 									else if (zone && zone != "undefined" && zone != null && LayerName == 'EHSMQuadrantDistrict')
                                         RecordAssignedTo = lookup('GIS - EHSM Inspector',zone); 
