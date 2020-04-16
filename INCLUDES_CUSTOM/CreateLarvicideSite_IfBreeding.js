@@ -1,11 +1,15 @@
 function CreateLarvicideSite_IfBreeding(capId){
 	try{
-		gName = "VC_LARVICIDE";
-		gItem = "SITE INFORMATION";
-		asiGroup = "VC_LVCCKLST";
-		asiSubGroup = "LARVICIDE";
-		asiLabel = "Is Site Breeding";
-		var myResult = getGuidesheetASIValue(inspId,gName,gItem,asiGroup,asiSubGroup, asiLabel);
+        var hasSite = getParent();
+
+        if (!hasSite) {
+            gName = "VC_LARVICIDE";
+            gItem = "SITE INFORMATION";
+            asiGroup = "VC_LVCCKLST";
+            asiSubGroup = "LARVICIDE";
+            asiLabel = "Is Site Breeding";
+            var myResult = getGuidesheetASIValue(inspId,gName,gItem,asiGroup,asiSubGroup, asiLabel);
+
 			if(myResult=="Yes"){
                 //Create the Larvicide Site Case
                 var newAppId = createParent('EnvHealth','VC','LarvicideSite','NA','');
@@ -56,7 +60,6 @@ function CreateLarvicideSite_IfBreeding(capId){
                 }
 
                 var vc_conn = new db();
-
                 var vc_sql = "SELECT SUBSTR(b.B1_ALT_ID, INSTR(b.B1_ALT_ID, '-' ,-1, 1) + 1) as B1_ALT_ID " +
                     "FROM B1PERMIT b " + 
                     "WHERE b.B1_ALT_ID like 'LVC-" + zone4cap + "-%' AND b.SERV_PROV_CODE = 'MCPHD'" + 
@@ -74,21 +77,21 @@ function CreateLarvicideSite_IfBreeding(capId){
                     logDebug('Highest Seq: ' + parseInt(dsCapIdString));
                     dsNewId = parseInt(dsCapIdString) + 1;
 
-
                     if (dsNewId < 9) {
                         dsNewId = '0' + dsNewId;
                     }
                 }
-
                 if (dsNewId) {
                     var newId = "LVC-" + zone4cap + "-" + dsNewId;
-
                     logDebug("New ID " + newId);
                     aa.cap.updateCapAltID(capId, newId);
                 }
 
                 capId = oldCapId;
 			}
+        } else {
+            logDebug('Already has Site created - Skipping');
+        }
     }
 	catch(err)
 	{
