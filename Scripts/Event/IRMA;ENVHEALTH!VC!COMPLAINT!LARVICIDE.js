@@ -7,6 +7,6 @@ if (matches(inspResult,'Tech Complete - New Site','Tech Complete - Existing Site
 	
 	//create site if new
 	if (matches(inspResult, 'Tech Complete - New Site')) {
-		CreateLarvicideSite_IfBreeding(capId);	
+		//CreateLarvicideSite_IfBreeding(capId);	
 	}
 }
