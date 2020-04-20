@@ -69,6 +69,7 @@ function CreateLarvicideSite_IfBreeding(capId){
                 
                 if (ds[0]) {
                     dsCapIdString = ds[0]["B1_ALT_ID"];
+		    dsCapIdString = dsCapIdString.replace(/^0+/, '');
                     logDebug('Using db-based naming: ' + dsCapIdString);
                 } 
                 var dsNewId = "0";
