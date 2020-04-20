@@ -33,7 +33,7 @@ if (tmpZone != "") {
 var vc_conn = new db();
 var vc_sql = "SELECT b.B1_ALT_ID " +
     "FROM B1PERMIT b " + 
-    "WHERE b.B1_ALT_ID like 'MON-" + zone4cap + "-%' " + 
+    "WHERE b.B1_ALT_ID like 'MON-" + zone4cap + "-%' AND b.B1_ALT_ID != 'MON-" + zone4cap + "-NaN'" + 
     "ORDER BY b.B1_ALT_ID DESC";
 var ds = vc_conn.dbDataSet(vc_sql, 25);
 var dsCapIdString = ds[0]["B1_ALT_ID"]; 
@@ -44,8 +44,14 @@ var dsNewId = capStringArr[1];
 if (dsCapIdString) {
     logDebug('Using db-based naming: ' + dsCapIdString);
     var newCapStringArr = String(dsCapIdString).split("-");
-    logDebug('Highest Seq: ' + parseInt(newCapStringArr[2]));
-    dsNewId = parseInt(newCapStringArr[2]) + 1;
+    var nextSeq = newCapStringArr[2].replace(/^0+/, '');
+    var nextSeqNum = parseInt(nextSeq);
+    logDebug('Highest Seq: ' + nextSeqNum);
+
+    if(isNaN(nextSeqNum)) {
+        nextSeqNum = '0';
+    }
+    dsNewId = parseInt(nextSeqNum) + 1;
 
     if (dsNewId < 9) {
         dsNewId = '0' + dsNewId;
