@@ -11,103 +11,105 @@ function addCurrentViolations() {
                     inspList = inspResultObj.getOutput();
 
                     for (i in inspList) {
-                        var gs = getGuideSheetObjects(inspList[i].getIdNumber());
-				
-                        for (i in gs) {
-                            if (gs[i].gsType == 'LHH_Violations') {
-                                var items = gs[i].item.getItemASITableSubgroupList().toArray();
-                                
-                                for (j in items) {
-                                    var columns = items[j].columnList.toArray();
+                        if (inspId == inspList[i].getIdNumber()) {
+                            var gs = getGuideSheetObjects(inspList[i].getIdNumber());
+                    
+                            for (i in gs) {
+                                if (gs[i].gsType == 'LHH_Violations') {
+                                    var items = gs[i].item.getItemASITableSubgroupList().toArray();
                                     
-                                    var tableArr = new Array()
-                                    
-                                    for (k in columns) {
-                                        var rows = columns[k].getValueMap().values().toArray();
+                                    for (j in items) {
+                                        var columns = items[j].columnList.toArray();
                                         
-                                        var rowArr = new Array();
+                                        var tableArr = new Array()
                                         
-                                        for (l in rows) {
-                                            var value = rows[l].attributeValue;
-                                            rowArr.push(value);
+                                        for (k in columns) {
+                                            var rows = columns[k].getValueMap().values().toArray();
+                                            
+                                            var rowArr = new Array();
+                                            
+                                            for (l in rows) {
+                                                var value = rows[l].attributeValue;
+                                                rowArr.push(value);
+                                            }
+                                            tableArr.push(rowArr);
                                         }
-                                        tableArr.push(rowArr);
-                                    }
-                                    
-                                    var resultArr = new Array();
-                                    
-                                    // pivot array
-                                    for (var i = 0; i < tableArr[0].length; i++) {
-                                        resultArr.push(new Array());
-                                    }
-                                    
-                                    for (x in tableArr) {
-                                        for (y in tableArr[x]) {
-                                            resultArr[y][x] = tableArr[x][y];
+                                        
+                                        var resultArr = new Array();
+                                        
+                                        // pivot array
+                                        for (var i = 0; i < tableArr[0].length; i++) {
+                                            resultArr.push(new Array());
                                         }
-                                    }
-                                    
-                                    for (r in resultArr) {
-                                        logDebug(resultArr[r] + "");
-                                        var status = resultArr[r][0];
-                                        var date = resultArr[r][1];
-                                        var violation = resultArr[r][2];
-                                        var xrf = resultArr[r][3];
-                                        var explanation = resultArr[r][4];
-                                        var location = resultArr[r][5];
-                                        var dir = resultArr[r][6];
-                                        var dhcb = resultArr[r][7];
-                                        var oc = resultArr[r][8];
-                                        var ip = resultArr[r][9];
-                                        var other = resultArr[r][10];
-        
-                                        if(!status){
-                                            status = "";
+                                        
+                                        for (x in tableArr) {
+                                            for (y in tableArr[x]) {
+                                                resultArr[y][x] = tableArr[x][y];
+                                            }
                                         }
-                                        if(!date){
-                                            date = "";
+                                        
+                                        for (r in resultArr) {
+                                            logDebug(resultArr[r] + "");
+                                            var status = resultArr[r][0];
+                                            var date = resultArr[r][1];
+                                            var violation = resultArr[r][2];
+                                            var xrf = resultArr[r][3];
+                                            var explanation = resultArr[r][4];
+                                            var location = resultArr[r][5];
+                                            var dir = resultArr[r][6];
+                                            var dhcb = resultArr[r][7];
+                                            var oc = resultArr[r][8];
+                                            var ip = resultArr[r][9];
+                                            var other = resultArr[r][10];
+            
+                                            if(!status){
+                                                status = "";
+                                            }
+                                            if(!date){
+                                                date = "";
+                                            }
+                                            if(!violation){
+                                                violation = "";
+                                            }
+                                            if(!xrf){
+                                                xrf = "";
+                                            }
+                                            if(!explanation){
+                                                explanation = "";
+                                            }
+                                            if(!location){
+                                                location = "";
+                                            }
+                                            if(!dir){
+                                                dir = "";
+                                            }
+                                            if(!dhcb){
+                                                dhcb = "";
+                                            }
+                                            if(!oc){
+                                                oc = "";
+                                            }
+                                            if(!ip){
+                                                ip = "";
+                                            }
+                                            if(!other){
+                                                other = "";
+                                            }
+                                            var rowVals = new Array();
+                                            rowVals["Status"] = new asiTableValObj("Status", status, "N");
+                                            rowVals["Date"] = new asiTableValObj("Date", date, "N");
+                                            rowVals["Violation"] = new asiTableValObj("Violation", violation, "N");
+                                            rowVals["XRF Result"] = new asiTableValObj("XRF Result", xrf, "N");
+                                            rowVals["Explanation"] = new asiTableValObj("Explanation", explanation, "N");
+                                            rowVals["Location"] = new asiTableValObj("Location", location, "N");
+                                            rowVals["DIR"] = new asiTableValObj("DIR", dir, "N");
+                                            rowVals["DH/CB"] = new asiTableValObj("DH/CB", dhcb, "N");
+                                            rowVals["OC"] = new asiTableValObj("OC", oc, "N");
+                                            rowVals["IP"] = new asiTableValObj("IP", ip, "N");
+                                            rowVals["Other"] = new asiTableValObj("Other", other, "N");
+                                            var asitName = "VIOLATIONS";
+                                            addToASITable(asitName, rowVals, capId);
                                         }
-                                        if(!violation){
-                                            violation = "";
-                                        }
-                                        if(!xrf){
-                                            xrf = "";
-                                        }
-                                        if(!explanation){
-                                            explanation = "";
-                                        }
-                                        if(!location){
-                                            location = "";
-                                        }
-                                        if(!dir){
-                                            dir = "";
-                                        }
-                                        if(!dhcb){
-                                            dhcb = "";
-                                        }
-                                        if(!oc){
-                                            oc = "";
-                                        }
-                                        if(!ip){
-                                            ip = "";
-                                        }
-                                        if(!other){
-                                            other = "";
-                                        }
-                                        var rowVals = new Array();
-                                        rowVals["Status"] = new asiTableValObj("Status", status, "N");
-                                        rowVals["Date"] = new asiTableValObj("Date", date, "N");
-                                        rowVals["Violation"] = new asiTableValObj("Violation", violation, "N");
-                                        rowVals["XRF Result"] = new asiTableValObj("XRF Result", xrf, "N");
-                                        rowVals["Explanation"] = new asiTableValObj("Explanation", explanation, "N");
-                                        rowVals["Location"] = new asiTableValObj("Location", location, "N");
-                                        rowVals["DIR"] = new asiTableValObj("DIR", dir, "N");
-                                        rowVals["DH/CB"] = new asiTableValObj("DH/CB", dhcb, "N");
-                                        rowVals["OC"] = new asiTableValObj("OC", oc, "N");
-                                        rowVals["IP"] = new asiTableValObj("IP", ip, "N");
-                                        rowVals["Other"] = new asiTableValObj("Other", other, "N");
-                                        var asitName = "VIOLATIONS";
-                                        addToASITable(asitName, rowVals, capId);
                                     }
                                 }
                             }
