@@ -130,9 +130,13 @@ if (matches(appTypeArray[2],'Lift Station')) {
     }
     
     //Farmers Market Vendor
-if (appMatch('EnvHealth/Food/FarmersMarketVendor/Application') || appMatch('EnvHealth/Food/Complaint/NA')) {
+if (appMatch('EnvHealth/Food/FarmersMarketVendor/Application')) {
 	HHC_assignDeptCap("Food and Consumer Safety Team C Support");
 	}
+
+if (appMatch('EnvHealth/Food/Complaint/NA')) {
+    assignTask('Case Intake', getAssignedToRecord());
+}
 
 //Lift Station
 if (matches(appTypeArray[2],'OWTS')) {
