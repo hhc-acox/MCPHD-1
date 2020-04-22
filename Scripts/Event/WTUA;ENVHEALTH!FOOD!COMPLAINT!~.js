@@ -10,8 +10,9 @@ try{
 //lwacht: 270918: #132: end
 
 var assignToInsp = HHC_getCapAssignment(capId);
-if(wfTask == 'Complaint Review' && wfStatus == 'Inspection Required' && getAppSpecific('Illness Complaint?') == 'No' ) {
+if(wfTask == 'Complaint Review' && wfStatus == 'Inspection Required' && (getAppSpecific('Illness Complaint?') == 'No' || getAppSpecific('Illness Complaint?') == 'N') ) {
     scheduleInspectDate('Non-illness Complaint',nextWorkDay(),assignToInsp);
-} else {
+} 
+if (wfTask == 'Complaint Review' && wfStatus == 'Inspection Required' && (getAppSpecific('Illness Complaint?') == 'Yes' || getAppSpecific('Illness Complaint?') == 'Y') ){
     scheduleInspectDate('Illness Complaint',nextWorkDay(),assignToInsp);
 }
