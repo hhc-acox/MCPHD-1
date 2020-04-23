@@ -36,8 +36,8 @@ if (matches(inspResult, 'Technician Complete')) {
                     userID = hhcgetUserByDiscipline('VCBiology'); // bio 1 if zone 1-8
                 }
             }
-            aa.inspection.resultInspection(capId, inspId, 'Waiting on Lab', resultDate, resultComment, currentUserID);
-            assignCap(userID);
+            aa.inspection.resultInspection(capId, inspId, 'Waiting on Lab', resultDate, resultComment, getInspector(inspType));
+            //assignCap(userID);
         }
     //}
     assignInspection(inspId, userID);
@@ -59,9 +59,9 @@ if (matches(inspResult, 'Supervisor Reviewed')) {
                 userID = hhcgetUserByDiscipline('VCBiology'); // bio 1 if zone 1-8
             }
         }
-        aa.inspection.resultInspection(capId, inspId, 'Waiting on Lab', resultDate, resultComment, currentUserID);
-        assignCap(userID);
-        assignInspection(inspId, userID);
+        aa.inspection.resultInspection(capId, inspId, 'Waiting on Lab', resultDate, resultComment, getInspector(inspType));
+        //assignCap(userID);
+        //assignInspection(inspId, userID);
     }
 }
 
@@ -69,8 +69,8 @@ if (matches(inspResult, 'Lab Complete')) {
     
     var techByZone = lookup("GIS - Larvicide Techs", aZone);
     if (myResult == "Y" || myResult == "Yes") {
-        scheduleInspectDate("Larvicide", nextWorkDay(dateAdd(inspResultDate, 13)), techByZone);
-        //aa.inspection.resultInspection(capId, inspId, inspStatus, resultDate, resultComment, currentUserID);
+        scheduleInspectDate("Larvicide", nextWorkDay(dateAdd(inspResultDate, 13)), getInspector(inspType));
+        //aa.inspection.resultInspection(capId, inspId, inspStatus, resultDate, resultComment, getInspector(inspType));
         updateAppStatus("Active");
     }
     if (sampleResult == "Y" || sampleResult == "Yes") {
