@@ -20,7 +20,7 @@ if (matches(inspResult,'Supervisor Reviewed')) {
 	//assignInspection(inspId, userID);
 }
 if (matches(inspResult,'Lab Complete')) {
-	CreateLarvicideSite_IfBreeding(capId);
+	//CreateLarvicideSite_IfBreeding(capId);
 	//aa.inspection.resultInspection(capId, inspId, inspStatus, resultDate, resultComment, currentUserID);
 }
 if (matches(inspResult,'Unable to Inspect','No Access')) {
