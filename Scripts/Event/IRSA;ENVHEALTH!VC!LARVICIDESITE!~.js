@@ -40,7 +40,7 @@ if (matches(inspResult, 'Technician Complete')) {
             assignCap(userID);
         }
     //}
-    assignInspection(inspId, userID);
+    //assignInspection(inspId, userID);
 }
 
 if (matches(inspResult, 'Supervisor Reviewed')) {
