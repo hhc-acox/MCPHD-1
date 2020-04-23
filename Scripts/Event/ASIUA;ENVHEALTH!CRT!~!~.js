@@ -30,9 +30,9 @@ try{
 				var inspUserId = getInspector("Initial Inspection");
 				logDebug("inspUserId: " + inspUserId);
 				if(inspUserId){
-					scheduleInspectDate("Reinspection",inspDate,inspUserId);
+					//scheduleInspectDate("Reinspection",inspDate,inspUserId);
 				}else{
-					scheduleInspectDate("Reinspection",inspDate);
+					//scheduleInspectDate("Reinspection",inspDate);
 				}
 			}
 			capId = currCap;
