@@ -37,10 +37,10 @@ if (matches(inspResult, 'Technician Complete')) {
                 }
             }
             aa.inspection.resultInspection(capId, inspId, 'Waiting on Lab', resultDate, resultComment, getInspector(inspType));
-            //assignCap(userID);
+            assignCap(userID);
         }
     //}
-    assignInspection(inspId, userID);
+    //assignInspection(inspId, userID);
 }
 
 if (matches(inspResult, 'Supervisor Reviewed')) {
@@ -60,7 +60,7 @@ if (matches(inspResult, 'Supervisor Reviewed')) {
             }
         }
         aa.inspection.resultInspection(capId, inspId, 'Waiting on Lab', resultDate, resultComment, getInspector(inspType));
-        //assignCap(userID);
+        assignCap(userID);
         //assignInspection(inspId, userID);
     }
 }
@@ -87,7 +87,7 @@ if (matches(inspResult, 'Lab Complete')) {
                 userID = hhcgetUserByDiscipline('VCBiology'); // bio 1 if zone 1-8
             }
         }
-        //assignCap(userID);
+        assignCap(userID);
     }
 }
 if (matches(inspResult, 'Unable to Inspect', 'No Access')) {
