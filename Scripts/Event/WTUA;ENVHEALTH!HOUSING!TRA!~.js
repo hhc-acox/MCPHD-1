@@ -12,7 +12,7 @@ if (wfTask == 'Additional Processing' && wfStatus == 'Request Administrative Hea
 	var schedDate = aa.date.parseDate(month + '/' + day + '/' + year)	
         scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,59)),assignedEHS); 
 	updateAppStatus('Administrative Hearing','Status Updated by Script');
-	addStdConditionWithExpiration("Record Hold", "Admin Hearing",schedDate);
+	//addStdConditionWithExpiration("Record Hold", "Admin Hearing",schedDate);
 }
 
 if (wfTask == 'Initial Processing' && matches(wfStatus,'Complete Notice of Violation','Complete Emergency NOV') && getTSIfieldValue('Reinspection Date', 'Initial Processing') != null) {
