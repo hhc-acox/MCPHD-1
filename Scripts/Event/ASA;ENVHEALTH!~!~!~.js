@@ -160,6 +160,12 @@ if (appMatch('EnvHealth/Food/*/Application')) {
 	var supportStaff = HHC_getMySupportStaffDepartment(currentUserID);
 	updateTask('Application Intake','Application Received','Updated by Script');
 	assignTask('Application Intake',supportStaff);
+
+        if (AInfo['Change of Ownership']) {
+                var zone = getGISInfo("MCPHD", "FoodsDistrict", "district");
+                areaInspector = lookup('GIS - Foods EHS',zone);
+                assignCap(areaInspector);
+        }
 }
 
 //CCC EHMS Supervisor Assignment
