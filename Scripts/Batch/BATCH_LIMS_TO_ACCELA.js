@@ -63,7 +63,7 @@ if (batchJobResult.getSuccess()) {
 	logDebug("Batch job ID not found " + batchJobResult.getErrorMessage());
 }
 
-var urlLIMS = "https://208.88.104.180:95/api/LIMSUpdate/Update";
+var urlLIMS = "https://208.88.104.179:95/api/LIMSUpdate/Update";
 
 /*----------------------------------------------------------------------------------------------------/
 |
