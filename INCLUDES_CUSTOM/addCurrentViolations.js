@@ -298,7 +298,8 @@ function addCurrentViolations() {
 											var asitName = "CURRENT VIOLATIONS";
 											addToASITable(asitName, rowVals2, capId);
 
-											var ASITInspId = searchASITable("VIOLATION HISTORY", "Inspection Number", inspId, capId);
+											//var ASITInspId = searchASITable("VIOLATION HISTORY", "Inspection Number", inspId, capId);
+                                                                                        var ASITInspId = searchASITableThreeVal("VIOLATION HISTORY", "Inspection Number", inspId, "Chapter", appChapter, "Checklist Item",appChecklistItem, capId)
 											//var ASITGuideItem = searchASITable("VIOLATION HISTORY","Checklist Item",appChecklistItem,capId);
 
 											if (!ASITInspId) {
