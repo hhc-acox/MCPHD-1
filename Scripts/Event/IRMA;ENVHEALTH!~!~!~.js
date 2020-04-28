@@ -24,7 +24,7 @@ if (fixfutureDate<fixinspDate) {
 	}
 }
 */
-if (appTypeString.indexOf('WQ') > -1 || appTypeString.indexOf('Radon') > -1) {
+if ((appTypeString.indexOf('WQ') > -1 || appTypeString.indexOf('Radon') > -1) && appTypeString.indexOf('Watershed') < 0) {
     addSupervisorReview(capId, "INSPECTION", inspId, null, null);
 }
 
