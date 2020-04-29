@@ -21,6 +21,11 @@ function copyOwnerToContact(cType, cRelation, itemCap) {
             newCapContactModel.setRelation(cRelation);
             newPeopleModel.setFlag("Y");
             newCapContactModel.setPrimaryFlag("Y");
+            
+            if (appMatch('EnvHealth/WQ/Pump/*') || appMatch('EnvHealth/WQ/Well/*') || appMatch('EnvHealth/WQ/OWTS/*')) {
+                newPeopleModel.setFlag("N");
+                newCapContactModel.setPrimaryFlag("N");
+            }
 
             newPeopleModel.setFullName(thisOwner.getOwnerFullName());
             newCapContactModel.setFullName(thisOwner.getOwnerFullName());
