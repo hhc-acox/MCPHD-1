@@ -1,7 +1,12 @@
 function doGuidesheetAutomation() {
     try{
-        var tinspId = inspId;
-        var tinspType = inspType;
+        var tinspId = '';
+        var tinspType = '';
+        
+        if (typeof(inspId) != 'undefined' && typeof(inspType) != 'undefined') {
+            tinspId = inspId;
+            tinspType = inspType;   
+        }
 
         if (arguments.length == 1) {
             tinspId = arguments[0];
