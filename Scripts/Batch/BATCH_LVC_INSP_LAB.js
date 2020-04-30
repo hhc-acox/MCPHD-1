@@ -114,7 +114,7 @@ try{
 	var conn = ds.getConnection();
 
     // records
-    var selectStringCap = "SELECT b.b1_per_id1, b.b1_per_id2, b.b1_per_id3, g6.g6_act_num FROM b1permit b INNER JOIN g6action g6 ON g6.B1_PER_ID1 = b.B1_PER_ID1 AND g6.B1_PER_ID2 = b.B1_PER_ID2 AND g6.B1_PER_ID3 = b.B1_PER_ID3 AND g6.SERV_PROV_CODE = b.SERV_PROV_CODE INNER JOIN gguidesheet gd ON gd.G6_ACT_NUM = g6.G6_ACT_NUM AND gd.SERV_PROV_CODE = g6.SERV_PROV_CODE INNER JOIN ggdsheet_item_asi asi ON asi.GUIDESHEET_SEQ_NBR = gd.GUIDESHEET_SEQ_NBR AND asi.SERV_PROV_CODE = gd.SERV_PROV_CODE WHERE b.b1_per_sub_type = 'LarvicideSite' AND b.serv_prov_code = 'MCPHD' AND g6.g6_status = 'Technician Complete' AND asi.ASI_NAME = 'Is Site Breeding' AND asi.asi_comment = 'Y'";
+    var selectStringCap = "SELECT b.b1_per_id1, b.b1_per_id2, b.b1_per_id3, g6.g6_act_num FROM b1permit b INNER JOIN g6action g6 ON g6.B1_PER_ID1 = b.B1_PER_ID1 AND g6.B1_PER_ID2 = b.B1_PER_ID2 AND g6.B1_PER_ID3 = b.B1_PER_ID3 AND g6.SERV_PROV_CODE = b.SERV_PROV_CODE INNER JOIN gguidesheet gd ON gd.G6_ACT_NUM = g6.G6_ACT_NUM AND gd.SERV_PROV_CODE = g6.SERV_PROV_CODE INNER JOIN ggdsheet_item_asi asi ON asi.GUIDESHEET_SEQ_NBR = gd.GUIDESHEET_SEQ_NBR AND asi.SERV_PROV_CODE = gd.SERV_PROV_CODE WHERE b.b1_per_sub_type = 'LarvicideSite' AND b.serv_prov_code = 'MCPHD' AND g6.g6_status = 'Technician Complete' AND asi.ASI_NAME = 'Sample Collected?' AND asi.asi_comment = 'Y'";
     var sStmt = conn.prepareStatement(selectStringCap);
     var rSet = sStmt.executeQuery();
 	capIdList = new Array();
