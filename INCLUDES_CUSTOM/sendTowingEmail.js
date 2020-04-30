@@ -26,16 +26,15 @@ function sendTowingEmail() {
 		}
 	}
 	// Run report Court Ordered Clean Cover Sheet
-	/*
-	reportParams = aa.util.newHashtable();
-    reportParams.put("CaseNumber", "" + capId.getCustomID());
-	reportName = "Court Ordered Clean Cover Sheet";
-	coverSheet = reportRunSave(reportName, false, true, true, "EnvHealth", reportParams, capId);
-	logDebug(coverSheet);
-	if (coverSheet)
+	if (rFiles.length < 1) {
+            reportParams = aa.util.newHashtable();
+            reportParams.put("CaseNumber", "" + capId.getCustomID());
+	    reportName = "Housing VEH Contractor Referral 18 Day";
+	    coverSheet = reportRunSave(reportName, false, false, true, "EnvHealth", reportParams, capId);
+	    logDebug(coverSheet);
+	    if (coverSheet)
 		rFiles.push(coverSheet);
-		
-		*/
+        }
 	
 	var emailParams = aa.util.newHashtable();
 	addParameter(emailParams, "$$capID$$", "" + capId.getCustomID());
