@@ -189,11 +189,12 @@ cnt++;
 				
 							if (inspSchedDate) //if there is a date it will move forward, otherwise skip this case/email.
 								{	
+aa.print('inspSchedDate valid');
 								difference_days = Math.abs(inspSchedDate.getTime() - startTime); //difference between today and the scheduled inspection date in milliseconds.
 								
 								daysToPI = Math.round(difference_days/oneDay);  //rounding the milliseconds and converting to days
 								daysToPI = daysToPI+1;
-					logMessage("172. "+"*****The EHS Email is - "+EHSemail+" and the Team Leader email is - "+TLemail+".  The PI is due in  "+daysToPI+" days"+br+br); 
+					aa.print("172. "+"*****The EHS Email is - "+EHSemail+" and the Team Leader email is - "+TLemail+".  The PI is due in  "+daysToPI+" days"+br+br); 
 									
 							if (daysToPI != mynum) //Condition to send email, scheduled reinspection must be exactly 7 days in the future for email to be sent.
 								{
@@ -285,32 +286,13 @@ function getEHSemailByUserID(inspectorByCT)
 	var inspectorEmail = null;
 		if(inspectorByCT != null)
 		{
-			var inspectorID2 = aa.person.getUser(inspectorByCT).getOutput();
-			if(inspectorID != null)
-					{
-						var	inspTypeArray2 = inspectorID2.toString().split("/");			// Array of Inspector path parts string
-						var inspectorName2 = inspTypeArray2[6];
-						var deptName2 = inspTypeArray2[2];
-						var ESemail = "" + lookup("HHemail",inspectorName);  //Inspector's name on the scheduled inspection.
-						var ESemail2 = "" + lookup("HHemail",inspectorName2);  	//inspector assigned to this census tract (not being used).  
-					}															//keeping ESemail2 to use in the future.  As of 03/17/2016, Lara Morgan wants all cases to go to her if the inspector on the inspection is wrong.
-					else
-					// If all else fails, send it to me.
-					{ESemail = "" + laraEmailAddress;}
-			if(ESemail == "undefined" || ESemail == null)
-				{
-				//logDebug("EHS email for (" + inspectorName + ") does not exist");
-				ESemail = "" + lookup("HHemail","Lara Morgan");
-				{inspectorEmail = ESemail;}
-				}
-				else
-				{inspectorEmail = ESemail;}
+			inspectorEmail = getEmailByUserID(inspectorByCT);
 		}
 		else
 		{
 		inspectorEmail = laraEmailAddress;
 		}
-		aa.print("413. deptName2: " + deptName2);
+		//aa.print("413. deptName2: " + deptName2);
 		//aa.print("414. inspectorName from CT: " + inspectorEmail+" "+inspectorEmail);
 		//aa.print("415. inspectorName from Insp: " + inspectorName+" "+inspectorName);
 return inspectorEmail;
@@ -364,4 +346,15 @@ function getTeamLeaderEmail(deptName,eCensusTract)
 		{TLemail = "" + laraEmailAddress;} // If the Census Tract is null or wrong, this is the catch-all.
 		//	aa.print("456. TLemail: " + TLemail);
 			return TLemail;
+}
+
+function getEmailByUserID(userId) { // optional capId
+
+    if (userId) {
+        var userRes = aa.person.getUser(userId);
+
+        if (userRes.getSuccess()) {
+            return userRes.getOutput().getEmail();
+        }
+    }
 }
