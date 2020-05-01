@@ -1,300 +1,188 @@
-/*----------------------------------------------------------------------------------------------------------------------/
-| Program:  BATCH_SPORE_TESTS.js
-| Trigger:  Batch
-| Client:   
-| Version:  1.0
-| Author:   Jake Cox
-|
-|---------------------------------------------------------------------------------------------------------------------*/
-
-/*--------------------------------------------------------------------------------------------------------------------|
-|
-|	BATCH: SHOWDEBUG OPTION 
-|	Set to "true" for outputing errors and debugging purposes. 
-|
-|---------------------------------------------------------------------------------------------------------------------*/
-var showDebug = true;
-//eval(getScriptText("INCLUDES_ACCELA_FUNCTIONS"));
-//eval(getScriptText("INCLUDES_ACCELA_GLOBALS"));
-eval(getScriptText("INCLUDES_CUSTOM"));
-
-/*--------------------------------------------------------------------------------------------------------------------|
-|	
-|	BATCH: NON-CONFIGURABLE PARAMETERS
-|	vSearchCapModel used by class : aa.cap.getCapListByCollection
-|
-|---------------------------------------------------------------------------------------------------------------------*/
-var vSearchCapModel = aa.cap.capModel.getOutput();
-var vSearchCapTypeModel = vSearchCapModel.capType;
-/*
-var paramsOK = true;		 Set to true to run batch job 
-var timeExpired = false;	 Variable to identify if batch script has timed out. Defaulted to "false". 
-var success = 0;			
-var maxSeconds = 5 * 60;	 Max time allowed ~ 15 min run time 
-var batchStartDate = new Date();				 System Date 
-var batchStartTime = batchStartDate.getTime();	 Start timer 
-var sysDate = aa.date.getCurrentDate();
-var batchJobID = aa.batchJob.getJobID().getOutput();
-var batchJobName = "" + aa.env.getValue("batchJobName");
-var systemUserObj = aa.person.getUser("ADMIN").getOutput();  Used for updating APP status 
-var updateStatusResult;
-var useAppSpecificGroupName = false;
-*/
-var useAppSpecificGroupName = false;
-var sysDate = aa.date.getCurrentDate();
-var batchJobID = aa.batchJob.getJobID().getOutput();
-	
-/*--------------------------------------------------------------------------------------------------------------------|
-|	BATCH: USER CONFIGURABLE PARAMETERS
-|	Assign Record Type to retrieve
-|---------------------------------------------------------------------------------------------------------------------*/
-//Record type: Enforcement/Solid Waste/Residential/Recycling 
-	vSearchCapTypeModel.setServiceProviderCode(aa.serviceProviderCode);
-	vSearchCapTypeModel.setGroup('EnvHealth');
-	vSearchCapTypeModel.setType('WQ');
-	vSearchCapTypeModel.setSubType('Body Art');
-	vSearchCapTypeModel.setCategory('License');
-
-//Convert to days	
-var daysBehind = -1;
-var daysAhead = -1;
-/* Convert to a date format */
-var fromDate = new Date(new Date().getFullYear(), 0, 1);
-var clFromDate = aa.date.parseDate(fromDate.getMonth() + 1 + '/' + fromDate.getDate() + '/' + fromDate.getFullYear());   
-var today = new Date();                        
-var clToDate = aa.date.parseDate(today.getMonth() + 1 + '/' + today.getDate() + '/' + today.getFullYear());
-
-/*--------------------------------------------------------------------------------------------------------------------|
-|	Convert to a common format (MM/DD/YYYY) and add leading "0"s to all dates 
-|---------------------------------------------------------------------------------------------------------------------*/
-//Parse all fields/variables to have leading "0" in dates ... e.g. 6/8/2016 = 06/08/2016
-//var JSfromDate = addZerosToDate(convertDate(clFromDate));  
-//var	JStoDate = addZerosToDate(convertDate(clToDate));
-	
-/*--------------------------------------------------------------------------------------------------------------------|
-|	EMAIL: PARAMETERS  
-|---------------------------------------------------------------------------------------------------------------------*/
-var senderEmailAddr = "accela@gmail.com";
-var toEmailAddress = "acox@hhcorp.org";
-var ccEmailAddress = "";
-var emailBody = ""; // variable defined and used to store messages
-	
 /*------------------------------------------------------------------------------------------------------/
+| Program: BATCH_SPORE_TESTS
+| Client:  MCPHD
 |
-| <===========Main=Loop================>
+| Version 1.0 - Base Version. 
 |
-/------------------------------------------------------------------------------------------------------*/
-//if (paramsOK){
-logMessage("START","Start of Pool Inspection Scheduling Batch Job.");
-//Get count of records updated
-var updatedRecordsCount = ScheduleSporeTests();
-//Message to Log output
-logMessage("INFO","Total Records Updated: " + updatedRecordsCount + ".");
-logMessage("INFO","End of batch Job");
-
-//if (toEmailAddress.length){
-//	aa.sendMail(senderEmailAddr, toEmailAddress, ccEmailAddress, emailSubject, emailBody);
-//}
-
-logMessage("INFO","Email Send: Total Batch Job");
-//}
-
-/*------------------------------------------------------------------------------------------------------/
-| <===========END=Main=Loop================>
-/------------------------------------------------------------------------------------------------------*/
-
-
-/*------------------------------------------------------------------------------------------------------/
-|	FUNCTIONS:
-|	<=========== Functions (used by Action entries)
-/------------------------------------------------------------------------------------------------------*/
-function ScheduleSporeTests()
-{
-	var capCount = 0;
-			//Retrieve records by date range
-			var collectionList = aa.cap.getCapListByCollection(vSearchCapModel, null, null, clFromDate, clToDate , null, new Array());
-		
-	if (!collectionList.getSuccess()){
-			logMessage("**ERROR","Retreiving records by Renewal Licenses Expiration Date and Status. Reason is: " + collectionList.getErrorType() + ":" + collectionList.getErrorMessage());
-			return false;
-		}
-
-	var capCollection = collectionList.getOutput(); // Script Result object.
-	return processRecords(capCollection);
-	
-	
-}//End of function
-
-/*---------------------------------------------------------------------------------------------------------------------
-| Function: processRecords(capCollection)
-| Arguments: capCollection
 | 
----------------------------------------------------------------------------------------------------------------------*/ 
+/------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------------------------------/
+|
+| START: USER CONFIGURABLE PARAMETERS
+|
+/------------------------------------------------------------------------------------------------------*/
+var emailText = "";
+var debugText = "";
+var showDebug = false;	
+var showMessage = false;
+var message = "";
+var maxSeconds = 7 * 60;
+var br = "<br>";
 
-function processRecords(Collection)
-{
-	var capCount = 0;
-	var asiFilter = 0;
-	var workflowFilter = 0;
-	var today = new Date();
-    var eom = new Date(today.getFullYear(), today.getMonth()+2, 21);
-	var endOfNextMonth = eom.getMonth() + 1 + '/' + eom.getDate() + '/' + eom.getFullYear();
-	thisCapCollection = Collection;
-	
-	for (i in thisCapCollection)
-	{
-		thisCollection = thisCapCollection[i];
-		altID = thisCollection.getCapModel().getAltID(); // Get Record ID
-		myCapID = aa.cap.getCapID(altID).getOutput();		// Get capID
-		var wfTask = aa.workflow.getTask(myCapID, 'Issuance'); // Get wfTask
-		
-		if(wfTask.getSuccess()) {
-			var wfOut = wfTask.getOutput();
-			var assignedToRecord = getAssignedToStaff(myCapID);
-			
-			aa.print("Disposition: " + wfOut.disposition);
-			
-			if(wfOut.disposition == 'Active') {
-				var asiValue = getAppSpecific('Spore Tests Required', myCapID);
-				aa.print("asiValue: " + asiValue);
-				if (asiValue == 'Yes') {
-					if(assignedToRecord != null) {
-						scheduleInspectDate('Spore Tests',endOfNextMonth,assignedToRecord);
-						capCount++;
-					} else {
-						scheduleInspectDate('Spore Tests',endOfNextMonth);
-						capCount++;
-					}
-				}
-				
-			}
-		}
-					
-	}//End of Collection loop
-	//Script test screen only...
-	aa.print("..........................................");
-	aa.print("Total CAPS retrieved by collection list:  " + thisCapCollection.length);
-	aa.print("Total CAPS processed/updated:             " + capCount);
-	aa.print("..........................................");
-	
-	return capCount; 
-	
-}
+/*------------------------------------------------------------------------------------------------------/
+|
+| END: USER CONFIGURABLE PARAMETERS
+|
+/------------------------------------------------------------------------------------------------------*/
+sysDate = aa.date.getCurrentDate();
+batchJobResult = aa.batchJob.getJobID()
+batchJobName = "" + aa.env.getValue("BatchJobName");
+wfObjArray = null;
 
-function getAssignedToStaff(capID) 
-{
-	var itemCap = capID
+eval(getMasterScriptText("INCLUDES_ACCELA_FUNCTIONS"));
+eval(getScriptText("INCLUDES_BATCH"));
+eval(getMasterScriptText("INCLUDES_CUSTOM"));
 
-	var cdScriptObjResult = aa.cap.getCapDetail(itemCap);
-	if (!cdScriptObjResult.getSuccess())
-		{ 	aa.print("**ERROR: No cap detail script object : " + cdScriptObjResult.getErrorMessage());
-			return false; }
-	
-	var cdScriptObj = cdScriptObjResult.getOutput();
+override = "function logDebug(dstr){ if(showDebug) { aa.print(dstr); emailText+= dstr + \"<br>\"; } }";
+eval(override);
 
-	if (!cdScriptObj)
-		{ 	aa.print("**ERROR: No cap detail script object") ;
-			return false; }
-		
-	cd = cdScriptObj.getCapDetailModel();
-	
-	//cd.setCompleteDept(iName.getDeptOfUser());
-	var returnValue = cd.getAsgnStaff();
-	//cdScriptObj.setCompleteDate(sysDate);
-	
-	aa.print("Returning Assigned To Staff value: " + returnValue);
-	
-	return returnValue;
-}
-
-function getScriptText(vScriptName) {
+function getScriptText(vScriptName){
 	vScriptName = vScriptName.toUpperCase();
 	var emseBiz = aa.proxyInvoker.newInstance("com.accela.aa.emse.emse.EMSEBusiness").getOutput();
-	var emseScript = emseBiz.getScriptByPK(aa.getServiceProviderCode(), vScriptName, "ADMIN");
+	var emseScript = emseBiz.getScriptByPK(aa.getServiceProviderCode(),vScriptName,"ADMIN");
 	return emseScript.getScriptText() + "";
 }
 
-function logMessage(etype,edesc)
-{
-    aa.eventLog.createEventLog(etype, "Batch Process", 'Pool Inspection Batch Job', sysDate, sysDate,"", edesc,batchJobID);
-    
-	if (arguments.length == 2) 
-		{
-		aa.print(etype + " : " + edesc);
-		emailBody+=etype + " : " + edesc + "<br />";
-			
-		}else{
-			aa.print(etype + ".");
-			emailBody+=etype + "." + "<br />";
-		}
-	
-	
+function getMasterScriptText(vScriptName) {
+    vScriptName = vScriptName.toUpperCase();
+    var emseBiz = aa.proxyInvoker.newInstance("com.accela.aa.emse.emse.EMSEBusiness").getOutput();
+    var emseScript = emseBiz.getMasterScript(aa.getServiceProviderCode(), vScriptName);
+    return emseScript.getScriptText() + "";
 }
 
-function scheduleInspectDate(iType,DateToSched) // optional inspector ID.
-// DQ - Added Optional 4th parameter inspTime Valid format is HH12:MIAM or AM (SR5110)
-// DQ - Added Optional 5th parameter inspComm
-{
-var inspectorObj = null;
-var inspTime = null;
-var inspComm = "Scheduled via Script";
-if (arguments.length >= 3)
-	if (arguments[2] != null)
-		{
-		var inspRes = aa.person.getUser(arguments[2]);
-		if (inspRes.getSuccess())
-			inspectorObj = inspRes.getOutput();
-		}
-
-	if (arguments.length >= 4)
-		if(arguments[3] != null)
-			inspTime = arguments[3];
-
-	if (arguments.length >= 5)
-		if(arguments[4] != null)
-			inspComm = arguments[4];
-
-var schedRes = aa.inspection.scheduleInspection(myCapID, inspectorObj, aa.date.parseDate(DateToSched), inspTime, iType, inspComm)
-
-if (schedRes.getSuccess())
-	aa.print("Successfully scheduled inspection : " + iType + " for " + DateToSched);
+showDebug = true;
+batchJobID = 0;
+if (batchJobResult.getSuccess())
+  {
+  batchJobID = batchJobResult.getOutput();
+  logDebug("Batch Job " + batchJobName + " Job ID is " + batchJobID);
+  }
 else
-	aa.print( "**ERROR: adding scheduling inspection (" + iType + "): " + schedRes.getErrorMessage());
-}
+  logDebug("Batch job ID not found " + batchJobResult.getErrorMessage());
 
-function getAppSpecific(itemName)  // optional: itemCap
-{
-	var updated = false;
-	var i=0;
-	//var itemCap = myCapID;
-	if (arguments.length == 2) myCapID = arguments[1]; // use cap ID specified in args
-   	
-	if (useAppSpecificGroupName)
-	{
-		if (itemName.indexOf(".") < 0)
-			{ aa.print("**WARNING: editAppSpecific requires group name prefix when useAppSpecificGroupName is true") ; return false }
-		
-		
-		var itemGroup = itemName.substr(0,itemName.indexOf("."));
-		var itemName = itemName.substr(itemName.indexOf(".")+1);
-	}
+
+/*----------------------------------------------------------------------------------------------------/
+|
+| Start: BATCH PARAMETERS
+|
+/------------------------------------------------------------------------------------------------------*/
+/* test parameters  */
+//aa.env.setValue("oldUserId", "KTUCKER3");
+//aa.env.setValue("newUserId", "KTUCKER");
+
+var oldUserId =  getParam("oldUserId");
+var newUserId = getParam("newUserId");
+
+
+/*----------------------------------------------------------------------------------------------------/
+|
+| End: BATCH PARAMETERS
+|
+/------------------------------------------------------------------------------------------------------*/
+var startDate = new Date();
+var startJSDate = new Date();
+startJSDate.setHours(0,0,0,0);
+var timeExpired = false;
+var useAppSpecificGroupName = false;
+
+var startTime = startDate.getTime();			// Start timer
+var currentUserID = "ADMIN";
+var systemUserObj = aa.person.getUser("ADMIN").getOutput();
+
+/*------------------------------------------------------------------------------------------------------/
+| <===========Main=Loop================>
+|
+/-----------------------------------------------------------------------------------------------------*/
+
+logDebug("Start of Job");
+
+mainProcess();
+
+logDebug("End of Job: Elapsed Time : " + elapsed() + " Seconds");
+
+
+if (showDebug) {
+	aa.eventLog.createEventLog("DEBUG", "Batch Process", batchJobName, aa.date.getCurrentDate(), aa.date.getCurrentDate(),"", emailText ,batchJobID);
+}
+//aa.print(emailText);
+/*------------------------------------------------------------------------------------------------------/
+| <===========END=Main=Loop================>
+/-----------------------------------------------------------------------------------------------------*/
+
+function mainProcess() {
+try{
+    var today = new Date();
+    var eom = new Date(today.getFullYear(), today.getMonth()+1, 21);
+    var endOfNextMonth = eom.getMonth() + 1 + '/' + eom.getDate() + '/' + eom.getFullYear();
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+	var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
+	var ds = initialContext.lookup("java:/AA");
+	var conn = ds.getConnection();
+
+    // records
+    var selectStringCap = "select b.b1_per_id1, b.b1_per_id2, b.b1_per_id3 from b1permit b where b.serv_prov_code = 'MCPHD' and b.b1_per_sub_type = 'Body Art' and b.B1_PER_CATEGORY = 'License'";
+    var sStmt = conn.prepareStatement(selectStringCap);
+    var rSet = sStmt.executeQuery();
+	capIdList = new Array();
+    while (rSet.next()) {
+        id1 = rSet.getString("b1_per_id1");
+        id2 = rSet.getString("b1_per_id2");
+        id3 = rSet.getString("b1_per_id3");
+        capIdList.push(id1 + "-" + id2 + "-" + id3);
+    }
+    rSet.close();
+    sStmt.close();
+    logDebug(capIdList.length + " Licenses to update");
+    if (capIdList.length > 0) {
+        for (var cIndex in capIdList) {
+            capId = capIdList[cIndex];
+            var capIdArr = capId.toString().split('-');
+            capId = aa.cap.getCapID(capIdArr[0], capIdArr[1], capIdArr[2]).getOutput();
+            if (capId) {
+                logDebug(capId.getCustomID());              
+
+                var wfTask = aa.workflow.getTask(capId, 'Routine Inspection'); // Get wfTask
+                
+                if(wfTask.getSuccess()) {
+                    var wfOut = wfTask.getOutput();
+                    
+                    if(wfOut.disposition == 'Active') {
+                        var asiValue = getAppSpecific('Spore Tests Required', capId);
+                        //aa.print("asiValue: " + asiValue);
+                        if (asiValue == 'Yes' || asiValue == 'Y') {
+                            //logDebug(monthNames[eom.getMonth()] + ' ' + eom.getFullYear() + '-' + endOfNextMonth);
+
+                            var dateText = monthNames[eom.getMonth()] + ' ' + eom.getFullYear();
+                            var rowVals = new Array();
+                            rowVals["Name"] = new asiTableValObj("Name", dateText, "N");
+                            rowVals["Date Due"] = new asiTableValObj("Date Due", endOfNextMonth, "N");
+                            rowVals["Date Received"] = new asiTableValObj("Date Received", '', "N");
+                            rowVals["Result"] = new asiTableValObj("Result", '', "N");
+                            rowVals["Attachment Name"] = new asiTableValObj("Attachment Name", '', "N");
+
+                            addToASITable('SPORE TESTS', rowVals, capId);
+                        }
+                        
+                    }
+                }
+                logDebug(''); 
+            }
+        }
+    }
+
+}catch (err){
+	logDebug("ERROR: " + err.message + " In " + batchJobName);
+	logDebug("Stack: " + err.stack);
+}}
 	
-    var appSpecInfoResult = aa.appSpecificInfo.getByCapID(myCapID);
-	if (appSpecInfoResult.getSuccess())
- 	{
-		var appspecObj = appSpecInfoResult.getOutput();
-		
-		if (itemName != "")
-		{
-			for (i in appspecObj)
-				if( appspecObj[i].getCheckboxDesc() == itemName && (!useAppSpecificGroupName || appspecObj[i].getCheckboxType() == itemGroup) )
-				{
-					return appspecObj[i].getChecklistComment();
-					break;
-				}
-		} // item name blank
-	} 
-	else
-		{ aa.print( "**ERROR: getting app specific info for Cap : " + appSpecInfoResult.getErrorMessage()) }
+/*------------------------------------------------------------------------------------------------------/
+| <===========Internal Functions and Classes (Used by this script)
+/------------------------------------------------------------------------------------------------------*/
+function getCapIdByIDs(s_id1, s_id2, s_id3)  {
+	var s_capResult = aa.cap.getCapID(s_id1, s_id2, s_id3);
+    if(s_capResult.getSuccess())
+		return s_capResult.getOutput();
+    else
+       return null;
 }
-
