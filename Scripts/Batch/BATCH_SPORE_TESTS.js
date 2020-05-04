@@ -153,7 +153,7 @@ try{
                         if (asiValue == 'Yes' || asiValue == 'Y') {
                             //logDebug(monthNames[eom.getMonth()] + ' ' + eom.getFullYear() + '-' + endOfNextMonth);
 
-                            var dateText = monthNames[eom.getMonth()] + ' ' + eom.getFullYear();
+                            var dateText = monthNames[eom.getMonth()-1] + ' ' + eom.getFullYear();
                             var rowVals = new Array();
                             rowVals["Name"] = new asiTableValObj("Name", dateText, "N");
                             rowVals["Date Due"] = new asiTableValObj("Date Due", endOfNextMonth, "N");
