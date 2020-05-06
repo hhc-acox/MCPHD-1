@@ -192,9 +192,8 @@ function HHC_doWorkflowActions() {
                                                     if (appTypeString.indexOf('Food') > -1) {
                                                         scheduleFoodInspectionsByDate(InspTypeToSchedule, nextWorkDay(dateAdd(null, DaysToScheduleInTheFuture)), assignedInspector, capId)
                                                     } else {
-
+                                                        scheduleInspectDate(InspTypeToSchedule, nextWorkDay(dateAdd(null, DaysToScheduleInTheFuture)), assignedInspector); //schedule inspection using #ofDays field
                                                     }
-                                                    scheduleInspectDate(InspTypeToSchedule, nextWorkDay(dateAdd(null, DaysToScheduleInTheFuture)), assignedInspector); //schedule inspection using #ofDays field
                                                 } else {
                                                     if (appTypeString.indexOf('Food') > -1) {
                                                         scheduleFoodInspectionsByDate(InspTypeToSchedule, nextWorkDay(dateAdd(null, 0)), assignedInspector, capId)
