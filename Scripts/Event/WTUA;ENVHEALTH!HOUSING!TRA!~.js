@@ -141,9 +141,14 @@ if (wfTask == 'Final Processing' && (wfStatus == 'Permanent Injunction') && getT
 	editTaskSpecific('Final Processing','Reinspection Date',nextWorkDay(dateAdd(null,179)));
 	}
 
-if (wfTask == 'Recurring Inspection' && wfStatus == 'Reinspect' && getTSIfieldValue('Reinspection Date', 'Final Processing') != null) {
-	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Final Processing'),assignedEHS);
+if (wfTask == 'Recurring Inspection' && wfStatus == 'Reinspect' && getTSIfieldValue('Reinspection Date', 'Recurring Inspection') != null) {
+	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Recurring Inspection'),assignedEHS);
 	}
+
+if (wfTask == 'Recurring Inspection' && wfStatus == 'Reinspect' && getTSIfieldValue('Reinspection Date', 'Recurring Inspection') == null) {
+	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,179)),assignedEHS);
+	}
+
 //Closing the Case-----------------------------------------------------------------------------------------------------------------Closing the Case
 if (matches(wfTask,'Reinspection','Additional Processing','Final Processing','Recurring Inspection','Request EHSM Clean','Requesting Admin Court Order') && matches(wfStatus,'In Compliance', 'Non-Compliance/Case Closed','Cleaned by Other','Cleaned No Billing','Finaled', 'Closed') && balanceDue > 0) {
 	//updateTask('Final Processing','Closed/Fees Outstanding','Updated by Script'); Not changed
