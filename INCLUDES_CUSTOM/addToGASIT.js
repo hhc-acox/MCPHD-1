@@ -15,16 +15,23 @@ function addToGASIT(gsi, pTableName, pArrayToAdd) {
                     {
                         var column = newColumnList.get(k);
                         for (l = 0; l < pArrayToAdd.length; l++) {
-                            var cValueMap = column.getValueMap();
-                            var newColumn = new com.accela.aa.inspection.guidesheet.asi.GGSItemASITableValueModel;
-                            var pReadOnly = "F";
-                            //logDebug(pArrayToAdd[l][column.getColumnName()]);
-                            newColumn.setColumnIndex(j);
-                            newColumn.setRowIndex(l);
-                            newColumn.setAttributeValue((pArrayToAdd[l][column.getColumnName()] == null || pArrayToAdd[l][column.getColumnName()] == 'undefined' ? "" : pArrayToAdd[l][column.getColumnName()]));
-                            newColumn.setAuditDate(new java.util.Date());
-                            newColumn.setAuditID("ADMIN");
-                            cValueMap.put(l, newColumn);
+                            if (pArrayToAdd[l]) {
+                                var cValueMap = column.getValueMap();
+                                var newColumn = new com.accela.aa.inspection.guidesheet.asi.GGSItemASITableValueModel;
+                                var pReadOnly = "F";
+                                //logDebug(pArrayToAdd[l][column.getColumnName()]);
+                                newColumn.setColumnIndex(j);
+                                newColumn.setRowIndex(l);
+    
+                                if (!column) {
+                                    newColumn.setAttributeValue("");
+                                } else {
+                                    newColumn.setAttributeValue((pArrayToAdd[l][column.getColumnName()] == null || pArrayToAdd[l][column.getColumnName()] == 'undefined' ? "" : pArrayToAdd[l][column.getColumnName()]));
+                                }
+                                newColumn.setAuditDate(new java.util.Date());
+                                newColumn.setAuditID("ADMIN");
+                                cValueMap.put(l, newColumn);
+                            }
                         }
                     }
                 }
