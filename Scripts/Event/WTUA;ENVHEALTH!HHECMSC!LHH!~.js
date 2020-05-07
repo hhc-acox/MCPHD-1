@@ -58,7 +58,9 @@ if (wfTask == "Initial Processing" && (wfStatus == "Reinspection" || wfStatus ==
 	}
 
 if (wfTask == "Initial Processing" && (wfStatus == "Reinspection" || wfStatus == "Complete Reinspection Ltr" || wfStatus == "Complete Lead Clear Fail Ltr" || wfStatus == "Complete Lead Reinspection Ltr"|| wfStatus == "Complete Next Action Court Ltr"|| wfStatus == "Complete Lead Risk Ass Ltr") && (matches(theDate,"",null,"undefined"))) {
-	scheduleInspectDate("Reinspection",nextWorkDay(dateAdd(null,29)),AInfo["Assigned To"]);
+	//scheduleInspectDate("Reinspection",nextWorkDay(dateAdd(null,29)),AInfo["Assigned To"]);
+        inspId = scheduleInspectDateReturnInspID("Reinspection",nextWorkDay(dateAdd(null,29)),AInfo["Assigned To"]);
+	copyLeadViolations(inspId);
 	editTaskSpecific("Initial Processing","Reinspection Date",nextWorkDay(dateAdd(null,29)));
 	}
 
@@ -68,8 +70,10 @@ if (wfTask == "Reinspection" && matches(wfStatus,"Reinspection","Complete Reinsp
 	}
 
 if (wfTask == "Reinspection" && matches(wfStatus,"Reinspection","Complete Reinspection Ltr","Complete Next Action Court Ltr","Complete Lead Reinspection Ltr", "Complete Lead Clear Fail Ltr","Complete Lead Add Vio Reinspection Ltr") && matches(theDate,"",null,"undefined")) {
-	scheduleInspectDate("Reinspection",nextWorkDay(dateAdd(null,29)),AInfo["Assigned To"]);
+	//scheduleInspectDate("Reinspection",nextWorkDay(dateAdd(null,29)),AInfo["Assigned To"]);
 	editTaskSpecific("Reinspection","Reinspection Date",nextWorkDay(dateAdd(null,29)));
+        inspId = scheduleInspectDateReturnInspID("Reinspection",nextWorkDay(dateAdd(null,29)),AInfo["Assigned To"]);
+	copyLeadViolations(inspId);
 	}
 	
 if (wfTask == "Reinspection" && wfStatus == "Court Case") {
