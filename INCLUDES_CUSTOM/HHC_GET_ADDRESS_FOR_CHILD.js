@@ -2,31 +2,35 @@ function HHC_GET_ADDRESS_FOR_CHILD()
 {
 	try{
 
-		var addrResult = aa.address.getAddressByCapId(capId);
-		var addrArray = new Array();
-		var addrArray = addrResult.getOutput();
-		var streetName = addrArray[0].getStreetName();
-		var hseNum = addrArray[0].getHouseNumberStart();
-		var streetSuffix = addrArray[0].getStreetSuffix();
-		var streetDir = addrArray[0].getStreetDirection();
-			if (streetSuffix == null || streetSuffix == '' || streetSuffix == 'undefined') {
-				streetSuffix = ' ';
-				}
+				var capAddrResult = aa.address.getAddressByCapId(capId);
+				    var addressToUse = null;
+				    var strAddress = "";
 
-			if (streetDir == null || streetDir == '' || streetDir == 'undefined') {
-				streetDir == ' ';
-				}
+				    if (capAddrResult.getSuccess()) {
+					var addresses = capAddrResult.getOutput();
+					if (addresses) {
+					    for (zz in addresses) {
+						    capAddress = addresses[zz];
+						if (capAddress.getPrimaryFlag() && capAddress.getPrimaryFlag().equals("Y")) 
+						    addressToUse = capAddress;
+					    }
+					    if (addressToUse == null)
+						addressToUse = addresses[0];
 
-			comment ('The Address is: '+hseNum+' '+streetDir+' '+streetName+' '+streetSuffix);
-			if (streetDir == null) {
-				editAppName(hseNum+' '+streetName+' '+streetSuffix,newChildID);
-				comment('The Child ID is: '+newChildID);
-				}
-
-			if (streetDir != null) {
-				editAppName(hseNum+' '+streetDir+' '+streetName+' '+streetSuffix,newChildID);
-				comment('The Child ID is: '+newChildID);
-				}
+					    if (addressToUse) {
+						addr=addressToUse;
+						strAddress = addr.getHouseNumberStart();
+						strAddress += (addr.getStreetDirection() != null ? " " + addr.getStreetDirection() : "");
+						strAddress += (addr.getStreetName() != null ? " " + addr.getStreetName() : "");
+						strAddress += (addr.getStreetSuffix() != null ? " " + addr.getStreetSuffix() : "");
+						strAddress += (addr.getUnitType() != null ? " " + addr.getUnitType() : "");
+						strAddress += (addr.getUnitStart() != null ? " " + addr.getUnitStart() : "");				
+					    }
+					}
+				    }
+				    if (strAddress != "") {
+					editAppName(strAddress, newChildID);
+				    }
 				}
 	catch(err)
 		{
