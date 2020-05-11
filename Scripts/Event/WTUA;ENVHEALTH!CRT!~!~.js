@@ -66,3 +66,6 @@ try{
 	logDebug(err.stack)
 }
 //lwacht: 181030: #124: end
+if (wfTask == 'Court' && wfStatus == 'Compliance') {
+    deactivateTask('Permanent Injunction');
+}
