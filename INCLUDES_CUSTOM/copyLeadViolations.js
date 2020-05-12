@@ -2,7 +2,7 @@
 function copyLeadViolations(inspId) {
 
 	var conn = new db();
-	var sql = "SELECT G6_ACT_NUM FROM G6ACTION WHERE SERV_PROV_CODE='{0}' AND B1_PER_ID1='{1}' AND B1_PER_ID2='{2}' AND B1_PER_ID3='{3}' AND G6_ACT_TYP in ('Initial Lead Inspection', 'Yearly Lead Inspection') and g6_status = 'In Violation' ORDER BY G6_COMPL_DD DESC";
+	var sql = "SELECT G6_ACT_NUM FROM G6ACTION WHERE SERV_PROV_CODE='{0}' AND B1_PER_ID1='{1}' AND B1_PER_ID2='{2}' AND B1_PER_ID3='{3}' AND G6_ACT_TYP in ('Initial Lead Inspection', 'Reinspection', 'Yearly Lead Inspection') and g6_status = 'In Violation' ORDER BY G6_COMPL_DD DESC";
 	sql = sql.replace("{0}", String(aa.getServiceProviderCode()))
 		.replace("{1}", String(capId.getID1()))
 		.replace("{2}", String(capId.getID2()))
