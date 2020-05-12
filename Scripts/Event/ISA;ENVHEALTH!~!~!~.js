@@ -1,7 +1,7 @@
 showDebug = true;
 showMessage = true;
 
-if (inspId) {
+if (inspId && !appMatch('EnvHealth/Housing/*/*')) {
     var capContactResult = aa.people.getCapContactByCapID(capId);
     var phoneNumber = "";
     var contactname = "";
