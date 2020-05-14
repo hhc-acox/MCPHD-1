@@ -17,6 +17,8 @@ function doGuidesheetAutomation() {
             tinspType = arguments[1];
         }
 
+        //logDebug('GS Automation - InspId: ' + tinspId + ' InspType: ' + tinspType);
+
         //see if any records are set up--module can be specific or "ALL", look for both
         var sepScriptConfig = aa.cap.getCapIDsByAppSpecificInfoField("Module Name", appTypeArray[0]);
         if(sepScriptConfig.getSuccess()){
@@ -64,7 +66,7 @@ function doGuidesheetAutomation() {
                                     var cVal = ""+sepRules[row]["Custom Field Value"];
                                     var custVal = cVal.trim();
     
-                                    if (!matches(custFld,"",null,"undefined")) {
+                                    if (!matches(custFld,"",null,"undefined") && !matches(custVal,"",null,"undefined")) {
                                         if (getAppSpecific(custFld) != custVal) {
                                             customValid = false;
                                         }
@@ -85,17 +87,20 @@ function doGuidesheetAutomation() {
                                         }
     
                                         for (yy in exarrAppType) {
-                                            if ((exarrAppType[yy][1] == arrAppType[1] || arrAppType[1] == '*') && (exarrAppType[yy][2] == arrAppType[2] || arrAppType[2] == '*') && (exarrAppType[yy][3] == arrAppType[3] || arrAppType[3] == '*')) {
+                                            if ((exarrAppType[yy][1] == appTypeArray[1] || exarrAppType[yy][1] == '*') && (exarrAppType[yy][2] == appTypeArray[2] || exarrAppType[yy][2] == '*') && (exarrAppType[yy][3] == appTypeArray[3] || exarrAppType[yy][3] == '*')) {
                                                 excludeApp = true;
                                             }
                                         }
     
                                         for (zz in exarrInspType) {
-                                            if (exarrInspType == tinspType) {
+                                            if (exarrInspType[zz] == tinspType) {
                                                 excludeInsp = true;
                                             }
                                         }
                                     }
+                                    
+                                    //var doThis = appMatch && !excludeApp && !excludeInsp && customValid && (cInspType == tinspType || cInspType == 'any' || cInspType == '');
+                                    //logDebug('appmatch: ' + appMatch + ' excludeApp : ' + excludeApp + ' excludeInsp : ' + excludeInsp + ' customValid : ' + customValid);
                                     
                                     if(appMatch && !excludeApp && !excludeInsp && customValid && (cInspType == tinspType || cInspType == 'any' || cInspType == '')) {
                                         var tProxy = aa.proxyInvoker.newInstance("com.accela.aa.inspection.guidesheet.GGuideSheetBusiness");
@@ -118,7 +123,7 @@ function doGuidesheetAutomation() {
                                                         }
     
                                                         if (removeGGD) {
-                                                            logDebug('Removing: ' + tGuideSheet.getGuideType());
+                                                            //logDebug('Removing: ' + tGuideSheet.getGuideType());
                                                             var res = tProxyOut.removeGGuideSheet(capId,tinspId,tGuideSheet.getGuideType(),'ADMIN');
                                                         }
                                                     }
