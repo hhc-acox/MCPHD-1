@@ -27,8 +27,8 @@ function doFoodsChecklists(inspectionId, tCapId) {
                                     var gItemName = item.getGuideItemText().trim();
                                     var stdChoiceKey = guidesheetName + ' | ' + gItemName;
     
-                                    var severity = lookup('FS_Severity', stdChoiceKey);
-                                    var correctiveAction = lookup('FS_CorrectiveAction', stdChoiceKey);
+                                    var severity = lookupNoLog('FS_Severity', stdChoiceKey);
+                                    var correctiveAction = lookupNoLog('FS_CorrectiveAction', stdChoiceKey);
     
                                     if (severity || correctiveAction) {
     
