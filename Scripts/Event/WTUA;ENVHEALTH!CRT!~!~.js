@@ -66,6 +66,6 @@ try{
 	logDebug(err.stack)
 }
 //lwacht: 181030: #124: end
-if (wfTask == 'Court' && wfStatus == 'Compliance') {
+if (wfTask == 'Court' && matches(wfStatus,'Admin EHSM Clean Up Needed','Cause Dismiss','Compliance','Dismiss for Demo', 'Dismiss for VBE Hearing', 'EC Clean Up', 'EHSM Clean Up')) {
     deactivateTask('Permanent Injunction');
 }
