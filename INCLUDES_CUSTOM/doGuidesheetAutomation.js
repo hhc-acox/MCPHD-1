@@ -117,7 +117,7 @@ function doGuidesheetAutomation() {
     
                                                     if (tGuideSheet) {
                                                         for (jj in arrGuideType) {
-                                                            if (arrGuideType[jj] == tGuideSheet.getGuideType()) {
+                                                            if (arrGuideType[jj] == tGuideSheet.getGuideType() || tGuideSheet.getGuideType().indexOf('Failed items') > -1) {
                                                                 removeGGD = false;
                                                             }
                                                         }
