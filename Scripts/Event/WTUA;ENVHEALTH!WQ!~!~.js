@@ -60,7 +60,7 @@ updateTask('Permit Issuance','Pending','Updated by script');
 assignTask('Permit Issuance', supportStaff);
 }
 if (appMatch("EnvHealth/WQ/OWTS/NA") && wfTask == 'Inspection' && wfStatus == 'Approved') {
-var supportStaff = hhcgetUserByDiscipline('WQBodyArtChildCareSupp');
+var supportStaff = hhcgetUserByDiscipline('WQPoolsSupv');
 updateTask('Final Permit Issuance','Pending','Updated by script');
 assignTask('Final Permit Issuance', supportStaff);
 }
@@ -73,6 +73,6 @@ if (appMatch("EnvHealth/WQ/Pump/NA") && wfTask == 'Application Review' && wfStat
     assignTask('Permit Issuance', supportStaff);
 }
 if ((appMatch("EnvHealth/WQ/Well/NA") || appMatch("EnvHealth/WQ/Pump/NA")) && wfTask == 'Inspection' && wfStatus == 'Approved') {
-    var supportStaff = hhcgetUserByDiscipline('WQBodyArtChildCareSupp');
+    var supportStaff = hhcgetUserByDiscipline('WQPoolsSupv');
     assignTask('Final Permit Creation', supportStaff);
 }
