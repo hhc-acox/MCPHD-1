@@ -135,7 +135,8 @@ try{
             inspId = capIdArr[3];
             capId = aa.cap.getCapID(capIdArr[0], capIdArr[1], capIdArr[2]).getOutput();
             if (capId) {
-                aa.inspection.resultInspection(capId, inspId, 'Waiting on Lab', resultDate, resultComment, 'ADMIN');
+                var sysDateYYYYMMDD = dateFormatted(sysDate.getMonth(),sysDate.getDayOfMonth(),sysDate.getYear(),"YYYY-MM-DD");
+                aa.inspection.resultInspection(capId, inspId, 'Waiting on Lab',sysDateYYYYMMDD, resultComment, 'ADMIN');
                 logDebug('Resulted: ' + inspId);
             }
         }
