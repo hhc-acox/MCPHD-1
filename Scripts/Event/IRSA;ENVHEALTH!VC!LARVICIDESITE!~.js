@@ -1,6 +1,6 @@
 showDebug = true;
 showMessage = true;
-var resultDate = sysDate;
+var resultDate = dateFormatted(sysDate.getMonth(),sysDate.getDayOfMonth(),sysDate.getYear(),"YYYY-MM-DD");
 var resultComment = 'Updated by Script';
 
 gName = "VC_LARVICIDE";
