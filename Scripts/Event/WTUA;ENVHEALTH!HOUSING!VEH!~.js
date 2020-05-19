@@ -17,7 +17,7 @@ if (wfTask == 'Additional Processing' && matches(wfStatus,'Contractor Referral 1
 editTaskSpecific('Additional Processing','Reinspection Date',nextWorkDay(dateAdd(null,13)));
 	}
 
-if (wfTask == 'Additional Processing' && wfStatus == 'Contractor Referral 18 Day') {
+if (wfTask == 'Additional Processing' && wfStatus == 'Complete Cntr Referral 18 Day') {
     sendTowingEmail();
 }
 
