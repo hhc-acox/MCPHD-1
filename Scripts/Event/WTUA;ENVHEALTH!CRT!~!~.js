@@ -53,7 +53,7 @@ try{
 			parCapId = getApplication(parAltId);
 		}
 		if(parCapId){
-			updateAppStatus("Active","Updated via WTUA:EnvHealth/Housing/*/*", parCapId);
+			//updateAppStatus("Active","Updated via WTUA:EnvHealth/Housing/*/*", parCapId);
 			if(checkInspectionResult("Reinspection","Scheduled")){
 				resultInspection("Reinspection", "Cancelled", sysDate, "Updated via WTUA:EnvHealth/Housing/*/*") 
 			}
