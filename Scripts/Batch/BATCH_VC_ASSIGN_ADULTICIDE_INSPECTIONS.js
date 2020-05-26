@@ -102,28 +102,28 @@ function AssignAdulticideInspections(){
         //SetMemberArray.size()
         for(var i=0; i < SetMemberArray.size(); i++)  {
             capId = SetMemberArray.get(i);
-            aa.print('PROCESSING: ' + capId);
+            //aa.print('PROCESSING: ' + capId);
 
             //copyParcelGisObjects();
             var aZone = getAdulticideZone(capId);
-            aa.print("ZONE: "+aZone);
+            //aa.print("ZONE: "+aZone);
             if(aZone){
                 assignTech = lookupLOCAL("GIS - Adulticide Techs", aZone);
-                aa.print('TECH: ' + assignTech);
+                //aa.print('TECH: ' + assignTech);
                 if (assignTech && assignTech != null && assignTech != "") {
                     
                     if (checkInspectionResult("Adulticide", "Scheduled") == true) { 
                         var inspNum=getScheduledInspId("Adulticide");
-                        assignInspection(inspNum, assignTech);
-                        assignCap(assignTech);
-                        updateAppStatus("Assigned");
-                        editAppSpecific("Zone",aZone);
+                        assignInspectionNoLog(inspNum, assignTech);
+                        assignCapNoLog(assignTech);
+                        updateAppStatusNoLog("Assigned");
+                        editAppSpecificNoLog("Zone",aZone);
                         aa.print('ASSIGNED ' + inspNum + ' TO ' + assignTech);
                         count++;
                     }
                 }
             }
-            aa.print('');    
+            //aa.print('');    
         }
     }
 
@@ -160,4 +160,124 @@ function lookupLOCAL(stdChoice,stdValue)  {
 		message += "<FONT color='RED'>lookup(" + stdChoice + "," + stdValue + ") does not exist</FONT>" + br;
 	}
 	return strControl;
+}
+
+function assignInspectionNoLog(iNumber, iName) {
+	// optional capId
+	// updates the inspection and assigns to a new user
+	// requires the inspection id and the user name
+	// V2 8/3/2011.  If user name not found, looks for the department instead
+	//
+
+	var itemCap = capId
+		if (arguments.length > 2)
+			itemCap = arguments[2]; // use cap ID specified in args
+
+		iObjResult = aa.inspection.getInspection(itemCap, iNumber);
+	if (!iObjResult.getSuccess()) {
+		//logDebug("**WARNING retrieving inspection " + iNumber + " : " + iObjResult.getErrorMessage());
+		return false;
+	}
+
+	iObj = iObjResult.getOutput();
+
+	iInspector = aa.person.getUser(iName).getOutput();
+
+	if (!iInspector) // must be a department name?
+	{
+		var dpt = aa.people.getDepartmentList(null).getOutput();
+		for (var thisdpt in dpt) {
+			var m = dpt[thisdpt]
+				if (iName.equals(m.getDeptName())) {
+					iNameResult = aa.person.getUser(null, null, null, null, m.getAgencyCode(), m.getBureauCode(), m.getDivisionCode(), m.getSectionCode(), m.getGroupCode(), m.getOfficeCode());
+
+					if (!iNameResult.getSuccess()) {
+						//logDebug("**WARNING retrieving department user model " + iName + " : " + iNameResult.getErrorMessage());
+						return false;
+					}
+
+					iInspector = iNameResult.getOutput();
+				}
+		}
+	}
+
+	if (!iInspector) {
+		//logDebug("**WARNING could not find inspector or department: " + iName + ", no assignment was made");
+		return false;
+	}
+
+	//logDebug("assigning inspection " + iNumber + " to " + iName);
+
+	iObj.setInspector(iInspector);
+
+	if (iObj.getScheduledDate() == null) {
+		iObj.setScheduledDate(sysDate);
+	}
+
+	aa.inspection.editInspection(iObj)
+}
+
+function assignCapNoLog(assignId) // option CapId
+	{
+	var itemCap = capId
+	if (arguments.length > 1) itemCap = arguments[1]; // use cap ID specified in args
+
+	var cdScriptObjResult = aa.cap.getCapDetail(itemCap);
+	if (!cdScriptObjResult.getSuccess())
+		{ return false; }
+
+	var cdScriptObj = cdScriptObjResult.getOutput();
+
+	if (!cdScriptObj)
+		{ return false; }
+
+	cd = cdScriptObj.getCapDetailModel();
+
+	iNameResult  = aa.person.getUser(assignId);
+
+	if (!iNameResult.getSuccess())
+		{ return false ; }
+
+	iName = iNameResult.getOutput();
+
+	cd.setAsgnDept(iName.getDeptOfUser());
+	cd.setAsgnStaff(assignId);
+
+	cdWrite = aa.cap.editCapDetail(cd)
+	}
+
+function updateAppStatusNoLog(stat,cmt) // optional cap id
+{
+	var itemCap = capId;
+	if (arguments.length == 3) 
+		itemCap = arguments[2]; // use cap ID specified in args
+
+	var updateStatusResult = aa.cap.updateAppStatus(itemCap, "APPLICATION", stat, sysDate, cmt, systemUserObj);
+	if (updateStatusResult.getSuccess()) {}
+	else {}
+}
+
+function editAppSpecificNoLog(itemName,itemValue)  // optional: itemCap
+{
+	var itemCap = capId;
+	var itemGroup = null;
+	if (arguments.length == 3) itemCap = arguments[2]; // use cap ID specified in args
+   	
+  	if (useAppSpecificGroupName)
+	{
+		if (itemName.indexOf(".") < 0)
+			{ return false }
+		
+		
+		itemGroup = itemName.substr(0,itemName.indexOf("."));
+		itemName = itemName.substr(itemName.indexOf(".")+1);
+	}
+   	
+   	var appSpecInfoResult = aa.appSpecificInfo.editSingleAppSpecific(itemCap,itemName,itemValue,itemGroup);
+
+	if (appSpecInfoResult.getSuccess())
+	 {
+	 	if(arguments.length < 3) //If no capId passed update the ASI Array
+	 		AInfo[itemName] = itemValue; 
+	}
 }
