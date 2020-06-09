@@ -25,13 +25,13 @@
 					addressToUse = addresses[0];
 
 				if (addressToUse) {
-					strAddress = addressToUse.getHouseNumberStart();				
-					var addPart = addressToUse.getStreetName();
-					if (addPart && addPart != "") 
-						strAddress += " " + addPart;	
-					var addPart = addressToUse.getStreetSuffix();
-					if (addPart && addPart != "") 
-						strAddress += " " + addPart;					
+					addr=addressToUse;
+                                        strAddress = addr.getHouseNumberStart();
+                                        strAddress += (addr.getStreetDirection() != null ? " " + addr.getStreetDirection() : "");
+                                        strAddress += (addr.getStreetName() != null ? " " + addr.getStreetName() : "");
+                                        strAddress += (addr.getStreetSuffix() != null ? " " + addr.getStreetSuffix() : "");
+                                        strAddress += (addr.getUnitType() != null ? " " + addr.getUnitType() : "");
+                                        strAddress += (addr.getUnitStart() != null ? " " + addr.getUnitStart() : "");						
 				}
 			}
 		}
