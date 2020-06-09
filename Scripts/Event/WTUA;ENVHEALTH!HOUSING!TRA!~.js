@@ -12,7 +12,7 @@ if (wfTask == 'Additional Processing' && wfStatus == 'Request Administrative Hea
 	var schedDate = aa.date.parseDate(month + '/' + day + '/' + year)	
         scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,59)),assignedEHS); 
 	updateAppStatus('Administrative Hearing','Status Updated by Script');
-	//addStdConditionWithExpiration("Record Hold", "Admin Hearing",schedDate);
+	addStdConditionWithExpiration("Record Hold", "Admin Hearing",schedDate);
 }
 
 if (wfTask == 'Initial Processing' && matches(wfStatus,'Complete Notice of Violation','Complete Emergency NOV') && getTSIfieldValue('Reinspection Date', 'Initial Processing') != null) {
@@ -63,6 +63,11 @@ if (wfTask == 'Additional Processing' && wfStatus == 'Request EHSM Clean') {
 	}
 	
 if (wfTask == 'Additional Processing' && wfStatus == 'Request Admin Court Order') {
+        var today = new Date();
+	var day = today.getDate() + 60;
+	var month = today.getMonth() + 1;
+	var year = today.getFullYear();
+	var schedDate = aa.date.parseDate(month + '/' + day + '/' + year)
 	//HHC_CREATE_COURT();
 	//editAppSpecific('Admin Court Order','Yes',newChildID);
 	activateTask('Requesting Admin Court Order');
@@ -73,6 +78,7 @@ if (wfTask == 'Additional Processing' && wfStatus == 'Request Admin Court Order'
 	censusTract = AInfo['ParcelAttribute.CensusTract'];
 	areaTeamLeader = lookup('Census - Team Leader',censusTract); 
 	assignTask('Requesting Admin Court Order',areaTeamLeader);
+        addStdConditionWithExpiration("Record Hold", "Admin Hearing",schedDate);
 	}
 
 if (wfTask == 'Additional Processing' && wfStatus == 'Ticket' && AInfo['Ticket Due Date'] != null) {
@@ -163,6 +169,10 @@ if (matches(wfTask,'Reinspection','Additional Processing','Final Processing','Re
 
 if (wfTask == 'Additional Processing' && wfStatus == 'Court Case') {
 	HHC_VIOLATIONS_LOOP_COURT(); //Sets all the violation statuses to Court
+	}
+
+if (matches(wfTask,'Requesting Admin Court Order') && matches(wfStatus,'Non-Compliance/Case Closed')) {
+	deactivateTask('Request Towing');
 	}
 
 if (wfTask == 'Additional Processing' && wfStatus == 'Court Case') {
