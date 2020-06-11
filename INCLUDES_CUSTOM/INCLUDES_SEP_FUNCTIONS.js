@@ -963,15 +963,20 @@ function sepIssueLicenseWorkflow(){
                                                     }
 
                                                     var assignToNewRecord = "" + getAssignedToRecord();
+                                                    var tzone = getGISInfo("MCPHD", 'FoodsDistrict', 'district');
                                                     var currCapId = capId;
                                                     capId = parCapId;
                                                     licEditExpInfo(newAppStatus, expDate);
                                                     updateAppStatus(newAppStatus, "Updated via sepIssueLicenseWorkflow.");
 
-                                                    assignCap(assignToNewRecord);
                                                     if (appTypeString.indexOf('Food') > -1) {
+                                                        if (appTypeString.indexOf('Establishment')) {
+                                                            assignToNewRecord = lookup('GIS - Foods EHS',tzone); 
+                                                        }
+                                                        assignCap(assignToNewRecord);
                                                         scheduleFoodInspectionsByDate('Initial', nextWorkDay(), assignToNewRecord, capId)
                                                     } else {
+                                                        assignCap(assignToNewRecord);
                                                         scheduleInspectDate('Initial',nextWorkDay(),assignToNewRecord);
                                                     }
 						                            
@@ -1064,6 +1069,7 @@ function sepIssueLicenseWorkflow(){
         logDebug(err.stack)
 	}
 }
+
 //copy of copyAppSpecific and copyASITables except optional param is include not ignore
 function copyAppSpecificInclude(newCap) // copy all App Specific info into new Cap, 1 optional parameter for ignoreArr
 {
