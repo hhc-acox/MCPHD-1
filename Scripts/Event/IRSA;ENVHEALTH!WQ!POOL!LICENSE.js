@@ -6,7 +6,6 @@ if (String(inspType) == "Pool Test Results" && String(inspResult) == "Unsatisfac
 
     //GQ: TICKET #263 -- RESCHEDULE & NOTIFY
     var assignedToRecord = getAssignedToRecord();
-    scheduleInspectDate('Recheck', dateAdd(null, 1, true), assignedToRecord);
 
     var capContactResult = aa.people.getCapContactByCapID(capId);
     var emailAddress="";
@@ -86,6 +85,7 @@ if (String(inspType) == "Pool Test Results" && String(inspResult) == "Unsatisfac
     if (doAddConn) {
         logDebug("Add Condition");
         addStdCondition("Test Results", "Unsatisfactory Test Results");
+        scheduleInspectDate('Recheck', dateAdd(null, 1, true), assignedToRecord);
     }
 }
 
