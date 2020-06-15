@@ -54,9 +54,74 @@ try{
 		}
 		if(parCapId){
 			//updateAppStatus("Active","Updated via WTUA:EnvHealth/Housing/*/*", parCapId);
-			if(checkInspectionResult("Reinspection","Scheduled")){
-				resultInspection("Reinspection", "Cancelled", sysDate, "Updated via WTUA:EnvHealth/Housing/*/*") 
-			}
+			            
+            if (parCapId.getCustomID().indexOf('TRA') > -1) {
+                var saveID = capId;
+                capId = parCapId;
+
+                logDebug("Trying to close PI on TRA");
+                closeTask("Recurring Inspection", "Closed", "Updated by Script", "Closed");
+
+                var isPaid = aa.fee.isFullPaid4Renewal(capId).getOutput();
+                var ticketActive = false;
+                var pendingInsp = false;
+                var ehsmClean = false;
+
+                var tasks = aa.workflow.getTasks(capId).getOutput();
+
+                for (e in tasks) {
+                    if (tasks[e].getTaskDescription().indexOf("Ticket") > -1 && tasks[e].getActiveFlag() == "Y") {
+                        ticketActive = true;
+                    }
+
+                    if (tasks[e].getTaskDescription().indexOf("Request EHSM Clean") > -1 && tasks[e].getActiveFlag() == "Y") {
+                        ehsmClean = true;
+                    }
+                }
+
+                var inspResultObj = aa.inspection.getInspections(capId);
+                if (inspResultObj.getSuccess()) {
+                    var inspList = inspResultObj.getOutput();
+                    for (xx in inspList) {
+                        if (inspList[xx].getInspectionStatus() == 'Scheduled') {
+                            pendingInsp = true;
+                        }
+                    }
+                }
+
+                if (pendingInsp) {
+                    inspCancelAll();
+                }
+
+                if (!ticketActive && !ehsmClean) {
+                    if (isPaid) {
+                        closeTask("Final Processing", "Finaled", "Updated by Script", "Finaled");
+                        updateAppStatus('Finaled', 'Finaled');
+                    } else {
+                        closeTask("Final Processing", "Closed/Fees Outstanding", "Updated by Script", "Closed/Fees Outstanding");
+                        updateAppStatus('Closed/Fees Outstanding', 'Closed/Fees Outstanding');
+                    }
+                    var workflowResult = aa.workflow.getTasks(capId);
+
+                    if (workflowResult.getSuccess()) {
+                        wfObj = workflowResult.getOutput();
+
+                        for (i in wfObj) {
+                            fTask = wfObj[i];
+                            if (fTask.getActiveFlag().equals("Y")) {
+                                deactivateTask(fTask.getTaskDescription());
+                            }
+                        }
+                    }
+                }
+
+                logDebug('Is Full Paid: ' + isPaid);
+                logDebug('Ticket Status: ' + ticketActive);
+                logDebug('Pending Inspection: ' + pendingInsp);
+                logDebug('EHSM Clean' + ehsmClean);
+                
+                capId = saveID;
+            }
 		}else{
 			logDebug("No parent record found.  No updates made.");
 		}			
