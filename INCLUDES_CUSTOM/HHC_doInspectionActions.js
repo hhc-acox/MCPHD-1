@@ -55,7 +55,7 @@ function HHC_doInspectionActions(){
                                 //Need to develop a function for each selection in the assignment field
                                         
                                 //Current Inspector
-                                    var assignedToInspection = getInspector(inspType);
+                                    var assignedToInspection = getInspectorByInspID(inspId);
                                 //Person Assigned to the Record
                                     var assignedToRecordInspector = getAssignedToRecord();
                                 //Current Department
