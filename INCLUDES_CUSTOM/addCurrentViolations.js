@@ -116,7 +116,7 @@ function addCurrentViolations() {
 					var appViolation = '';
 					var appInspDate = inspResultDate;
 					var appInspNumber = inspectionId.toString();
-					var appInspector = getLastInspector(inspType);
+					var appInspector = getInspectorByInspID(inspId);
 					aa.print("getInspectionType " + inspType);
 					aa.print("getInspector " + appInspector);
 					aa.print("appStatus " + appStatus);
