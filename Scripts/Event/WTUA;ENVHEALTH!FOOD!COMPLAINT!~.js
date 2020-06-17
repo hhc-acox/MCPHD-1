@@ -11,8 +11,10 @@ try{
 
 var assignToInsp = HHC_getCapAssignment(capId);
 if(wfTask == 'Complaint Review' && wfStatus == 'Inspection Required' && (getAppSpecific('Illness Complaint?') == 'No' || getAppSpecific('Illness Complaint?') == 'N') ) {
-    scheduleInspectDate('Non-illness Complaint',nextWorkDay(),assignToInsp);
+    //scheduleInspectDate('Non-illness Complaint',nextWorkDay(),assignToInsp);
+    scheduleFoodInspectionsByDate('Non-illness Complaint', nextWorkDay(), assignToInsp, capId);
 } 
 if (wfTask == 'Complaint Review' && wfStatus == 'Inspection Required' && (getAppSpecific('Illness Complaint?') == 'Yes' || getAppSpecific('Illness Complaint?') == 'Y') ){
-    scheduleInspectDate('Illness Complaint',nextWorkDay(),assignToInsp);
+    //scheduleInspectDate('Illness Complaint',nextWorkDay(),assignToInsp);
+    scheduleFoodInspectionsByDate('Illness Complaint', nextWorkDay(), assignToInsp, capId);
 }
