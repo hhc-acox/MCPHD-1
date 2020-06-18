@@ -238,7 +238,7 @@ logMessage("End of Job: Elapsed Time : " + elapsed() + " Seconds" + br);
 if (sendInsEmail) 
 {
 	emailText = "The batch " + batchJobName + " - has been processed, below are the results:"+ br + emailText;
-	aa.sendMail("rvoller@hhcorp.org", "rvoller@hhcorp.org", "rvoller@hhcorp.org", "Results of the Batch Processing", emailText);
+	aa.sendMail("accela-noreply@marionhealth.org", "rvoller@hhcorp.org", "rvoller@hhcorp.org", "Results of the Batch Processing", emailText);
 }
 aa.print("211. "+"Total number of records processed "+cnt);
 aa.print("212. "+"Total number of emails sent "+ecnt);
