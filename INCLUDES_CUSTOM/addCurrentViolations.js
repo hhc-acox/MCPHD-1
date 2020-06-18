@@ -278,7 +278,7 @@ function addCurrentViolations() {
 										}
 
 										// Add item to CURRENT VIOLATIONS if submitted type is Initial/Routine/Recheck/Routine - Recheck
-										if (inspType.indexOf('Initial') > -1 || inspType.indexOf('Routine') > -1 || inspType.indexOf('Recheck') > -1) {
+										if (inspType.indexOf('Initial') > -1 || inspType.indexOf('Routine') > -1 || inspType.indexOf('Recheck') > -1 || inspType.indexOf('Complaint') > -1) {
 											//removeASITable('CURRENT VIOLATIONS');		
 											var rowVals = new Array();
 											rowVals["Chapter"] = new asiTableValObj("Chapter", appChapter, "N");
