@@ -62,6 +62,7 @@ try{
                 logDebug("Trying to close PI on TRA");
                 closeTask("Recurring Inspection", "Closed", "Updated by Script", "Closed");
 
+                /*
                 var isPaid = aa.fee.isFullPaid4Renewal(capId).getOutput();
                 var ticketActive = false;
                 var pendingInsp = false;
@@ -119,7 +120,7 @@ try{
                 logDebug('Ticket Status: ' + ticketActive);
                 logDebug('Pending Inspection: ' + pendingInsp);
                 logDebug('EHSM Clean' + ehsmClean);
-                
+                */
                 capId = saveID;
             }
 		}else{
