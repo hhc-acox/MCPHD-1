@@ -13,6 +13,7 @@ try{
 try{
 	for(row in COURT){
 		var dtCourt = new Date(COURT[row]["Date"]);
+                var crtType = COURT[row]["Status"];
 		var toDay = dateAdd(null,1);
 		var toMorrow = new Date(toDay);
 		var parCapId = false;
@@ -23,21 +24,32 @@ try{
 			parCapId = getApplication(parAltId);
 		}
 		if(parCapId){
-			var currCap = capId;
-			capId = parCapId;
-			if(dtCourt>toMorrow && !checkInspectionResult("Reinspection","Scheduled")){
-				var inspDate = dateAdd(dtCourt,-1);
-				var inspUserId = getInspector("Initial Inspection");
-				logDebug("inspUserId: " + inspUserId);
-				if(inspUserId){
-					//scheduleInspectDate("Reinspection",inspDate,inspUserId);
-				}else{
-					//scheduleInspectDate("Reinspection",inspDate);
-				}
-			}
-			capId = currCap;
+            parAltId = parCapId.getCustomID();
+            logDebug(parAltId +'is Cap');
+            if (parAltId.indexOf('TRA') < 0 && parAltId.indexOf('HSG') < 0 && parAltId.indexOf('INV') < 0 && parAltId.indexOf('VEH') < 0) {
+                var currCap = capId;
+                capId = parCapId;
+                if(dtCourt>toMorrow && !checkInspectionResult("Court - Initial","Scheduled") && !checkInspectionResult("Court - Recheck","Scheduled")){
+                    var inspDate = dateAdd(dtCourt,-1);
+                    var inspUserId = AInfo["Assigned To"];
+                    logDebug("inspUserId: " + inspUserId);
+                    if(inspUserId){
+                        if (crtType != 'Initial Hearing') {
+                            scheduleInspectDate("Court - Recheck",inspDate,inspUserId);
+                        } else {
+                            scheduleInspectDate("Court - Initial",inspDate,inspUserId);
+                        }
+                    }else{
+                        if (crtType != 'Initial Hearing') {
+                            scheduleInspectDate("Court - Recheck",inspDate);
+                        } else {
+                            scheduleInspectDate("Court - Initial",inspDate);
+                        }
+                    }
+                }
+                capId = currCap;
+            }
 		}
-
 	}
 }catch(err){
 	logDebug("A JavaScript Error occurred: ASIUA:EnvHealth/Housing/CRT/*: Court Date Inspection:  " + err.message);
