@@ -970,7 +970,7 @@ function sepIssueLicenseWorkflow(){
                                                     updateAppStatus(newAppStatus, "Updated via sepIssueLicenseWorkflow.");
 
                                                     if (appTypeString.indexOf('Food') > -1) {
-                                                        if (appTypeString.indexOf('Establishment')) {
+                                                        if (appTypeString.indexOf('Establishment') > -1) {
                                                             assignToNewRecord = lookup('GIS - Foods EHS',tzone); 
                                                         }
                                                         assignCap(assignToNewRecord);
