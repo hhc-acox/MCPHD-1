@@ -44,7 +44,7 @@ try{
 
 //lwacht: 181030: #124: Efficiencies when closing Injunction
 try{
-	if(matches(wfStatus,"Cause Dismiss","Compliance","Contempt","Dismissed")){
+	if(matches(wfStatus,"Cause Dismiss","Compliance","Contempt","Dismissed") && wfTask == 'Permanent Injunction'){
 		var parCapId = false;
 		if(parentCapId){
 			parCapId = parentCapId;
