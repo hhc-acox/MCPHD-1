@@ -1,10 +1,10 @@
 function addCurrentViolations() {
-	if (appTypeString.indexOf('LHH') > -1) {
-		var asitRes = aa.appSpecificTableScript.getAppSpecificTableModel(capId, 'VIOLATIONS');
-		
-		if(asitRes.getSuccess()) {
+    if (appTypeString.indexOf('LHH') > -1) {
+        var asitRes = aa.appSpecificTableScript.getAppSpecificTableModel(capId, 'VIOLATIONS');
+
+        if (asitRes.getSuccess()) {
             removeASITable('VIOLATIONS');
-			try {
+            try {
                 inspResultObj = aa.inspection.getInspections(capId);
 
                 if (inspResultObj.getSuccess()) {
@@ -13,13 +13,13 @@ function addCurrentViolations() {
                     for (i in inspList) {
                         if (inspId == inspList[i].getIdNumber()) {
                             var gs = getGuideSheetObjects(inspList[i].getIdNumber());
-                    
+
                             for (i in gs) {
                                 if (gs[i].gsType == 'LHH_Violations') {
                                     gs[i].loadInfoTables();
 
                                     var tableRows = gs[i].infoTables["VIOLATIONS"];
-                                    
+
                                     for (j in tableRows) {
                                         var status = tableRows[j]["Status"];
                                         var date = tableRows[j]["Date"];
@@ -32,38 +32,38 @@ function addCurrentViolations() {
                                         var oc = tableRows[j]["OC"];
                                         var ip = tableRows[j]["IP"];
                                         var other = tableRows[j]["Other"];
-        
-                                        if(!status){
+
+                                        if (!status) {
                                             status = "";
                                         }
-                                        if(!date){
+                                        if (!date) {
                                             date = "";
                                         }
-                                        if(!violation){
+                                        if (!violation) {
                                             violation = "";
                                         }
-                                        if(!xrf){
+                                        if (!xrf) {
                                             xrf = "";
                                         }
-                                        if(!explanation){
+                                        if (!explanation) {
                                             explanation = "";
                                         }
-                                        if(!location){
+                                        if (!location) {
                                             location = "";
                                         }
-                                        if(!dir){
+                                        if (!dir) {
                                             dir = "";
                                         }
-                                        if(!dhcb){
+                                        if (!dhcb) {
                                             dhcb = "";
                                         }
-                                        if(!oc){
+                                        if (!oc) {
                                             oc = "";
                                         }
-                                        if(!ip){
+                                        if (!ip) {
                                             ip = "";
                                         }
-                                        if(!other){
+                                        if (!other) {
                                             other = "";
                                         }
                                         var rowVals = new Array();
@@ -86,239 +86,192 @@ function addCurrentViolations() {
                         }
                     }
                 }
-			} catch (err) {
-				logDebug("A JavaScript Error occurred: Adding Violations to ASIT:  " + err.message);
-				logDebug(err.stack);
-			}
-		}
-	} else {
-		var asitRes = aa.appSpecificTableScript.getAppSpecificTableModel(capId, 'CURRENT VIOLATIONS');
+            } catch (err) {
+                logDebug("A JavaScript Error occurred: Adding Violations to ASIT:  " + err.message);
+                logDebug(err.stack);
+            }
+        }
+    } else {
+        var asitRes = aa.appSpecificTableScript.getAppSpecificTableModel(capId, 'CURRENT VIOLATIONS');
 
-		if (asitRes.getSuccess()) {
-			try {
-				inspResultObj = aa.inspection.getInspections(capId);
+        if (asitRes.getSuccess()) {
+            try {
+                inspResultObj = aa.inspection.getInspections(capId);
 
-				if (inspResultObj.getSuccess()) {
-					inspList = inspResultObj.getOutput();
-					//inspList.sort(compareInspDateDesc)
-					//var inspectionId = inspList[0].getIdNumber();
-					var inspectionId = inspId;
-					inspObj = aa.inspection.getInspection(capId, inspectionId).getOutput();
-					//var inspectionDate = inspObj.getInspectionDate().getMonth() + '/' + inspObj.getInspectionDate().getDayOfMonth() + '/' + inspObj.getInspectionDate().getYear();
-					//var inspectionDate = aa.util.parseDate(inspObj.getInspectionDate());
-					aa.print("inspectionId " + inspectionId);
-					aa.print("inspectiondate " + inspResultDate);
-					var appChapter = '';
-					var appChecklistItem = '';
-					var appStatus = '';
-					appStatus = inspResult;
-					var appLocation = '';
-					var appViolation = '';
-					var appInspDate = inspResultDate;
-					var appInspNumber = inspectionId.toString();
-					var appInspector = getInspectorByInspID(inspId);
-					aa.print("getInspectionType " + inspType);
-					aa.print("getInspector " + appInspector);
-					aa.print("appStatus " + appStatus);
-				}
+                if (inspResultObj.getSuccess()) {
+                    inspList = inspResultObj.getOutput();
+                    var appInspector = getInspectorByInspID(inspId);
 
-				// Clear CURRENT VIOLATIONS if submitted inspection is an Initial or Routine, but not recheck
-				if ((inspType.indexOf('Initial') > -1 || inspType.indexOf('Routine') > -1) && inspType.indexOf('Recheck') < 0) {
-					removeASITable('CURRENT VIOLATIONS');
-				}
+                    // Clear CURRENT VIOLATIONS if submitted inspection is an Initial or Routine, but not recheck
+                    if ((inspType.indexOf('Initial') > -1 || inspType.indexOf('Routine') > -1) && inspType.indexOf('Recheck') < 0) {
+                        removeASITable('CURRENT VIOLATIONS');
+                    }
 
-				for (i in inspList) {
-					if (inspList[i].getIdNumber() == inspectionId) {
-						var inspTyp = inspList[i].getInspectionType();
-						var inspStatus = inspList[i].getInspectionStatus();
-						var inspModel = inspList[i].getInspection();
-						var gs = inspModel.getGuideSheets();
-						for (var i = 0; i < gs.size(); i++) {
-							var guideSheetObj = gs.get(i);
-                            var guidesheetItem = guideSheetObj.getItems();
-                            var guidesheetName = guideSheetObj.getGuideType().toUpperCase();
-							for (var j = 0; j < guidesheetItem.size(); j++) {
-								var item = guidesheetItem.get(j);
-								var itemText = item.getGuideItemText();
-								var itemStatus = item.getGuideItemStatus();
-								var gsStandardComment = item.getGuideItemComment();
-                                var guideItemASITs = item.getItemASITableSubgroupList();
+                    for (i in inspList) {
+                        if (inspId == inspList[i].getIdNumber()) {
+                            var gs = getGuideSheetObjects(inspList[i].getIdNumber());
+                            for (i in gs) {
+                                var chpt = "";
+                                var vioDesc = "";
 
-                                if (matches(itemStatus, 'IN') && guidesheetName.indexOf('FAILED') > -1) {
-									logDebug("Item Name:                 " + itemText);
-									logDebug("Item Status:                 " + itemStatus);
-									var n = itemText.indexOf("|");
-                                    logDebug("n " + n);
-                                    var chpt = "";
-                                    var itemTextLength = itemText.lastIndexOf("");
-                                    var vioDesc = "";
+                                if (gs[i].gsType.indexOf('Failed') > -1 && gs[i].status == 'IN') {
+                                    // Handle failed checklist in compliance
+                                    var n = gs[i].text.indexOf('|');
+                                    var iTextLength = gs[i].text.lastIndexOf("");
 
-                                    if(n == -1){
-                                        chpt = itemText;
-                                        vioDesc = "";
+                                    if (n == -1) {
+                                        chpt = gs[i].text;
                                     } else {
-                                        chpt = itemText.slice(0, n - 1);
-                                        vioDesc = itemText.slice(n + 2, itemTextLength);
+                                        chpt = gs[i].text.slice(0, n - 1);
+                                        vioDesc = gs[i].text.slice(n + 2, iTextLength);
                                     }
-									appChapter = chpt;
-									logDebug("chpt " + chpt);
-                                    
-									appChecklistItem = vioDesc;
-									logDebug("vioDesc " + vioDesc);
-									logDebug("itemText.length " + itemTextLength);
-									appStatus = itemStatus;
-									appViolation = gsStandardComment;
-									logDebug("Standard Comment:   " + gsStandardComment);
-									logDebug("---------------------------");
 
-									for (var k = 0; k < guideItemASITs.size(); k++) {
-										var ASITSubGroup = guideItemASITs.get(k);
-										var tableArr = new Array();
-										var columnArr = new Array();
-										var ASITGroupName = ASITSubGroup.getGroupName();
-										logDebug("ASITGroupName: " + ASITGroupName);
-										var ASITTableName = ASITSubGroup.getTableName();
-										logDebug("ASITTableName: " + ASITTableName);
-										var columnList = ASITSubGroup.getColumnList();
+                                    var srchTable = new Array();
+                                    var tableUpdated = false;
+                                    srchTable = loadASITable('CURRENT VIOLATIONS');
 
-										for (var l = 0; l < columnList.size(); l++) {
-											var column = columnList.get(l);
-											var columnName = column.getColumnName();
-											var values = column.getValueMap().values();
-											var iteValues = values.iterator();
-											while (iteValues.hasNext()) {
-												logDebug("Guidesheet Column: " + column.getColumnName());
-												var ii = iteValues.next();
-												var zeroBasedRowIndex = ii.getRowIndex() - 1;
-												if (tableArr[zeroBasedRowIndex] == null) tableArr[zeroBasedRowIndex] = new Array();
-												tableArr[zeroBasedRowIndex][column.getColumnName()] = ii.getAttributeValue();
-												appLocation = ii.getAttributeValue();
-												logDebug("Guidesheet Value: " + ii.getAttributeValue());
-												logDebug("---------------------------");
-											}
-                                        }
+                                    if (srchTable) {
+                                        for (x in srchTable) {
+                                            var thisRow = srchTable[x];
 
-                                        var srchTable = new Array();
-                                        var tableUpdated = false;
-                                        srchTable = loadASITable('CURRENT VIOLATIONS');
-
-                                        if (srchTable) {
-                                            logDebug("Loaded ASIT");
-                                            for (x in srchTable) {
-                                                thisRow = srchTable[x];
-                                                logDebug("This Chapter: " + thisRow['Chapter'].toString());
-                                                logDebug("Chapter to Check: " + appChapter);
-                                                if (thisRow['Chapter'].toString() == appChapter) {
-                                                    tableUpdated = true;
-                                                    thisRow['Status'] = new asiTableValObj("Status", 'IN', "N");
-                                                    thisRow['Corrected Date'] = new asiTableValObj("Corrected Date", appInspDate, "N");
-                                                }
-                                            }
-
-                                            if (tableUpdated) {
-                                                removeASITable('CURRENT VIOLATIONS');
-                                                addASITable('CURRENT VIOLATIONS', srchTable);
+                                            if (thisRow['Chapter'].toString() == chpt && thisRow['Checklist Item'].toString() == vioDesc) {
+                                                tableUpdated = true;
+                                                thisRow['Status'] = new asiTableValObj("Status", 'IN', "N");
+                                                thisRow['Corrected Date'] = new asiTableValObj("Corrected Date", inspResultDate, "N");
                                             }
                                         }
-									}
-                                }
-                                
-								if (matches(itemStatus, 'OUT', 'COS') && itemText.indexOf('Failed') < 0) {
-									logDebug("Item Name:                 " + itemText);
-									logDebug("Item Status:                 " + itemStatus);
-									var n = itemText.indexOf("|");
-                                    logDebug("n " + n);
-                                    var chpt = "";
-                                    var itemTextLength = itemText.lastIndexOf("");
-                                    var vioDesc = "";
-
-                                    if(n == -1){
-                                        chpt = itemText;
-                                        vioDesc = "";
-                                    } else {
-                                        chpt = itemText.slice(0, n - 1);
-                                        vioDesc = itemText.slice(n + 2, itemTextLength);
                                     }
-									appChapter = chpt;
-									logDebug("chpt " + chpt);
-                                    
-									appChecklistItem = vioDesc;
-									logDebug("vioDesc " + vioDesc);
-									logDebug("itemText.length " + itemTextLength);
-									appStatus = itemStatus;
-									appViolation = gsStandardComment;
-									logDebug("Standard Comment:   " + gsStandardComment);
-									logDebug("---------------------------");
 
-									for (var k = 0; k < guideItemASITs.size(); k++) {
-										var ASITSubGroup = guideItemASITs.get(k);
-										var tableArr = new Array();
-										var columnArr = new Array();
-										var ASITGroupName = ASITSubGroup.getGroupName();
-										logDebug("ASITGroupName: " + ASITGroupName);
-										var ASITTableName = ASITSubGroup.getTableName();
-										logDebug("ASITTableName: " + ASITTableName);
-										var columnList = ASITSubGroup.getColumnList();
+                                    if (tableUpdated) {
+                                        removeASITable('CURRENT VIOLATIONS');
+                                        addASITable('CURRENT VIOLATIONS', srchTable);
+                                    }
+                                } else if (gs[i].gsType.indexOf('Failed') < 0 && (gs[i].status == 'OUT' || gs[i].status == 'COS')) {
+                                    // Handle new violations
+                                    var tableRows = new Array();
+                                    var locations = new Array();
+                                    var location = "";
 
-										for (var l = 0; l < columnList.size(); l++) {
-											var column = columnList.get(l);
-											var columnName = column.getColumnName();
-											var values = column.getValueMap().values();
-											var iteValues = values.iterator();
-											while (iteValues.hasNext()) {
-												logDebug("Guidesheet Column: " + column.getColumnName());
-												var ii = iteValues.next();
-												var zeroBasedRowIndex = ii.getRowIndex() - 1;
-												if (tableArr[zeroBasedRowIndex] == null) tableArr[zeroBasedRowIndex] = new Array();
-												tableArr[zeroBasedRowIndex][column.getColumnName()] = ii.getAttributeValue();
-												appLocation = ii.getAttributeValue();
-												logDebug("Guidesheet Value: " + ii.getAttributeValue());
-												logDebug("---------------------------");
-											}
-										}
+                                    gs[i].loadInfoTables();
 
-										// Add item to CURRENT VIOLATIONS if submitted type is Initial/Routine/Recheck/Routine - Recheck
-										if (inspType.indexOf('Initial') > -1 || inspType.indexOf('Routine') > -1 || inspType.indexOf('Recheck') > -1 || inspType.indexOf('Complaint') > -1) {
-											//removeASITable('CURRENT VIOLATIONS');		
-											var rowVals = new Array();
-											rowVals["Chapter"] = new asiTableValObj("Chapter", appChapter, "N");
-											rowVals["Checklist Item"] = new asiTableValObj("Checklist Item", appChecklistItem, "N");
-											rowVals["Status"] = new asiTableValObj("Status", appStatus, "N");
-											rowVals["Location"] = new asiTableValObj("Location", appLocation, "N");
-											rowVals["Violation"] = new asiTableValObj("Violation", appViolation, "N");
-											rowVals["Inspection Date"] = new asiTableValObj("Inspection Date", appInspDate, "N");
-											rowVals["Inspection Number"] = new asiTableValObj("Inspection Number", appInspNumber, "N");
-											rowVals["Inspection Type"] = new asiTableValObj("Inspection Type", inspType, "N");
-                                            rowVals["Inspector"] = new asiTableValObj("Inspector", appInspector, "N");
+                                    var n = gs[i].text.indexOf('|');
+                                    var iTextLength = gs[i].text.lastIndexOf("");
 
-                                            var rowVals2 = rowVals;
-                                            rowVals2["Corrected Date"] = new asiTableValObj("Corrected Date", "", "N");
-                                            rowVals2["Id"] = new asiTableValObj("Id", "", "N");
+                                    if (n == -1) {
+                                        chpt = gs[i].text;
+                                    } else {
+                                        chpt = gs[i].text.slice(0, n - 1);
+                                        vioDesc = gs[i].text.slice(n + 2, iTextLength);
+                                    }
 
-											var asitName = "CURRENT VIOLATIONS";
-											addToASITable(asitName, rowVals2, capId);
+                                    // Handle Location
+                                    if (appTypeString.indexOf('WQ') > -1) {
+                                        tableRows = gs[i].infoTables["LOCATION"];
+                                        location = locations.join(', ');
+                                    }
 
-											//var ASITInspId = searchASITable("VIOLATION HISTORY", "Inspection Number", inspId, capId);
-                                                                                        var ASITInspId = searchASITableThreeVal("VIOLATION HISTORY", "Inspection Number", inspId, "Chapter", appChapter, "Checklist Item",appChecklistItem, capId)
-											//var ASITGuideItem = searchASITable("VIOLATION HISTORY","Checklist Item",appChecklistItem,capId);
+                                    if (appTypeString.indexOf('Food') > -1) {
+                                        tableRows = gs[i].infoTables["LOCATION-EQUIPMENT-TEMPERATURE"];
+                                    }
 
-											if (!ASITInspId) {
-												var logFileName = "VIOLATION HISTORY";
-												addToASITable(logFileName, rowVals, capId);
-                                            }
+                                    for (j in tableRows) { 
+                                        var tLoc = tableRows[j]["Location"];
+
+                                        if (tLoc) {
+                                            locations.push(tLoc);
+                                        }
+                                    } 
+
+                                    if (inspType.indexOf('Initial') > -1 || inspType.indexOf('Routine') > -1 || inspType.indexOf('Recheck') > -1 || inspType.indexOf('Complaint') > -1) {	
+                                        var rowVals = new Array();
+                                        rowVals["Chapter"] = new asiTableValObj("Chapter", chpt, "N");
+                                        rowVals["Checklist Item"] = new asiTableValObj("Checklist Item", vioDesc, "N");
+                                        rowVals["Status"] = new asiTableValObj("Status", gs[i].status, "N");
+                                        rowVals["Location"] = new asiTableValObj("Location", location, "N");
+                                        rowVals["Violation"] = new asiTableValObj("Violation", gs[i].comment, "N");
+                                        rowVals["Inspection Date"] = new asiTableValObj("Inspection Date", inspResultDate, "N");
+                                        rowVals["Inspection Number"] = new asiTableValObj("Inspection Number", inspId.toString(), "Y");
+                                        rowVals["Inspection Type"] = new asiTableValObj("Inspection Type", inspType, "N");
+                                        rowVals["Inspector"] = new asiTableValObj("Inspector", appInspector, "N");
+
+                                        var rowVals2 = rowVals;
+                                        rowVals2["Corrected Date"] = new asiTableValObj("Corrected Date", "", "N");
+
+                                        if (appTypeString.indexOf('Food') > -1) {
+                                            rowVals2["Guidesheet Sequence"] = new asiTableValObj("Guidesheet Sequence", gs[i].gsSequence.toString(), "Y");
+                                            rowVals2["Item Sequence"] = new asiTableValObj("Item Sequence", gs[i].item.getGuideItemSeqNbr().toString(), "Y");
+                                        }
+
+                                        var asitName = "CURRENT VIOLATIONS";
+                                        addToASITable(asitName, rowVals2, capId);
+
+                                        var ASITInspId = searchASITableThreeVal("VIOLATION HISTORY", "Inspection Number", inspId, "Chapter", chpt, "Checklist Item", vioDesc, capId)
+
+                                        if (!ASITInspId && appTypeString.indexOf('Food') < 0) {
+                                            addToASITable("VIOLATION HISTORY", rowVals, capId);
+                                        } else {
+                                            addToASITable("VIOLATION HISTORY", rowVals2, capId);
+                                        }
+
+                                        if (appTypeString.indexOf('Food') > -1) {
+                                            // Handle ASI
+                                            gs[i].loadInfo();
+                                            var asi = gs[i].info;
+
+                                            var rowValsASI = new Array();
+                                            rowValsASI["Violation Description"] = new asiTableValObj("Violation Description", asi["Violation Description"], "N");
+                                            rowValsASI["Severity"] = new asiTableValObj("Severity", asi["Severity"], "N");
+                                            rowValsASI["Citation"] = new asiTableValObj("Citation", asi["Citation"], "N");
+                                            rowValsASI["Corrective Action"] = new asiTableValObj("Corrective Action", asi["Corrective Action"], "N");
+                                            rowValsASI["Inspection Number"] = new asiTableValObj("Inspection Number", inspId.toString(), "Y");
+                                            rowValsASI["Guidesheet Sequence"] = new asiTableValObj("Guidesheet Sequence", gs[i].gsSequence.toString(), "Y");
+                                            rowValsASI["Item Sequence"] = new asiTableValObj("Item Sequence", gs[i].item.getGuideItemSeqNbr().toString(), "Y");
+
+                                            addToASITable("AUX", rowValsASI, capId);
                                             
-                                            appLocation = "";
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			} catch (err) {
-				logDebug("A JavaScript Error occurred: Adding Violations to ASIT:  " + err.message);
-				logDebug(err.stack);
-			}
-		}
-	}
+                                            // Handle ASIT
+                                            for (k in tableRows) { 
+                                                var temp = "";
+
+                                                if (tableRows[k]["Temperature"]) {
+                                                    temp = tableRows[k]["Temperature"].toString();
+                                                }
+
+                                                var locationASIT = "";
+
+                                                if (tableRows[k]["Location"]) {
+                                                    locationASIT = tableRows[k]["Location"];
+                                                }
+
+                                                var equipment = "";
+
+                                                if (tableRows[k]["Equipment"]) {
+                                                    equipment = tableRows[k]["Equipment"];
+                                                }
+
+                                                var rowValsASIT = new Array();
+                                                rowValsASIT["Location"] = new asiTableValObj("Location", locationASIT, "N");
+                                                rowValsASIT["Equipment"] = new asiTableValObj("Equipment", equipment, "N");
+                                                rowValsASIT["Temperature"] = new asiTableValObj("Temperature", temp, "N");
+                                                rowValsASIT["Inspection Number"] = new asiTableValObj("Inspection Number", inspId.toString(), "Y");
+                                                rowValsASIT["Guidesheet Sequence"] = new asiTableValObj("Guidesheet Sequence", gs[i].gsSequence.toString(), "Y");
+                                                rowValsASIT["Item Sequence"] = new asiTableValObj("Item Sequence", gs[i].item.getGuideItemSeqNbr().toString(), "Y");
+                                                
+                                                addToASITable("TEMPERATURE", rowValsASIT, capId);
+                                            }
+                                        }
+
+                                        location = "";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (err) {
+                logDebug("A JavaScript Error occurred: Adding Violations to ASIT:  " + err.message);
+                logDebug(err.stack);
+            }
+        }
+    }
 }
