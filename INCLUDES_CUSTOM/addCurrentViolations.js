@@ -210,7 +210,7 @@ function addCurrentViolations() {
 
                                         if (!ASITInspId && appTypeString.indexOf('Food') < 0) {
                                             addToASITable("VIOLATION HISTORY", rowVals, capId);
-                                        } else {
+                                        } else if (!ASITInspId) {
                                             addToASITable("VIOLATION HISTORY", rowVals2, capId);
                                         }
 
