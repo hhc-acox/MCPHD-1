@@ -167,7 +167,6 @@ function addCurrentViolations() {
                                     // Handle Location
                                     if (appTypeString.indexOf('WQ') > -1) {
                                         tableRows = gs[i].infoTables["LOCATION"];
-                                        location = locations.join(', ');
                                     }
 
                                     if (appTypeString.indexOf('Food') > -1) {
@@ -181,6 +180,8 @@ function addCurrentViolations() {
                                             locations.push(tLoc);
                                         }
                                     } 
+                                    
+                                    location = locations.join(', ');
 
                                     if (inspType.indexOf('Initial') > -1 || inspType.indexOf('Routine') > -1 || inspType.indexOf('Recheck') > -1 || inspType.indexOf('Complaint') > -1) {	
                                         var rowVals = new Array();
