@@ -42,7 +42,7 @@ try {
                 logDebug('Email: ' + email);
         
                 if (email.indexOf("@") > 0) {
-                    var myemailText = "RCP ("+rcpId+") on TRA ("+traId+") was closed as could not be cleaned."+br+br+"Accela's Automated Email Distribution"
+                    var myemailText = "RCP ("+rcpId+") on TRA ("+traId+") was closed with status: Could Not Be Cleaned"+br+br+"Accela's Automated Email Distribution"
 					
 					aa.sendMail("accela-noreply@marionhealth.org", email, "", "EHSM Clean - Not Cleaned", myemailText);
                 }                        
