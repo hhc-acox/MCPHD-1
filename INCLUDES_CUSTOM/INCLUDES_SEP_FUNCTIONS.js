@@ -893,6 +893,19 @@ function sepIssueLicenseWorkflow(){
                                                     logDebug("Parent ID not correctly formatted: " + sepRules[row]["Parent Record Type"]);
                                                     return false;
                                                 }else{
+                                                    var assignToNewRecord = "" + getAssignedToRecord();
+                                                    var tzone = getGISInfo("MCPHD", 'FoodsDistrict', 'district');
+                                                    
+                                                    if (appTypeString.indexOf('Food') > -1) {
+                                                        if (appTypeString.indexOf('Establishment') > -1) {
+                                                            assignToNewRecord = lookup('GIS - Foods EHS',tzone); 
+                                                        }
+                                                    }
+
+                                                    if (!assignToNewRecord || assignToNewRecord == null || assignToNewRecord == '') {
+                                                        assignToNewRecord = "" + getAssignedToRecord();
+                                                    }
+
                                                     var parCapId = false;
                                                     var appCreateResult = aa.cap.createApp(arrParRec[0], arrParRec[1], arrParRec[2], arrParRec[3],capName);
                                                     logDebug("creating cap " +arrParRec);
@@ -962,25 +975,6 @@ function sepIssueLicenseWorkflow(){
                                                         var newAppStatus = ""+sepRules[row]["New App Status"];
                                                     }
 
-                                                    var assignToNewRecord = "" + getAssignedToRecord();
-                                                    var tzone = getGISInfo("MCPHD", 'FoodsDistrict', 'district');
-                                                    var currCapId = capId;
-                                                    capId = parCapId;
-                                                    licEditExpInfo(newAppStatus, expDate);
-                                                    updateAppStatus(newAppStatus, "Updated via sepIssueLicenseWorkflow.");
-
-                                                    if (appTypeString.indexOf('Food') > -1) {
-                                                        if (appTypeString.indexOf('Establishment') > -1) {
-                                                            assignToNewRecord = lookup('GIS - Foods EHS',tzone); 
-                                                        }
-                                                        assignCap(assignToNewRecord);
-                                                        scheduleFoodInspectionsByDate('Initial', nextWorkDay(), assignToNewRecord, capId)
-                                                    } else {
-                                                        assignCap(assignToNewRecord);
-                                                        scheduleInspectDate('Initial',nextWorkDay(),assignToNewRecord);
-                                                    }
-						                            
-                                                    capId = currCapId;
                                                     if(""+sepRules[row]["Copy Custom Fields/Lists"]=="ALL"){
                                                         copyAppSpecific(parCapId);
                                                         copyASITables(capId, parCapId);
@@ -1002,6 +996,7 @@ function sepIssueLicenseWorkflow(){
                                                         var strContacts = ""+sepRules[row]["Copy Contacts"];
                                                         if(strContacts.toUpperCase()=="ALL"){
                                                             copyContacts(capId, parCapId);
+                                                            copyAddresses(capId, parCapId);
                                                         }else{
                                                             if(strContacts.indexOf("|")>-1){
                                                                 var arrContacts = strContacts.split("|");
@@ -1012,6 +1007,7 @@ function sepIssueLicenseWorkflow(){
                                                             for(c in arrContacts){
                                                                 copyContactsByType(capId, parCapId, arrContacts[c]);
                                                             }
+                                                            copyAddresses(capId, parCapId);
                                                         }
                                                     }
                                                     if(""+sepRules[row]["Copy Examination"]=="Yes"){
@@ -1047,6 +1043,21 @@ function sepIssueLicenseWorkflow(){
                                                     }else{
                                                         logDebug("No notification name. No email sent.");
                                                     }
+
+                                                    var currCapId = capId;
+                                                    capId = parCapId;
+                                                    licEditExpInfo(newAppStatus, expDate);
+                                                    updateAppStatus(newAppStatus, "Updated via sepIssueLicenseWorkflow.");                                                  
+
+                                                    if (appTypeString.indexOf('Food') > -1) {
+                                                        assignCap(assignToNewRecord);
+                                                        scheduleFoodInspectionsByDate('Initial', nextWorkDay(), assignToNewRecord, capId)
+                                                    } else {
+                                                        assignCap(assignToNewRecord);
+                                                        scheduleInspectDate('Initial',nextWorkDay(),assignToNewRecord);
+                                                    }
+						                            
+                                                    capId = currCapId;
                                                 }
                                             }
                                         }else{
