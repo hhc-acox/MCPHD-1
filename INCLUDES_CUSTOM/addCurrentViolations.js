@@ -130,6 +130,10 @@ function addCurrentViolations() {
                                     var tableUpdated = false;
                                     srchTable = loadASITable('CURRENT VIOLATIONS');
 
+                                    var srchTableHist = new Array();
+                                    var histUpdated = false;
+                                    srchTableHist = loadASITable('VIOLATION HISTORY');
+
                                     if (srchTable) {
                                         for (x in srchTable) {
                                             var thisRow = srchTable[x];
@@ -142,10 +146,27 @@ function addCurrentViolations() {
                                         }
                                     }
 
+                                    if (srchTableHist) {
+                                        for (x in srchTableHist) {
+                                            var thisRow = srchTableHist[x];
+
+                                            if (thisRow['Chapter'].toString() == chpt && thisRow['Checklist Item'].toString() == vioDesc) {
+                                                histUpdated = true;
+                                                thisRow['Status'] = new asiTableValObj("Status", 'IN', "N");
+                                            }
+                                        }
+                                    }
+
                                     if (tableUpdated) {
                                         removeASITable('CURRENT VIOLATIONS');
                                         addASITable('CURRENT VIOLATIONS', srchTable);
                                     }
+
+                                    if (histUpdated) {
+                                        removeASITable('VIOLATION HISTORY');
+                                        addASITable('VIOLATION HISTORY', srchTableHist);
+                                    }
+                                    
                                 } else if (gs[i].status == 'OUT' || gs[i].status == 'COS') {
                                     // Handle new violations
                                     var tableRows = new Array();
