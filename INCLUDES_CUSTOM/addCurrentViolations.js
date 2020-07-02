@@ -146,7 +146,7 @@ function addCurrentViolations() {
                                         removeASITable('CURRENT VIOLATIONS');
                                         addASITable('CURRENT VIOLATIONS', srchTable);
                                     }
-                                } else if (gs[i].gsType.indexOf('Failed') < 0 && (gs[i].status == 'OUT' || gs[i].status == 'COS')) {
+                                } else if (gs[i].status == 'OUT' || gs[i].status == 'COS') {
                                     // Handle new violations
                                     var tableRows = new Array();
                                     var locations = new Array();
