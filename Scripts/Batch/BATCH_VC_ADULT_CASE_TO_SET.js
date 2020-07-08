@@ -121,14 +121,14 @@ aa.print(debug);
 /-----------------------------------------------------------------------------------------------------*/
 
 function mainProcess() {
-	var numToProcess = 100;
+	var numToProcess = 1000;
 	var countTotal = 0;
 	var countProcessed = 0;
 	var differentEHS = 0;
 	var wfReassigned = 0;
 	// get all capids
 	var conn = new db();
-	var sql = "SELECT DISTINCT b.b1_per_id1, b.b1_per_id2, b.b1_per_id3 FROM B1PERMIT B INNER JOIN G6ACTION G6A ON G6A.B1_PER_ID1 = B.B1_PER_ID1 AND G6A.B1_PER_ID2 = B.B1_PER_ID2 AND G6A.B1_PER_ID3 = B.B1_PER_ID3 AND G6A.SERV_PROV_CODE = 'MCPHD' AND (G6A.G6_ACT_TYP = 'Adulticide' OR G6A.G6_ACT_TYP = 'Adulticide Inspection') AND G6A.G6_STATUS = 'Scheduled' AND G6A.REC_STATUS = 'A' WHERE B.SERV_PROV_CODE = 'MCPHD' AND B.B1_PER_GROUP = 'EnvHealth' AND B.B1_APP_TYPE_ALIAS IN ('Adulticide Complaint', 'Monitor Site') and b.b1_appl_status = 'Received'";
+	var sql = "SELECT DISTINCT b.b1_per_id1, b.b1_per_id2, b.b1_per_id3 FROM B1PERMIT B INNER JOIN G6ACTION G6A ON G6A.B1_PER_ID1 = B.B1_PER_ID1 AND G6A.B1_PER_ID2 = B.B1_PER_ID2 AND G6A.B1_PER_ID3 = B.B1_PER_ID3 AND G6A.SERV_PROV_CODE = 'MCPHD' AND (G6A.G6_ACT_TYP = 'Adulticide' OR G6A.G6_ACT_TYP = 'Adulticide Inspection') AND G6A.G6_STATUS = 'Scheduled' AND G6A.REC_STATUS = 'A' WHERE B.SERV_PROV_CODE = 'MCPHD' AND B.B1_PER_GROUP = 'EnvHealth' AND B.B1_APP_TYPE_ALIAS IN ('Adulticide Complaint', 'Monitor Site') and b.b1_appl_status != 'Closed'";
 	var ds = conn.dbDataSet(sql, numToProcess);
     // foreach cap in capid list
     
