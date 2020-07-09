@@ -24,12 +24,12 @@ if (wfTask == 'Initial Processing' && wfStatus == 'Complete Emergency') {
 	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Initial Processing'),AInfo['Assigned To']);
 	}
 
-if (wfTask == 'Reinspection' && matches(wfStatus,'Complete Reinspection Ltr','Complete Next Action Court Ltr','Complete Add Vio Reinspection Ltr') && getTSIfieldValue('Reinspection Date', 'Reinspection') != null) {
+if (wfTask == 'Reinspection' && matches(wfStatus,'Complete Reinspection Ltr','Complete Next Action Court Ltr','Complete Add Vio Reinspection Ltr','Reinspection') && getTSIfieldValue('Reinspection Date', 'Reinspection') != null) {
 	assignTask('Reinspection',AInfo['Assigned To']);
         scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Reinspection'),AInfo['Assigned To']);
 	}
 
-if (wfTask == 'Reinspection' && matches(wfStatus,'Complete Reinspection Ltr','Complete Next Action Court Ltr','Complete Add Vio Reinspection Ltr') && getTSIfieldValue('Reinspection Date', 'Reinspection') == null) {
+if (wfTask == 'Reinspection' && matches(wfStatus,'Complete Reinspection Ltr','Complete Next Action Court Ltr','Complete Add Vio Reinspection Ltr','Reinspection') && getTSIfieldValue('Reinspection Date', 'Reinspection') == null) {
 	assignTask('Reinspection',AInfo['Assigned To']);
         scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,29)),AInfo['Assigned To']);
 	editTaskSpecific('Reinspection','Reinspection Date',nextWorkDay(dateAdd(null,29)));
