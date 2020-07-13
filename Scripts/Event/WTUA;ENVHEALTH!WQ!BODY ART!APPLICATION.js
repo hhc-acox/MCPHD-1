@@ -33,7 +33,7 @@ if (wfTask == 'Issuance' && matches(wfStatus,'Issued')) {
 	assignCap(assignedInspector,parId);
 	copyOwner(capId, parId); 
 	capId = parId;
-	scheduleInspectDate('Initial',nextWorkDay(dateAdd(null,89)),assignedInspector);
+	scheduleInspectDate('Routine',nextWorkDay(dateAdd(new Date(),89)),assignedInspector);
 	capId = saveId;
 	comment('parId - '+parId);
 	comment('capId - '+capId);
