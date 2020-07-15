@@ -109,6 +109,8 @@ function addCurrentViolations() {
 
                     for (i in inspList) {
                         if (inspId == inspList[i].getIdNumber()) {
+                            var tInspDate = inspList[i].getInspectionDate();
+                            var tInspDateStr = tInspDate.getMonth() + "/" + tInspDate.getDayOfMonth() + "/" + tInspDate.getYear();
                             var gs = getGuideSheetObjects(inspList[i].getIdNumber());
                             for (i in gs) {
                                 var chpt = "";
@@ -141,7 +143,7 @@ function addCurrentViolations() {
                                             if (thisRow['Chapter'].toString() == chpt && thisRow['Checklist Item'].toString() == vioDesc) {
                                                 tableUpdated = true;
                                                 thisRow['Status'] = new asiTableValObj("Status", 'IN', "N");
-                                                thisRow['Corrected Date'] = new asiTableValObj("Corrected Date", inspResultDate, "N");
+                                                thisRow['Corrected Date'] = new asiTableValObj("Corrected Date", tInspDateStr, "N");
                                             }
                                         }
                                     }
@@ -211,7 +213,7 @@ function addCurrentViolations() {
                                         rowVals["Status"] = new asiTableValObj("Status", gs[i].status, "N");
                                         rowVals["Location"] = new asiTableValObj("Location", location, "N");
                                         rowVals["Violation"] = new asiTableValObj("Violation", gs[i].comment, "N");
-                                        rowVals["Inspection Date"] = new asiTableValObj("Inspection Date", inspResultDate, "N");
+                                        rowVals["Inspection Date"] = new asiTableValObj("Inspection Date", tInspDateStr, "N");
                                         rowVals["Inspection Number"] = new asiTableValObj("Inspection Number", inspId.toString(), "Y");
                                         rowVals["Inspection Type"] = new asiTableValObj("Inspection Type", inspType, "N");
                                         rowVals["Inspector"] = new asiTableValObj("Inspector", appInspector, "N");
