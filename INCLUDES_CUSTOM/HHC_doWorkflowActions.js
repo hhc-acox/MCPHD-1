@@ -194,6 +194,7 @@ function HHC_doWorkflowActions() {
                                                     } else {
                                                         scheduleInspectDate(InspTypeToSchedule, nextWorkDay(dateAdd(null, DaysToScheduleInTheFuture)), assignedInspector); //schedule inspection using #ofDays field
                                                     }
+                                                    
                                                 } else {
                                                     if (appTypeString.indexOf('Food') > -1) {
                                                         scheduleFoodInspectionsByDate(InspTypeToSchedule, nextWorkDay(dateAdd(null, 0)), assignedInspector, capId)
@@ -249,7 +250,8 @@ function HHC_doWorkflowActions() {
                                             closeTask('Permit Closed', 'Closed', 'Closed by Script', 'Closed by Script');
                                         }
                                         if (prefix == 'IRSA') {
-                                            deactivateTask(wfTask);
+                                            closeTask(wfTask, wfStatus, 'Closed by Script', wfStatus);
+                                            updateTask(New_Task, newTaskStatus, 'Updated by script', newTaskStatus);
                                             activateTask(New_Task);
                                         }
                                         
