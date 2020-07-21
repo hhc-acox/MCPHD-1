@@ -157,7 +157,7 @@ cnt++;
 							var inspTypeString = inspectorID.toString();				// Convert Inspector path to string
 							var inspTypeArray = inspTypeString.split("/");			// Array of Inspector path parts string
 							var inspectorName = inspTypeArray[6];					//  Gets the name of the EHS
-							var deptName = inspTypeArray[3];						//  Gets the department from where the inspection came
+							var deptName = inspTypeArray[2];						//  Gets the department from where the inspection came
 			
 							if(deptName == "HOUSING")
 							{
@@ -299,9 +299,10 @@ return inspectorEmail;
 }
 function getTeamLeaderEmail(deptName,eCensusTract)
 {
+    aa.print(deptName + 'DEPT NAME');
 	if (deptName == "NA")  //deptName will be "NA" if the employee's department is HHC-RET (retired), this accomodates the situation.
 		{
-			var TLByCT = lookup("Census - Team Leader",eCensusTract);
+            var TLByCT = lookup("Census - Team Leader",eCensusTract);
 			var TLid2 = aa.person.getUser(TLByCT).getOutput();
 			if(TLid2 != null)
 		{
@@ -316,7 +317,7 @@ function getTeamLeaderEmail(deptName,eCensusTract)
 			
 	if (deptName == "HOUSING")
 		{
-		var TLid = lookup("Census - Team Leader",eCensusTract);
+        var TLid = lookup("Census - Team Leader",eCensusTract);
 		}
 	else if (deptName == "LEAD")
 		{
