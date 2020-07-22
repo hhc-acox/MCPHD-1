@@ -6,8 +6,11 @@ if (matches(appTypeArray[1],'EHSM','HHECMSC','Housing') && (!matches(appTypeArra
 
 //Always set the Census Tract on the ASI General Screen
 	var censusTract = '';
-		censusTract = AInfo['ParcelAttribute.CensusTract'];
-		editAppSpecific('Census Tract',censusTract);
+        censusTract = AInfo['ParcelAttribute.CensusTract'];
+        
+        if (censusTract && censusTract != '' && (AInfo['Census Tract'] == null || AInfo['Census Tract'] =='')) {
+            editAppSpecific('Census Tract',censusTract);
+        }
 
 //Housing EHS
 			if (matches(appTypeArray[1],'Housing') && (matches(appTypeArray[2],'TRA','HSG','VEH','INV','SEC')) && AInfo['Assigned To'] == null) {
@@ -34,3 +37,4 @@ if (matches(appTypeArray[1],'EHSM','HHECMSC','Housing') && (!matches(appTypeArra
 				editAppSpecific('Previous Assigned To',areaInspector);
 					}
 }
+//comment('Vector Zone: ' + getVectorZone(capId));
