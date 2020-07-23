@@ -21,3 +21,17 @@ if (asitRes.getSuccess()) {
         }
     }
 }
+
+var parCap = getParent();
+
+if (parCap) {
+    var parCapResult = aa.cap.getCap(parCap)
+
+    if (parCapResult.getSuccess()) {
+        var parCapModel = parCapResult.getOutput().getCapModel()
+        var parAltID = parCap.getCustomID()
+        var parAppName = parCapModel.getSpecialText();
+
+        editAppSpecific('Event Name', parAltID + ' - ' + parAppName);
+    }
+}
