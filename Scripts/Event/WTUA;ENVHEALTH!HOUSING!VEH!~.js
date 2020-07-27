@@ -57,3 +57,7 @@ if (wfTask == 'Initial Processing' && wfStatus == 'Complete Cntr Referral 48 Hrs
 	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,20)),areaInspector);
 	editTaskSpecific('Initial Processing','Reinspection Date',nextWorkDay(dateAdd(null,20)));
 	}
+
+if (wfTask = 'Initial Processing' && wfStatus == 'Complete Cntr Referral 48 Hrs') {
+        sendTowingEmail48Hour();
+}
