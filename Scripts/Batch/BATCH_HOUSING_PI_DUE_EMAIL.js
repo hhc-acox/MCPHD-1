@@ -333,7 +333,7 @@ function getTeamLeaderEmail(deptName,eCensusTract)
 		{TLemail = "" + "DWebster@MarionHealth.org";}
 			else if(TLid == "BWEHRMEI")
 		{TLemail = "" + "BWehrmeister@MarionHealth.org";}
-			else if(TLid == "PPARKER")
+			else if(TLid == "PWPARKER")
 		{TLemail = "" + "pwparker@marionhealth.org";}
 			else if(TLid == "TDEWELL")
 		{TLemail = "" + "TDewell@MarionHealth.org";}
