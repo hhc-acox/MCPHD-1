@@ -109,3 +109,10 @@ if (String(inspType) == "Pool Test Results" && String(inspResult) == "Satisfacto
         addCondition = false;
     }
 }
+
+var asiClosedBy = getGuidesheetASIValue(inspId, 'WQ_Pool_Routine','Pool Routine Detail Information', 'WQ_PR_CKL', 'POOL_ROUTINE', 'Pool Closed by');
+
+if (asiClosedBy && asiClosedBy == 'MCPHD') {
+    updateTask('Issuance', 'Suspended', 'Updated by Script', 'Suspended');
+    //updateAppStatus('Suspended','Suspended by Script - Closed by MCPHD');
+}
