@@ -41,7 +41,6 @@ if (wfTask == 'Reinspection' && wfStatus == 'Reinspection') {
 	}
 
 if (wfTask == 'Initial Processing' && wfStatus == 'Contractor Referral 48 Hours') {
-        sendTowingEmail();
  	activateTask('Towing Inspection');
 	assignTask('Towing Inspection',areaInspector);
 	}
