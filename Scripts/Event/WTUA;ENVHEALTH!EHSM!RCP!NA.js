@@ -24,7 +24,13 @@ try {
 
     if (((wfTask == "Final Processing" && wfStatus == "Finaled") || (wfTask == "Evaluation" && wfStatus == "No Work Assignment") || (wfTask == 'Billing' && wfStatus == 'Complete Billing Letter') || (wfTask == 'Work Assignment' && wfStatus == 'Cleaned by Other') || (wfTask == 'Work Assignment' && wfStatus == 'Cleaned - No Bill') || (wfTask == 'Work Assignment' && wfStatus == 'Could Not Be Cleaned')) && TRARec) {
         logDebug("Trying to close RCP on TRA");
-        closeTask("Request EHSM Clean", "EHSM Cleaned", "Updated by Script", "EHSM Cleaned");
+        var statusToUse = 'EHSM Cleaned';
+
+        if (wfStatus == 'Cleaned by Other') {
+            statusToUse = 'Cleaned by other';
+        }
+
+        closeTask("Request EHSM Clean", statusToUse, "Updated by Script", statusToUse);
 
         if (wfTask == 'Work Assignment' && wfStatus == 'Could Not Be Cleaned') {
             if (currentUserID) {
