@@ -207,85 +207,89 @@ function addCurrentViolations() {
                                     location = locations.join(', ');
 
                                     if (inspType.indexOf('Initial') > -1 || inspType.indexOf('Routine') > -1 || inspType.indexOf('Recheck') > -1 || inspType.indexOf('Complaint') > -1) {	
-                                        var rowVals = new Array();
-                                        rowVals["Chapter"] = new asiTableValObj("Chapter", chpt, "N");
-                                        rowVals["Checklist Item"] = new asiTableValObj("Checklist Item", vioDesc, "N");
-                                        rowVals["Status"] = new asiTableValObj("Status", gs[i].status, "N");
-                                        rowVals["Location"] = new asiTableValObj("Location", location, "N");
-                                        rowVals["Violation"] = new asiTableValObj("Violation", gs[i].comment, "N");
-                                        rowVals["Inspection Date"] = new asiTableValObj("Inspection Date", tInspDateStr, "N");
-                                        rowVals["Inspection Number"] = new asiTableValObj("Inspection Number", inspId.toString(), "Y");
-                                        rowVals["Inspection Type"] = new asiTableValObj("Inspection Type", inspType, "N");
-                                        rowVals["Inspector"] = new asiTableValObj("Inspector", appInspector, "N");
+                                        var itemExists = searchASITableThreeVal("CURRENT VIOLATIONS", "Inspection Number", inspId, "Chapter", chpt, "Checklist Item", vioDesc, capId);
 
-                                        var rowVals2 = rowVals;
-                                        rowVals2["Corrected Date"] = new asiTableValObj("Corrected Date", "", "N");
-
-                                        if (appTypeString.indexOf('Food') > -1) {
-                                            rowVals2["Guidesheet Sequence"] = new asiTableValObj("Guidesheet Sequence", gs[i].gsSequence.toString(), "Y");
-                                            rowVals2["Item Sequence"] = new asiTableValObj("Item Sequence", gs[i].item.getGuideItemSeqNbr().toString(), "Y");
-                                        }
-
-                                        var asitName = "CURRENT VIOLATIONS";
-                                        addToASITable(asitName, rowVals2, capId);
-
-                                        var ASITInspId = searchASITableThreeVal("VIOLATION HISTORY", "Inspection Number", inspId, "Chapter", chpt, "Checklist Item", vioDesc, capId)
-
-                                        if (!ASITInspId && appTypeString.indexOf('Food') < 0) {
-                                            addToASITable("VIOLATION HISTORY", rowVals, capId);
-                                        } else if (!ASITInspId) {
-                                            addToASITable("VIOLATION HISTORY", rowVals2, capId);
-                                        }
-
-                                        if (appTypeString.indexOf('Food') > -1) {
-                                            // Handle ASI
-                                            gs[i].loadInfo();
-                                            var asi = gs[i].info;
-
-                                            var rowValsASI = new Array();
-                                            rowValsASI["Violation Description"] = new asiTableValObj("Violation Description", asi["Violation Description"], "N");
-                                            rowValsASI["Severity"] = new asiTableValObj("Severity", asi["Severity"], "N");
-                                            rowValsASI["Citation"] = new asiTableValObj("Citation", asi["Citation"], "N");
-                                            rowValsASI["Corrective Action"] = new asiTableValObj("Corrective Action", asi["Corrective Action"], "N");
-                                            rowValsASI["Inspection Number"] = new asiTableValObj("Inspection Number", inspId.toString(), "Y");
-                                            rowValsASI["Guidesheet Sequence"] = new asiTableValObj("Guidesheet Sequence", gs[i].gsSequence.toString(), "Y");
-                                            rowValsASI["Item Sequence"] = new asiTableValObj("Item Sequence", gs[i].item.getGuideItemSeqNbr().toString(), "Y");
-
-                                            addToASITable("AUX", rowValsASI, capId);
-                                            
-                                            // Handle ASIT
-                                            for (k in tableRows) { 
-                                                var temp = "";
-
-                                                if (tableRows[k]["Temperature"]) {
-                                                    temp = tableRows[k]["Temperature"].toString();
-                                                }
-
-                                                var locationASIT = "";
-
-                                                if (tableRows[k]["Location"]) {
-                                                    locationASIT = tableRows[k]["Location"];
-                                                }
-
-                                                var equipment = "";
-
-                                                if (tableRows[k]["Equipment"]) {
-                                                    equipment = tableRows[k]["Equipment"];
-                                                }
-
-                                                var rowValsASIT = new Array();
-                                                rowValsASIT["Location"] = new asiTableValObj("Location", locationASIT, "N");
-                                                rowValsASIT["Equipment"] = new asiTableValObj("Equipment", equipment, "N");
-                                                rowValsASIT["Temperature"] = new asiTableValObj("Temperature", temp, "N");
-                                                rowValsASIT["Inspection Number"] = new asiTableValObj("Inspection Number", inspId.toString(), "Y");
-                                                rowValsASIT["Guidesheet Sequence"] = new asiTableValObj("Guidesheet Sequence", gs[i].gsSequence.toString(), "Y");
-                                                rowValsASIT["Item Sequence"] = new asiTableValObj("Item Sequence", gs[i].item.getGuideItemSeqNbr().toString(), "Y");
-                                                
-                                                addToASITable("TEMPERATURE", rowValsASIT, capId);
+                                        if (!itemExists) {
+                                            var rowVals = new Array();
+                                            rowVals["Chapter"] = new asiTableValObj("Chapter", chpt, "N");
+                                            rowVals["Checklist Item"] = new asiTableValObj("Checklist Item", vioDesc, "N");
+                                            rowVals["Status"] = new asiTableValObj("Status", gs[i].status, "N");
+                                            rowVals["Location"] = new asiTableValObj("Location", location, "N");
+                                            rowVals["Violation"] = new asiTableValObj("Violation", gs[i].comment, "N");
+                                            rowVals["Inspection Date"] = new asiTableValObj("Inspection Date", tInspDateStr, "N");
+                                            rowVals["Inspection Number"] = new asiTableValObj("Inspection Number", inspId.toString(), "Y");
+                                            rowVals["Inspection Type"] = new asiTableValObj("Inspection Type", inspType, "N");
+                                            rowVals["Inspector"] = new asiTableValObj("Inspector", appInspector, "N");
+    
+                                            var rowVals2 = rowVals;
+                                            rowVals2["Corrected Date"] = new asiTableValObj("Corrected Date", "", "N");
+    
+                                            if (appTypeString.indexOf('Food') > -1) {
+                                                rowVals2["Guidesheet Sequence"] = new asiTableValObj("Guidesheet Sequence", gs[i].gsSequence.toString(), "Y");
+                                                rowVals2["Item Sequence"] = new asiTableValObj("Item Sequence", gs[i].item.getGuideItemSeqNbr().toString(), "Y");
                                             }
-                                        }
+    
+                                            var asitName = "CURRENT VIOLATIONS";
+                                            addToASITable(asitName, rowVals2, capId);
+        
+                                            var itemExistsHistory = searchASITableThreeVal("VIOLATION HISTORY", "Inspection Number", inspId, "Chapter", chpt, "Checklist Item", vioDesc, capId)
 
-                                        location = "";
+                                            if (!itemExistsHistory && appTypeString.indexOf('Food') < 0) {
+                                                addToASITable("VIOLATION HISTORY", rowVals, capId);
+                                            } else if (!itemExistsHistory) {
+                                                addToASITable("VIOLATION HISTORY", rowVals2, capId);
+                                            }
+    
+                                            if (appTypeString.indexOf('Food') > -1) {
+                                                // Handle ASI
+                                                gs[i].loadInfo();
+                                                var asi = gs[i].info;
+    
+                                                var rowValsASI = new Array();
+                                                rowValsASI["Violation Description"] = new asiTableValObj("Violation Description", asi["Violation Description"], "N");
+                                                rowValsASI["Severity"] = new asiTableValObj("Severity", asi["Severity"], "N");
+                                                rowValsASI["Citation"] = new asiTableValObj("Citation", asi["Citation"], "N");
+                                                rowValsASI["Corrective Action"] = new asiTableValObj("Corrective Action", asi["Corrective Action"], "N");
+                                                rowValsASI["Inspection Number"] = new asiTableValObj("Inspection Number", inspId.toString(), "Y");
+                                                rowValsASI["Guidesheet Sequence"] = new asiTableValObj("Guidesheet Sequence", gs[i].gsSequence.toString(), "Y");
+                                                rowValsASI["Item Sequence"] = new asiTableValObj("Item Sequence", gs[i].item.getGuideItemSeqNbr().toString(), "Y");
+    
+                                                addToASITable("AUX", rowValsASI, capId);
+                                                
+                                                // Handle ASIT
+                                                for (k in tableRows) { 
+                                                    var temp = "";
+    
+                                                    if (tableRows[k]["Temperature"]) {
+                                                        temp = tableRows[k]["Temperature"].toString();
+                                                    }
+    
+                                                    var locationASIT = "";
+    
+                                                    if (tableRows[k]["Location"]) {
+                                                        locationASIT = tableRows[k]["Location"];
+                                                    }
+    
+                                                    var equipment = "";
+    
+                                                    if (tableRows[k]["Equipment"]) {
+                                                        equipment = tableRows[k]["Equipment"];
+                                                    }
+    
+                                                    var rowValsASIT = new Array();
+                                                    rowValsASIT["Location"] = new asiTableValObj("Location", locationASIT, "N");
+                                                    rowValsASIT["Equipment"] = new asiTableValObj("Equipment", equipment, "N");
+                                                    rowValsASIT["Temperature"] = new asiTableValObj("Temperature", temp, "N");
+                                                    rowValsASIT["Inspection Number"] = new asiTableValObj("Inspection Number", inspId.toString(), "Y");
+                                                    rowValsASIT["Guidesheet Sequence"] = new asiTableValObj("Guidesheet Sequence", gs[i].gsSequence.toString(), "Y");
+                                                    rowValsASIT["Item Sequence"] = new asiTableValObj("Item Sequence", gs[i].item.getGuideItemSeqNbr().toString(), "Y");
+                                                    
+                                                    addToASITable("TEMPERATURE", rowValsASIT, capId);
+                                                }
+                                            }
+    
+                                            location = "";
+                                        }
                                     }
                                 }
                             }
