@@ -178,7 +178,7 @@ if (matches(wfTask,'Requesting Admin Court Order') && matches(wfStatus,'Non-Comp
 if (wfTask == 'Additional Processing' && wfStatus == 'Court Case') {
 	HHC_CREATE_COURT(); //Creates a Court Case
 	activateTask('Final Processing');
-	updateAppStatus('Final Processing','Status Updated by Script');
+	//updateAppStatus('Final Processing','Status Updated by Script');
 	deactivateTask('Additional Processing');
 	}
 
