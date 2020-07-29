@@ -1,68 +1,190 @@
-//lwacht: 181019: #123: New Status for Injunction
-try{
-	if(wfStatus=="Permanent Injunction"){
-		var parCapId = false;
-		if(parentCapId){
-			parCapId = parentCapId;
-		}else{
-			var parAltId = AInfo["Parent Case"];
-			parCapId = getApplication(parAltId);
-		}
-		if(parCapId){
-			updateAppStatus("Permanent Injunction","Updated via WTUA:EnvHealth/Housing/*/*", parCapId);
-			if(!checkInspectionResult("Reinspection","Scheduled")){
-				var currCap = capId;
-				capId = parCapId;
-				var inspUserId = getInspector("Initial Inspection");
-				capId = currCap;
-				if(inspUserId){
-					scheduleInspect(parCapId,"Reinspection",180,inspUserId);
-				}else{
-					scheduleInspect(parCapId,"Reinspection",180);
-				}
-			}
-		}else{
-			logDebug("No parent record found.  No reinspection scheduled.");
-		}			
-	}
-}catch(err){
-	logDebug("A JavaScript Error occurred: WTUA:EnvHealth/Housing/CRT/*: permanent Injunction: " + err.message);
-	logDebug(err.stack)
-}
-//lwacht: 181019: #123: end
+var assignedEHS = '';
+assignedEHS = convertForAssignedTo(AInfo['Assigned To']);
+comment('assignedEHS is '+assignedEHS);
+var caseStatus = capStatus;
+comment('The Record Status is '+capStatus);
 
-//lwacht: 181022: #143: Fee Assessments
-try{
-	if(wfTask=="Reinspection" && wfStatus.indexOf("Ticket Issued")>-1){
-		updateFee("H_T100", "H_TRA", "FINAL", 1, "Y", "Y");
-	}
-}catch(err){
-	logDebug("A JavaScript Error occurred: WTUA:EnvHealth/Housing/CRT/*: Fee assessments: " + err.message);
-	logDebug(err.stack)
+if (wfTask == 'Additional Processing' && wfStatus == 'Request Administrative Hearing') {
+        var today = new Date();
+	var day = today.getDate() + 60;
+	var month = today.getMonth() + 1;
+	var year = today.getFullYear();
+	var schedDate = aa.date.parseDate(month + '/' + day + '/' + year)	
+        scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,59)),assignedEHS); 
+	updateAppStatus('Administrative Hearing','Status Updated by Script');
+	addStdConditionWithExpiration("Record Hold", "Admin Hearing",schedDate);
 }
-//lwacht: 181022: #143: end
 
-//lwacht: 181030: #124: Efficiencies when closing Injunction
-try{
-	if(matches(wfStatus,"Cause Dismiss","Compliance","Contempt","Dismissed")){
-		var parCapId = false;
-		if(parentCapId){
-			parCapId = parentCapId;
-		}else{
-			var parAltId = AInfo["Parent Case"];
-			parCapId = getApplication(parAltId);
-		}
-		if(parCapId){
-			updateAppStatus("Active","Updated via WTUA:EnvHealth/Housing/*/*", parCapId);
-			if(checkInspectionResult("Reinspection","Scheduled")){
-				resultInspection("Reinspection", "Cancelled", sysDate, "Updated via WTUA:EnvHealth/Housing/*/*") 
-			}
-		}else{
-			logDebug("No parent record found.  No updates made.");
-		}			
+if (wfTask == 'Initial Processing' && matches(wfStatus,'Complete Notice of Violation','Complete Emergency NOV') && getTSIfieldValue('Reinspection Date', 'Initial Processing') != null) {
+	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Initial Processing'),assignedEHS);
 	}
-}catch(err){
-	logDebug("A JavaScript Error occurred: WTUA:EnvHealth/Housing/CRT/*: Closing Injunction: " + err.message);
-	logDebug(err.stack)
+
+if (wfTask == 'Initial Processing' && matches(wfStatus,'Complete Notice of Violation','Complete Emergency NOV') && getTSIfieldValue('Reinspection Date', 'Initial Processing') == null) {
+	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,13)),assignedEHS); 
+	editTaskSpecific('Initial Processing','Reinspection Date',nextWorkDay(dateAdd(null,13)));
+	}
+
+if (wfTask == 'Initial Processing' && wfStatus == 'Notice of Violation' && getTSIfieldValue('Reinspection Date', 'Initial Processing') == null) {
+	editTaskSpecific('Initial Processing','Reinspection Date',nextWorkDay(dateAdd(null,13)));
+	}
+
+if (wfTask == 'Initial Processing' && wfStatus == 'Emergency Notice of Violation' && getTSIfieldValue('Reinspection Date', 'Initial Processing') == null) {
+	editTaskSpecific('Initial Processing','Reinspection Date',nextWorkDay(dateAdd(null,0)));
+	}
+
+if (wfTask == 'Reinspection' && wfStatus == 'Reinspection' && getTSIfieldValue('Reinspection Date', 'Reinspection') != null) {
+	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Reinspection'),assignedEHS);
+	}
+	
+if (wfTask == 'Reinspection' && wfStatus == 'In Violation') {
+	activateTask('Additional Processing');
+	}
+	
+if (wfTask == 'Reinspection' && wfStatus == 'In Violation – Ticket Issued') {
+	activateTask('Additional Processing');
+	}
+//Additional Processing--------------------------------------------------------------------------------------------Additional Processing
+if (wfTask == 'Additional Processing' && matches(wfStatus,'Reinspection', 'Complete Reinspection Letter', 'Complete Ticket', 'Complete Add Vio Reinspection Ltr') && getTSIfieldValue('Reinspection Date', 'Additional Processing') != null) {
+	scheduleInspectDate('Reinspection', getTSIfieldValue('Reinspection Date', 'Additional Processing'),assignedEHS);
+	}
+
+if (wfTask == 'Additional Processing' && matches(wfStatus,'Reinspection', 'Complete Reinspection Letter', 'Complete Add Vio Reinspection Ltr') && getTSIfieldValue('Reinspection Date', 'Additional Processing') == null) {
+	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,13)),assignedEHS);
+	editTaskSpecific('Additional Processing','Reinspection Date',nextWorkDay(dateAdd(null,13)));
+	}
+	
+if (wfTask == 'Additional Processing' && wfStatus == 'Request EHSM Clean') {
+	var areaTeamLeader = '';
+	var censusTract = '';
+	censusTract = AInfo['ParcelAttribute.CensusTract'];
+	areaTeamLeader = lookup('Census - Team Leader',censusTract); 
+	activateTask('Request EHSM Clean');
+	assignTask('Request EHSM Clean',areaTeamLeader);
+	}
+	
+if (wfTask == 'Additional Processing' && wfStatus == 'Request Admin Court Order') {
+        var today = new Date();
+	var day = today.getDate() + 60;
+	var month = today.getMonth() + 1;
+	var year = today.getFullYear();
+	var schedDate = aa.date.parseDate(month + '/' + day + '/' + year)
+	//HHC_CREATE_COURT();
+	//editAppSpecific('Admin Court Order','Yes',newChildID);
+	activateTask('Requesting Admin Court Order');
+	deactivateTask('Additional Processing'); //Requested on the UAT issues list by Juli Gonyou item # 403
+	//Assign to EHS Team Leader
+	var areaTeamLeader = '';
+	var censusTract = '';
+	censusTract = AInfo['ParcelAttribute.CensusTract'];
+	areaTeamLeader = lookup('Census - Team Leader',censusTract); 
+	assignTask('Requesting Admin Court Order',areaTeamLeader);
+        addStdConditionWithExpiration("Record Hold", "Admin Hearing",schedDate);
+	}
+
+if (wfTask == 'Additional Processing' && wfStatus == 'Ticket' && AInfo['Ticket Due Date'] != null) {
+	addTrashTicketFee();
+	activateTask('Ticket');
+	editTaskDueDate('Ticket',AInfo['Ticket Due Date']);
+	assignTask('Ticket',assignedEHS);
+	}
+
+if (wfTask == 'Additional Processing' && wfStatus == 'Ticket' && (AInfo['Ticket Due Date'] == null)) {
+	addTrashTicketFee();
+	activateTask('Ticket');
+	editTaskDueDate('Ticket',nextWorkDay(dateAdd(null,13)));
+	assignTask('Ticket',assignedEHS);
+	editTaskSpecific('Additional Processing','Ticket Due Date',nextWorkDay(dateAdd(null,13)));
+	}
+
+if (wfTask == 'Additional Processing' && matches(wfStatus,'Complete Reinspection Letter','Complete Ticket','Complete Add Vio Reinspection Ltr')) {
+	assignTask('Additional Processing',assignedEHS);
+	}	
+//Request Admin Court Order
+if (wfTask == 'Requesting Admin Court Order' && wfStatus == 'Request EHSM Clean') {
+	var areaTeamLeader = '';
+	var censusTract = '';
+	censusTract = AInfo['ParcelAttribute.CensusTract'];
+	areaTeamLeader = lookup('Census - Team Leader',censusTract); 
+	activateTask('Request EHSM Clean');
+	assignTask('Request EHSM Clean',areaTeamLeader);
+	deactivateTask('Requesting Admin Court Order');
+	}
+
+if (wfTask == 'Request EHSM Clean' && wfStatus == 'Complete Request EHSM Clean') {
+	HHC_CREATE_RCP_CASE();
+	}
+	
+if (matches(wfTask, 'Additional Processing','Requesting Admin Court Order') && wfStatus == 'Request Towing') {
+	activateTask('Request Towing');
+	var thisInsp = hhcgetUserByDiscipline('HSGTowing');
+	assignTask('Request Towing',thisInsp);
+	//notify towing company by email -no longer need the towing notification for TRA just on VEH as of 02/04/2020 - rdv
+	//sendTowingEmail(); no longer need the towing notification for TRA just on VEH as of 02/04/2020 - rdv
+	deactivateTask('Requesting Admin Court Order');
 }
-//lwacht: 181030: #124: end
+//no longer using the status or task 'Request EHSM Clean and Towing' as of 02/04/2020 - rdv
+// if (matches(wfTask,'Additional Processing','Requesting Admin Court Order') && wfStatus == 'Request EHSM Clean and Towing') {
+	// //notify towing company by email - must update the function with the correct email.
+	// //As of 12/17/2019, Juli says EHSM should send the email for towing when the clean and towing are both requested.
+	// //sendTowingEmail();
+	// var areaTeamLeader = '';
+	// var censusTract = '';
+	// censusTract = AInfo['ParcelAttribute.CensusTract'];
+	// areaTeamLeader = lookup('Census - Team Leader',censusTract); 
+	// activateTask('Request EHSM Clean');
+	// //activateTask('Request Towing'); //As of 12/17/2019, Juli says EHSM should send the email for towing.  They should also deal with the Towing request so it does not need to be active for Housing on the TRA case.
+	// deactivateTask('Requesting Admin Court Order');
+	// assignTask('Request EHSM Clean',areaTeamLeader);
+// }
+//no longer using the status or task 'Request EHSM Clean and Towing' as of 02/04/2020 - rdv
+
+if (wfTask == 'Final Processing' && (wfStatus == 'Permanent Injunction') && getTSIfieldValue('Reinspection Date', 'Final Processing') != null) {
+	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Final Processing'),assignedEHS);
+	}
+
+if (wfTask == 'Final Processing' && (wfStatus == 'Permanent Injunction') && getTSIfieldValue('Reinspection Date', 'Final Processing') == null ) {
+	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,179)),assignedEHS);
+	editTaskSpecific('Final Processing','Reinspection Date',nextWorkDay(dateAdd(null,179)));
+	}
+
+if (wfTask == 'Recurring Inspection' && wfStatus == 'Reinspect' && getTSIfieldValue('Reinspection Date', 'Recurring Inspection') != null) {
+	scheduleInspectDate('Reinspection',getTSIfieldValue('Reinspection Date', 'Recurring Inspection'),assignedEHS);
+	}
+
+if (wfTask == 'Recurring Inspection' && wfStatus == 'Reinspect' && getTSIfieldValue('Reinspection Date', 'Recurring Inspection') == null) {
+	scheduleInspectDate('Reinspection',nextWorkDay(dateAdd(null,179)),assignedEHS);
+	}
+
+//Closing the Case-----------------------------------------------------------------------------------------------------------------Closing the Case
+if (matches(wfTask,'Reinspection','Additional Processing','Final Processing','Recurring Inspection','Request EHSM Clean','Requesting Admin Court Order') && matches(wfStatus,'In Compliance', 'Non-Compliance/Case Closed','Cleaned by Other','Cleaned No Billing','Finaled', 'Closed') && balanceDue > 0) {
+	//updateTask('Final Processing','Closed/Fees Outstanding','Updated by Script'); Not changed
+	activateTask('Final Processing');
+	updateAppStatus('Final Processing','Status Updated by Script');
+	HHC_VIOLATIONS_LOOP();
+	}
+
+if (matches(wfTask,'Reinspection','Additional Processing','Final Processing','Recurring Inspection', 'Request EHSM Clean','Requesting Admin Court Order') && matches(wfStatus,'In Compliance', 'Non-Compliance/Case Closed','Cleaned by Other','Finaled', 'Closed') && balanceDue == 0) {
+	HHC_VIOLATIONS_LOOP(); //Sets all the violation statuses to Final
+	}
+
+if (wfTask == 'Additional Processing' && wfStatus == 'Court Case') {
+	HHC_VIOLATIONS_LOOP_COURT(); //Sets all the violation statuses to Court
+	}
+
+if (matches(wfTask,'Requesting Admin Court Order') && matches(wfStatus,'Non-Compliance/Case Closed')) {
+	deactivateTask('Request Towing');
+	}
+
+if (wfTask == 'Additional Processing' && wfStatus == 'Court Case') {
+	HHC_CREATE_COURT(); //Creates a Court Case
+	activateTask('Final Processing');
+	//updateAppStatus('Final Processing','Status Updated by Script');
+	deactivateTask('Additional Processing');
+	}
+
+    /*
+if (wfTask == 'Ticket' && (wfStatus == 'Paid' || wfStatus == 'Voided')) {
+	activateTask('Final Processing');
+	deactivateTask('Additional Processing');
+    }
+    */
