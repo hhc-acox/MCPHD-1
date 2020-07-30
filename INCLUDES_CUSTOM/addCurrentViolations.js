@@ -1,305 +1,173 @@
-function addCurrentViolations() {
-    if (appTypeString.indexOf('LHH') > -1) {
-        var asitRes = aa.appSpecificTableScript.getAppSpecificTableModel(capId, 'VIOLATIONS');
+function HHC_GET_OFFENSE_CODES(saveID, childID) {
+    try {
+        if (!childID) {
+            logDebug("Required parameter child ID is null");
+            return;
+        }
+        capId = saveID;
+        var code10or19 = AInfo['Ordinance Chapter'] + '';
+        logDebug("HHC_GET_OFFENSE_CODES: Starts here");
+        //get Violation Table from current record and interrogate each violation and determine the violation column value
+        var v = '';
+        var vioCodeNums = '';
+        var newVioCode = '';
+        var uniqVioCodes = '';
+        if (matches(appTypeArray[2], 'HSG', 'TRA')) {
+            crtVIOLATIONS = loadASITable('VIOLATIONS');
+            if (crtVIOLATIONS && crtVIOLATIONS.length > 0) {
+                for (a in crtVIOLATIONS) {
+                    thisrow = crtVIOLATIONS[a];
+                    if (matches(thisrow['Status'], 'Court') && !matches(thisrow['Violation'], null)) {
+                        //for each value look up the corresponding codes in the translation table that fits the case and push each code set to an array:
+                        //HSG Cases
 
-        if (asitRes.getSuccess()) {
-            removeASITable('VIOLATIONS');
-            try {
-                inspResultObj = aa.inspection.getInspections(capId);
-
-                if (inspResultObj.getSuccess()) {
-                    inspList = inspResultObj.getOutput();
-
-                    for (i in inspList) {
-                        if (inspId == inspList[i].getIdNumber()) {
-                            var gs = getGuideSheetObjects(inspList[i].getIdNumber());
-
-                            for (i in gs) {
-                                if (gs[i].gsType == 'LHH_Violations') {
-                                    gs[i].loadInfoTables();
-
-                                    var tableRows = gs[i].infoTables["VIOLATIONS"];
-
-                                    for (j in tableRows) {
-                                        var status = tableRows[j]["Status"];
-                                        var date = tableRows[j]["Date"];
-                                        var violation = tableRows[j]["Violation"];
-                                        var xrf = tableRows[j]["XRF Result"];
-                                        var explanation = tableRows[j]["Explanation"];
-                                        var location = tableRows[j]["Location"];
-                                        var dir = tableRows[j]["DIR"];
-                                        var dhcb = tableRows[j]["DH/CB"];
-                                        var oc = tableRows[j]["OC"];
-                                        var ip = tableRows[j]["IP"];
-                                        var other = tableRows[j]["Other"];
-
-                                        if (!status) {
-                                            status = "";
-                                        }
-                                        if (!date) {
-                                            date = "";
-                                        }
-                                        if (!violation) {
-                                            violation = "";
-                                        }
-                                        if (!xrf) {
-                                            xrf = "";
-                                        }
-                                        if (!explanation) {
-                                            explanation = "";
-                                        }
-                                        if (!location) {
-                                            location = "";
-                                        }
-                                        if (!dir) {
-                                            dir = "";
-                                        }
-                                        if (!dhcb) {
-                                            dhcb = "";
-                                        }
-                                        if (!oc) {
-                                            oc = "";
-                                        }
-                                        if (!ip) {
-                                            ip = "";
-                                        }
-                                        if (!other) {
-                                            other = "";
-                                        }
-                                        var rowVals = new Array();
-                                        rowVals["Status"] = new asiTableValObj("Status", status, "Y");
-                                        rowVals["Date"] = new asiTableValObj("Date", date, "Y");
-                                        rowVals["Violation"] = new asiTableValObj("Violation", violation, "Y");
-                                        rowVals["XRF Result"] = new asiTableValObj("XRF Result", xrf, "Y");
-                                        rowVals["Explanation"] = new asiTableValObj("Explanation", explanation, "Y");
-                                        rowVals["Location"] = new asiTableValObj("Location", location, "Y");
-                                        rowVals["DIR"] = new asiTableValObj("DIR", dir, "Y");
-                                        rowVals["DH/CB"] = new asiTableValObj("DH/CB", dhcb, "Y");
-                                        rowVals["OC"] = new asiTableValObj("OC", oc, "Y");
-                                        rowVals["IP"] = new asiTableValObj("IP", ip, "Y");
-                                        rowVals["Other"] = new asiTableValObj("Other", other, "Y");
-                                        var asitName = "VIOLATIONS";
-                                        addToASITable(asitName, rowVals, capId);
-                                    }
-                                }
+                        if (matches(appTypeArray[2], 'HSG')) {
+                            logDebug("HHC_GET_OFFENSE_CODES: Housing Case");
+                            logDebug("HHC_GET_OFFENSE_CODES: parseInt(code10or19) - " + parseInt(code10or19));
+                            if (parseInt(code10or19) == 10) {
+                                v = lookup('VioCode_Chpt10_Occ', crtVIOLATIONS[a]['Violation']);
+                                v = v.replace(/-/g, '');
+                                vioCodeNums = vioCodeNums + v.replace(/\//g, 'OI');
+                                vioCodeNums = vioCodeNums + 'OI';
+                                v = '';
+                            }
+                            if (parseInt(code10or19) == 19) {
+                                v = lookup('VioCode_Chpt19', crtVIOLATIONS[a]['Violation']);
+                                v = v.replace(/-/g, '');
+                                vioCodeNums = vioCodeNums + v.replace(/\//g, 'OI');
+                                vioCodeNums = vioCodeNums + 'OI';
+                                v = '';
                             }
                         }
-                    }
-                }
-            } catch (err) {
-                logDebug("A JavaScript Error occurred: Adding Violations to ASIT:  " + err.message);
-                logDebug(err.stack);
-            }
-        }
-    } else {
-        var asitRes = aa.appSpecificTableScript.getAppSpecificTableModel(capId, 'CURRENT VIOLATIONS');
-
-        if (asitRes.getSuccess()) {
-            try {
-                inspResultObj = aa.inspection.getInspections(capId);
-
-                if (inspResultObj.getSuccess()) {
-                    inspList = inspResultObj.getOutput();
-                    var appInspector = getInspectorByInspID(inspId);
-
-                    // Clear CURRENT VIOLATIONS if submitted inspection is an Initial or Routine, but not recheck
-                    if ((inspType.indexOf('Initial') > -1 || inspType.indexOf('Routine') > -1) && inspType.indexOf('Recheck') < 0) {
-                        removeASITable('CURRENT VIOLATIONS');
-                    }
-
-                    for (i in inspList) {
-                        if (inspId == inspList[i].getIdNumber()) {
-                            var tInspDate = inspList[i].getInspectionDate();
-                            var tInspDateStr = tInspDate.getMonth() + "/" + tInspDate.getDayOfMonth() + "/" + tInspDate.getYear();
-                            var gs = getGuideSheetObjects(inspList[i].getIdNumber());
-                            for (i in gs) {
-                                var chpt = "";
-                                var vioDesc = "";
-
-                                if (gs[i].gsType.indexOf('Failed') > -1 && gs[i].status == 'IN') {
-                                    // Handle failed checklist in compliance
-                                    var n = gs[i].text.indexOf('|');
-                                    var iTextLength = gs[i].text.lastIndexOf("");
-
-                                    if (n == -1) {
-                                        chpt = gs[i].text;
-                                    } else {
-                                        chpt = gs[i].text.slice(0, n - 1);
-                                        vioDesc = gs[i].text.slice(n + 2, iTextLength);
-                                    }
-
-                                    var srchTable = new Array();
-                                    var tableUpdated = false;
-                                    srchTable = loadASITable('CURRENT VIOLATIONS');
-
-                                    var srchTableHist = new Array();
-                                    var histUpdated = false;
-                                    srchTableHist = loadASITable('VIOLATION HISTORY');
-
-                                    if (srchTable) {
-                                        for (x in srchTable) {
-                                            var thisRow = srchTable[x];
-
-                                            if (thisRow['Chapter'].toString() == chpt && thisRow['Checklist Item'].toString() == vioDesc) {
-                                                tableUpdated = true;
-                                                thisRow['Status'] = new asiTableValObj("Status", 'IN', "N");
-                                                thisRow['Corrected Date'] = new asiTableValObj("Corrected Date", tInspDateStr, "N");
-                                            }
-                                        }
-                                    }
-
-                                    if (srchTableHist) {
-                                        for (x in srchTableHist) {
-                                            var thisRow = srchTableHist[x];
-
-                                            if (thisRow['Chapter'].toString() == chpt && thisRow['Checklist Item'].toString() == vioDesc) {
-                                                histUpdated = true;
-                                                thisRow['Status'] = new asiTableValObj("Status", 'IN', "N");
-                                            }
-                                        }
-                                    }
-
-                                    if (tableUpdated) {
-                                        removeASITable('CURRENT VIOLATIONS');
-                                        addASITable('CURRENT VIOLATIONS', srchTable);
-                                    }
-
-                                    if (histUpdated) {
-                                        removeASITable('VIOLATION HISTORY');
-                                        addASITable('VIOLATION HISTORY', srchTableHist);
-                                    }
-                                    
-                                } else if (gs[i].status == 'OUT' || gs[i].status == 'COS') {
-                                    // Handle new violations
-                                    var tableRows = new Array();
-                                    var locations = new Array();
-                                    var location = "";
-
-                                    gs[i].loadInfoTables();
-
-                                    var n = gs[i].text.indexOf('|');
-                                    var iTextLength = gs[i].text.lastIndexOf("");
-
-                                    if (n == -1) {
-                                        chpt = gs[i].text;
-                                    } else {
-                                        chpt = gs[i].text.slice(0, n - 1);
-                                        vioDesc = gs[i].text.slice(n + 2, iTextLength);
-                                    }
-
-                                    // Handle Location
-                                    if (appTypeString.indexOf('WQ') > -1) {
-                                        tableRows = gs[i].infoTables["LOCATION"];
-                                    }
-
-                                    if (appTypeString.indexOf('Food') > -1) {
-                                        tableRows = gs[i].infoTables["LOCATION-EQUIPMENT-TEMPERATURE"];
-                                    }
-
-                                    for (j in tableRows) { 
-                                        var tLoc = tableRows[j]["Location"];
-
-                                        if (tLoc) {
-                                            locations.push(tLoc);
-                                        }
-                                    } 
-                                    
-                                    location = locations.join(', ');
-
-                                    if (inspType.indexOf('Initial') > -1 || inspType.indexOf('Routine') > -1 || inspType.indexOf('Recheck') > -1 || inspType.indexOf('Complaint') > -1) {	
-                                        var itemExists = searchASITableThreeVal("CURRENT VIOLATIONS", "Inspection Number", inspId, "Chapter", chpt, "Checklist Item", vioDesc, capId);
-
-                                        if (!itemExists) {
-                                            var rowVals = new Array();
-                                            rowVals["Chapter"] = new asiTableValObj("Chapter", chpt, "N");
-                                            rowVals["Checklist Item"] = new asiTableValObj("Checklist Item", vioDesc, "N");
-                                            rowVals["Status"] = new asiTableValObj("Status", gs[i].status, "N");
-                                            rowVals["Location"] = new asiTableValObj("Location", location, "N");
-                                            rowVals["Violation"] = new asiTableValObj("Violation", gs[i].comment, "N");
-                                            rowVals["Inspection Date"] = new asiTableValObj("Inspection Date", tInspDateStr, "N");
-                                            rowVals["Inspection Number"] = new asiTableValObj("Inspection Number", inspId.toString(), "Y");
-                                            rowVals["Inspection Type"] = new asiTableValObj("Inspection Type", inspType, "N");
-                                            rowVals["Inspector"] = new asiTableValObj("Inspector", appInspector, "N");
-    
-                                            var rowVals2 = rowVals;
-                                            rowVals2["Corrected Date"] = new asiTableValObj("Corrected Date", "", "N");
-    
-                                            if (appTypeString.indexOf('Food') > -1) {
-                                                rowVals2["Guidesheet Sequence"] = new asiTableValObj("Guidesheet Sequence", gs[i].gsSequence.toString(), "Y");
-                                                rowVals2["Item Sequence"] = new asiTableValObj("Item Sequence", gs[i].item.getGuideItemSeqNbr().toString(), "Y");
-                                            }
-    
-                                            var asitName = "CURRENT VIOLATIONS";
-                                            addToASITable(asitName, rowVals2, capId);
-        
-                                            var itemExistsHistory = searchASITableThreeVal("VIOLATION HISTORY", "Inspection Number", inspId, "Chapter", chpt, "Checklist Item", vioDesc, capId)
-
-                                            if (!itemExistsHistory && appTypeString.indexOf('Food') < 0) {
-                                                addToASITable("VIOLATION HISTORY", rowVals, capId);
-                                            } else if (!itemExistsHistory) {
-                                                addToASITable("VIOLATION HISTORY", rowVals2, capId);
-                                            }
-    
-                                            if (appTypeString.indexOf('Food') > -1) {
-                                                // Handle ASI
-                                                gs[i].loadInfo();
-                                                var asi = gs[i].info;
-    
-                                                var rowValsASI = new Array();
-                                                rowValsASI["Violation Description"] = new asiTableValObj("Violation Description", asi["Violation Description"], "N");
-                                                rowValsASI["Severity"] = new asiTableValObj("Severity", asi["Severity"], "N");
-                                                rowValsASI["Citation"] = new asiTableValObj("Citation", asi["Citation"], "N");
-                                                rowValsASI["Corrective Action"] = new asiTableValObj("Corrective Action", asi["Corrective Action"], "N");
-                                                rowValsASI["Inspection Number"] = new asiTableValObj("Inspection Number", inspId.toString(), "Y");
-                                                rowValsASI["Guidesheet Sequence"] = new asiTableValObj("Guidesheet Sequence", gs[i].gsSequence.toString(), "Y");
-                                                rowValsASI["Item Sequence"] = new asiTableValObj("Item Sequence", gs[i].item.getGuideItemSeqNbr().toString(), "Y");
-    
-                                                addToASITable("AUX", rowValsASI, capId);
-                                                
-                                                // Handle ASIT
-                                                for (k in tableRows) { 
-                                                    var temp = "";
-    
-                                                    if (tableRows[k]["Temperature"]) {
-                                                        temp = tableRows[k]["Temperature"].toString();
-                                                    }
-    
-                                                    var locationASIT = "";
-    
-                                                    if (tableRows[k]["Location"]) {
-                                                        locationASIT = tableRows[k]["Location"];
-                                                    }
-    
-                                                    var equipment = "";
-    
-                                                    if (tableRows[k]["Equipment"]) {
-                                                        equipment = tableRows[k]["Equipment"];
-                                                    }
-    
-                                                    var rowValsASIT = new Array();
-                                                    rowValsASIT["Location"] = new asiTableValObj("Location", locationASIT, "N");
-                                                    rowValsASIT["Equipment"] = new asiTableValObj("Equipment", equipment, "N");
-                                                    rowValsASIT["Temperature"] = new asiTableValObj("Temperature", temp, "N");
-                                                    rowValsASIT["Inspection Number"] = new asiTableValObj("Inspection Number", inspId.toString(), "Y");
-                                                    rowValsASIT["Guidesheet Sequence"] = new asiTableValObj("Guidesheet Sequence", gs[i].gsSequence.toString(), "Y");
-                                                    rowValsASIT["Item Sequence"] = new asiTableValObj("Item Sequence", gs[i].item.getGuideItemSeqNbr().toString(), "Y");
-                                                    
-                                                    addToASITable("TEMPERATURE", rowValsASIT, capId);
-                                                }
-                                            }
-    
-                                            location = "";
-                                        }
-                                    }
-                                }
+                        //TRA Cases
+                        if (matches(appTypeArray[2], 'TRA')) {
+                            //Trash Occupied - Residential - VioCode_Chpt10_Occ
+                            logDebug("HHC_GET_OFFENSE_CODES: Trash Case");
+                            if (parseInt(code10or19) == 10 && AInfo['Property Type'] == 'Occupied') {
+                                v = lookup('VioCode_Chpt10_Occ', crtVIOLATIONS[a]['Violation']);
+                                v = v.replace(/-/g, '');
+                                vioCodeNums = vioCodeNums + v.replace(/\//g, 'OI');
+                                vioCodeNums = vioCodeNums + 'OI';
+                                v = '';
+                            }
+                            //Trash on vacant lot - Residential - VioCode_Chpt10_VL
+                            if (parseInt(code10or19) == 10 && matches(AInfo['Property Type'], 'Vacant Lot')) {
+                                v = lookup('VioCode_Chpt10_VL', crtVIOLATIONS[a]['Violation']);
+                                v = v.replace(/-/g, '');
+                                vioCodeNums = vioCodeNums + v.replace(/\//g, 'OI');
+                                vioCodeNums = vioCodeNums + 'OI';
+                                v = '';
+                            }
+                            //Trash on vacant structure - Residential - VioCode_Chpt10_VS
+                            if (parseInt(code10or19) == 10 && matches(AInfo['Property Type'], 'Vacant Structure')) {
+                                v = lookup('VioCode_Chpt10_VS', crtVIOLATIONS[a]['Violation']);
+                                v = v.replace(/-/g, '');
+                                vioCodeNums = vioCodeNums + v.replace(/\//g, 'OI');
+                                vioCodeNums = vioCodeNums + 'OI';
+                                v = '';
+                            }
+                            //Trash Occupied - Commercial - VioCode_Chpt19
+                            if (parseInt(code10or19) == 19 && AInfo['Property Type'] == 'Occupied') {
+                                v = lookup('VioCode_Chpt19', crtVIOLATIONS[a]['Violation']);
+                                v = v.replace(/-/g, '');
+                                vioCodeNums = vioCodeNums + v.replace(/\//g, 'OI');
+                                vioCodeNums = vioCodeNums + 'OI';
+                                v = '';
+                            }
+                            //Trash on vacant structure - Commercial - VioCode_Chpt19_VS
+                            if (parseInt(code10or19) == 19 && matches(AInfo['Property Type'], 'Vacant Structure')) {
+                                v = lookup('VioCode_Chpt19_VS', crtVIOLATIONS[a]['Violation']);
+                                v = v.replace(/-/g, '');
+                                vioCodeNums = vioCodeNums + v.replace(/\//g, 'OI');
+                                vioCodeNums = vioCodeNums + 'OI';
+                                v = '';
                             }
                         }
+
+                    } else {
+                        logDebug("Status is not court or violation is null");
                     }
-                }
-            } catch (err) {
-                logDebug("A JavaScript Error occurred: Adding Violations to ASIT:  " + err.message);
-                logDebug(err.stack);
+                } // end for each row
             }
         }
+
+        //LHH Cases using Guidesheets
+
+        if (matches(appTypeArray[2], 'LHH')) {
+            logDebug("HHC_GET_OFFENSE_CODES: LHH Case");
+            logDebug("HHC_GET_OFFENSE_CODES: parseInt(code10or19) - " + parseInt(code10or19));
+            if (parseInt(code10or19) == 10) {
+                /* v = lookup('VioCode_Chpt10_Occ',crtVIOLATIONS[a]['Violation']);	
+                v = v.replace(/-/g,'');
+                vioCodeNums = vioCodeNums+v.replace(/\//g,'OI');
+                vioCodeNums = vioCodeNums+'OI';
+                v = ''; */
+                vioCodeNums = '10307OI'
+            }
+            if (parseInt(code10or19) == 19) {
+                /* v = lookup('VioCode_Chpt19',crtVIOLATIONS[a]['Violation']);	
+                v = v.replace(/-/g,'');
+                vioCodeNums = vioCodeNums+v.replace(/\//g,'OI');
+                vioCodeNums = vioCodeNums+'OI';
+                v = ''; */
+                vioCodeNums = '19306OI'
+            }
+        }
+
+        if (matches(appTypeArray[1], 'Food')) {
+            logDebug("HHC_GET_OFFENSE_CODES: Food Case");
+            var crtVIOLATIONS = loadASITable('CURRENT VIOLATIONS');
+            if (crtVIOLATIONS && crtVIOLATIONS.length > 0) {
+                for (a in crtVIOLATIONS) {
+                    thisrow = crtVIOLATIONS[a];
+                    if (matches(thisrow['Status'], 'OUT', 'COS', 'OUT - COS') && !matches(thisrow['Violation'], null)) {
+                        v = thisrow['Chapter'].toString();
+                        v = v.replace(/\s/g, ''); //Removes all spaces
+                        v = v.replace(/^\s+|\s+$/g, ''); //Trims the string of leading and trailing spaces
+                        v = v.replace(/-/g, ''); //remove the '-'
+                        vioCodeNums = vioCodeNums + v.replace(/,/g, 'OI'); //replaces the ',' with the OI
+                        vioCodeNums = vioCodeNums + 'OI';
+                        v = '';
+                        v = '';
+                    }
+                }
+            }
+
+        }
+        if (matches(appTypeArray[1], 'WQ')) {
+            logDebug("HHC_GET_OFFENSE_CODES: Water Quality Case");
+            var crtVIOLATIONS = loadASITable('CURRENT VIOLATIONS');
+            if (crtVIOLATIONS && crtVIOLATIONS.length > 0) {
+                for (a in crtVIOLATIONS) {
+                    thisrow = crtVIOLATIONS[a];
+                    if (matches(thisrow['Status'], 'OUT', 'COS', 'OUT - COS') && !matches(thisrow['Violation'], null)) {
+                        v = thisrow['Chapter'].toString();
+                        v = v.replace(/\s/g, ''); //Removes all spaces
+                        v = v.replace(/^\s+|\s+$/g, ''); //Trims the string of leading and trailing spaces
+                        v = v.replace(/-/g, ''); //remove the '-'
+                        vioCodeNums = vioCodeNums + v.replace(/,/g, 'OI'); //replaces the ',' with the OI
+                        vioCodeNums = vioCodeNums + 'OI';
+                        v = '';
+                    }
+                }
+            }
+        }
+        var newVioCodes = vioCodeNums.match(/.{1,7}/g);
+        if (newVioCodes != null) {
+            logDebug('New Viocodes length for ' + appTypeArray[2] + ' - ' + newVioCodes.length);
+        } else {
+            //newVioCodes.length = 0;	
+        }
+        for (z in newVioCodes) {
+            thisVioCode = newVioCodes[z];
+            if (thisVioCode != 'nullOI') {
+                newOffenseRow = new Array();
+                newOffenseRow['OFFENSE CODE'] = new asiTableValObj("OFFENSE CODE", thisVioCode, 'N');
+                addToASITable('OFFENSE CODES', newOffenseRow, childID);
+            }
+        }
+    } catch (err) {
+        logDebug("A JavaScript Error occurred: HHC_GET_OFFENSE_CODES:  " + err.message);
+        logDebug(err.stack);
     }
 }
