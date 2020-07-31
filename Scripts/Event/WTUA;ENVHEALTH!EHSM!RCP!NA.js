@@ -54,8 +54,13 @@ try {
                 }                        
             }
         }
+        var tFeeBal = sepFeeBalance();
+        var isPaid = true;
+ 
+        if (tFeeBal > 0) {
+            isPaid = false;
+        }
 
-        var isPaid = aa.fee.isFullPaid4Renewal(capId).getOutput();
         var ticketActive = false;
         var permanentInj = false;
         var pendingInsp = false;
