@@ -99,21 +99,18 @@ var testing = false;
 					var capIDModel = aa.cap.getCapIDModel(capId.getID1(),capId.getID2(),capId.getID3()).getOutput(); //needed to add the cap to the set
 					var capIDString = altCapId.getCustomID();
 					var capAddress = "";
-					// This gets the Case Information, we are looking for the Case Status.
-					cap = aa.cap.getCap(capId).getOutput();
-					var capStatus = cap.getCapStatus();
-					if (capStatus != null)
-						if (!capStatus.equals("Active")){ //Condition that requires the case status to be "Active".
-							continue;
-						}
-						else{
-							cnt++;
-								aa.print(cnt+". Case successfully added to the Set - "+capIDString);
-								hhcaddFee("WQC006","WQ_ChildCare","FINAL",1,"Y",capId);
-								updateAppStatus("About to Expire","Updated by Batch",capId);
-									  
-									//Add the Case to the Set
-						aa.set.addCapSetMember(setCode,capIDModel); }
+                    // This gets the Case Information, we are looking for the Case Status.
+                    var st = String(taskStatus("Routine Inspection"));
+                    if (matches(String(st).toUpperCase(), "ACTIVE", "ABOUT TO EXPIRE")) {
+                        cnt++;
+                        aa.print(cnt+". Case successfully added to the Set - "+capIDString);
+                        hhcaddFee("WQC006","WQ_CC","FINAL",1,"Y",capId);
+                        aa.print(cnt+". Fee Applied - "+capIDString);
+                        updateAppStatus("About to Expire","Updated by Batch",capId);
+                                
+                        //Add the Case to the Set
+                        aa.set.addCapSetMember(setCode,capIDModel);
+                    }
 	}
 		set = "WQ_BODY_ART_LICENSE_RENEWALS";
 		setScriptResult = aa.set.getSetByPK(set);
