@@ -182,6 +182,9 @@ if (wfTask == 'Additional Processing' && wfStatus == 'Court Case') {
 	deactivateTask('Additional Processing');
 	}
 
+if (wfTask == 'Additional Processing' && wfStatus == 'No Court' && caseStatus != 'EHSM Clean - TL') {
+    updateAppStatus('Final Processing','Status Updated by Script');
+}
     /*
 if (wfTask == 'Ticket' && (wfStatus == 'Paid' || wfStatus == 'Voided')) {
 	activateTask('Final Processing');
