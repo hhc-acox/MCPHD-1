@@ -14,6 +14,7 @@ function HHC_doInspectionActions(){
                 for(sep in sepScriptConfigArr){
                     var cfgCapId = sepScriptConfigArr[sep].getCapID();
                     var sepRules = loadASITable("ACTIONS FROM INSPECTIONS",cfgCapId);
+                    var inspScheduled = false;
                     if(sepRules.length>0){
                         for(row in sepRules){
                             if(sepRules[row]["Active"]=="Yes"){
@@ -39,13 +40,17 @@ function HHC_doInspectionActions(){
                                     var InspTypeToSchedule = ""+sepRules[row]["Insp_Type_to_Schedule"];
                                     var UseRecheckDate = ""+sepRules[row]["Use_Recheck_Date"]; //'Yes/No' field
                                     var RecheckDate;
+                                    //logDebug('USERECHECKDATE: ' + UseRecheckDate);
                                     if (getRecheckDate(capId)) {
                                         RecheckDate = getRecheckDate(capId);
                                     } else if (hhcgetInspRecheckDate(capId,inspId)) {
                                         RecheckDate = hhcgetInspRecheckDate(capId,inspId);
                                     } else {
-                                        UseRecheckDate = 'No';
+                                        if (appTypeString.indexOf('WQ') < 0) {
+                                            UseRecheckDate = 'No';
+                                        }
                                     } //give the variable a value anyway
+                                    logDebug('USERECHECKDATE: ' + UseRecheckDate);
                                     var DaysToScheduleInTheFuture = ""+sepRules[row]["Days_toSchedule_in_the_Future"]; //number of days in the future
                                     var RecordAssignedTo = ""+sepRules[row]["Record_Assigned_To"];
                                     var InspAssignedTo = ""+sepRules[row]["Insp_Assigned_To"];
@@ -153,67 +158,81 @@ function HHC_doInspectionActions(){
                                             //comment("InspTypeToSchedule.length "+InspTypeToSchedule.length);
                                                 if(cInspType.length>0 && InspResultSubmitted.length>0 && InspTypeToSchedule.length>0){
                                                     //define assignedInspector		
-                                                    if(cInspType == inspType && InspResultSubmitted == inspResult) {
+                                                    if(cInspType == inspType && (InspResultSubmitted == inspResult || InspResultSubmitted == 'any') && !inspScheduled) {
                                                         if(matches(InspAssignedTo,'Supervisor of Person Assigned to Record','Current Inspector','Person Assigned to the Record','Supervisor of Current Inspector')){
-                                                            if(UseRecheckDate == 'Yes' || RecheckDate) {
+                                                            if(UseRecheckDate == 'Yes' || UseRecheckDate == 'Y' || RecheckDate) {
                                                                 if(RecheckDate == null || RecheckDate == undefined) {
                                                                     cancel = true;
                                                                 } else {
                                                                     if (appTypeString.indexOf('Food') > -1) {
-                                                                        scheduleFoodInspectionsByDate(InspTypeToSchedule, RecheckDate, assignedInspector, capId)
+                                                                        scheduleFoodInspectionsByDate(InspTypeToSchedule, RecheckDate, assignedInspector, capId);
+                                                                        inspScheduled = true;
                                                                     } else {
                                                                         scheduleInspectDate(InspTypeToSchedule,RecheckDate,assignedInspector); //schedule inspection using recheck date
+                                                                        inspScheduled = true;
                                                                     }
                                                                 }
                                                             }
-                                                            else if(UseRecheckDate == 'Yes' || RecheckDate){
+                                                            else if(UseRecheckDate == 'Yes' || UseRecheckDate == 'Y' || RecheckDate){
                                                                 if (appTypeString.indexOf('Food') > -1) {
-                                                                    scheduleFoodInspectionsByDate(InspTypeToSchedule, RecheckDate, assignedInspector, capId)
+                                                                    scheduleFoodInspectionsByDate(InspTypeToSchedule, RecheckDate, assignedInspector, capId);
+                                                                    inspScheduled = true;
                                                                 } else {
                                                                     scheduleInspectDate(InspTypeToSchedule,RecheckDate,assignedInspector); //schedule inspection using recheck date
+                                                                    inspScheduled = true;
                                                                 }
                                                             }
-                                                            else if(UseRecheckDate == 'No' && DaysToScheduleInTheFuture>0){
+                                                            else if((UseRecheckDate == 'No' || UseRecheckDate == 'N') && DaysToScheduleInTheFuture>0){
                                                                 if (appTypeString.indexOf('Food') > -1) {
-                                                                    scheduleFoodInspectionsByDate(InspTypeToSchedule, nextWorkDay(dateAdd(null,DaysToScheduleInTheFuture)), assignedInspector, capId)
+                                                                    scheduleFoodInspectionsByDate(InspTypeToSchedule, nextWorkDay(dateAdd(null,DaysToScheduleInTheFuture)), assignedInspector, capId);
+                                                                    inspScheduled = true;
                                                                 } else {
                                                                     scheduleInspectDate(InspTypeToSchedule,nextWorkDay(dateAdd(null,DaysToScheduleInTheFuture)),assignedInspector);//schedule inspection using #ofDays field
+                                                                    inspScheduled = true;
                                                                 }
                                                             }
                                                             else 
                                                             {
                                                                 if (appTypeString.indexOf('Food') > -1) {
-                                                                    scheduleFoodInspectionsByDate(InspTypeToSchedule, nextWorkDay(dateAdd(null,0)), assignedInspector, capId)
+                                                                    scheduleFoodInspectionsByDate(InspTypeToSchedule, nextWorkDay(dateAdd(null,0)), assignedInspector, capId);
+                                                                    inspScheduled = true;
                                                                 } else {
                                                                     scheduleInspectDate(InspTypeToSchedule,nextWorkDay(dateAdd(null,0)),assignedInspector); //schedule inspection for tomorrow
+                                                                    inspScheduled = true;
                                                                 }
                                                             }
                                                         }
                                                         if(matches(InspAssignedTo,'Current Department')){
-                                                            if(UseRecheckDate == 'Yes') {
+                                                            if(UseRecheckDate == 'Yes' || UseRecheckDate == 'Y') {
                                                                 if(RecheckDate == null || RecheckDate == undefined) {
                                                                     cancel = true;
                                                                 } else {
                                                                     if (appTypeString.indexOf('Food') > -1) {
-                                                                        scheduleFoodInspectionsByDate(InspTypeToSchedule, RecheckDate, null, capId)
+                                                                        scheduleFoodInspectionsByDate(InspTypeToSchedule, RecheckDate, null, capId);
+                                                                        inspScheduled = true;
                                                                     } else {
                                                                         scheduleInspectDate(InspTypeToSchedule,RecheckDate,null); //schedule inspection using recheck date
+                                                                        inspScheduled = true;
                                                                     }
                                                                 }
                                                             }
-                                                            else if(UseRecheckDate == 'No' && DaysToScheduleInTheFuture>0){
+                                                            else if((UseRecheckDate == 'No' || UseRecheckDate == 'N') && DaysToScheduleInTheFuture>0){
                                                                 if (appTypeString.indexOf('Food') > -1) {
-                                                                    scheduleFoodInspectionsByDate(InspTypeToSchedule, nextWorkDay(dateAdd(null,DaysToScheduleInTheFuture)), null, capId)
+                                                                    scheduleFoodInspectionsByDate(InspTypeToSchedule, nextWorkDay(dateAdd(null,DaysToScheduleInTheFuture)), null, capId);
+                                                                    inspScheduled = true;
                                                                 } else {
                                                                     scheduleInspectDate(InspTypeToSchedule,nextWorkDay(dateAdd(null,DaysToScheduleInTheFuture)),null);//schedule inspection using #ofDays field
+                                                                    inspScheduled = true;
                                                                 }
                                                             }
                                                             else 
                                                             { 
                                                                 if (appTypeString.indexOf('Food') > -1) {
-                                                                    scheduleFoodInspectionsByDate(InspTypeToSchedule, nextWorkDay(dateAdd(null,0)), null, capId)
+                                                                    scheduleFoodInspectionsByDate(InspTypeToSchedule, nextWorkDay(dateAdd(null,0)), null, capId);
+                                                                    inspScheduled = true;
                                                                 } else {
                                                                     scheduleInspectDate(InspTypeToSchedule,nextWorkDay(dateAdd(null,0)),null); //schedule inspection for tomorrow
+                                                                    inspScheduled = true;
                                                                 }
                                                             }
                                                             assignInspection(inspId, assignedInspector);
