@@ -1,4 +1,5 @@
 function doFoodsChecklists(inspectionId, tCapId) {
+    /*
     var r = aa.inspection.getInspections(tCapId);
 
     if (r.getSuccess()) {
@@ -79,4 +80,5 @@ function doFoodsChecklists(inspectionId, tCapId) {
     } else {
         logDebug("No inspections on the record");
     }
+    */
 }
