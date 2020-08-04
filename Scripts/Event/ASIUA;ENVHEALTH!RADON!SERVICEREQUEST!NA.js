@@ -12,12 +12,20 @@ if (asitRes.getSuccess()) {
     var retrievedInd = 8;
     var oneDay = 24 * 60 * 60 * 1000;
 
+    var labComplete = true;
+    var labSent = true;
+
     if (rowMax) {
         removeASITable('DEVICE PLACEMENT RESULTS');
     }
 
     for (var i = 0; i < rowMax; i++) {
         newArr.push(fld.splice(0, 13));
+    }
+
+    if (newArr.length == 0) {
+        labComplete = false;
+        labSent = false;
     }
 
     for (k in newArr) {
@@ -53,6 +61,15 @@ if (asitRes.getSuccess()) {
         if (isNaN(newArr[k][calcInd])) {
             newArr[k][calcInd] = "";
         }
+
+        if(!newArr[k][11] || newArr[k][11] == '') {
+            labComplete = false;
+        }
+
+        if(!newArr[k][10] || newArr[k][10] == '') {
+            labSent = false;
+        }
+
         var rowVals = new Array();
         rowVals["Sample ID Number"] = new asiTableValObj("Sample ID Number", newArr[k][0], "N");
         rowVals["Test Type"] = new asiTableValObj("Test Type", newArr[k][1], "N");
@@ -60,7 +77,7 @@ if (asitRes.getSuccess()) {
         rowVals["Floor Level"] = new asiTableValObj("Floor Level", newArr[k][3], "N");
         rowVals["Placement"] = new asiTableValObj("Placement", newArr[k][4], "N");
         rowVals["If Other, provide details"] = new asiTableValObj("If Other, provide details", newArr[k][5], "N");
-        rowVals["Duplicate"] = new asiTableValObj("Duplicate", "" + isDuplicate, "N");
+        rowVals["Duplicate"] = new asiTableValObj("Duplicate", "" + isDuplicate, "Y");
         rowVals["Installation Date"] = new asiTableValObj("Installation Date", newArr[k][7], "N");
         rowVals["Removal Date"] = new asiTableValObj("Removal Date", newArr[k][8], "N");
         rowVals["Number of Sampling Days"] = new asiTableValObj("Number of Sampling Days", newArr[k][9], "Y");
@@ -68,5 +85,13 @@ if (asitRes.getSuccess()) {
         rowVals["Retrieved from Lab"] = new asiTableValObj("Retrieved from Lab", newArr[k][11], "N");
         rowVals["Results (pCi/L Radon)"] = new asiTableValObj("Results (pCi/L Radon)", newArr[k][12], "N");
         addToASITable('DEVICE PLACEMENT RESULTS', rowVals, capId);
+    }
+
+    if (labSent && !labComplete && isTaskActive('Followup Visit')) {
+        updateTask('Followup Visit', 'Sample Sent to Lab', 'Closed by Script', 'Sample Sent to Lab');
+    }
+
+    if (labComplete && isTaskActive('Followup Visit')) {
+        closeTask('Followup Visit', 'Lab Results Recorded', 'Closed by Script', 'Lab Results Recorded');
     }
 }
