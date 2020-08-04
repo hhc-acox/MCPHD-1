@@ -29,21 +29,31 @@ try{
             if (parAltId.indexOf('TRA') < 0 && parAltId.indexOf('HSG') < 0 && parAltId.indexOf('INV') < 0 && parAltId.indexOf('VEH') < 0) {
                 var currCap = capId;
                 capId = parCapId;
-                if(dtCourt>toMorrow && !checkInspectionResult("Court - Initial","Scheduled") && !checkInspectionResult("Court - Recheck","Scheduled")){
+                if(dtCourt>toMorrow && !checkInspectionResult("Court - Initial","Scheduled") && !checkInspectionResult("Court - Recheck","Scheduled") && !checkInspectionResult("Court", "Scheduled")){
                     var inspDate = dateAdd(dtCourt,-1);
                     var inspUserId = AInfo["Assigned To"];
                     logDebug("inspUserId: " + inspUserId);
                     if(inspUserId){
-                        if (crtType != 'Initial Hearing') {
-                            scheduleInspectDate("Court - Recheck",inspDate,inspUserId);
+                        if (parAltId.indexOf('WQ') > -1) {
+                            inspDate = dateAdd(dtCourt, -6);
+                            scheduleInspectDate("Court",inspDate,inspUserId);
                         } else {
-                            scheduleInspectDate("Court - Initial",inspDate,inspUserId);
+                            if (crtType != 'Initial Hearing') {
+                                scheduleInspectDate("Court - Recheck",inspDate,inspUserId);
+                            } else {
+                                scheduleInspectDate("Court - Initial",inspDate,inspUserId);
+                            }
                         }
                     }else{
-                        if (crtType != 'Initial Hearing') {
-                            scheduleInspectDate("Court - Recheck",inspDate);
+                        if (parAltId.indexOf('WQ') > -1) { 
+                            inspDate = dateAdd(dtCourt, -6);
+                            scheduleInspectDate("Court",inspDate);
                         } else {
-                            scheduleInspectDate("Court - Initial",inspDate);
+                            if (crtType != 'Initial Hearing') {
+                                scheduleInspectDate("Court - Recheck",inspDate);
+                            } else {
+                                scheduleInspectDate("Court - Initial",inspDate);
+                            }
                         }
                     }
                 }
