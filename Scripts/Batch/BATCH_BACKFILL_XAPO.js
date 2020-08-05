@@ -183,10 +183,13 @@ function mainProcess() {
 
                         var inspResultObj = aa.inspection.getInspections(capId);
 
+                        var inspectionExists = false;
+
                         if (inspResultObj.getSuccess()) {
                             var inspList = inspResultObj.getOutput();
                             for (xx in inspList) {
                                 if (inspList[xx].getDocumentDescription() == 'Insp Scheduled') {
+                                    inspectionExists = true;
                                     var inspAssigned = inspList[xx].getInspector();
 
                                     if (!inspAssigned || inspAssigned == '') {
@@ -197,7 +200,13 @@ function mainProcess() {
                                 }
                             }
                         }
+
+                        if (!inspectionExists) {
+                            scheduleInspectDate("Initial Inspection", nextWorkDay(), inspector);
+                        }
                     }
+
+                    renameFullAddress();
                 }
                 logDebug('');
                 countProcessed++;
