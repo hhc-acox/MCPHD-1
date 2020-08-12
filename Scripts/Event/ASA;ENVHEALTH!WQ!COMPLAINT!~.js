@@ -35,3 +35,11 @@
 		newAppName += " - " + strAddress;
 	}
 	editAppName(newAppName);
+
+if (AInfo["Case Reason"] && AInfo["Case Reason"] != '') {
+    if (AInfo["Case Reason"].indexOf('MS4') > -1) {
+        var ms4Insp = hhcgetUserByDiscipline('WQMS4');
+        assignCap(ms4Insp);
+        assignTask('Complaint Review',ms4Insp);
+    }
+}
