@@ -1054,7 +1054,9 @@ function sepIssueLicenseWorkflow(){
                                                         scheduleFoodInspectionsByDate('Initial', nextWorkDay(), assignToNewRecord, capId)
                                                     } else {
                                                         assignCap(assignToNewRecord);
-                                                        scheduleInspectDate('Initial',nextWorkDay(),assignToNewRecord);
+                                                        if (appTypeString.indexOf('Body Art') < 0) {
+                                                            scheduleInspectDate('Initial',nextWorkDay(),assignToNewRecord);
+                                                        }
                                                     }
 						                            
                                                     capId = currCapId;
