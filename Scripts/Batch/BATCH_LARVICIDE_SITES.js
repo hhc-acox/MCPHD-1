@@ -276,7 +276,7 @@ function CreateSite(capId, appSpecArr){
         var vc_conn = new db();
         var vc_sql = "SELECT SUBSTR(b.B1_ALT_ID, INSTR(b.B1_ALT_ID, '-' ,-1, 1) + 1) as B1_ALT_ID " +
             "FROM B1PERMIT b " + 
-            "WHERE b.B1_ALT_ID like 'LVC-" + zone4cap + "-%' AND b.SERV_PROV_CODE = 'MCPHD'" + 
+            "WHERE b.B1_ALT_ID like 'LVC-" + zone4cap + "-%' AND b.SERV_PROV_CODE = 'MCPHD' AND b.rec_status = 'A'" + 
             "ORDER BY TO_NUMBER(SUBSTR(b.B1_ALT_ID, INSTR(b.B1_ALT_ID, '-' ,-1, 1) + 1)) DESC";
         var ds = vc_conn.dbDataSet(vc_sql, 100);
         var dsCapIdString = "0";
