@@ -119,15 +119,6 @@ function mainProcess() {
     var capFilterDate = 0;
     var capCount = 0;
 
-
-    //Setup the Query for EnvHealth/VC/MonitorSite/NA
-    var cm = aa.cap.getCapModel().getOutput();
-    cm.getCapType().setGroup("EnvHealth");
-    cm.getCapType().setType("WQ");
-    cm.getCapType().setSubType("Pool");
-    cm.getCapType().setCategory("License");
-    //cm.setCapStatus("Active");
-
     var dt = new Date();
     var May = new Date("05/31/" + dt.getFullYear());
     var Sept = new Date("09/01/" + dt.getFullYear());
@@ -139,16 +130,25 @@ function mainProcess() {
     var secWeekSept = getDateOccuranceByDate(Sept, 1, "friday", 2);
     logDebug("Second Week Sept " + secWeekSept);
 
-    var getCaps = aa.cap.getCapListByCollection(cm, null, null, null, null, null, []);
-    if (getCaps.getSuccess()) {
-        var gc = getCaps.getOutput();
-        for (x in gc) {
-            capId = gc[x].getCapID();
+    var numToProcess = 10000;
+    // get all capids
+    var conn = new db();
+    var sql = "with scheduled as ( SELECT b.b1_alt_id, g6.G6_ACT_DD FROM b1permit b INNER JOIN g6action g6 ON g6.B1_PER_ID1 = b.B1_PER_ID1 AND g6.B1_PER_ID2 = b.B1_PER_ID2 AND g6.B1_PER_ID3 = b.B1_PER_ID3 AND g6.SERV_PROV_CODE = b.SERV_PROV_CODE WHERE b.serv_prov_code = 'MCPHD' AND b.b1_per_type = 'WQ' AND b.b1_per_sub_type = 'Pool' AND b.b1_per_category = 'License' AND g6.G6_ACT_DD > att_to_date (TO_CHAR (LAST_DAY (SYSDATE), 'MM/DD/YYYY')) AND g6.G6_ACT_DD < att_to_date ( TO_CHAR (LAST_DAY (ADD_MONTHS (SYSDATE, 1)), 'MM/DD/YYYY')) + 1 AND g6.G6_STATUS = 'Scheduled' AND g6.G6_ACT_TYP = 'Routine' ) select b.b1_per_id1, b.b1_per_id2, b.b1_per_id3, bd.B1_ASGN_STAFF from b1permit b inner join bpermit_detail bd on bd.B1_PER_ID1 = b.B1_PER_ID1 and bd.B1_PER_ID2 = b.B1_PER_ID2 and bd.B1_PER_ID3 = b.B1_PER_ID3 and bd.SERV_PROV_CODE = b.SERV_PROV_CODE where b.serv_prov_code = 'MCPHD' and b.b1_per_type = 'WQ' AND b.b1_per_sub_type = 'Pool' AND b.b1_per_category = 'License' and NOT EXISTS (select 1 from scheduled s where s.b1_alt_id = b.b1_alt_id)";
+    var ds = conn.dbDataSet(sql, numToProcess);
+    countTotal = ds.length;
+    // foreach cap in capid list
+	for (var r in ds) {
+    //while(recordsProcessed < numToProcess) {
+        //var r = recordsProcessed;
+        var s_capResult = aa.cap.getCapID(String(ds[r]["B1_PER_ID1"]), String(ds[r]["B1_PER_ID2"]), String(ds[r]["B1_PER_ID3"]));
+
+        if (s_capResult.getSuccess()) {
+            var tCapId =  s_capResult.getOutput();
+            capId = tCapId;
             cap = aa.cap.getCap(capId).getOutput();
             capStatus = cap.getCapStatus();
-            /*if (!matches(String(capStatus), "Active", "Site Active")) {
-                capFilterStatus++;
-            }}*/
+
+            var asgnToUser = String(ds[r]["B1_ASGN_STAFF"])
 
             var st = String(taskStatus("Issuance"));
             if (matches(String(capStatus).toUpperCase(), "EXPIRED", "INACTIVE", "REVOKED", "RAZED")) {
@@ -162,28 +162,13 @@ function mainProcess() {
                     continue;
                 }
             }
-            var asgnToUser = null;
-            var capDetailObjResult = aa.cap.getCapDetail(capId);
-            if (capDetailObjResult.getSuccess()) {
-                capDetail = capDetailObjResult.getOutput();
-                var cd = capDetailObjResult.getOutput();
-                if (cd.getAsgnStaff() != null) {
-                }
-            }
-            if (capDetailObjResult.getSuccess()) {
-                var cd = capDetailObjResult.getOutput();
-                if (cd.getAsgnStaff() != null) {
-                    asgnToUser = cd.getAsgnStaff();
-                    logDebug("Found Record Assignment " + asgnToUser);
-                }
-            }
-            scheduleInspectDate("Routine",endOfNextMonth,asgnToUser)
 
+            scheduleInspectDate("Routine",endOfNextMonth,asgnToUser);
             capCount++;
         }
     }
 
-    logDebug("Total CAPS qualified date range: " + gc.length);
+    logDebug("Total CAPS qualified date range: " + ds.length);
     logDebug("Total CAPS skipped due to status " + capFilterStatus);
     logDebug("Total CAPS skipped due to summer " + capFilterDate);
     logDebug("Total CAPS processed: " + capCount);
@@ -229,4 +214,93 @@ function getDateOccuranceByDate(startDt, direction, day, occurance) {
         return new Date(startDt);
 
     }
+}
+
+function db() {
+	this.version = function () {
+		return 1.0;
+	}
+
+    /**
+     * Executes a sql statement and returns rows as dataset
+     * @param {string} sql 
+     * @param {integer} maxRows 
+     * @return {string[]}
+     */
+	this.dbDataSet = function (sql, maxRows) {
+		var dataSet = new Array();
+		if (maxRows == null) {
+			maxRows = 100;
+		}
+		try {
+			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
+			var ds = initialContext.lookup("java:/AA");
+			var conn = ds.getConnection();
+			var sStmt = conn.prepareStatement(sql);
+			sStmt.setMaxRows(maxRows);
+			var rSet = sStmt.executeQuery();
+			while (rSet.next()) {
+				var row = new Object();
+				var maxCols = sStmt.getMetaData().getColumnCount();
+				for (var i = 1; i <= maxCols; i++) {
+					row[sStmt.getMetaData().getColumnName(i)] = rSet.getString(i);
+				}
+				dataSet.push(row);
+			}
+			rSet.close();
+			conn.close();
+		}
+		catch (err) {
+			throw ("dbDataSet: " + err);
+		}
+		return dataSet;
+	}
+
+    /**
+     * Executes a sql statement and returns nothing
+     * @param {string} sql 
+     */
+	this.dbExecute = function (sql) {
+		try {
+			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
+			var ds = initialContext.lookup("java:/AA");
+			var conn = ds.getConnection();
+			var sStmt = conn.prepareStatement(sql);
+			sStmt.setMaxRows(1);
+			var rSet = sStmt.executeQuery();
+			rSet.close();
+			conn.close();
+		}
+		catch (err) {
+			throw ("deExecute: " + err);
+		}
+	}
+
+    /**
+     * Returns first row first column of execute statement
+     * @param {string} sql
+     * @returns {object}  
+     */
+	this.dbScalarExecute = function (sql) {
+		var out = null;
+		try {
+			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
+			var ds = initialContext.lookup("java:/AA");
+			var conn = ds.getConnection();
+			var sStmt = conn.prepareStatement(sql);
+			sStmt.setMaxRows(1);
+			var rSet = sStmt.executeQuery();
+
+			if (rSet.next()) {
+				out = rSet.getString(1);
+			}
+			rSet.close();
+			conn.close();
+		}
+		catch (err) {
+			throw ("dbScalarValue: " + err);
+		}
+		return out;
+	}
+	return this;
 }
