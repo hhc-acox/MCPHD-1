@@ -114,17 +114,19 @@ function HHC_doCaseCreationActions() {
                                     assignmentForType = recordAssignment;
 
                                     if (!assignmentForType || assignmentForType == '') {
-                                        if (currentUserID) {                       
-                                            if (isSupervisor(currentUserID)) {
-                                                assignmentForType = currentUserID;
-                                            } else {
-                                                assignmentForType = HHC_getMyTeamLeadersUserID(currentUserID);
+                                        if (appTypeString.indexOf('WQ') > -1) {
+                                            if (currentUserID) {                       
+                                                if (isSupervisor(currentUserID)) {
+                                                    assignmentForType = currentUserID;
+                                                } else {
+                                                    assignmentForType = HHC_getMyTeamLeadersUserID(currentUserID);
+                                                }
                                             }
                                         }
                                     }
             
                                     // Escape loop
-                                    if (assignmentForType) {
+                                    if (assignmentForType && assignmentForType != '') {
                                         aa.print("Assigned cap to " + assignmentForType);
                                         assignCap(assignmentForType);
                                     }
