@@ -112,27 +112,26 @@ function HHC_doCaseCreationActions() {
                                 if (appMatch) {
                                     //Record Assignment
                                     assignmentForType = recordAssignment;
+
+                                    if (!assignmentForType || assignmentForType == '') {
+                                        if (currentUserID) {                       
+                                            if (isSupervisor(currentUserID)) {
+                                                assignmentForType = currentUserID;
+                                            } else {
+                                                assignmentForType = HHC_getMyTeamLeadersUserID(currentUserID);
+                                            }
+                                        }
+                                    }
+            
+                                    // Escape loop
+                                    if (assignmentForType) {
+                                        aa.print("Assigned cap to " + assignmentForType);
+                                        assignCap(assignmentForType);
+                                    }
                                 }
                             }
 
                         }
-                    }
-
-                    // Assign to supervisor if GIS fails
-                    if (!assignmentForType || assignmentForType == '') {
-                        if (currentUserID) {                       
-                            if (isSupervisor(currentUserID)) {
-                                assignmentForType = currentUserID;
-                            } else {
-                                assignmentForType = HHC_getMyTeamLeadersUserID(currentUserID);
-                            }
-                        }
-                    }
-
-                    // Escape loop
-                    if (assignmentForType) {
-                        aa.print("Assigned cap to " + assignmentForType);
-                        assignCap(assignmentForType);
                     }
 
                     // Close Case Intakes
