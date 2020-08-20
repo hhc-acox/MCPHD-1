@@ -14,12 +14,55 @@ if (matches(appTypeArray[1],'EHSM','HHECMSC','Housing') && (!matches(appTypeArra
 
 //Housing EHS
 			if (matches(appTypeArray[1],'Housing') && (matches(appTypeArray[2],'TRA','HSG','VEH','INV','SEC')) && AInfo['Assigned To'] == null) {
-				areaInspector = lookup('Census - Housing EHS',censusTract);
-					var aInsp = convertForAssignedTo(areaInspector);
-				editAppSpecific('Assigned To',aInsp);
+				var aInsp = lookup('Census - Housing EHS',censusTract);
+                editAppSpecific('Assigned To',aInsp);
+                assignCap(aInsp);
 				logDebug('Inspector to Assign: '+aInsp);
-					}
+            }
 
+            if (matches(appTypeArray[1],'Housing') && (matches(appTypeArray[2],'TRA','HSG','VEH','INV','SEC'))) {
+				var aInsp = lookup('Census - Housing EHS',censusTract);
+
+                var recordAssigned = getAssignedToRecord();
+
+                if (!recordAssigned || recordAssigned == '') {
+                    assignCap(aInsp);
+                }
+                
+                var inspResultObj = aa.inspection.getInspections(capId);
+
+                var inspectionExists = false;
+    
+                if (inspResultObj.getSuccess()) {
+                    var inspList = inspResultObj.getOutput();
+                    for (xx in inspList) {
+                        if (inspList[xx].getInspectionType() == 'Initial Inspection') {
+                            inspectionExists = true;
+                            var inspAssigned = inspList[xx].getInspector();
+    
+                            if (!inspAssigned || inspAssigned == '') {
+                                if (aInsp && aInsp != '')
+                                var inspId = inspList[xx].getIdNumber();
+                                if (inspId && inspId != '') {
+                                    assignInspection(inspId, aInsp);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                var parent = getParent();
+
+                if (parent) {
+                    inspectionExists = true; // only schedule on non-companion cases
+                }
+    
+                if (!inspectionExists) {
+                    scheduleInspectDate("Initial Inspection", nextWorkDay(), aInsp);
+                }
+
+                renameFullAddress();
+            }
 //Healthy Homes EHS
 			if (matches(appTypeArray[2],'LHH') && AInfo['Assigned To'] == null) {
 				areaInspector = lookup('Census - Lead EHS',censusTract);
@@ -35,6 +78,6 @@ if (matches(appTypeArray[1],'EHSM','HHECMSC','Housing') && (!matches(appTypeArra
 				areaInspector = hhcgetUserByDiscipline('HHCESMCBedBugs');
 				editAppSpecific('Assigned To',areaInspector);
 				editAppSpecific('Previous Assigned To',areaInspector);
-					}
+            }
 }
 //comment('Vector Zone: ' + getVectorZone(capId));
