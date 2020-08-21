@@ -20,6 +20,7 @@ function validateAdditionalViolations() {
     letterDate = new Date(dateAdd(letterDate, 1));
 
     var srchTable = new Array();
+    var dateArr = new Array();
     var dateOfLastViolation = null;
     srchTable = loadASITable('VIOLATIONS');
 
@@ -34,23 +35,29 @@ function validateAdditionalViolations() {
                 } else if (dateToCheck > dateOfLastViolation) {
                     dateOfLastViolation = dateToCheck
                 }
+
+                if (!arrayContains(dateArr, thisRow["Date"].toString())) {
+                    dateArr.push(thisRow["Date"].toString());
+                }
             }
         }
     }
 
-    if (dateOfLastViolation > letterDate) {
-        if (matches(wfStatus, "Court", "Court Case", "Refer to Court")) {
-            cancel = true;
-            showMessage = true;
-            comment("<font color=red><b>Record must have an Additional Violation Reinspection Letter completed before creating CRT.</b></font>");
-            aa.print("Record must have an Additional Violation Reinspection Letter completed before creating CRT.");
-        }
-
-        if (matches(wfStatus, "Reinspection", "Complete Reinspection Ltr")) {
-            cancel = true;
-            showMessage = true;
-            comment("<font color=red><b>Record must have an Additional Violation Reinspection Letter completed before creating a reinspection or resinpection letter.</b></font>");
-            aa.print("Record must have an Additional Violation Reinspection Letter completed before creating a reinspection or resinpection letter.");
-        }
-    }    
+    if (dateArr.length > 1) {
+        if (dateOfLastViolation > letterDate || !dateToUse) {
+            if (matches(wfStatus, "Court", "Court Case", "Refer to Court")) {
+                cancel = true;
+                showMessage = true;
+                comment("<font color=red><b>Record must have an Additional Violation Reinspection Letter completed before creating CRT.</b></font>");
+                aa.print("Record must have an Additional Violation Reinspection Letter completed before creating CRT.");
+            }
+    
+            if (matches(wfStatus, "Reinspection", "Reinspection Letter", "Complete Reinspection Ltr")) {
+                cancel = true;
+                showMessage = true;
+                comment("<font color=red><b>Record must have an Additional Violation Reinspection Letter completed before creating a reinspection or reinspection letter.</b></font>");
+                aa.print("Record must have an Additional Violation Reinspection Letter completed before creating a reinspection or reinspection letter.");
+            }
+        }    
+    }
 }
