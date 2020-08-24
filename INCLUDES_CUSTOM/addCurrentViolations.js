@@ -169,7 +169,7 @@ function addCurrentViolations() {
                                         addASITable('VIOLATION HISTORY', srchTableHist);
                                     }
                                     
-                                } else if (gs[i].status == 'OUT' || gs[i].status == 'COS') {
+                                } else if ((gs[i].status == 'OUT' || gs[i].status == 'COS') && gs[i].gsType.indexOf('Failed') < 0) {
                                     // Handle new violations
                                     var tableRows = new Array();
                                     var locations = new Array();
@@ -289,6 +289,46 @@ function addCurrentViolations() {
                                             }
     
                                             location = "";
+                                        } else {
+                                            var srchTable = new Array();
+                                            var tableUpdated = false;
+                                            srchTable = loadASITable('CURRENT VIOLATIONS');
+
+                                            var srchTableHist = new Array();
+                                            var histUpdated = false;
+                                            srchTableHist = loadASITable('VIOLATION HISTORY');
+
+                                            if (srchTable) {
+                                                for (x in srchTable) {
+                                                    var thisRow = srchTable[x];
+
+                                                    if (thisRow['Chapter'].toString() == chpt && thisRow['Checklist Item'].toString() == vioDesc && thisRow["Inspection Number"].toString() == inspId.toString() && thisRow["Violation"].toString() != gs[i].comment) {
+                                                        tableUpdated = true;
+                                                        thisRow["Violation"] = new asiTableValObj("Violation", gs[i].comment, "N");
+                                                    }
+                                                }
+                                            }
+
+                                            if (srchTableHist) {
+                                                for (x in srchTableHist) {
+                                                    var thisRow = srchTableHist[x];
+
+                                                    if (thisRow['Chapter'].toString() == chpt && thisRow['Checklist Item'].toString() == vioDesc && thisRow["Inspection Number"].toString() == inspId.toString() && thisRow["Violation"].toString() != gs[i].comment) {
+                                                        histUpdated = true;
+                                                        thisRow["Violation"] = new asiTableValObj("Violation", gs[i].comment, "N");
+                                                    }
+                                                }
+                                            }
+
+                                            if (tableUpdated) {
+                                                removeASITable('CURRENT VIOLATIONS');
+                                                addASITable('CURRENT VIOLATIONS', srchTable);
+                                            }
+        
+                                            if (histUpdated) {
+                                                removeASITable('VIOLATION HISTORY');
+                                                addASITable('VIOLATION HISTORY', srchTableHist);
+                                            }
                                         }
                                     }
                                 }

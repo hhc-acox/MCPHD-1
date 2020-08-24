@@ -50,6 +50,12 @@ if (matches(appTypeArray[1],'EHSM','HHECMSC','Housing') && (!matches(appTypeArra
                         }
                     }
                 }
+
+                var parent = getParent();
+
+                if (parent) {
+                    inspectionExists = true; // only schedule on non-companion cases
+                }
     
                 if (!inspectionExists) {
                     scheduleInspectDate("Initial Inspection", nextWorkDay(), aInsp);
