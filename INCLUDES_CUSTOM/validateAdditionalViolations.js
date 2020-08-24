@@ -52,7 +52,7 @@ function validateAdditionalViolations() {
                 aa.print("Record must have an Additional Violation Reinspection Letter completed before creating CRT.");
             }
     
-            if (matches(wfStatus, "Reinspection", "Reinspection Letter", "Complete Reinspection Ltr")) {
+            if (matches(wfStatus, "Reinspection", "Reinspection Letter", "Complete Reinspection Ltr", "Complete Reinspection Letter")) {
                 cancel = true;
                 showMessage = true;
                 comment("<font color=red><b>Record must have an Additional Violation Reinspection Letter completed before creating a reinspection or reinspection letter.</b></font>");
