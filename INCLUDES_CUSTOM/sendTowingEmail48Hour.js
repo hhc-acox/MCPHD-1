@@ -49,7 +49,7 @@ function sendTowingEmail48Hour() {
 	addParameter(emailParams, "REQUESTOR", areaTeamLeader);
 	addParameter(emailParams, "REQUESTOREMAIL", areaTeamLeaderEmail);
 
-	sendNotification("lmorgan.marionhealth.org", "rvoller@hhcorp.org","", "HOUSING EMAIL TO TOWING CONTRACTOR", emailParams, rFiles,capId);
+	sendNotification(null, "abvlot@lastchancewrecker.com","", "HOUSING EMAIL TO TOWING CONTRACTOR", emailParams, rFiles,capId);
 	for (var i=0;i<rFiles.length;i++)
 		aa.util.deleteFile(rFiles[i]);
 
