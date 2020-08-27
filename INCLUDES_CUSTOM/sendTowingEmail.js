@@ -1,4 +1,3 @@
-
 function sendTowingEmail() {
 	rFiles = new Array();
 	var capDocResult = aa.document.getDocumentListByEntity(capId,"CAP");
@@ -26,7 +25,7 @@ function sendTowingEmail() {
 		}
 	}
 	// Run report Court Ordered Clean Cover Sheet
-	if (rFiles.length < 1) {
+        if (rFiles.length < 1) {
             reportParams = aa.util.newHashtable();
             reportParams.put("CaseNumber", "" + capId.getCustomID());
 	    reportName = "Housing VEH Contractor Referral 18 Day";
@@ -35,7 +34,7 @@ function sendTowingEmail() {
 	    if (coverSheet)
 		rFiles.push(coverSheet);
         }
-	
+
 	var emailParams = aa.util.newHashtable();
 	addParameter(emailParams, "$$capID$$", "" + capId.getCustomID());
 	addParameter(emailParams, "$$CAPADDRESS$$", hhc_getTheAddress(capId));
@@ -50,7 +49,7 @@ function sendTowingEmail() {
 	addParameter(emailParams, "REQUESTOR", areaTeamLeader);
 	addParameter(emailParams, "REQUESTOREMAIL", areaTeamLeaderEmail);
 
-	sendNotification("lmorgan.marionhealth.org", "rvoller@hhcorp.org","", "HOUSING EMAIL TO TOWING CONTRACTOR", emailParams, rFiles,capId);
+	sendNotification(null, "abvlot@lastchancewrecker.com","", "HOUSING EMAIL TO TOWING CONTRACTOR", emailParams, rFiles,capId);
 	for (var i=0;i<rFiles.length;i++)
 		aa.util.deleteFile(rFiles[i]);
 
