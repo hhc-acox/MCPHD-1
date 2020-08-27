@@ -28,6 +28,13 @@ function HHC_GET_OFFENSE_CODES(saveID, childID) {
                             if (parseInt(code10or19) == 19) {
                                 v = lookup('VioCode_Chpt19', crtVIOLATIONS[a]['Violation']);
                             }
+                            if (!v || v == '' || v == null || v == 'null') {
+                                v = thisrow['Other/Violation Description'].toString();
+                                logDebug('Handling non-configured offense: ' + v);
+                                if (v.indexOf(' ') > -1) {
+                                    v = v.substr(0, v.indexOf(' '));
+                                }  
+                            }
                         }
                         //TRA Cases
                         if (matches(appTypeArray[2], 'TRA')) {
@@ -52,13 +59,15 @@ function HHC_GET_OFFENSE_CODES(saveID, childID) {
                             if (parseInt(code10or19) == 19 && matches(AInfo['Property Type'], 'Vacant Structure')) {
                                 v = lookup('VioCode_Chpt19_VS', crtVIOLATIONS[a]['Violation']);
                             }
-                        }
+                            if (!v || v == '' || v == null || v == 'null') {
+                                v = thisrow['Other'].toString();
+                                logDebug('Handling non-configured offense: ' + v);
 
-                        if (!v || v == '' || v == null || v == 'null') {
-                            v = thisrow['Other/Violation Description'].toString();
-                            logDebug('Handling non-configured offense: ' + v);
-                            v = v.substr(0, v.indexOf(' '));
-                        }
+                                if (v.indexOf(' ') > -1) {
+                                    v = v.substr(0, v.indexOf(' '));
+                                }                                
+                            }
+                        }                        
                             
                         v = v.replace(/[^\d/]/g, '');
                         var vioSpl = v.split('/');
