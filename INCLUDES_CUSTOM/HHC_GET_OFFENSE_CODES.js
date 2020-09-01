@@ -59,6 +59,9 @@ function HHC_GET_OFFENSE_CODES(saveID, childID) {
                             if (parseInt(code10or19) == 19 && matches(AInfo['Property Type'], 'Vacant Structure')) {
                                 v = lookup('VioCode_Chpt19_VS', crtVIOLATIONS[a]['Violation']);
                             }
+                            if (parseInt(code10or19) == 19 && matches(AInfo['Property Type'], 'Vacant Lot')) {
+                                v = lookup('VioCode_Chpt19_VS', crtVIOLATIONS[a]['Violation']);
+                            }
                             if (!v || v == '' || v == null || v == 'null') {
                                 v = thisrow['Other'].toString();
                                 logDebug('Handling non-configured offense: ' + v);
