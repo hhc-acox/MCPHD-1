@@ -1,16 +1,13 @@
 function getInspectorByInspID(inspNum)
 {
-	var inspResultObj = aa.inspection.getInspections(capId);
+	var inspResultObj = aa.inspection.getInspection(capId,iNumber);
 	if (inspResultObj.getSuccess())
-		{
-		inspList = inspResultObj.getOutput();
-		for (xx in inspList)
-			if (String(inspNum).equals(inspList[xx].getIdNumber()))
-				{
-				// have to re-grab the user since the id won't show up in this object.
-				inspUserObj = aa.person.getUser(inspList[xx].getInspector().getFirstName(),inspList[xx].getInspector().getMiddleName(),inspList[xx].getInspector().getLastName()).getOutput();
-				return inspUserObj.getUserID();
-				}
-		}
+    {
+		var inspObj = inspResultObj.getOutput();
+		
+        // have to re-grab the user since the id won't show up in this object.
+        inspUserObj = aa.person.getUser(inspObj.getInspector().getFirstName(),inspObj.getInspector().getMiddleName(),inspObj.getInspector().getLastName()).getOutput();
+        return inspUserObj.getUserID();
+    }
 	return false;
 }
