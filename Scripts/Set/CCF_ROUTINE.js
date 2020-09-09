@@ -42,7 +42,7 @@ function getScriptText(vScriptName, servProvCode, useProductScripts) {
 /*------------------------------------------------------------------------------------------------------/
 | BEGIN Event Specific Variables
 /------------------------------------------------------------------------------------------------------*/
-var showDebug = 3;
+var showDebug = 1;
 var showMessage = false;
 var cnt = 0;
 var currentUserID = "ADMIN";
@@ -64,7 +64,7 @@ try {
         var capIDString = capId.getCustomID();	
 
         areaInspector = getAssignedToRecord();
-        scheduleInspectDate('Routine',dateAdd(null,30,'Y'),areaInspector);
+        scheduleInspectDate('Routine',dateAdd(null,90,'Y'),areaInspector);
     }
 }
 catch (err) {
