@@ -35,7 +35,7 @@ try{
                     logDebug("inspUserId: " + inspUserId);
                     if(inspUserId){
                         if (parAltId.indexOf('WQ') > -1) {
-                            inspDate = dateAdd(dtCourt, -6);
+                            inspDate = dateAdd(dtCourt, -13);
                             scheduleInspectDate("Court",inspDate,inspUserId);
                         } else {
                             if (crtType != 'Initial Hearing') {
@@ -46,7 +46,7 @@ try{
                         }
                     }else{
                         if (parAltId.indexOf('WQ') > -1) { 
-                            inspDate = dateAdd(dtCourt, -6);
+                            inspDate = dateAdd(dtCourt, -13);
                             scheduleInspectDate("Court",inspDate);
                         } else {
                             if (crtType != 'Initial Hearing') {
