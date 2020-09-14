@@ -1,8 +1,7 @@
-
 function copyLeadViolations(inspId) {
 
 	var conn = new db();
-	var sql = "SELECT G6_ACT_NUM FROM G6ACTION WHERE SERV_PROV_CODE='{0}' AND B1_PER_ID1='{1}' AND B1_PER_ID2='{2}' AND B1_PER_ID3='{3}' AND G6_ACT_TYP in ('Initial Lead Inspection', 'Reinspection', 'Yearly Lead Inspection') and g6_status = 'In Violation' and rec_status != 'I' ORDER BY G6_COMPL_DD DESC";
+	var sql = "SELECT G6_ACT_NUM FROM dbo.G6ACTION WHERE SERV_PROV_CODE='{0}' AND B1_PER_ID1='{1}' AND B1_PER_ID2='{2}' AND B1_PER_ID3='{3}' AND G6_ACT_TYP in ('Initial Lead Inspection', 'Reinspection', 'Yearly Lead Inspection') and g6_status = 'In Violation' and rec_status != 'I' ORDER BY G6_COMPL_DD DESC";
 	sql = sql.replace("{0}", String(aa.getServiceProviderCode()))
 		.replace("{1}", String(capId.getID1()))
 		.replace("{2}", String(capId.getID2()))
@@ -91,96 +90,4 @@ function copyLeadViolations(inspId) {
 			}
 		}
 	}
-}
-	
-
-
-
-function db() {
-    this.version = function () {
-        return 1.0;
-    }
-
-    /**
-     * Executes a sql statement and returns rows as dataset
-     * @param {string} sql 
-     * @param {integer} maxRows 
-     * @return {string[]}
-     */
-    this.dbDataSet = function (sql, maxRows) {
-        var dataSet = new Array();
-        if (maxRows == null) {
-            maxRows = 100;
-        }
-        try {
-            var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-            var ds = initialContext.lookup("java:/AA");
-            var conn = ds.getConnection();
-            var sStmt = conn.prepareStatement(sql);
-            sStmt.setMaxRows(maxRows);
-            var rSet = sStmt.executeQuery();
-            while (rSet.next()) {
-                var row = new Object();
-                var maxCols = sStmt.getMetaData().getColumnCount();
-                for (var i = 1; i <= maxCols; i++) {
-                    row[sStmt.getMetaData().getColumnName(i)] = rSet.getString(i);
-                }
-                dataSet.push(row);
-            }
-            rSet.close();
-            conn.close();
-        }
-        catch (err) {
-            throw ("dbDataSet: " + err);
-        }
-        return dataSet;
-    }
-
-    /**
-     * Executes a sql statement and returns nothing
-     * @param {string} sql 
-     */
-    this.dbExecute = function (sql) {
-        try {
-            var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-            var ds = initialContext.lookup("java:/AA");
-            var conn = ds.getConnection();
-            var sStmt = conn.prepareStatement(sql);
-            sStmt.setMaxRows(1);
-            var rSet = sStmt.executeQuery();
-            rSet.close();
-            conn.close();
-        }
-        catch (err) {
-            throw ("deExecute: " + err);
-        }
-    }
-
-    /**
-     * Returns first row first column of execute statement
-     * @param {string} sql
-     * @returns {object}  
-     */
-    this.dbScalarExecute = function (sql) {
-        var out = null;
-        try {
-            var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-            var ds = initialContext.lookup("java:/AA");
-            var conn = ds.getConnection();
-            var sStmt = conn.prepareStatement(sql);
-            sStmt.setMaxRows(1);
-            var rSet = sStmt.executeQuery();
-
-            if (rSet.next()) {
-                out = rSet.getString(1);
-            }
-            rSet.close();
-            conn.close();
-        }
-        catch (err) {
-            throw ("dbScalarValue: " + err);
-        }
-        return out;
-    }
-    return this;
 }
