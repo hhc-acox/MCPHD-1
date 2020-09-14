@@ -119,7 +119,7 @@ function mainProcess() {
 	//TODO: NEED TO CONFIRM SQL AND LIMIT RECORD
 	var conn = new db();
 
-	var sql = "SELECT b.b1_per_id1, b.b1_per_id2, b.b1_per_id3, g.G6_ACT_NUM FROM b1permit b INNER JOIN g6action g ON b.B1_PER_ID1 = g.B1_PER_ID1 AND b.B1_PER_ID2 = g.B1_PER_ID2 AND b.B1_PER_ID3 = g.B1_PER_ID3 AND b.SERV_PROV_CODE = g.SERV_PROV_CODE INNER JOIN gguidesheet gd ON gd.B1_PER_ID1 = g.B1_PER_ID1 AND gd.B1_PER_ID2 = g.B1_PER_ID2 AND gd.B1_PER_ID3 = g.B1_PER_ID3 AND gd.G6_ACT_NUM = g.G6_ACT_NUM AND gd.SERV_PROV_CODE = g.SERV_PROV_CODE INNER JOIN gguidesheet_item gi ON gi.GUIDESHEET_SEQ_NBR = gd.GUIDESHEET_SEQ_NBR AND gi.SERV_PROV_CODE = gd.SERV_PROV_CODE WHERE gd.GUIDE_TYPE = 'Lab Samples' AND gi.GUIDE_ITEM_STATUS = 'Send to LIMS' AND b.SERV_PROV_CODE = 'MCPHD'";
+	var sql = "SELECT b.B1_PER_ID1, b.B1_PER_ID2, b.B1_PER_ID3, g.G6_ACT_NUM FROM dbo.b1permit b INNER JOIN dbo.g6action g ON b.B1_PER_ID1 = g.B1_PER_ID1 AND b.B1_PER_ID2 = g.B1_PER_ID2 AND b.B1_PER_ID3 = g.B1_PER_ID3 AND b.SERV_PROV_CODE = g.SERV_PROV_CODE INNER JOIN dbo.gguidesheet gd ON gd.B1_PER_ID1 = g.B1_PER_ID1 AND gd.B1_PER_ID2 = g.B1_PER_ID2 AND gd.B1_PER_ID3 = g.B1_PER_ID3 AND gd.G6_ACT_NUM = g.G6_ACT_NUM AND gd.SERV_PROV_CODE = g.SERV_PROV_CODE INNER JOIN dbo.gguidesheet_item gi ON gi.GUIDESHEET_SEQ_NBR = gd.GUIDESHEET_SEQ_NBR AND gi.SERV_PROV_CODE = gd.SERV_PROV_CODE WHERE gd.GUIDE_TYPE = 'Lab Samples' AND gi.GUIDE_ITEM_STATUS = 'Send to LIMS' AND b.SERV_PROV_CODE = 'MCPHD'";
 	
 	//logDebug(sql);
 	var ds = conn.dbDataSet(sql, 100);
@@ -193,9 +193,9 @@ function db() {
 		}
 		try {
 			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-			var ds = initialContext.lookup("java:/AA");
+			var ds = initialContext.lookup("java:/MCPHD");
 			var conn = ds.getConnection();
-			var sStmt = conn.prepareStatement(sql);
+			var sStmt = aa.db.prepareStatement(conn, sql);
 			sStmt.setMaxRows(maxRows);
 			var rSet = sStmt.executeQuery();
 			while (rSet.next()) {
@@ -222,9 +222,9 @@ function db() {
 	this.dbExecute = function (sql) {
 		try {
 			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-			var ds = initialContext.lookup("java:/AA");
+			var ds = initialContext.lookup("java:/MCPHD");
 			var conn = ds.getConnection();
-			var sStmt = conn.prepareStatement(sql);
+			var sStmt = aa.db.prepareStatement(conn, sql);
 			sStmt.setMaxRows(1);
 			var rSet = sStmt.executeQuery();
 			rSet.close();
@@ -244,9 +244,9 @@ function db() {
 		var out = null;
 		try {
 			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-			var ds = initialContext.lookup("java:/AA");
+			var ds = initialContext.lookup("java:/MCPHD");
 			var conn = ds.getConnection();
-			var sStmt = conn.prepareStatement(sql);
+			var sStmt = aa.db.prepareStatement(conn, sql);
 			sStmt.setMaxRows(1);
 			var rSet = sStmt.executeQuery();
 
