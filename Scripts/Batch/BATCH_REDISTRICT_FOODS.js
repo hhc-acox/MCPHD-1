@@ -122,7 +122,7 @@ function mainProcess() {
     var countProcessed = 0;
     // get all capids
     var conn = new db();
-    var sql = "select b.b1_per_id1, b.b1_per_id2, b.b1_per_id3, b.b1_per_sub_type from b1permit b where b.b1_per_type = 'Food' and b.b1_per_sub_type != 'Complaint' and b.b1_appl_status != 'Closed' and b.serv_prov_code = 'MCPHD'";
+    var sql = "select b.B1_PER_ID1, b.B1_PER_ID2, b.B1_PER_ID3, b.B1_PER_SUB_TYPE from dbo.b1permit b where b.b1_per_type = 'Food' and b.b1_per_sub_type != 'Complaint' and b.b1_appl_status != 'Closed' and b.serv_prov_code = 'MCPHD'";
     var ds = conn.dbDataSet(sql, numToProcess);
     // foreach cap in capid list
 	for (var r in ds) {
@@ -142,6 +142,7 @@ function mainProcess() {
                 //logDebug('Processing: ' + capId.getCustomID());
                 var recType = String(ds[r]["B1_PER_SUB_TYPE"]);
                 var zone = null;
+                var estDistrict = "";
 
                 if (recType == 'SharedKitchenUser' || recType == 'MobileUnit'){
                     if (recType == 'SharedKitchenUser') {
@@ -151,7 +152,7 @@ function mainProcess() {
                     }
                 } else {
                     var estType = getAppSpecific('Type of Establishment', capId);
-                    var estDistrict = getAppSpecific('District', capId);
+                    estDistrict = getAppSpecific('District', capId);
 
                     if (estType == 'Shared Kitchen') {
                         zone = '55';
@@ -162,6 +163,10 @@ function mainProcess() {
                     } else {
                         zone = getGISInfo("MCPHD", 'FoodsDistrict', 'district');
                     }
+                }
+
+                if (!zone && estDistrict && estDistrict != "") {
+                    zone = estDistrict;
                 }
 
                 if (zone) {
@@ -204,9 +209,9 @@ function db() {
 		}
 		try {
 			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-			var ds = initialContext.lookup("java:/AA");
+			var ds = initialContext.lookup("java:/MCPHD");
 			var conn = ds.getConnection();
-			var sStmt = conn.prepareStatement(sql);
+			var sStmt = aa.db.prepareStatement(conn, sql);
 			sStmt.setMaxRows(maxRows);
 			var rSet = sStmt.executeQuery();
 			while (rSet.next()) {
@@ -233,9 +238,9 @@ function db() {
 	this.dbExecute = function (sql) {
 		try {
 			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-			var ds = initialContext.lookup("java:/AA");
+			var ds = initialContext.lookup("java:/MCPHD");
 			var conn = ds.getConnection();
-			var sStmt = conn.prepareStatement(sql);
+			var sStmt = aa.db.prepareStatement(conn, sql);
 			sStmt.setMaxRows(1);
 			var rSet = sStmt.executeQuery();
 			rSet.close();
@@ -255,9 +260,9 @@ function db() {
 		var out = null;
 		try {
 			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-			var ds = initialContext.lookup("java:/AA");
+			var ds = initialContext.lookup("java:/MCPHD");
 			var conn = ds.getConnection();
-			var sStmt = conn.prepareStatement(sql);
+			var sStmt = aa.db.prepareStatement(conn, sql);
 			sStmt.setMaxRows(1);
 			var rSet = sStmt.executeQuery();
 
