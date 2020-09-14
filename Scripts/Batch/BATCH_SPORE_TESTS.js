@@ -117,12 +117,12 @@ try{
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 	var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-	var ds = initialContext.lookup("java:/AA");
+	var ds = initialContext.lookup("java:/MCPHD");
 	var conn = ds.getConnection();
 
     // records
-    var selectStringCap = "select b.b1_per_id1, b.b1_per_id2, b.b1_per_id3 from b1permit b where b.serv_prov_code = 'MCPHD' and b.b1_per_sub_type = 'Body Art' and b.B1_PER_CATEGORY = 'License'";
-    var sStmt = conn.prepareStatement(selectStringCap);
+    var selectStringCap = "select b.b1_per_id1, b.b1_per_id2, b.b1_per_id3 from dbo.b1permit b where b.serv_prov_code = 'MCPHD' and b.b1_per_sub_type = 'Body Art' and b.B1_PER_CATEGORY = 'License'";
+    var sStmt = aa.db.prepareStatement(conn, selectStringCap);
     var rSet = sStmt.executeQuery();
 	capIdList = new Array();
     while (rSet.next()) {
