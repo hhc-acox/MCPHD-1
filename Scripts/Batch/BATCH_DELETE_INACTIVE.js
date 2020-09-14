@@ -122,7 +122,7 @@ function mainProcess() {
     var countProcessed = 0;
     // get all capids
     var conn = new db();
-    var sql = "select distinct b.b1_per_id1, b.b1_per_id2, b.b1_per_id3 from b1permit b where b.serv_prov_code = 'MCPHD' and b.b1_per_type IN ('Housing', 'CRT') and b.b1_appl_status = 'Inactive-Error' and b.rec_status = 'A'";
+    var sql = "select distinct b.B1_PER_ID1, b.B1_PER_ID2, b.B1_PER_ID3 from DBO.b1permit b where b.serv_prov_code = 'MCPHD' and b.b1_per_type IN ('Housing', 'CRT') and b.b1_appl_status = 'Inactive-Error' and b.rec_status = 'A'";
     var ds = conn.dbDataSet(sql, numToProcess);
     countTotal = ds.length;
     // foreach cap in capid list
@@ -180,9 +180,9 @@ function db() {
 		}
 		try {
 			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-			var ds = initialContext.lookup("java:/AA");
+			var ds = initialContext.lookup("java:/MCPHD");
 			var conn = ds.getConnection();
-			var sStmt = conn.prepareStatement(sql);
+			var sStmt = aa.db.prepareStatement(conn, sql);
 			sStmt.setMaxRows(maxRows);
 			var rSet = sStmt.executeQuery();
 			while (rSet.next()) {
@@ -209,9 +209,9 @@ function db() {
 	this.dbExecute = function (sql) {
 		try {
 			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-			var ds = initialContext.lookup("java:/AA");
+			var ds = initialContext.lookup("java:/MCPHD");
 			var conn = ds.getConnection();
-			var sStmt = conn.prepareStatement(sql);
+			var sStmt = aa.db.prepareStatement(conn, sql);
 			sStmt.setMaxRows(1);
 			var rSet = sStmt.executeQuery();
 			rSet.close();
@@ -231,9 +231,9 @@ function db() {
 		var out = null;
 		try {
 			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-			var ds = initialContext.lookup("java:/AA");
+			var ds = initialContext.lookup("java:/MCPHD");
 			var conn = ds.getConnection();
-			var sStmt = conn.prepareStatement(sql);
+			var sStmt = aa.db.prepareStatement(conn, sql);
 			sStmt.setMaxRows(1);
 			var rSet = sStmt.executeQuery();
 
