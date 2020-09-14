@@ -110,12 +110,12 @@ try{
     var resultComment = 'Updated by Script';
 
 	var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-	var ds = initialContext.lookup("java:/AA");
+	var ds = initialContext.lookup("java:/MCPHD");
 	var conn = ds.getConnection();
 
     // records
-    var selectStringCap = "SELECT b.b1_per_id1, b.b1_per_id2, b.b1_per_id3, g6.g6_act_num FROM b1permit b INNER JOIN g6action g6 ON g6.B1_PER_ID1 = b.B1_PER_ID1 AND g6.B1_PER_ID2 = b.B1_PER_ID2 AND g6.B1_PER_ID3 = b.B1_PER_ID3 AND g6.SERV_PROV_CODE = b.SERV_PROV_CODE INNER JOIN gguidesheet gd ON gd.G6_ACT_NUM = g6.G6_ACT_NUM AND gd.SERV_PROV_CODE = g6.SERV_PROV_CODE INNER JOIN ggdsheet_item_asi asi ON asi.GUIDESHEET_SEQ_NBR = gd.GUIDESHEET_SEQ_NBR AND asi.SERV_PROV_CODE = gd.SERV_PROV_CODE WHERE b.b1_per_sub_type = 'LarvicideSite' AND b.serv_prov_code = 'MCPHD' AND g6.g6_status = 'Technician Complete' AND asi.ASI_NAME = 'Sample Collected?' AND asi.asi_comment = 'Y'";
-    var sStmt = conn.prepareStatement(selectStringCap);
+    var selectStringCap = "SELECT b.b1_per_id1, b.b1_per_id2, b.b1_per_id3, g6.g6_act_num FROM dbo.b1permit b INNER JOIN dbo.g6action g6 ON g6.B1_PER_ID1 = b.B1_PER_ID1 AND g6.B1_PER_ID2 = b.B1_PER_ID2 AND g6.B1_PER_ID3 = b.B1_PER_ID3 AND g6.SERV_PROV_CODE = b.SERV_PROV_CODE INNER JOIN dbo.gguidesheet gd ON gd.G6_ACT_NUM = g6.G6_ACT_NUM AND gd.SERV_PROV_CODE = g6.SERV_PROV_CODE INNER JOIN dbo.ggdsheet_item_asi asi ON asi.GUIDESHEET_SEQ_NBR = gd.GUIDESHEET_SEQ_NBR AND asi.SERV_PROV_CODE = gd.SERV_PROV_CODE WHERE b.b1_per_sub_type = 'LarvicideSite' AND b.serv_prov_code = 'MCPHD' AND g6.g6_status = 'Technician Complete' AND asi.ASI_NAME = 'Sample Collected?' AND asi.asi_comment = 'Y'";
+    var sStmt = aa.db.prepareStatement(conn, selectStringCap);
     var rSet = sStmt.executeQuery();
 	capIdList = new Array();
     while (rSet.next()) {
@@ -157,3 +157,4 @@ function getCapIdByIDs(s_id1, s_id2, s_id3)  {
     else
        return null;
 }
+
