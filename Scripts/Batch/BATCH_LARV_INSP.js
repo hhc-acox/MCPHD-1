@@ -139,13 +139,13 @@ function mainProcess() {
 	//TODO: NEED TO CONFIRM SQL AND LIMIT RECORD
 	var conn = new db();
 
-	var sql = "SELECT a.b1_per_id1, a.b1_per_id2,a.b1_per_id3 FROM G6ACTION A " +
-		"INNER JOIN B1PERMIT B1 ON A.SERV_PROV_CODE=B1.SERV_PROV_CODE AND A.B1_PER_ID1=B1.B1_PER_ID1 AND A.B1_PER_ID2=B1.B1_PER_ID2 AND A.B1_PER_ID3=B1.B1_PER_ID3 " +
-		"INNER JOIN BCHCKBOX B ON A.SERV_PROV_CODE=B.SERV_PROV_CODE AND A.B1_PER_ID1=B.B1_PER_ID1 AND A.B1_PER_ID2=B.B1_PER_ID2 AND A.B1_PER_ID3=B.B1_PER_ID3 " +
+	var sql = "SELECT a.B1_PER_ID1, a.B1_PER_ID2,a.B1_PER_ID3 FROM dbo.G6ACTION A " +
+		"INNER JOIN dbo.B1PERMIT B1 ON A.SERV_PROV_CODE=B1.SERV_PROV_CODE AND A.B1_PER_ID1=B1.B1_PER_ID1 AND A.B1_PER_ID2=B1.B1_PER_ID2 AND A.B1_PER_ID3=B1.B1_PER_ID3 " +
+		"INNER JOIN dbo.BCHCKBOX B ON A.SERV_PROV_CODE=B.SERV_PROV_CODE AND A.B1_PER_ID1=B.B1_PER_ID1 AND A.B1_PER_ID2=B.B1_PER_ID2 AND A.B1_PER_ID3=B.B1_PER_ID3 " +
 		"WHERE A.SERV_PROV_CODE='{0}' and B.B1_CHECKBOX_DESC='Zone' and b.b1_checklist_comment in ({1}) " +
 		"AND B1.B1_PER_GROUP='EnvHealth' and b1.b1_per_type='VC' and b1.b1_per_sub_type='LarvicideSite' and b1_per_category='NA' " +
-		"AND TRUNC(G6_ACT_DD) = TO_DATE('{2}','MM/DD/YYYY') " +
-		"and exists (SELECT 1 FROM gguidesheet G inner join ggdsheet_item_asi gi on g.serv_prov_code=gi.serv_prov_code and g.guidesheet_seq_nbr=gi.guidesheet_seq_nbr " +
+		"AND CAST(G6_ACT_DD as date) = CONVERT(date,'{2}',101) " +
+		"and exists (SELECT 1 FROM dbo.gguidesheet G inner join dbo.ggdsheet_item_asi gi on g.serv_prov_code=gi.serv_prov_code and g.guidesheet_seq_nbr=gi.guidesheet_seq_nbr " +
 			"where GI.asi_grp_nam='VC_LVCCKLST' AND GI.asi_subgrp_nam='LARVICIDE' and GI.ASI_NAME='Is Site Breeding' and GI.asi_comment='Yes' " +
 			"and a.serv_prov_code=g.serv_prov_code and a.b1_per_id1=g.b1_per_id1 and a.b1_per_id2=g.b1_per_id2 and a.b1_per_id3=g.b1_per_id3 and a.g6_act_num=g.g6_act_num)";
 	
@@ -161,13 +161,13 @@ function mainProcess() {
 		logDebug("Found 1yr: " + tcapid.getCustomID());
 	}
 	if (oneYear.length < 25) {
-		var sql = "SELECT a.b1_per_id1, a.b1_per_id2,a.b1_per_id3 FROM G6ACTION A " +
-			"INNER JOIN B1PERMIT B1 ON A.SERV_PROV_CODE=B1.SERV_PROV_CODE AND A.B1_PER_ID1=B1.B1_PER_ID1 AND A.B1_PER_ID2=B1.B1_PER_ID2 AND A.B1_PER_ID3=B1.B1_PER_ID3 " +
-			"INNER JOIN BCHCKBOX B ON A.SERV_PROV_CODE=B.SERV_PROV_CODE AND A.B1_PER_ID1=B.B1_PER_ID1 AND A.B1_PER_ID2=B.B1_PER_ID2 AND A.B1_PER_ID3=B.B1_PER_ID3 " +
+		var sql = "SELECT a.B1_PER_ID1, a.B1_PER_ID2,a.B1_PER_ID3 FROM dbo.G6ACTION A " +
+			"INNER JOIN dbo.B1PERMIT B1 ON A.SERV_PROV_CODE=B1.SERV_PROV_CODE AND A.B1_PER_ID1=B1.B1_PER_ID1 AND A.B1_PER_ID2=B1.B1_PER_ID2 AND A.B1_PER_ID3=B1.B1_PER_ID3 " +
+			"INNER JOIN dbo.BCHCKBOX B ON A.SERV_PROV_CODE=B.SERV_PROV_CODE AND A.B1_PER_ID1=B.B1_PER_ID1 AND A.B1_PER_ID2=B.B1_PER_ID2 AND A.B1_PER_ID3=B.B1_PER_ID3 " +
 			"WHERE A.SERV_PROV_CODE='{0}' and B.B1_CHECKBOX_DESC='Zone' and b.b1_checklist_comment  in ({1}) " +
 			"AND B1.B1_PER_GROUP='EnvHealth' and b1.b1_per_type='VC' and b1.b1_per_sub_type='LarvicideSite' and b1_per_category='NA' " +
-			"AND TRUNC(G6_ACT_DD) = TO_DATE('{2}','MM/DD/YYYY') " +
-			"and exists (SELECT 1 FROM gguidesheet G inner join ggdsheet_item_asi gi on g.serv_prov_code=gi.serv_prov_code and g.guidesheet_seq_nbr=gi.guidesheet_seq_nbr " +
+			"AND CAST(G6_ACT_DD as date) = CONVERT(date,'{2}',101) " +
+			"and exists (SELECT 1 FROM dbo.gguidesheet G inner join dbo.ggdsheet_item_asi gi on g.serv_prov_code=gi.serv_prov_code and g.guidesheet_seq_nbr=gi.guidesheet_seq_nbr " +
 			"where GI.asi_grp_nam='VC_LVCCKLST' AND GI.asi_subgrp_nam='LARVICIDE' and GI.ASI_NAME='Is Site Breeding' and GI.asi_comment='Yes' " +
 			"and a.serv_prov_code=g.serv_prov_code and a.b1_per_id1=g.b1_per_id1 and a.b1_per_id2=g.b1_per_id2 and a.b1_per_id3=g.b1_per_id3 and a.g6_act_num=g.g6_act_num)";
 		sql = sql.replace("{0}", String(aa.getServiceProviderCode()))
@@ -224,9 +224,9 @@ function db() {
 		}
 		try {
 			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-			var ds = initialContext.lookup("java:/AA");
+			var ds = initialContext.lookup("java:/MCPHD");
 			var conn = ds.getConnection();
-			var sStmt = conn.prepareStatement(sql);
+			var sStmt = aa.db.prepareStatement(conn, sql);
 			sStmt.setMaxRows(maxRows);
 			var rSet = sStmt.executeQuery();
 			while (rSet.next()) {
@@ -253,9 +253,9 @@ function db() {
 	this.dbExecute = function (sql) {
 		try {
 			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-			var ds = initialContext.lookup("java:/AA");
+			var ds = initialContext.lookup("java:/MCPHD");
 			var conn = ds.getConnection();
-			var sStmt = conn.prepareStatement(sql);
+			var sStmt = aa.db.prepareStatement(conn, sql);
 			sStmt.setMaxRows(1);
 			var rSet = sStmt.executeQuery();
 			rSet.close();
@@ -275,9 +275,9 @@ function db() {
 		var out = null;
 		try {
 			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-			var ds = initialContext.lookup("java:/AA");
+			var ds = initialContext.lookup("java:/MCPHD");
 			var conn = ds.getConnection();
-			var sStmt = conn.prepareStatement(sql);
+			var sStmt = aa.db.prepareStatement(conn, sql);
 			sStmt.setMaxRows(1);
 			var rSet = sStmt.executeQuery();
 
@@ -294,3 +294,4 @@ function db() {
 	}
 	return this;
 }
+
