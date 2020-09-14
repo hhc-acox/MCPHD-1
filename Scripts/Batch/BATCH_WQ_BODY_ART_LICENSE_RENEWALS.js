@@ -3,7 +3,6 @@
 | 
 | License Batch script for Body Art - Runs from the Set when triggered by the user.
 | Richard Voller - 08/28/2019
-| Jake Cox - 07/31/2020 - Rewrote to use DB()
 | 
 | BATCH_WQ_BODY_ART_LICENSE_RENEWALS
 | HHC - CIS
@@ -89,7 +88,7 @@ var testing = false;
         var countProcessed = 0;
         // get all capids
         var conn = new db();
-        var sql = "select b.b1_per_id1, b.b1_per_id2, b.b1_per_id3 from b1permit b where b.serv_prov_code = 'MCPHD' and b.b1_per_type = 'WQ' and b.b1_per_sub_type = 'Body Art' and b.b1_per_category = 'License' and b.b1_appl_status = 'Active'";
+        var sql = "select b.B1_PER_ID1, b.B1_PER_ID2, b.B1_PER_ID3 from dbo.b1permit b where b.serv_prov_code = 'MCPHD' and b.b1_per_type = 'WQ' and b.b1_per_sub_type = 'Body Art' and b.b1_per_category = 'License' and b.b1_appl_status = 'Active'";
         var ds = conn.dbDataSet(sql, numToProcess);
         // foreach cap in capid list
         aa.print('Processing ' + ds.length);
@@ -230,9 +229,9 @@ function db() {
 		}
 		try {
 			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-			var ds = initialContext.lookup("java:/AA");
+			var ds = initialContext.lookup("java:/MCPHD");
 			var conn = ds.getConnection();
-			var sStmt = conn.prepareStatement(sql);
+			var sStmt = aa.db.prepareStatement(conn, sql);
 			sStmt.setMaxRows(maxRows);
 			var rSet = sStmt.executeQuery();
 			while (rSet.next()) {
@@ -259,9 +258,9 @@ function db() {
 	this.dbExecute = function (sql) {
 		try {
 			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-			var ds = initialContext.lookup("java:/AA");
+			var ds = initialContext.lookup("java:/MCPHD");
 			var conn = ds.getConnection();
-			var sStmt = conn.prepareStatement(sql);
+			var sStmt = aa.db.prepareStatement(conn, sql);
 			sStmt.setMaxRows(1);
 			var rSet = sStmt.executeQuery();
 			rSet.close();
@@ -281,9 +280,9 @@ function db() {
 		var out = null;
 		try {
 			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-			var ds = initialContext.lookup("java:/AA");
+			var ds = initialContext.lookup("java:/MCPHD");
 			var conn = ds.getConnection();
-			var sStmt = conn.prepareStatement(sql);
+			var sStmt = aa.db.prepareStatement(conn, sql);
 			sStmt.setMaxRows(1);
 			var rSet = sStmt.executeQuery();
 
