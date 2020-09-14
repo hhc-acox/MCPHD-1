@@ -133,7 +133,7 @@ function mainProcess() {
     var numToProcess = 10000;
     // get all capids
     var conn = new db();
-    var sql = "with scheduled as ( SELECT b.b1_alt_id, g6.G6_ACT_DD FROM b1permit b INNER JOIN g6action g6 ON g6.B1_PER_ID1 = b.B1_PER_ID1 AND g6.B1_PER_ID2 = b.B1_PER_ID2 AND g6.B1_PER_ID3 = b.B1_PER_ID3 AND g6.SERV_PROV_CODE = b.SERV_PROV_CODE WHERE b.serv_prov_code = 'MCPHD' AND b.b1_per_type = 'WQ' AND b.b1_per_sub_type = 'Pool' AND b.b1_per_category = 'License' AND g6.G6_ACT_DD > att_to_date (TO_CHAR (LAST_DAY (SYSDATE), 'MM/DD/YYYY')) AND g6.G6_ACT_DD < att_to_date ( TO_CHAR (LAST_DAY (ADD_MONTHS (SYSDATE, 1)), 'MM/DD/YYYY')) + 1 AND g6.G6_STATUS = 'Scheduled' AND g6.G6_ACT_TYP = 'Routine' ) select b.b1_per_id1, b.b1_per_id2, b.b1_per_id3, bd.B1_ASGN_STAFF from b1permit b inner join bpermit_detail bd on bd.B1_PER_ID1 = b.B1_PER_ID1 and bd.B1_PER_ID2 = b.B1_PER_ID2 and bd.B1_PER_ID3 = b.B1_PER_ID3 and bd.SERV_PROV_CODE = b.SERV_PROV_CODE where b.serv_prov_code = 'MCPHD' and b.b1_per_type = 'WQ' AND b.b1_per_sub_type = 'Pool' AND b.b1_per_category = 'License' and NOT EXISTS (select 1 from scheduled s where s.b1_alt_id = b.b1_alt_id)";
+    var sql = "with scheduled as ( SELECT b.b1_alt_id, g6.G6_ACT_DD FROM dbo.b1permit b INNER JOIN dbo.g6action g6 ON g6.B1_PER_ID1 = b.B1_PER_ID1 AND g6.B1_PER_ID2 = b.B1_PER_ID2 AND g6.B1_PER_ID3 = b.B1_PER_ID3 AND g6.SERV_PROV_CODE = b.SERV_PROV_CODE WHERE b.serv_prov_code = 'MCPHD' AND b.b1_per_type = 'WQ' AND b.b1_per_sub_type = 'Pool' AND b.b1_per_category = 'License' AND g6.G6_ACT_DD > dbo.att_to_date (CONVERT (varchar(101), EOMONTH (SYSDATETIME()), 101)) AND g6.G6_ACT_DD < DATEADD(d, 1, dbo.att_to_date ( CONVERT (varchar(10), EOMONTH (DATEADD (m, 1, SYSDATETIME())), 101))) AND g6.G6_STATUS = 'Scheduled' AND g6.G6_ACT_TYP = 'Routine' ) select b.B1_PER_ID1, b.B1_PER_ID2, b.B1_PER_ID3, bd.B1_ASGN_STAFF from dbo.b1permit b inner join dbo.bpermit_detail bd on bd.B1_PER_ID1 = b.B1_PER_ID1 and bd.B1_PER_ID2 = b.B1_PER_ID2 and bd.B1_PER_ID3 = b.B1_PER_ID3 and bd.SERV_PROV_CODE = b.SERV_PROV_CODE where b.serv_prov_code = 'MCPHD' and b.b1_per_type = 'WQ' AND b.b1_per_sub_type = 'Pool' AND b.b1_per_category = 'License' and NOT EXISTS (select 1 from scheduled s where s.b1_alt_id = b.b1_alt_id)";
     var ds = conn.dbDataSet(sql, numToProcess);
     countTotal = ds.length;
     // foreach cap in capid list
@@ -234,9 +234,9 @@ function db() {
 		}
 		try {
 			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-			var ds = initialContext.lookup("java:/AA");
+			var ds = initialContext.lookup("java:/MCPHD");
 			var conn = ds.getConnection();
-			var sStmt = conn.prepareStatement(sql);
+			var sStmt = aa.db.prepareStatement(conn, sql);
 			sStmt.setMaxRows(maxRows);
 			var rSet = sStmt.executeQuery();
 			while (rSet.next()) {
@@ -263,9 +263,9 @@ function db() {
 	this.dbExecute = function (sql) {
 		try {
 			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-			var ds = initialContext.lookup("java:/AA");
+			var ds = initialContext.lookup("java:/MCPHD");
 			var conn = ds.getConnection();
-			var sStmt = conn.prepareStatement(sql);
+			var sStmt = aa.db.prepareStatement(conn, sql);
 			sStmt.setMaxRows(1);
 			var rSet = sStmt.executeQuery();
 			rSet.close();
@@ -285,9 +285,9 @@ function db() {
 		var out = null;
 		try {
 			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-			var ds = initialContext.lookup("java:/AA");
+			var ds = initialContext.lookup("java:/MCPHD");
 			var conn = ds.getConnection();
-			var sStmt = conn.prepareStatement(sql);
+			var sStmt = aa.db.prepareStatement(conn, sql);
 			sStmt.setMaxRows(1);
 			var rSet = sStmt.executeQuery();
 
