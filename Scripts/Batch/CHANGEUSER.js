@@ -116,12 +116,12 @@ try{
 
 
 	var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-	var ds = initialContext.lookup("java:/AA");
+	var ds = initialContext.lookup("java:/MCPHD");
 	var conn = ds.getConnection();
 
     // records
-    var selectStringCap = "select b1_per_id1, b1_per_id2, b1_per_id3 from bpermit_detail where serv_prov_code = 'MCPHD' and b1_asgn_staff = ?";
-    var sStmt = conn.prepareStatement(selectStringCap);
+    var selectStringCap = "select b1_per_id1, b1_per_id2, b1_per_id3 from dbo.bpermit_detail where serv_prov_code = 'MCPHD' and b1_asgn_staff = ?";
+    var sStmt = aa.db.prepareStatement(conn, selectStringCap);
     sStmt.setString(1, oldUserId);
     var rSet = sStmt.executeQuery();
 	capIdList = new Array();
@@ -147,8 +147,8 @@ try{
     }
 
     // workflow tasks
-    selectStringTask = "select b1_per_id1, b1_per_id2, b1_per_id3, sd_pro_des as taskname from gprocess where serv_prov_code = 'MCPHD' and sd_chk_lv1 = 'Y' and sd_chk_lv2 = 'N' and asgn_user_id = ?";
-    var sStmt = conn.prepareStatement(selectStringTask);
+    selectStringTask = "select b1_per_id1, b1_per_id2, b1_per_id3, sd_pro_des as taskname from dbo.gprocess where serv_prov_code = 'MCPHD' and sd_chk_lv1 = 'Y' and sd_chk_lv2 = 'N' and asgn_user_id = ?";
+    var sStmt = aa.db.prepareStatement(conn, selectStringTask);
     sStmt.setString(1, oldUserId);
     var rSet = sStmt.executeQuery();
 	capIdList = new Array();
@@ -177,8 +177,8 @@ try{
     }
 
     // inspections 
-    selectStringInsp = "select b1_per_id1, b1_per_id2, b1_per_id3, g6_act_num, g6_act_dd from g6action where serv_prov_code = 'MCPHD' and g6_act_grp = 'Inspection' and g6_doc_des = 'Insp Scheduled' and ga_userid = ?";
-    var sStmt = conn.prepareStatement(selectStringInsp);
+    selectStringInsp = "select b1_per_id1, b1_per_id2, b1_per_id3, g6_act_num, g6_act_dd from dbo.g6action where serv_prov_code = 'MCPHD' and g6_act_grp = 'Inspection' and g6_doc_des = 'Insp Scheduled' and ga_userid = ?";
+    var sStmt = aa.db.prepareStatement(conn, selectStringInsp);
     sStmt.setString(1, oldUserId);
     var rSet = sStmt.executeQuery();
 	capIdList = new Array();
@@ -246,3 +246,4 @@ function getCapIdByIDs(s_id1, s_id2, s_id3)  {
     else
        return null;
 }
+
