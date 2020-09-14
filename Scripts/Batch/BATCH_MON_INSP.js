@@ -152,7 +152,7 @@ function mainProcess() {
            */
 
             var conn = new db();
-            var sql = "SELECT G6_ACT_NUM FROM G6ACTION WHERE SERV_PROV_CODE='{0}' AND B1_PER_ID1='{1}' AND B1_PER_ID2='{2}' AND B1_PER_ID3='{3}' ORDER BY G6_COMPL_DD DESC";
+            var sql = "SELECT G6_ACT_NUM FROM dbo.G6ACTION WHERE SERV_PROV_CODE='{0}' AND B1_PER_ID1='{1}' AND B1_PER_ID2='{2}' AND B1_PER_ID3='{3}' ORDER BY G6_COMPL_DD DESC";
             sql = sql.replace("{0}", String(aa.getServiceProviderCode()))
                 .replace("{1}", String(capId.getID1()))
                 .replace("{2}", String(capId.getID2()))
@@ -425,9 +425,9 @@ function db() {
         }
         try {
             var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-            var ds = initialContext.lookup("java:/AA");
+            var ds = initialContext.lookup("java:/MCPHD");
             var conn = ds.getConnection();
-            var sStmt = conn.prepareStatement(sql);
+            var sStmt = aa.db.prepareStatement(conn, sql);
             sStmt.setMaxRows(maxRows);
             var rSet = sStmt.executeQuery();
             while (rSet.next()) {
@@ -454,9 +454,9 @@ function db() {
     this.dbExecute = function (sql) {
         try {
             var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-            var ds = initialContext.lookup("java:/AA");
+            var ds = initialContext.lookup("java:/MCPHD");
             var conn = ds.getConnection();
-            var sStmt = conn.prepareStatement(sql);
+            var sStmt = aa.db.prepareStatement(conn, sql);
             sStmt.setMaxRows(1);
             var rSet = sStmt.executeQuery();
             rSet.close();
@@ -476,9 +476,9 @@ function db() {
         var out = null;
         try {
             var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-            var ds = initialContext.lookup("java:/AA");
+            var ds = initialContext.lookup("java:/MCPHD");
             var conn = ds.getConnection();
-            var sStmt = conn.prepareStatement(sql);
+            var sStmt = aa.db.prepareStatement(conn, sql);
             sStmt.setMaxRows(1);
             var rSet = sStmt.executeQuery();
 
@@ -495,3 +495,4 @@ function db() {
     }
     return this;
 }
+
