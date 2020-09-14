@@ -128,7 +128,7 @@ function mainProcess() {
     var wfReassigned = 0;
     // get all capids
     var conn = new db();
-    var sql = "select distinct b.b1_per_id1, b.b1_per_id2, b.b1_per_id3 from b1permit b inner join b3parcel b3 on b3.B1_PER_ID1 = b.B1_PER_ID1 and b3.B1_PER_ID2 = b.B1_PER_ID2 and b3.B1_PER_ID3 = b.B1_PER_ID3 and b3.SERV_PROV_CODE = b.SERV_PROV_CODE where b.serv_prov_code = 'MCPHD' and b.b1_per_type = 'Housing' and b3.b1_census_tract is null and b.b1_appl_status NOT IN ('Finaled', 'Closed/Fees Outstanding', 'Closed') and b.rec_date > att_to_date('04/19/2020')";
+    var sql = "select distinct b.B1_PER_ID1, b.B1_PER_ID2, b.B1_PER_ID3 from DBO.b1permit b inner join DBO.b3parcel b3 on b3.B1_PER_ID1 = b.B1_PER_ID1 and b3.B1_PER_ID2 = b.B1_PER_ID2 and b3.B1_PER_ID3 = b.B1_PER_ID3 and b3.SERV_PROV_CODE = b.SERV_PROV_CODE where b.serv_prov_code = 'MCPHD' and b.b1_per_type = 'Housing' and b3.b1_census_tract is null and b.b1_appl_status NOT IN ('Finaled', 'Closed/Fees Outstanding', 'Closed') and b.rec_date > dbo.att_to_date('04/19/2020')";
     var ds = conn.dbDataSet(sql, numToProcess);
     // foreach cap in capid list
     for (var r in ds) {
@@ -242,9 +242,9 @@ function db() {
         }
         try {
             var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-            var ds = initialContext.lookup("java:/AA");
+            var ds = initialContext.lookup("java:/MCPHD");
             var conn = ds.getConnection();
-            var sStmt = conn.prepareStatement(sql);
+            var sStmt = aa.db.prepareStatement(conn, sql);
             sStmt.setMaxRows(maxRows);
             var rSet = sStmt.executeQuery();
             while (rSet.next()) {
@@ -270,9 +270,9 @@ function db() {
     this.dbExecute = function(sql) {
         try {
             var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-            var ds = initialContext.lookup("java:/AA");
+            var ds = initialContext.lookup("java:/MCPHD");
             var conn = ds.getConnection();
-            var sStmt = conn.prepareStatement(sql);
+            var sStmt = aa.db.prepareStatement(conn, sql);
             sStmt.setMaxRows(1);
             var rSet = sStmt.executeQuery();
             rSet.close();
@@ -291,9 +291,9 @@ function db() {
         var out = null;
         try {
             var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-            var ds = initialContext.lookup("java:/AA");
+            var ds = initialContext.lookup("java:/MCPHD");
             var conn = ds.getConnection();
-            var sStmt = conn.prepareStatement(sql);
+            var sStmt = aa.db.prepareStatement(conn, sql);
             sStmt.setMaxRows(1);
             var rSet = sStmt.executeQuery();
 
