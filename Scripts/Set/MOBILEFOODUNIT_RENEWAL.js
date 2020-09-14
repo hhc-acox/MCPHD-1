@@ -45,7 +45,6 @@ function getScriptText(vScriptName, servProvCode, useProductScripts) {
 var showDebug = false;
 var showMessage = false;
 var cnt = 0;
-var currentUserID = "ADMIN";
 var systemUserObj = aa.person.getUser("ADMIN").getOutput();
 var message = "";								
 var debug = "";									
