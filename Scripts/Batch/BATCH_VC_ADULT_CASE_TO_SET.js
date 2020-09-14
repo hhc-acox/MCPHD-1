@@ -128,7 +128,7 @@ function mainProcess() {
 	var wfReassigned = 0;
 	// get all capids
 	var conn = new db();
-	var sql = "SELECT DISTINCT b.b1_per_id1, b.b1_per_id2, b.b1_per_id3 FROM B1PERMIT B INNER JOIN G6ACTION G6A ON G6A.B1_PER_ID1 = B.B1_PER_ID1 AND G6A.B1_PER_ID2 = B.B1_PER_ID2 AND G6A.B1_PER_ID3 = B.B1_PER_ID3 AND G6A.SERV_PROV_CODE = 'MCPHD' AND (G6A.G6_ACT_TYP = 'Adulticide' OR G6A.G6_ACT_TYP = 'Adulticide Inspection') AND G6A.G6_STATUS = 'Scheduled' AND G6A.REC_STATUS = 'A' WHERE B.SERV_PROV_CODE = 'MCPHD' AND B.B1_PER_GROUP = 'EnvHealth' AND B.B1_APP_TYPE_ALIAS IN ('Adulticide Complaint', 'Monitor Site') and b.b1_appl_status != 'Closed'";
+	var sql = "SELECT DISTINCT b.B1_PER_ID1, b.B1_PER_ID2, b.B1_PER_ID3 FROM dbo.B1PERMIT B INNER JOIN dbo.G6ACTION G6A ON G6A.B1_PER_ID1 = B.B1_PER_ID1 AND G6A.B1_PER_ID2 = B.B1_PER_ID2 AND G6A.B1_PER_ID3 = B.B1_PER_ID3 AND G6A.SERV_PROV_CODE = 'MCPHD' AND (G6A.G6_ACT_TYP = 'Adulticide' OR G6A.G6_ACT_TYP = 'Adulticide Inspection') AND G6A.G6_STATUS = 'Scheduled' AND G6A.REC_STATUS = 'A' WHERE B.SERV_PROV_CODE = 'MCPHD' AND B.B1_PER_GROUP = 'EnvHealth' AND B.B1_APP_TYPE_ALIAS IN ('Adulticide Complaint', 'Monitor Site') and b.b1_appl_status != 'Closed'";
 	var ds = conn.dbDataSet(sql, numToProcess);
     // foreach cap in capid list
     
@@ -195,9 +195,9 @@ function db() {
 		}
 		try {
 			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-			var ds = initialContext.lookup("java:/AA");
+			var ds = initialContext.lookup("java:/MCPHD");
 			var conn = ds.getConnection();
-			var sStmt = conn.prepareStatement(sql);
+			var sStmt = aa.db.prepareStatement(conn, sql);
 			sStmt.setMaxRows(maxRows);
 			var rSet = sStmt.executeQuery();
 			while (rSet.next()) {
@@ -223,9 +223,9 @@ function db() {
 	this.dbExecute = function(sql) {
 		try {
 			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-			var ds = initialContext.lookup("java:/AA");
+			var ds = initialContext.lookup("java:/MCPHD");
 			var conn = ds.getConnection();
-			var sStmt = conn.prepareStatement(sql);
+			var sStmt = aa.db.prepareStatement(conn, sql);
 			sStmt.setMaxRows(1);
 			var rSet = sStmt.executeQuery();
 			rSet.close();
@@ -244,9 +244,9 @@ function db() {
 		var out = null;
 		try {
 			var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-			var ds = initialContext.lookup("java:/AA");
+			var ds = initialContext.lookup("java:/MCPHD");
 			var conn = ds.getConnection();
-			var sStmt = conn.prepareStatement(sql);
+			var sStmt = aa.db.prepareStatement(conn, sql);
 			sStmt.setMaxRows(1);
 			var rSet = sStmt.executeQuery();
 
@@ -528,7 +528,7 @@ function activateTaskNoLog(wfstr) // optional process name
 function tcopyLeadViolations(inspId, inspDate) {
     logDebug('Copying for ' + inspId);
 	var tconn = new db();
-	var tsql = "SELECT G6_ACT_NUM FROM G6ACTION WHERE SERV_PROV_CODE='{0}' AND B1_PER_ID1='{1}' AND B1_PER_ID2='{2}' AND B1_PER_ID3='{3}' AND G6_ACT_TYP in ('Initial Lead Inspection', 'Reinspection', 'Yearly Lead Inspection') and g6_status = 'In Violation' and rec_status != 'I' and G6_COMPL_DD < att_to_date('{4}') ORDER BY G6_COMPL_DD DESC";
+	var tsql = "SELECT G6_ACT_NUM FROM dbo.G6ACTION WHERE SERV_PROV_CODE='{0}' AND B1_PER_ID1='{1}' AND B1_PER_ID2='{2}' AND B1_PER_ID3='{3}' AND G6_ACT_TYP in ('Initial Lead Inspection', 'Reinspection', 'Yearly Lead Inspection') and g6_status = 'In Violation' and rec_status != 'I' and G6_COMPL_DD < dbo.att_to_date('{4}') ORDER BY G6_COMPL_DD DESC";
 	tsql = tsql.replace("{0}", String(aa.getServiceProviderCode()))
 		.replace("{1}", String(capId.getID1()))
 		.replace("{2}", String(capId.getID2()))
@@ -620,3 +620,4 @@ function tcopyLeadViolations(inspId, inspDate) {
         }
     }
 }
+
