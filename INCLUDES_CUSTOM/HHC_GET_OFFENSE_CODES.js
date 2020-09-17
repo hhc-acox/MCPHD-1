@@ -137,7 +137,7 @@ function HHC_GET_OFFENSE_CODES(saveID, childID) {
 
         for (z in violations) {
             thisVioCode = violations[z];
-            if (thisVioCode.indexOf('null') < 0) {
+            if (thisVioCode.indexOf('null') < 0 && thisVioCode != '' && thisVioCode != null) {
                 newOffenseRow = new Array();
                 newOffenseRow['OFFENSE CODE'] = new asiTableValObj("OFFENSE CODE", thisVioCode + 'OI', 'N');
                 addToASITable('OFFENSE CODES', newOffenseRow, childID);
