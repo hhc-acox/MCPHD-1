@@ -11,7 +11,7 @@ function HHC_VALIDATE_OFFENSE_CODES() {
             if (crtVIOLATIONS && crtVIOLATIONS.length > 0) {
                 for (a in crtVIOLATIONS) {
                     thisrow = crtVIOLATIONS[a];
-                    if (matches(thisrow['Status'], 'Court') && !matches(thisrow['Violation'], null)) {
+                    if (matches(thisrow['Status'], 'Court', 'Open')) {
                         //for each value look up the corresponding codes in the translation table that fits the case and push each code set to an array:
                         //HSG Cases
                         var v = '';
@@ -81,7 +81,7 @@ function HHC_VALIDATE_OFFENSE_CODES() {
             if (crtVIOLATIONS && crtVIOLATIONS.length > 0) {
                 for (a in crtVIOLATIONS) {
                     thisrow = crtVIOLATIONS[a];
-                    if (matches(thisrow['Status'], 'Court') && !matches(thisrow['Violation'], null, '')) {
+                    if (matches(thisrow['Status'], 'Court', 'Open') && !matches(thisrow['Violation'], null, '')) {
                         var v = '';
                         if (parseInt(code10or19) == 10) {
                             v = lookup('VioCode_Chpt10_Occ',crtVIOLATIONS[a]['Violation']);
