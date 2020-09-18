@@ -106,37 +106,30 @@ if (showDebug) {
 
 function mainProcess() {
 try{
-    var resultDate = sysDate;
+    //var resultDate = sysDate;
     var resultComment = 'Updated by Script';
-
-	var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
-	var ds = initialContext.lookup("java:/MCPHD");
-	var conn = ds.getConnection();
+	var conn = new db();
 
     // records
-    var selectStringCap = "SELECT b.b1_per_id1, b.b1_per_id2, b.b1_per_id3, g6.g6_act_num FROM dbo.b1permit b INNER JOIN dbo.g6action g6 ON g6.B1_PER_ID1 = b.B1_PER_ID1 AND g6.B1_PER_ID2 = b.B1_PER_ID2 AND g6.B1_PER_ID3 = b.B1_PER_ID3 AND g6.SERV_PROV_CODE = b.SERV_PROV_CODE INNER JOIN dbo.gguidesheet gd ON gd.G6_ACT_NUM = g6.G6_ACT_NUM AND gd.SERV_PROV_CODE = g6.SERV_PROV_CODE INNER JOIN dbo.ggdsheet_item_asi asi ON asi.GUIDESHEET_SEQ_NBR = gd.GUIDESHEET_SEQ_NBR AND asi.SERV_PROV_CODE = gd.SERV_PROV_CODE WHERE b.b1_per_sub_type = 'LarvicideSite' AND b.serv_prov_code = 'MCPHD' AND g6.g6_status = 'Technician Complete' AND asi.ASI_NAME = 'Sample Collected?' AND asi.asi_comment = 'Y'";
-    var sStmt = aa.db.prepareStatement(conn, selectStringCap);
-    var rSet = sStmt.executeQuery();
-	capIdList = new Array();
-    while (rSet.next()) {
-        id1 = rSet.getString("b1_per_id1");
-        id2 = rSet.getString("b1_per_id2");
-        id3 = rSet.getString("b1_per_id3");
-        inspid = rSet.getString("g6_act_num");
-        capIdList.push(id1 + "-" + id2 + "-" + id3 + "-" + inspid);
-    }
-    rSet.close();
-    sStmt.close();
-    logDebug(capIdList.length + " inspections to result");
-    if (capIdList.length > 0) {
-        for (var cIndex in capIdList) {
-            capId = capIdList[cIndex];
-            var capIdArr = capId.toString().split('-');
-            inspId = capIdArr[3];
-            capId = aa.cap.getCapID(capIdArr[0], capIdArr[1], capIdArr[2]).getOutput();
+    var sql = "SELECT b.B1_PER_ID1, b.B1_PER_ID2, b.B1_PER_ID3, g6.G6_ACT_NUM, FORMAT(G6_COMPL_DD, 'yyyy-MM-dd') as INSPDATE FROM dbo.b1permit b INNER JOIN dbo.g6action g6 ON g6.B1_PER_ID1 = b.B1_PER_ID1 AND g6.B1_PER_ID2 = b.B1_PER_ID2 AND g6.B1_PER_ID3 = b.B1_PER_ID3 AND g6.SERV_PROV_CODE = b.SERV_PROV_CODE INNER JOIN dbo.gguidesheet gd ON gd.G6_ACT_NUM = g6.G6_ACT_NUM AND gd.SERV_PROV_CODE = g6.SERV_PROV_CODE INNER JOIN dbo.ggdsheet_item_asi asi ON asi.GUIDESHEET_SEQ_NBR = gd.GUIDESHEET_SEQ_NBR AND asi.SERV_PROV_CODE = gd.SERV_PROV_CODE WHERE b.b1_per_sub_type = 'LarvicideSite' AND b.serv_prov_code = 'MCPHD' AND g6.g6_status = 'Technician Complete' AND asi.ASI_NAME = 'Sample Collected?' AND asi.asi_comment IN ('Y', 'Yes')";
+    var numToProcess = 10;
+    var ds = conn.dbDataSet(sql, numToProcess);
+    // foreach cap in capid list
+    for (var r in ds) {        
+
+        var s_capResult = aa.cap.getCapID(String(ds[r]["B1_PER_ID1"]), String(ds[r]["B1_PER_ID2"]), String(ds[r]["B1_PER_ID3"]));
+
+        if (s_capResult.getSuccess()) {
+            var tCapId = s_capResult.getOutput();
+            capId = tCapId;
+            cap = aa.cap.getCap(capId).getOutput();
+            
             if (capId) {
-                var sysDateYYYYMMDD = dateFormatted(sysDate.getMonth(),sysDate.getDayOfMonth(),sysDate.getYear(),"YYYY-MM-DD");
-                aa.inspection.resultInspection(capId, inspId, 'Waiting on Lab',sysDateYYYYMMDD, resultComment, 'ADMIN');
+                inspId = String(ds[r]["G6_ACT_NUM"]);
+                var formattedDate = String(ds[r]["INSPDATE"]);
+                logDebug(formattedDate);
+                aa.inspection.resultInspection(capId, inspId, 'Waiting on Lab',formattedDate, resultComment, 'ADMIN');
+
                 logDebug('Resulted: ' + inspId);
             }
         }
@@ -158,3 +151,88 @@ function getCapIdByIDs(s_id1, s_id2, s_id3)  {
        return null;
 }
 
+function db() {
+    this.version = function() {
+        return 1.0;
+    }
+
+    /**
+     * Executes a sql statement and returns rows as dataset
+     * @param {string} sql 
+     * @param {integer} maxRows 
+     * @return {string[]}
+     */
+    this.dbDataSet = function(sql, maxRows) {
+        var dataSet = new Array();
+        if (maxRows == null) {
+            maxRows = 100;
+        }
+        try {
+            var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
+            var ds = initialContext.lookup("java:/MCPHD");
+            var conn = ds.getConnection();
+            var sStmt = aa.db.prepareStatement(conn, sql);
+            sStmt.setMaxRows(maxRows);
+            var rSet = sStmt.executeQuery();
+            while (rSet.next()) {
+                var row = new Object();
+                var maxCols = sStmt.getMetaData().getColumnCount();
+                for (var i = 1; i <= maxCols; i++) {
+                    row[sStmt.getMetaData().getColumnName(i)] = rSet.getString(i);
+                }
+                dataSet.push(row);
+            }
+            rSet.close();
+            conn.close();
+        } catch (err) {
+            throw ("dbDataSet: " + err);
+        }
+        return dataSet;
+    }
+
+    /**
+     * Executes a sql statement and returns nothing
+     * @param {string} sql 
+     */
+    this.dbExecute = function(sql) {
+        try {
+            var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
+            var ds = initialContext.lookup("java:/MCPHD");
+            var conn = ds.getConnection();
+            var sStmt = aa.db.prepareStatement(conn, sql);
+            sStmt.setMaxRows(1);
+            var rSet = sStmt.executeQuery();
+            rSet.close();
+            conn.close();
+        } catch (err) {
+            throw ("deExecute: " + err);
+        }
+    }
+
+    /**
+     * Returns first row first column of execute statement
+     * @param {string} sql
+     * @returns {object}  
+     */
+    this.dbScalarExecute = function(sql) {
+        var out = null;
+        try {
+            var initialContext = aa.proxyInvoker.newInstance("javax.naming.InitialContext", null).getOutput();
+            var ds = initialContext.lookup("java:/MCPHD");
+            var conn = ds.getConnection();
+            var sStmt = aa.db.prepareStatement(conn, sql);
+            sStmt.setMaxRows(1);
+            var rSet = sStmt.executeQuery();
+
+            if (rSet.next()) {
+                out = rSet.getString(1);
+            }
+            rSet.close();
+            conn.close();
+        } catch (err) {
+            throw ("dbScalarValue: " + err);
+        }
+        return out;
+    }
+    return this;
+}
