@@ -117,7 +117,7 @@ if (matches(appTypeArray[1],'Radon')) {
 	areaInspector = assignedAreaInspector;
 	assignCap(areaInspector);
 	assignTask('Radon Intake', areaInspector);
-	assignTask('Initial Visit', areaInspector);
+	//assignTask('Initial Visit', areaInspector);
         closeTask('Radon Intake', 'Accepted', 'Closed by Script', 'Closed by Script');
 	scheduleInspectDate('Radon Placement - Initial',nextWorkDay(),areaInspector);
 	comment('the Radon area Inspector is: '+areaInspector);
